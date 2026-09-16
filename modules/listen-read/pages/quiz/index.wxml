@@ -4,7 +4,7 @@
     <view class="quiz-track"><view style="width:{{percent}}%"></view></view>
     <view class="quiz-label">{{chapterTitle}} · 读懂小故事</view>
     <view class="question">{{question.q}}</view><view class="question-zh">{{question.zh}}</view>
-    <view class="quiz-options"><button wx:for="{{options}}" wx:key="index" class="option {{selected === item.index ? 'chosen' : ''}} {{checked && item.index === question.answer ? 'correct' : ''}} {{checked && selected === item.index && selected !== question.answer ? 'incorrect' : ''}}" data-index="{{item.index}}" bindtap="select"><text class="option-letter">{{item.letter}}</text><text class="option-text">{{item.text}}</text><text wx:if="{{checked && item.index === question.answer}}">✓</text></button></view>
+    <view class="quiz-options"><view wx:for="{{options}}" wx:key="index" class="option {{selected === item.index ? 'chosen' : ''}} {{checked && item.index === question.answer ? 'correct' : ''}} {{checked && selected === item.index && selected !== question.answer ? 'incorrect' : ''}}" data-index="{{item.index}}" bindtap="select"><text class="option-letter">{{item.letter}}</text><text class="option-text">{{item.text}}</text><text wx:if="{{checked && item.index === question.answer}}">✓</text><button class="option-speaker" data-index="{{item.index}}" catchtap="playOption" aria-label="朗读选项">♪</button></view></view>
     <view wx:if="{{checked}}" class="feedback {{selected === question.answer ? 'right' : 'wrong'}}"><view>{{selected === question.answer ? '答对啦，小小观察家！' : '没关系，我们一起找答案'}}</view><text>{{question.explanation}}</text></view>
     <view class="quiz-actions"><button wx:if="{{!checked}}" class="primary" disabled="{{selected < 0}}" bindtap="submit">确认答案</button><button wx:else class="primary" bindtap="next">{{index + 1 === total ? '看看我的收获' : '下一题 →'}}</button></view>
     <view class="footer-note">慢慢想，也可以请爸爸妈妈一起读题。</view>
@@ -15,3 +15,4 @@
     <view class="result-buttons"><button class="primary" bindtap="listen">再听一遍故事</button><button class="secondary" bindtap="retry">再挑战一次</button></view><button class="back-home" bindtap="home">发现更多故事 →</button>
   </block>
 </view>
+<mini-player/>

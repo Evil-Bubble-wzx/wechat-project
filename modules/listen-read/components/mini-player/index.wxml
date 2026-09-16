@@ -1,0 +1,4 @@
+<view wx:if="{{current}}" class="mini {{tab ? 'tab' : ''}} {{raised ? 'raised' : ''}}">
+  <view class="mini-copy" bindtap="open"><view class="mini-title">{{current.title}}</view><view class="mini-time">{{clock}} / {{total}} · {{current.background ? '支持后台播放' : '小窗继续听'}}</view></view>
+  <button class="mini-toggle" catchtap="toggle">{{current.state === 'playing' || current.state === 'loading' ? 'Ⅱ' : '▶'}}</button>
+</view>

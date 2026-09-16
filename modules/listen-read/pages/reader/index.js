@@ -1,6 +1,6 @@
 const content = require('../../services/content')
 const store = require('../../services/store')
-const { createPlayer } = require('../../services/player')
+const playback = require('../../services/player')
 Page({
   data: { book: null, chapter: null, current: -1, position: 0, percent: 0, time: '0:00', total: '0:00', state: 'paused', translation: false, word: null, saved: false, chapterOpen: false, chapters: [], rate: 1, ended: false, error: '', follow: true, scrollTo: '' },
   onLoad(options) {
@@ -20,16 +20,16 @@ Page({
   },
   initPlayer(position) {
     const chapter = this.data.chapter
-    this.player = createPlayer({
-      src: chapter.audio, duration: chapter.duration, start: position,
-      onTime: seconds => this.sync(seconds),
-      onState: state => { this.setData({ state }); if (state === 'paused') this.persist() },
-      onEnded: () => { this.setData({ ended: true }); this.persist() },
-      onError: () => this.setData({ error: '音频暂时没有加载成功，请点重试。' })
+    this.player = playback.open({ src: chapter.backgroundAudio || chapter.audio, duration: chapter.duration, start: position, bookId: this.bookId, pieceId: this.pieceId, title: this.data.book.zh + ' · ' + chapter.zh })
+    this.unsubscribe = playback.subscribe(value => {
+      if (!value || value.pieceId !== this.pieceId) return
+      this.setData({ state: value.state, ended: value.state === 'ended', error: value.state === 'error' ? '音频暂时没有加载成功，请点重试。' : '' })
+      this.sync(value.position)
+      if (value.state === 'paused' || value.state === 'ended') this.persist()
     })
   },
-  onHide() { if (this.player) { this.player.pause(); this.persist() } },
-  onUnload() { if (this.player) { this.persist(); this.player.destroy(); this.player = null } },
+  onHide() { this.persist() },
+  onUnload() { if (this.player) this.persist(); if (this.unsubscribe) this.unsubscribe() },
   persist() {
     if (!this.player || !this.bookId) return
     store.progress(this.bookId, this.pieceId, this.data.position, this.data.chapter.duration, this.player.takeListened())
@@ -53,7 +53,7 @@ Page({
       this.setData({ error: '' }); this.player.play()
     }
   },
-  retry() { if (!this.data.chapter) return; if (this.player) { this.persist(); this.player.destroy() } this.setData({ error: '', ended: false }); this.initPlayer(this.data.position); this.player.play() },
+  retry() { if (!this.data.chapter) return; if (this.player) { this.persist(); this.player.destroy() } if (this.unsubscribe) this.unsubscribe(); this.setData({ error: '', ended: false }); this.initPlayer(this.data.position); this.player.play() },
   seekingStart() { this.seeking = true },
   seek(e) { this.seeking = false; this.setData({ ended: false }); if (this.player) this.player.seek(Number(e.detail.value) / 100 * this.data.chapter.duration) },
   move(e) {

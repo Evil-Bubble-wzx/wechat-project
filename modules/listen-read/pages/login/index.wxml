@@ -1,0 +1,4 @@
+<view class="page login-page"><view class="eyebrow">WELCOME BACK</view><view class="heading">先听故事，再决定登录</view><view class="subheading">免费第一章和阅读小测可以直接体验。模拟购书与邀请奖励需要登录体验账号。</view>
+<view class="card login-card"><view class="section-title">微信登录</view><view class="subheading">点击后建立本机体验账号，不读取真实微信身份。</view><button class="primary" bindtap="wechat">模拟微信登录</button></view>
+<view class="card login-card"><view class="section-title">手机号登录</view><input type="number" maxlength="11" placeholder="请输入手机号" value="{{phone}}" bindinput="phone"/><input type="number" maxlength="6" placeholder="演示验证码 123456" value="{{code}}" bindinput="code"/><view wx:if="{{notice}}" class="notice">{{notice}}</view><button class="secondary" bindtap="mobile">手机号体验登录</button></view>
+<view class="footer-note">前端演示：不发送短信，不校验真实手机号，账号与记录仅保存在本机。</view></view>

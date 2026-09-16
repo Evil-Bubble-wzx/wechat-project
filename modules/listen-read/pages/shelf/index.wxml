@@ -5,3 +5,4 @@
   <view wx:else class="card empty"><image src="/assets/avatar.png"/><view class="empty-title">{{tab==='owned'?'给书架添上第一本故事吧':'今天，从一个小故事开始'}}</view><view class="subheading">{{tab==='owned'?'每本书都可以先免费体验第一章。':'听过的故事会出现在这里，随时接着读。'}}</view><button class="secondary" bindtap="discover">去发现好故事</button></view>
   <view class="footer-note">小小的坚持，会长成大大的进步</view>
 </view>
+<mini-player tab="{{true}}"/>

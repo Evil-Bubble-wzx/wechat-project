@@ -1,13 +1,15 @@
 <view class="page">
-  <view class="profile row"><image src="/assets/avatar.png"/><view><view class="profile-name">小小读者<text>体验账号</text></view><view class="subheading">和故事一起，慢慢长大。</view></view></view>
+  <view class="profile row"><image src="/assets/avatar.png"/><view><view class="profile-name">{{auth ? auth.label : '小小读者'}}<text>{{auth ? '本机体验账号' : '游客体验中'}}</text></view><view class="subheading">和故事一起，慢慢长大。</view></view></view><button wx:if="{{!auth}}" class="secondary" bindtap="login">微信 / 手机号体验登录</button>
   <view class="growth card"><view class="between"><view class="section-title">我的成长足迹</view><image class="icon" src="/assets/icons/leaf-on.png"/></view><view class="stats"><view><text>{{stats.finished}}</text><view>读完章节</view></view><view><text>{{stats.words}}</text><view>收藏单词</view></view><view><text>{{stats.quizzes}}</text><view>完成小测</view></view></view><view class="listened row"><image class="small-icon" src="/assets/icons/headphones-on.png"/><text>累计认真听了 {{duration}}</text></view></view>
   <view class="menu card"><button class="menu-row row" bindtap="shelf"><view class="menu-icon"><image src="/assets/icons/book-on.png"/></view><text>我的书架</text><text class="menu-value">{{stats.books}} 本已购</text><text class="chevron">›</text></button><button class="menu-row row" bindtap="words"><view class="menu-icon warm"><image src="/assets/icons/leaf-on.png"/></view><text>单词花园</text><text class="menu-value">{{stats.words}} 个单词</text><text class="chevron">›</text></button><button class="menu-row row" bindtap="report"><view class="menu-icon cream"><image src="/assets/icons/quiz-on.png"/></view><text>给家长的阅读记录</text><text class="chevron">{{report ? '⌄' : '›'}}</text></button></view>
+  <view class="menu card"><button class="menu-row row" bindtap="invite"><view class="menu-icon warm">✦</view><text>邀请好友</text><text class="chevron">›</text></button><button class="menu-row row" bindtap="coupons"><view class="menu-icon cream">券</view><text>购书优惠券</text><text class="menu-value">{{couponCount}} 张可用</text><text class="chevron">›</text></button></view>
   <view wx:if="{{report}}" class="report card"><view class="section-title">看见每一点进步</view><view>已读完 {{stats.finished}} 个章节，累计听阅 {{duration}}。</view><view wx:if="{{stats.quizzes}}">完成 {{stats.quizzes}} 组小测，最近一次章节成绩的综合正确率为 {{stats.accuracy}}%。</view><view wx:else>完成第一组阅读小测后，这里会显示答题记录。</view><text>这是一份陪伴记录，不代表孩子的英语能力评级。</text></view>
   <view class="parent-note"><view class="eyebrow">A NOTE FOR PARENTS</view><view>今天，和孩子聊聊
 故事里的那个小惊喜。</view><text>不必急着读完。听一句、问一问，
 每一次好奇，都是成长的开始。</text><image src="/assets/icons/heart-on.png"/></view>
-  <button class="about" bindtap="about">关于芽芽听阅 · 前端体验版</button><view class="footer-note">数据保存在本机 · 不需要登录</view>
+  <button class="about" bindtap="about">关于芽芽听阅 · 前端体验版</button><button wx:if="{{auth}}" class="about" bindtap="logout">退出体验账号</button><view class="footer-note">记录保存在本机 · 可先体验再登录</view>
   <view wx:if="{{aboutOpen}}" class="modal-mask" bindtap="closeAbout"><view class="sheet" catchtap="noop"><view class="sheet-handle"></view><view class="between"><view class="section-title">关于这次体验</view><button class="close" bindtap="closeAbout">×</button></view><view class="about-copy">芽芽听阅，是给小小读者的英语故事花园。本版包含 3 本原创示例故事、真实合成朗读、同步原文、点词释义和阅读小测。
 
-购买为模拟解锁，不会扣款。阅读记录和生词仅存储在本机；音频在当前听阅页面播放，离开页面会暂停。</view><button class="primary" bindtap="closeAbout">知道啦</button></view></view>
+购买为模拟解锁，不会扣款。阅读记录和生词仅存储在本机；切换页面可通过迷你播放器继续听。微信后台续播需后续接入线上音频。</view><button class="primary" bindtap="closeAbout">知道啦</button></view></view>
 </view>
+<mini-player tab="{{true}}"/>

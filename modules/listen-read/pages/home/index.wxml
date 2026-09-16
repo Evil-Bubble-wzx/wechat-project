@@ -21,3 +21,4 @@
   <view class="tip row"><image class="icon" src="/assets/icons/heart-on.png"/><view><view>最好的启蒙，是一起读的时光</view><text>陪孩子听一章，再聊聊最喜欢的角色吧。</text></view></view>
   <view class="footer-note">YAYA LITTLE LIBRARY · 每个故事，都有成长的声音</view>
 </view>
+<mini-player tab="{{true}}"/>

@@ -1,5 +1,6 @@
 const content = require('../../services/content')
 const store = require('../../services/store')
+const playback = require('../../services/player')
 Page({
   data: { ready: false, index: 0, selected: -1, checked: false, correct: 0, done: false, question: null, options: [], total: 0, percent: 0, results: [], score: 0 },
   onLoad(options) {
@@ -11,10 +12,19 @@ Page({
     this.renderQuestion()
   },
   renderQuestion() {
+    if (this.optionAudio) this.optionAudio.stop()
     const q = this.questions[this.data.index]
-    this.setData({ question: q, selected: -1, checked: false, percent: this.data.index / this.questions.length * 100, options: q.options.map((text, i) => ({ text, index: i, letter: ['A','B','C','D'][i] })) })
+    this.setData({ question: q, selected: -1, checked: false, percent: this.data.index / this.questions.length * 100, options: q.options.map((text, i) => ({ text, index: i, letter: ['A','B','C','D'][i], audio: '/assets/quiz-audio/' + this.pieceId + '-' + this.data.index + '-' + i + '.wav' })) })
   },
   select(e) { if (!this.data.checked) this.setData({ selected: Number(e.currentTarget.dataset.index) }) },
+  playOption(e) {
+    playback.pause()
+    if (!this.optionAudio) this.optionAudio = wx.createInnerAudioContext()
+    this.optionAudio.stop()
+    this.optionAudio.src = this.data.options[Number(e.currentTarget.dataset.index)].audio
+    this.optionAudio.play()
+  },
+  onUnload() { if (this.optionAudio) this.optionAudio.destroy() },
   submit() {
     if (this.data.selected < 0 || this.data.checked) return
     const q = this.data.question, right = this.data.selected === q.answer

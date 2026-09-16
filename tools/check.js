@@ -28,11 +28,12 @@ for (const book of books) {
       previous = cue.end
     })
     assert(Math.abs(previous - piece.duration) < 0.001)
-    for (const question of ch.quiz) {
+    ch.quiz.forEach((question, qi) => {
       assert(question.options.length >= 3)
       assert(question.answer >= 0 && question.answer < question.options.length)
       assert(question.explanation)
-    }
+      question.options.forEach((_, oi) => assert(fs.existsSync(path.join(root, 'assets/quiz-audio', `${ch.id}-${qi}-${oi}.wav`))))
+    })
   }
 }
 assert(store.unlock('little-seed'))
@@ -53,6 +54,19 @@ store.saveWord({ key: 'test:seed', surface: 'seed' })
 assert.equal(store.stats().words, 1)
 store.removeWord('test:seed')
 assert.equal(store.stats().words, 0)
+assert.equal(store.read().auth, null)
+assert.equal(store.simulateFriendLogin(), false)
+assert(store.login('phone', '13800138000'))
+assert.equal(store.read().auth.label, '138****8000')
+assert(store.simulateFriendLogin())
+assert.equal(store.simulateFriendLogin(), false)
+const coupon = store.availableCoupon(12)
+assert.equal(coupon.amount, 5)
+assert.equal(store.availableCoupon(11), null)
+store.useCoupon(coupon.id)
+assert.equal(store.availableCoupon(12), null)
+store.logout()
+assert.equal(store.read().auth, null)
 
 function loadPage(name) {
   let def
@@ -65,7 +79,7 @@ function loadPage(name) {
   for (const binding of markup.matchAll(/(?:bind:?|catch:?)(?:tap|input|change|changing|open)="([A-Za-z][A-Za-z0-9]*)"/g)) assert.equal(typeof instance[binding[1]], 'function', name + ':' + binding[1])
   return instance
 }
-for (const name of ['home','shelf','profile','book','reader','quiz','vocab']) loadPage(name)
+for (const name of ['home','shelf','profile','book','reader','quiz','vocab','login','invite','coupons']) loadPage(name)
 const home = loadPage('home')
 home.onShow()
 home.filter({ currentTarget: { dataset: { value: 'L2 进阶' } } })
@@ -89,7 +103,8 @@ quiz.retry()
 assert.equal(quiz.data.correct, 0)
 assert.equal(quiz.data.results.length, 0)
 assert.equal(quiz.data.selected, -1)
+assert.equal(fs.readdirSync(path.join(root, 'assets/quiz-audio')).length, 54)
 const app = JSON.parse(fs.readFileSync(path.join(root, 'app.json'), 'utf8'))
 for (const page of app.pages) for (const ext of ['js', 'json', 'wxml', 'wxss']) assert(fs.existsSync(path.join(root, page + '.' + ext)))
 for (const item of app.tabBar.list) for (const field of ['iconPath','selectedIconPath']) assert(fs.existsSync(path.join(root, item[field])))
-console.log('PASS: routes, handlers, assets, 6 audio manifests, all sentence tokens, dictionary coverage, access gates, persistence, filtering and quiz scoring.')
+console.log('PASS: routes, handlers, story and 54 option recordings, access gates, mock login, one-time invite coupon, persistence and quiz scoring.')

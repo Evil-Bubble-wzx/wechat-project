@@ -1,0 +1,5 @@
+<view class="page invite-page"><view class="eyebrow">READ TOGETHER</view><view class="heading">好故事，分享给好朋友</view><view class="invite-hero"><view class="gift">✦</view><view>好友首次登录后</view><text>你和好友各得一张购书券</text></view>
+<view class="card rule"><view class="section-title">¥5 购书优惠券</view><view>订单满 ¥12 可用 · 领取后 30 天内有效 · 每人一张</view><view>仅限购书模拟订单，不能兑换现金。</view></view>
+<button wx:if="{{!logged}}" class="primary" bindtap="login">登录后邀请</button><button wx:else class="primary" open-type="share">分享给微信好友</button>
+<button wx:if="{{logged && !simulated}}" class="secondary demo-button" bindtap="simulate">模拟好友首次登录并查看奖励</button><view wx:if="{{simulated}}" class="card reward"><view class="section-title">双方奖励已触发</view><view>我的账号：¥5 购书券已到账</view><view>好友账号：¥5 购书券领取示意</view><text>好友券仅作本机效果展示，真实发放需接入服务端。</text></view><button class="plain-link" bindtap="coupons">查看我的优惠券（{{count}}） →</button>
+<view class="footer-note">前端演示只在本机模拟好友首次登录。真实好友识别、双方发券及防重复领取需要服务端支持；分享本身不会发券。</view></view>
