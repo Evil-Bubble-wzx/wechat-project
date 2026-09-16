@@ -1,0 +1,33 @@
+page { background: #FAF9F5; color: #293E35; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 28rpx; }
+view, text, button, input, scroll-view { box-sizing: border-box; }
+button { margin: 0; padding: 0; border-radius: 0; background: transparent; color: inherit; font-size: inherit; line-height: inherit; }
+button::after { border: 0; }
+button[disabled] { background: #E1E6DE !important; color: #9AA495 !important; }
+.page { padding: 30rpx 36rpx 48rpx; }
+.row { display: flex; align-items: center; }
+.between { display: flex; align-items: center; justify-content: space-between; }
+.muted { color: #90988D; }
+.eyebrow { font-size: 19rpx; font-weight: 700; letter-spacing: 4rpx; color: #82907C; }
+.heading { font-size: 40rpx; font-weight: 750; line-height: 1.4; }
+.subheading { font-size: 25rpx; color: #8B9388; line-height: 1.7; }
+.section { margin-top: 44rpx; margin-bottom: 24rpx; }
+.section-title { font-size: 33rpx; font-weight: 700; }
+.section-link { color: #7A8776; font-size: 24rpx; padding: 10rpx 0 10rpx 18rpx; }
+.card { background: #FFFEFA; border: 1rpx solid #EDEEE5; border-radius: 28rpx; }
+.primary { display: flex; align-items: center; justify-content: center; min-height: 94rpx; padding: 20rpx 30rpx; background: #3D7557; color: #fff; border-radius: 22rpx; font-size: 29rpx; font-weight: 650; }
+.secondary { display: flex; align-items: center; justify-content: center; min-height: 88rpx; padding: 18rpx 26rpx; border-radius: 22rpx; background: #ECF0E5; color: #3D7557; font-weight: 650; }
+.pill { display: inline-block; padding: 7rpx 14rpx; border-radius: 10rpx; background: #EAF0DE; color: #608048; font-size: 20rpx; }
+.empty { text-align: center; padding: 72rpx 30rpx; }
+.empty image { width: 150rpx; height: 150rpx; margin-bottom: 24rpx; }
+.empty-title { font-size: 30rpx; font-weight: 700; margin-bottom: 14rpx; }
+.empty .secondary { margin-top: 28rpx; }
+.icon { width: 40rpx; height: 40rpx; flex-shrink: 0; }
+.small-icon { width: 30rpx; height: 30rpx; }
+.chevron { color: #9AA38F; font-size: 40rpx; line-height: 1; }
+.modal-mask { position: fixed; z-index: 30; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30, 48, 36, .38); display: flex; align-items: flex-end; }
+.sheet { width: 100%; background: #FFFEFA; border-radius: 40rpx 40rpx 0 0; padding: 24rpx 40rpx calc(40rpx + env(safe-area-inset-bottom)); max-height: 88vh; overflow-y: auto; }
+.sheet-handle { height: 7rpx; width: 68rpx; background: #DFE4D9; border-radius: 8rpx; margin: 0 auto 28rpx; }
+.close { font-size: 42rpx; color: #8D9788; width: 66rpx; height: 66rpx; text-align: center; line-height: 66rpx; }
+.footer-note { text-align: center; color: #A2AA9B; font-size: 21rpx; margin-top: 36rpx; line-height: 1.7; }
+.book-grid { display: flex; flex-wrap: wrap; margin: 0 -12rpx; }
+.book-cell { width: 50%; padding: 0 12rpx; margin-bottom: 30rpx; }

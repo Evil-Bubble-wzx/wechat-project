@@ -1,0 +1,7 @@
+<view class="page">
+  <view class="eyebrow">MY LITTLE LIBRARY</view><view class="heading">每一本，都有新的发现</view><view class="subheading">把喜欢的故事，放进自己的小书架。</view>
+  <view class="tabs"><button class="{{tab==='reading'?'active':''}}" data-tab="reading" bindtap="choose">最近在读</button><button class="{{tab==='owned'?'active':''}}" data-tab="owned" bindtap="choose">已购图书 <text>{{count}}</text></button></view>
+  <view wx:if="{{books.length}}" class="book-grid"><view class="book-cell" wx:for="{{books}}" wx:key="id"><book-card book="{{item}}" bind:open="openBook"/></view></view>
+  <view wx:else class="card empty"><image src="/assets/avatar.png"/><view class="empty-title">{{tab==='owned'?'给书架添上第一本故事吧':'今天，从一个小故事开始'}}</view><view class="subheading">{{tab==='owned'?'每本书都可以先免费体验第一章。':'听过的故事会出现在这里，随时接着读。'}}</view><button class="secondary" bindtap="discover">去发现好故事</button></view>
+  <view class="footer-note">小小的坚持，会长成大大的进步</view>
+</view>

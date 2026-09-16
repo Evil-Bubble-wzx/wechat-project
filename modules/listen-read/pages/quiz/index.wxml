@@ -1,0 +1,17 @@
+<view class="page quiz-page" wx:if="{{ready}}">
+  <block wx:if="{{!done}}">
+    <view class="between"><view class="eyebrow">LITTLE READING CHALLENGE</view><text class="question-count">{{index + 1}} / {{total}}</text></view>
+    <view class="quiz-track"><view style="width:{{percent}}%"></view></view>
+    <view class="quiz-label">{{chapterTitle}} · 读懂小故事</view>
+    <view class="question">{{question.q}}</view><view class="question-zh">{{question.zh}}</view>
+    <view class="quiz-options"><button wx:for="{{options}}" wx:key="index" class="option {{selected === item.index ? 'chosen' : ''}} {{checked && item.index === question.answer ? 'correct' : ''}} {{checked && selected === item.index && selected !== question.answer ? 'incorrect' : ''}}" data-index="{{item.index}}" bindtap="select"><text class="option-letter">{{item.letter}}</text><text class="option-text">{{item.text}}</text><text wx:if="{{checked && item.index === question.answer}}">✓</text></button></view>
+    <view wx:if="{{checked}}" class="feedback {{selected === question.answer ? 'right' : 'wrong'}}"><view>{{selected === question.answer ? '答对啦，小小观察家！' : '没关系，我们一起找答案'}}</view><text>{{question.explanation}}</text></view>
+    <view class="quiz-actions"><button wx:if="{{!checked}}" class="primary" disabled="{{selected < 0}}" bindtap="submit">确认答案</button><button wx:else class="primary" bindtap="next">{{index + 1 === total ? '看看我的收获' : '下一题 →'}}</button></view>
+    <view class="footer-note">慢慢想，也可以请爸爸妈妈一起读题。</view>
+  </block>
+  <block wx:else>
+    <view class="result-top"><image src="/assets/icons/star-on.png"/><view class="heading">{{score === 100 ? '读懂故事的你，真棒！' : '又收获了一点点进步'}}</view><view class="subheading">每次认真阅读，都值得一颗小星星</view><view class="score">{{score}}<text>分</text></view><view class="score-note">答对 {{correct}} / {{total}} 题 · {{chapterTitle}}</view></view>
+    <view class="section-title review-title">一起回顾一下</view><view wx:for="{{results}}" wx:key="q" class="review card"><view class="between"><text class="review-number">QUESTION {{index+1}}</text><text class="{{item.right?'review-correct':'review-wrong'}}">{{item.right?'✓ 答对了':'再看一看'}}</text></view><view class="review-q">{{item.q}}</view><view class="review-answer">正确答案：{{item.answer}}</view><view wx:if="{{!item.right}}" class="review-choice">你的选择：{{item.selected}}</view><view class="review-explanation">{{item.explanation}}</view></view>
+    <view class="result-buttons"><button class="primary" bindtap="listen">再听一遍故事</button><button class="secondary" bindtap="retry">再挑战一次</button></view><button class="back-home" bindtap="home">发现更多故事 →</button>
+  </block>
+</view>

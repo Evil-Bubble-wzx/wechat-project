@@ -1,0 +1,7 @@
+.cover-wrap { position: relative; height: 350rpx; border-radius: 20rpx; overflow: hidden; }
+.cover { width: 100%; height: 100%; }
+.cover-tag { position: absolute; top: 14rpx; left: 14rpx; padding: 6rpx 12rpx; background: rgba(255,254,248,.91); color: #586B4A; font-size: 18rpx; border-radius: 8rpx; }
+.title { color: #293E35; font-size: 29rpx; font-weight: 700; margin-top: 18rpx; }
+.english { color: #889082; font-size: 21rpx; margin-top: 5rpx; }
+.meta { display: flex; align-items: center; gap: 12rpx; color: #90988A; font-size: 19rpx; margin-top: 15rpx; }
+.level { color: #608048; background: #EAF0DE; padding: 4rpx 10rpx; border-radius: 6rpx; font-size: 18rpx; font-weight: 700; }

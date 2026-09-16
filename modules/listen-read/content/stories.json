@@ -1,0 +1,419 @@
+{
+  "schemaVersion": 1,
+  "books": [
+    {
+      "id": "little-seed",
+      "title": "The Little Seed",
+      "zh": "小兔的种子",
+      "subtitle": "一颗小种子，一份大耐心",
+      "level": "L1",
+      "levelName": "启蒙入门",
+      "age": "3–6 岁",
+      "theme": "自然",
+      "color": "#E8EDCE",
+      "price": "12.00",
+      "intro": "跟着小兔 Pip 种下一颗种子，一起发现阳光、雨水和等待的魔法。用简单的英文，读懂成长的小惊喜。",
+      "focus": "自然认知 · 耐心与成长",
+      "tags": [
+        "自然探索",
+        "温暖成长",
+        "简单短句"
+      ],
+      "chapters": [
+        {
+          "id": "seed-1",
+          "title": "A Tiny Seed",
+          "zh": "一颗小小的种子",
+          "sentences": [
+            [
+              "Pip is a little rabbit.",
+              "Pip 是一只小兔子。"
+            ],
+            [
+              "He finds a seed in the garden.",
+              "他在花园里找到一颗种子。"
+            ],
+            [
+              "He puts the seed in the soil.",
+              "他把种子放进泥土里。"
+            ],
+            [
+              "The little seed needs water and sunshine.",
+              "小种子需要水和阳光。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What animal is Pip?",
+              "zh": "Pip 是什么动物？",
+              "options": [
+                "A rabbit.",
+                "A bear.",
+                "A fox."
+              ],
+              "answer": 0,
+              "explanation": "第一句告诉我们：Pip is a little rabbit. Pip 是一只小兔子。"
+            },
+            {
+              "q": "Where does Pip find the seed?",
+              "zh": "Pip 在哪里找到种子？",
+              "options": [
+                "In a boat.",
+                "In the garden.",
+                "In a bag."
+              ],
+              "answer": 1,
+              "explanation": "故事中说 He finds a seed in the garden. 他在花园里找到了种子。"
+            },
+            {
+              "q": "What does the seed need?",
+              "zh": "种子需要什么？",
+              "options": [
+                "Milk and bread.",
+                "A hat.",
+                "Water and sunshine."
+              ],
+              "answer": 2,
+              "explanation": "种子需要 water（水）和 sunshine（阳光）才能生长。"
+            }
+          ]
+        },
+        {
+          "id": "seed-2",
+          "title": "Hello, Little Leaf",
+          "zh": "你好，小叶子",
+          "sentences": [
+            [
+              "Pip gives the seed water every day.",
+              "Pip 每天都给种子浇水。"
+            ],
+            [
+              "One morning, he sees a green leaf.",
+              "一天早晨，他看见了一片绿叶。"
+            ],
+            [
+              "A yellow flower opens in the sun.",
+              "一朵黄色的小花在阳光下绽放。"
+            ],
+            [
+              "Pip smiles at his new little friend.",
+              "Pip 对他的新朋友笑了。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "When does Pip water the seed?",
+              "zh": "Pip 什么时候给种子浇水？",
+              "options": [
+                "Every day.",
+                "Only at night.",
+                "Never."
+              ],
+              "answer": 0,
+              "explanation": "every day 的意思是“每天”。Pip 每天都照顾种子。"
+            },
+            {
+              "q": "What color is the leaf?",
+              "zh": "叶子是什么颜色？",
+              "options": [
+                "Blue.",
+                "Green.",
+                "Red."
+              ],
+              "answer": 1,
+              "explanation": "原文说 a green leaf，也就是“一片绿叶”。"
+            },
+            {
+              "q": "How does Pip feel at the end?",
+              "zh": "故事最后 Pip 的心情怎样？",
+              "options": [
+                "Angry.",
+                "Sad.",
+                "Happy."
+              ],
+              "answer": 2,
+              "explanation": "Pip smiles，Pip 笑了。看到小花长大，他很开心。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/little-seed.png"
+    },
+    {
+      "id": "fox-star",
+      "title": "Fox and the Star",
+      "zh": "小狐狸与星星",
+      "subtitle": "抬头看看，朋友一直都在",
+      "level": "L2",
+      "levelName": "基础进阶",
+      "age": "5–8 岁",
+      "theme": "友谊",
+      "color": "#E2E8F0",
+      "price": "15.00",
+      "intro": "小狐狸追着星光走进安静的森林。他能把星星带回家吗？一个关于好奇、陪伴和发现的晚安故事。",
+      "focus": "自然观察 · 友谊与陪伴",
+      "tags": [
+        "晚安故事",
+        "友谊陪伴",
+        "想象力"
+      ],
+      "chapters": [
+        {
+          "id": "fox-1",
+          "title": "A Light in the Sky",
+          "zh": "天空中的光",
+          "sentences": [
+            [
+              "A little fox walks through the forest.",
+              "一只小狐狸走过森林。"
+            ],
+            [
+              "He sees a bright star above him.",
+              "他看见头顶有一颗明亮的星星。"
+            ],
+            [
+              "The star looks like a tiny lamp.",
+              "星星看起来像一盏小灯。"
+            ],
+            [
+              "He wants to bring the star home.",
+              "他想把星星带回家。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "Where does the fox walk?",
+              "zh": "小狐狸走在哪里？",
+              "options": [
+                "In a school.",
+                "Through the forest.",
+                "On a beach."
+              ],
+              "answer": 1,
+              "explanation": "through the forest 意思是“穿过森林”。"
+            },
+            {
+              "q": "What does the star look like?",
+              "zh": "星星看起来像什么？",
+              "options": [
+                "A tiny lamp.",
+                "A big tree.",
+                "A flower."
+              ],
+              "answer": 0,
+              "explanation": "原文把星星比作 a tiny lamp，一盏小灯。"
+            },
+            {
+              "q": "What does the fox want to do?",
+              "zh": "小狐狸想做什么？",
+              "options": [
+                "Eat the star.",
+                "Hide in the forest.",
+                "Bring the star home."
+              ],
+              "answer": 2,
+              "explanation": "他想 bring the star home，把星星带回家。"
+            }
+          ]
+        },
+        {
+          "id": "fox-2",
+          "title": "Always Beside You",
+          "zh": "一直陪着你",
+          "sentences": [
+            [
+              "The fox climbs a tall green hill.",
+              "小狐狸爬上一座绿色的高山丘。"
+            ],
+            [
+              "The star is still far away.",
+              "星星依然很遥远。"
+            ],
+            [
+              "He sits down and watches the sky.",
+              "他坐下来，望着天空。"
+            ],
+            [
+              "His bright friend follows him all night.",
+              "他明亮的朋友整晚都陪着他。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does the fox climb?",
+              "zh": "小狐狸爬上了什么？",
+              "options": [
+                "A tall hill.",
+                "A house.",
+                "A chair."
+              ],
+              "answer": 0,
+              "explanation": "他爬上 a tall green hill，一座绿色的高山丘。"
+            },
+            {
+              "q": "Is the star close to the fox?",
+              "zh": "星星离小狐狸近吗？",
+              "options": [
+                "Yes, very close.",
+                "No, it is far away.",
+                "It is in his hand."
+              ],
+              "answer": 1,
+              "explanation": "far away 的意思是“遥远”。即使爬上山丘，星星依然很远。"
+            },
+            {
+              "q": "Who is the fox's bright friend?",
+              "zh": "小狐狸明亮的朋友是谁？",
+              "options": [
+                "A rabbit.",
+                "The moon.",
+                "The star."
+              ],
+              "answer": 2,
+              "explanation": "明亮的朋友指的就是整晚陪伴他的星星。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/fox-star.png"
+    },
+    {
+      "id": "bear-picnic",
+      "title": "Bear's Picnic",
+      "zh": "小熊的野餐",
+      "subtitle": "好吃的点心，一起分享才甜",
+      "level": "L1",
+      "levelName": "启蒙入门",
+      "age": "3–6 岁",
+      "theme": "生活",
+      "color": "#F3E4D1",
+      "price": "12.00",
+      "intro": "小熊准备了一篮子点心，邀请森林里的朋友来野餐。认识食物和颜色，也学会分享与关心。",
+      "focus": "日常表达 · 分享与关爱",
+      "tags": [
+        "日常生活",
+        "学会分享",
+        "简单短句"
+      ],
+      "chapters": [
+        {
+          "id": "bear-1",
+          "title": "A Basket of Good Things",
+          "zh": "装满美味的篮子",
+          "sentences": [
+            [
+              "Bear has a big picnic basket.",
+              "小熊有一个大大的野餐篮。"
+            ],
+            [
+              "He puts apples and bread inside.",
+              "他把苹果和面包放进去。"
+            ],
+            [
+              "He takes a blanket to the park.",
+              "他带着一条毯子来到公园。"
+            ],
+            [
+              "His friends are coming for lunch.",
+              "他的朋友们要来一起吃午饭。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does Bear put in the basket?",
+              "zh": "小熊往篮子里放了什么？",
+              "options": [
+                "Toys.",
+                "Apples and bread.",
+                "Books."
+              ],
+              "answer": 1,
+              "explanation": "他放了 apples（苹果）和 bread（面包）。"
+            },
+            {
+              "q": "Where does Bear go?",
+              "zh": "小熊去了哪里？",
+              "options": [
+                "The park.",
+                "The sea.",
+                "The shop."
+              ],
+              "answer": 0,
+              "explanation": "小熊带着毯子去了 the park，公园。"
+            },
+            {
+              "q": "Who is coming for lunch?",
+              "zh": "谁要来一起吃午饭？",
+              "options": [
+                "Only Bear.",
+                "Nobody.",
+                "His friends."
+              ],
+              "answer": 2,
+              "explanation": "His friends are coming for lunch. 他的朋友们要来吃午饭。"
+            }
+          ]
+        },
+        {
+          "id": "bear-2",
+          "title": "Better Together",
+          "zh": "一起分享更快乐",
+          "sentences": [
+            [
+              "Rabbit brings a cup of sweet juice.",
+              "小兔带来一杯甜甜的果汁。"
+            ],
+            [
+              "Fox brings three little red cups.",
+              "小狐狸带来三个红色的小杯子。"
+            ],
+            [
+              "They share the food under a tree.",
+              "他们在树下分享食物。"
+            ],
+            [
+              "Everything tastes better with good friends.",
+              "和好朋友一起，什么都更好吃了。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does Rabbit bring?",
+              "zh": "小兔带来了什么？",
+              "options": [
+                "Sweet juice.",
+                "A flower.",
+                "A book."
+              ],
+              "answer": 0,
+              "explanation": "小兔带来了 a cup of sweet juice，一杯甜甜的果汁。"
+            },
+            {
+              "q": "How many cups does Fox bring?",
+              "zh": "小狐狸带来几个杯子？",
+              "options": [
+                "Two.",
+                "Three.",
+                "Five."
+              ],
+              "answer": 1,
+              "explanation": "three little red cups 是“三个红色的小杯子”。"
+            },
+            {
+              "q": "What makes the picnic special?",
+              "zh": "是什么让这次野餐很特别？",
+              "options": [
+                "Eating alone.",
+                "A very big basket.",
+                "Sharing with friends."
+              ],
+              "answer": 2,
+              "explanation": "故事说和朋友一起分享，食物也变得更美味了。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/bear-picnic.png"
+    }
+  ]
+}

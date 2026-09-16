@@ -1,0 +1,9 @@
+<view class="book-card" bindtap="open">
+  <view class="cover-wrap" style="background: {{book.color}}">
+    <image class="cover" src="{{book.cover}}" mode="aspectFill" />
+    <text class="cover-tag">{{book.owned ? '已购' : '首章免费'}}</text>
+  </view>
+  <view class="title">{{book.zh}}</view>
+  <view class="english">{{book.title}}</view>
+  <view class="meta"><text class="level">{{book.level}}</text><text>{{book.age}}</text><text>·</text><text>{{book.chapterCount}} 章</text></view>
+</view>

@@ -1,0 +1,28 @@
+.greeting { margin: 10rpx 0 30rpx; }
+.heading { font-size: 35rpx; margin-top: 12rpx; }
+.sprout-dot { color: #B3BC7B; margin-left: 8rpx; }
+.avatar { width: 78rpx; height: 78rpx; border-radius: 50%; border: 5rpx solid #fff; }
+.search-box { height: 84rpx; background: #F0F1EA; padding: 0 26rpx; border-radius: 20rpx; gap: 16rpx; margin-bottom: 28rpx; }
+.search-box input { flex: 1; font-size: 25rpx; height: 80rpx; }
+.placeholder { color: #9CA491; }
+.hero { height: 355rpx; border-radius: 28rpx; position: relative; overflow: hidden; }
+.hero-art { position: absolute; width: 100%; height: 100%; }
+.hero-copy { position: relative; padding: 33rpx 30rpx; }
+.hero-label { color: #718459; font-size: 20rpx; letter-spacing: 2rpx; }
+.hero-title { font-size: 43rpx; font-weight: 750; line-height: 1.4; margin-top: 13rpx; color: #3D573B; }
+.hero-sub { color: #849174; font-size: 19rpx; margin-top: 12rpx; }
+.hero-button { display: flex; align-items: center; justify-content: center; gap: 9rpx; background: #417250; color: white; width: 210rpx; height: 66rpx; border-radius: 18rpx; margin-top: 25rpx; font-size: 23rpx; font-weight: 600; }
+.hero-button image { width: 26rpx; height: 26rpx; }
+.hero-dots { position: absolute; bottom: 18rpx; right: 27rpx; display: flex; gap: 7rpx; }
+.dot { height: 7rpx; width: 7rpx; border-radius: 8rpx; background: #B9C7A3; }.dot.active { width: 23rpx; background: #68845A; }
+.quick-actions { display: flex; justify-content: space-between; margin: 30rpx 0 8rpx; }
+.quick { width: 31%; text-align: center; font-size: 25rpx; font-weight: 650; }
+.quick-icon { display: flex; align-items: center; justify-content: center; width: 86rpx; height: 86rpx; border-radius: 27rpx; margin: 0 auto 13rpx; }
+.quick-icon image { width: 47rpx; height: 47rpx; }.green { background: #E8EEDE; }.orange { background: #F6E8D9; }.yellow { background: #F6F0D8; }
+.quick text { display: block; font-size: 18rpx; font-weight: 400; color: #9AA08F; margin-top: 7rpx; }
+.section-caption { color: #939B89; font-size: 21rpx; margin-top: 9rpx; }
+.selection-mark { color: #B08D61; font-size: 20rpx; border: 1rpx solid #E7D9C6; border-radius: 9rpx; padding: 7rpx 12rpx; }
+.filters { display: flex; gap: 16rpx; margin: 25rpx 0 27rpx; }
+.filter { padding: 14rpx 28rpx; border-radius: 30rpx; color: #8D9785; font-size: 24rpx; background: #F0F1E9; }.filter.selected { color: #fff; background: #4B7658; }
+.tip { padding: 26rpx; background: #F0F1E6; border-radius: 20rpx; gap: 20rpx; font-size: 24rpx; }.tip text { display: block; color: #939B87; font-size: 20rpx; margin-top: 8rpx; }
+.continue { margin-top: 32rpx; padding: 20rpx; gap: 20rpx; }.mini-cover { width: 64rpx; height: 84rpx; border-radius: 8rpx; }.continue-copy { flex: 1; }.continue-copy>view { font-size: 23rpx; margin-top: 8rpx; }.continue-copy .eyebrow { font-size: 15rpx; letter-spacing: 2rpx; }.track { background: #EDF0E7; height: 5rpx; border-radius: 4rpx; }.track view { background: #8EA969; height: 5rpx; border-radius: 4rpx; }

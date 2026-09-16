@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "modules/listen-read/pages/home/index",
+    "modules/listen-read/pages/shelf/index",
+    "modules/listen-read/pages/profile/index",
+    "modules/listen-read/pages/book/index",
+    "modules/listen-read/pages/reader/index",
+    "modules/listen-read/pages/quiz/index",
+    "modules/listen-read/pages/vocab/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "芽芽听阅",
+    "navigationBarBackgroundColor": "#FAF9F5",
+    "backgroundColor": "#FAF9F5"
+  },
+  "tabBar": {
+    "color": "#939B91", "selectedColor": "#397357", "backgroundColor": "#FFFEFA", "borderStyle": "white",
+    "list": [
+      { "pagePath": "modules/listen-read/pages/home/index", "text": "发现", "iconPath": "assets/icons/discover-off.png", "selectedIconPath": "assets/icons/discover-on.png" },
+      { "pagePath": "modules/listen-read/pages/shelf/index", "text": "书架", "iconPath": "assets/icons/book-off.png", "selectedIconPath": "assets/icons/book-on.png" },
+      { "pagePath": "modules/listen-read/pages/profile/index", "text": "我的", "iconPath": "assets/icons/person-off.png", "selectedIconPath": "assets/icons/person-on.png" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

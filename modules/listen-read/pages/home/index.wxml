@@ -1,0 +1,23 @@
+<view class="page home">
+  <view class="greeting between">
+    <view><view class="eyebrow">A LITTLE EVERY DAY</view><view class="heading">让英语，在故事里发芽<text class="sprout-dot">✦</text></view></view>
+    <image class="avatar" src="/assets/avatar.png" />
+  </view>
+  <view class="search-box row"><image class="small-icon" src="/assets/icons/search-off.png"/><input placeholder="找一本孩子喜欢的英文故事" placeholder-class="placeholder" value="{{search}}" bindinput="search" confirm-type="search" /></view>
+  <view class="hero">
+    <image class="hero-art" src="/assets/hero.png" mode="aspectFill"/>
+    <view class="hero-copy"><view class="hero-label">给小耳朵的英语奇遇</view><view class="hero-title"><view>听见故事，</view><view>看见小小世界。</view></view><view class="hero-sub">每天一点点，快乐长大一点点</view><button class="hero-button" bindtap="start"><image src="/assets/icons/play-white.png"/>免费听一章</button></view>
+  </view>
+  <view class="quick-actions">
+    <button class="quick" bindtap="toShelf"><view class="quick-icon green"><image src="/assets/icons/book-on.png"/></view><view>我的书架</view><text>好故事，慢慢读</text></button>
+    <button class="quick" bindtap="toQuiz"><view class="quick-icon orange"><image src="/assets/icons/quiz-on.png"/></view><view>阅读小测</view><text>看看读懂了多少</text></button>
+    <button class="quick" bindtap="toWords"><view class="quick-icon yellow"><image src="/assets/icons/leaf-on.png"/></view><view>单词花园</view><text>收藏每一个新词</text></button>
+  </view>
+  <view wx:if="{{last}}" class="continue card row" bindtap="resume"><image class="mini-cover" src="{{last.cover}}" mode="aspectFill"/><view class="continue-copy"><text class="eyebrow">CONTINUE READING</text><view>{{last.title}} · {{last.chapter}}</view><view class="track"><view style="width:{{last.percent}}%"></view></view></view><image class="icon" src="/assets/icons/play-on.png"/></view>
+  <view class="section between"><view><view class="section-title">为小小读者精选</view><view class="section-caption">从第一声 Hello，到读懂一个故事</view></view><text class="selection-mark">编辑精选</text></view>
+  <view class="filters"><button wx:for="{{filters}}" wx:key="*this" class="filter {{filter === item ? 'selected' : ''}}" data-value="{{item}}" bindtap="filter">{{item}}</button></view>
+  <view class="book-grid"><view class="book-cell" wx:for="{{books}}" wx:key="id"><book-card book="{{item}}" bind:open="openBook"/></view></view>
+  <view wx:if="{{!books.length}}" class="empty card"><view class="empty-title">还没找到这个故事</view><view class="subheading">试试搜索“小兔”“狐狸”或“小熊”</view></view>
+  <view class="tip row"><image class="icon" src="/assets/icons/heart-on.png"/><view><view>最好的启蒙，是一起读的时光</view><text>陪孩子听一章，再聊聊最喜欢的角色吧。</text></view></view>
+  <view class="footer-note">YAYA LITTLE LIBRARY · 每个故事，都有成长的声音</view>
+</view>
