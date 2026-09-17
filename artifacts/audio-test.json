@@ -1,0 +1,14 @@
+{
+  "duration": 322.025941,
+  "src": "http://127.0.0.1:4173/audio/peter-rabbit-librivox.mp3",
+  "decodedSamples": true,
+  "bytes": 2580786,
+  "range": "PASS",
+  "play": "PASS",
+  "pauseResume": "PASS",
+  "seek": "PASS",
+  "rate": "PASS",
+  "ended": "PASS",
+  "missingAudio": "PASS",
+  "errors": []
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "generatedAt": "2026-09-17T03:30:14.944Z",
+  "status": "needs_review",
+  "publishable": false,
+  "checks": {
+    "sourceManifestPresent": true,
+    "sourceAudioPresent": true,
+    "sourceTextPresent": true,
+    "audioSha256MatchesManifest": true,
+    "canonicalTextExtracted": true,
+    "tokenRoundTrip": true,
+    "cueTimingComplete": true,
+    "introOutroSeparated": true,
+    "vocabularyApproved": false,
+    "humanReviewComplete": false,
+    "rightsReleaseApproved": false
+  },
+  "counts": {
+    "cues": 57,
+    "words": 952,
+    "tokens": 2006,
+    "clickableTokens": 909,
+    "vocabEntries": 371
+  },
+  "blockers": [
+    "45 low-confidence word alignments require review.",
+    "2 electronic-text sentences are not substantially present in the recording.",
+    "Vocabulary entries require POS, sense, phonetics and definitions.",
+    "Human subtitle and vocabulary review is pending.",
+    "Rights need release-jurisdiction review."
+  ],
+  "alignment": {
+    "engine": "faster-whisper-base.en-plus-known-text-dp",
+    "recognizedCoverage": 0.962185,
+    "lowConfidenceCount": 45,
+    "omittedCanonicalCueCount": 2,
+    "timingMonotonic": true
+  }
+}

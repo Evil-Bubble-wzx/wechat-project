@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "status": "needs_review",
+  "engine": "faster-whisper-base.en-plus-known-text-dp",
+  "score": 3521.4,
+  "canonicalWords": 952,
+  "asrWords": 1007,
+  "firstContentAsrIndex": 47,
+  "lastContentAsrIndex": 995,
+  "counts": {
+    "exact": 904,
+    "fuzzy": 12,
+    "substitution": 17,
+    "inferred": 19
+  },
+  "recognizedCoverage": 0.962185,
+  "lowConfidenceCount": 45,
+  "omittedCanonicalCues": [
+    {
+      "cueId": "c0012",
+      "text": "But round the end of a cucumber frame, whom should he meet but Mr. McGregor!",
+      "anchorRatio": 0.0667,
+      "reason": "The electronic-text sentence is not substantially present in this recording."
+    },
+    {
+      "cueId": "c0028",
+      "text": "He went back to his work.",
+      "anchorRatio": 0.1667,
+      "reason": "The electronic-text sentence is not substantially present in this recording."
+    }
+  ],
+  "publishedContentCues": 55,
+  "cueCount": 57,
+  "cueTimingComplete": true,
+  "timingMonotonic": true,
+  "introText": "Story 1 of Peter Rabbit and Other's Tales by Beatrix Potter. This is a LibriVox recording, all LibriVox recordings are in the public domain, for more information or to volunteer please visit LibriVox.org. Peter Rabbit and Other Tales by Beatrix Potter. The Tale of Peter Rabbit.",
+  "outroText": "End of the tale of Peter Rabbit, recording by Julian Pratley."
+}

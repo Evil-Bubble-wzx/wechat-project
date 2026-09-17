@@ -1,0 +1,10 @@
+{
+  "pages": ["pages/home/index", "pages/library/index", "pages/loans/index", "pages/me/index", "pages/detail/index", "pages/player/index", "pages/recent/index", "pages/report/index", "pages/ranking/index", "pages/login/index", "pages/quiz/index"],
+  "window": { "navigationStyle": "custom", "backgroundColor": "#f7f8f5", "backgroundTextStyle": "dark" },
+  "tabBar": { "custom": true, "color": "#79837e", "selectedColor": "#176b52", "list": [
+    { "pagePath": "pages/home/index", "text": "Home" },
+    { "pagePath": "pages/recent/index", "text": "Recent" },
+    { "pagePath": "pages/me/index", "text": "Me" }
+  ] },
+  "requiredBackgroundModes": ["audio"], "style": "v2", "sitemapLocation": "sitemap.json"
+}

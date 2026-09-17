@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict')
+const root=path.resolve(__dirname,'..'),mini=path.join(root,'miniprogram')
+function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(x=>x.isDirectory()?walk(path.join(dir,x.name)):[path.join(dir,x.name)])}
+const files=walk(mini)
+for(const f of files){if(f.endsWith('.js'))new vm.Script(fs.readFileSync(f,'utf8'),{filename:f});if(f.endsWith('.json'))JSON.parse(fs.readFileSync(f,'utf8'))}
+const app=JSON.parse(fs.readFileSync(path.join(mini,'app.json'),'utf8'))
+for(const p of app.pages)for(const ext of ['.js','.json','.wxml'])assert.ok(fs.existsSync(path.join(mini,p+ext)),p+ext)
+const template=fs.readFileSync(path.join(mini,'ui/screen.wxml'),'utf8')
+assert.ok(!/<(?:div|span|br|img|html)\b/.test(template),'WXML must use native tags')
+assert.ok(!/\{\{[^}]*\.\w+\(/.test(template),'No JS method calls in WXML bindings')
+const {createPage}=require('../miniprogram/ui/controller');const page=createPage('home')
+for(const m of template.matchAll(/(?:bind|catch)(?:tap|input|change)="(\w+)"/g))assert.equal(typeof page[m[1]],'function','Missing handler '+m[1])
+for(const m of template.matchAll(/src="(\/assets\/[^{}"]+)"/g))assert.ok(fs.existsSync(path.join(mini,m[1])),'Missing '+m[1])
+const total=files.reduce((n,f)=>n+fs.statSync(f).size,0)
+console.log('Validated '+app.pages.length+' routes, all handlers, native bindings, assets and JS/JSON syntax. Package: '+Math.round(total/1024)+' KiB.')

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "path": "source/audio-original.mp3",
+  "mimeType": "audio/mpeg",
+  "bytes": 2580786,
+  "durationMs": 322026,
+  "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36",
+  "source": "browser_metadata_and_file_hash",
+  "reviewStatus": "verified"
+}
