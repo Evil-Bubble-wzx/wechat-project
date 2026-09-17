@@ -5,34 +5,43 @@ const root = path.resolve(__dirname, '..')
 let memory = {}
 global.wx = { getStorageSync: () => JSON.parse(JSON.stringify(memory)), setStorageSync: (key, value) => { memory = JSON.parse(JSON.stringify(value)) }, showToast() {}, navigateTo() {}, redirectTo() {}, switchTab() {} }
 const content = require('../modules/listen-read/services/content')
+const subtitles = require('../modules/listen-read/services/subtitles')
 const store = require('../modules/listen-read/services/store')
 const books = content.listBooks()
-assert.equal(books.length, 3)
+assert.equal(books.length, 4)
 for (const book of books) {
   assert(fs.existsSync(path.join(root, book.cover)))
   assert(content.canRead(book.id, book.chapters[0].id))
-  assert(!content.canRead(book.id, book.chapters[1].id))
+  if (book.chapters.length > 1 && !book.free) assert(!content.canRead(book.id, book.chapters[1].id))
   for (const ch of book.chapters) {
     const piece = content.chapterData(book.id, ch.id)
     assert(fs.existsSync(path.join(root, piece.audio)))
     assert(piece.duration > 1)
     assert.equal(piece.cues.length, ch.sentences.length)
+    const layout = subtitles.prepare(piece.cues)
+    piece.cues.forEach((cue, i) => {
+      const lines = layout.lines.slice(layout.starts[i], layout.starts[i] + layout.counts[i])
+      assert(lines.every(line => line.text.length <= 40), 'subtitle exceeds 40 characters')
+      assert.equal(lines.map(line => line.text).join(' '), cue.text.replace(/\s+/g, ' ').trim())
+    })
     let previous = 0
     piece.cues.forEach(cue => {
-      assert(Math.abs(cue.start - previous) < 0.001)
+      if (book.free) assert(cue.start >= previous)
+      else assert(Math.abs(cue.start - previous) < 0.001)
       assert(cue.end > cue.start)
       assert.equal(cue.tokens.map(t => t.value).join(''), cue.text)
-      for (const token of cue.tokens.filter(t => t.word)) {
-        assert.notEqual(content.meaning(token.value).zh, '这个词暂未收录', token.value)
+      for (const token of cue.tokens.filter(t => t.word && book.hasDictionary !== false)) {
+        assert.notEqual(content.meaning(token.value, book.id).zh, '这个词暂未收录', token.value)
       }
       previous = cue.end
     })
-    assert(Math.abs(previous - piece.duration) < 0.001)
+    if (book.free) assert(previous <= piece.duration)
+    else assert(Math.abs(previous - piece.duration) < 0.001)
     ch.quiz.forEach((question, qi) => {
       assert(question.options.length >= 3)
       assert(question.answer >= 0 && question.answer < question.options.length)
       assert(question.explanation)
-      question.options.forEach((_, oi) => assert(fs.existsSync(path.join(root, 'assets/quiz-audio', `${ch.id}-${qi}-${oi}.wav`))))
+      question.options.forEach((_, oi) => assert(fs.existsSync(path.join(root, 'assets/quiz-audio', `${ch.id}-${qi}-${oi}.mp3`))))
     })
   }
 }
@@ -80,10 +89,45 @@ function loadPage(name) {
   return instance
 }
 for (const name of ['home','shelf','profile','book','reader','quiz','vocab','login','invite','coupons']) loadPage(name)
+const ozReader = loadPage('reader')
+ozReader.setData({ chapter: content.chapterData('wonderful-wizard-oz', 'oz-1'), book: content.getBook('wonderful-wizard-oz') })
+for (const [time, expected] of [[0, -1], [21, 0], [22.8, 0], [23.39, 0], [23.4, 1], [24, 1], [384.2, 53], [384.63, -1]]) {
+  ozReader.sync(time)
+  assert.equal(ozReader.data.current, expected, 'Oz active line at ' + time)
+}
+ozReader.sync(22)
+const titleWindow = ozReader.data.subtitleRows[1].text
+ozReader.sync(22.8)
+assert.equal(ozReader.data.subtitleRows[1].text, titleWindow, 'gap should retain prior sentence window')
+assert(ozReader.data.subtitleRows[1].active, 'gap should retain prior highlight')
+assert.equal(ozReader.data.subtitleRows.length, 7)
+ozReader.sync(23.4)
+assert.equal(ozReader.data.subtitleRows[1].cueIndex, 1)
+assert(ozReader.data.subtitleRows[1].active)
+const shortCue = ozReader.data.chapter.cues[1]
+const shortStart = ozReader.data.subtitleRows[1].text
+ozReader.sync(shortCue.start + (shortCue.end - shortCue.start) * .8)
+assert.equal(ozReader.data.subtitleRows[1].text, shortStart, 'short sentence must stay in place')
+const longCue = ozReader.data.chapter.cues[16]
+ozReader.sync(longCue.start)
+const firstLine = ozReader.data.subtitleRows[1].text
+ozReader.sync(longCue.start + (longCue.end - longCue.start) * .4)
+assert.equal(ozReader.data.subtitleRows[1].text, firstLine, 'long sentence should begin without moving')
+ozReader.sync(longCue.start + (longCue.end - longCue.start) * .8)
+assert.notEqual(ozReader.data.subtitleRows[1].text, firstLine)
+ozReader.bookId = 'wonderful-wizard-oz'
+ozReader.pieceId = 'oz-1'
+ozReader.player = { pause() {} }
+ozReader.wordTap({ currentTarget: { dataset: { word: 'Dorothy', line: 1 } } })
+assert.equal(ozReader.data.word.zh, '多萝西（人名）')
+assert(ozReader.data.word.sentence.startsWith('Dorothy lived'))
+ozReader.wordTap({ currentTarget: { dataset: { word: 'trap-door', line: 35 } } })
+assert.equal(ozReader.data.word.zh, '活板门')
+assert(ozReader.data.word.sentence.includes('trap-door'))
 const home = loadPage('home')
 home.onShow()
 home.filter({ currentTarget: { dataset: { value: 'L2 进阶' } } })
-assert.equal(home.data.books.length, 1)
+assert.equal(home.data.books.length, 2)
 home.search({ detail: { value: 'no-such-book' } })
 assert.equal(home.data.books.length, 0)
 const quiz = loadPage('quiz')

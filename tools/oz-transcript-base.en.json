@@ -1,0 +1,6049 @@
+[
+  {
+    "start": 14.019999999999994,
+    "end": 21.92,
+    "text": "The Wonderful Wizard of Oz by L. Frank Baum, Chapter 1 The Cyclone",
+    "words": [
+      {
+        "start": 14.019999999999994,
+        "end": 14.899999999999997,
+        "word": " The"
+      },
+      {
+        "start": 14.899999999999997,
+        "end": 15.78,
+        "word": " Wonderful"
+      },
+      {
+        "start": 15.78,
+        "end": 16.28,
+        "word": " Wizard"
+      },
+      {
+        "start": 16.28,
+        "end": 16.5,
+        "word": " of"
+      },
+      {
+        "start": 16.5,
+        "end": 16.72,
+        "word": " Oz"
+      },
+      {
+        "start": 16.72,
+        "end": 17.56,
+        "word": " by"
+      },
+      {
+        "start": 17.56,
+        "end": 17.82,
+        "word": " L."
+      },
+      {
+        "start": 18.26,
+        "end": 18.26,
+        "word": " Frank"
+      },
+      {
+        "start": 18.26,
+        "end": 18.92,
+        "word": " Baum,"
+      },
+      {
+        "start": 19.16,
+        "end": 20.08,
+        "word": " Chapter"
+      },
+      {
+        "start": 20.08,
+        "end": 20.56,
+        "word": " 1"
+      },
+      {
+        "start": 20.56,
+        "end": 21.34,
+        "word": " The"
+      },
+      {
+        "start": 21.34,
+        "end": 21.92,
+        "word": " Cyclone"
+      }
+    ]
+  },
+  {
+    "start": 21.92,
+    "end": 28.22,
+    "text": "Dorothy lived in the midst of the great Kansas prairies with Uncle Henry, who was a farmer,",
+    "words": [
+      {
+        "start": 21.92,
+        "end": 23.38,
+        "word": " Dorothy"
+      },
+      {
+        "start": 23.38,
+        "end": 23.9,
+        "word": " lived"
+      },
+      {
+        "start": 23.9,
+        "end": 24.12,
+        "word": " in"
+      },
+      {
+        "start": 24.12,
+        "end": 24.2,
+        "word": " the"
+      },
+      {
+        "start": 24.2,
+        "end": 24.44,
+        "word": " midst"
+      },
+      {
+        "start": 24.44,
+        "end": 24.62,
+        "word": " of"
+      },
+      {
+        "start": 24.62,
+        "end": 24.74,
+        "word": " the"
+      },
+      {
+        "start": 24.74,
+        "end": 24.9,
+        "word": " great"
+      },
+      {
+        "start": 24.9,
+        "end": 25.38,
+        "word": " Kansas"
+      },
+      {
+        "start": 25.38,
+        "end": 26.0,
+        "word": " prairies"
+      },
+      {
+        "start": 26.0,
+        "end": 26.46,
+        "word": " with"
+      },
+      {
+        "start": 26.46,
+        "end": 26.64,
+        "word": " Uncle"
+      },
+      {
+        "start": 26.64,
+        "end": 26.98,
+        "word": " Henry,"
+      },
+      {
+        "start": 27.7,
+        "end": 27.72,
+        "word": " who"
+      },
+      {
+        "start": 27.72,
+        "end": 27.86,
+        "word": " was"
+      },
+      {
+        "start": 27.86,
+        "end": 27.98,
+        "word": " a"
+      },
+      {
+        "start": 27.98,
+        "end": 28.22,
+        "word": " farmer,"
+      }
+    ]
+  },
+  {
+    "start": 28.22,
+    "end": 34.72,
+    "text": "and Aunt Em, who was the farmer's wife. Their house was small, for the lumber to build it had",
+    "words": [
+      {
+        "start": 28.22,
+        "end": 29.04,
+        "word": " and"
+      },
+      {
+        "start": 29.04,
+        "end": 29.26,
+        "word": " Aunt"
+      },
+      {
+        "start": 29.26,
+        "end": 29.56,
+        "word": " Em,"
+      },
+      {
+        "start": 29.98,
+        "end": 30.18,
+        "word": " who"
+      },
+      {
+        "start": 30.18,
+        "end": 30.32,
+        "word": " was"
+      },
+      {
+        "start": 30.32,
+        "end": 30.46,
+        "word": " the"
+      },
+      {
+        "start": 30.46,
+        "end": 31.02,
+        "word": " farmer's"
+      },
+      {
+        "start": 31.02,
+        "end": 31.2,
+        "word": " wife."
+      },
+      {
+        "start": 32.0,
+        "end": 32.14,
+        "word": " Their"
+      },
+      {
+        "start": 32.14,
+        "end": 32.34,
+        "word": " house"
+      },
+      {
+        "start": 32.34,
+        "end": 32.56,
+        "word": " was"
+      },
+      {
+        "start": 32.56,
+        "end": 32.88,
+        "word": " small,"
+      },
+      {
+        "start": 33.48,
+        "end": 33.68,
+        "word": " for"
+      },
+      {
+        "start": 33.68,
+        "end": 33.78,
+        "word": " the"
+      },
+      {
+        "start": 33.78,
+        "end": 34.0,
+        "word": " lumber"
+      },
+      {
+        "start": 34.0,
+        "end": 34.14,
+        "word": " to"
+      },
+      {
+        "start": 34.14,
+        "end": 34.36,
+        "word": " build"
+      },
+      {
+        "start": 34.36,
+        "end": 34.52,
+        "word": " it"
+      },
+      {
+        "start": 34.52,
+        "end": 34.72,
+        "word": " had"
+      }
+    ]
+  },
+  {
+    "start": 34.72,
+    "end": 41.86,
+    "text": "to be carried by wagon many miles. There were four walls, a floor, and a roof, which made one room,",
+    "words": [
+      {
+        "start": 34.72,
+        "end": 34.9,
+        "word": " to"
+      },
+      {
+        "start": 34.9,
+        "end": 35.0,
+        "word": " be"
+      },
+      {
+        "start": 35.0,
+        "end": 35.32,
+        "word": " carried"
+      },
+      {
+        "start": 35.32,
+        "end": 35.56,
+        "word": " by"
+      },
+      {
+        "start": 35.56,
+        "end": 35.9,
+        "word": " wagon"
+      },
+      {
+        "start": 35.9,
+        "end": 36.14,
+        "word": " many"
+      },
+      {
+        "start": 36.14,
+        "end": 36.52,
+        "word": " miles."
+      },
+      {
+        "start": 37.34,
+        "end": 37.56,
+        "word": " There"
+      },
+      {
+        "start": 37.56,
+        "end": 37.68,
+        "word": " were"
+      },
+      {
+        "start": 37.68,
+        "end": 37.92,
+        "word": " four"
+      },
+      {
+        "start": 37.92,
+        "end": 38.3,
+        "word": " walls,"
+      },
+      {
+        "start": 38.96,
+        "end": 39.04,
+        "word": " a"
+      },
+      {
+        "start": 39.04,
+        "end": 39.32,
+        "word": " floor,"
+      },
+      {
+        "start": 39.9,
+        "end": 40.08,
+        "word": " and"
+      },
+      {
+        "start": 40.08,
+        "end": 40.18,
+        "word": " a"
+      },
+      {
+        "start": 40.18,
+        "end": 40.38,
+        "word": " roof,"
+      },
+      {
+        "start": 40.86,
+        "end": 41.06,
+        "word": " which"
+      },
+      {
+        "start": 41.06,
+        "end": 41.28,
+        "word": " made"
+      },
+      {
+        "start": 41.28,
+        "end": 41.58,
+        "word": " one"
+      },
+      {
+        "start": 41.58,
+        "end": 41.86,
+        "word": " room,"
+      }
+    ]
+  },
+  {
+    "start": 42.5,
+    "end": 48.9,
+    "text": "and this room contained a rusty-looking cook stove, a cupboard for the dishes, a table, three or four",
+    "words": [
+      {
+        "start": 42.5,
+        "end": 42.66,
+        "word": " and"
+      },
+      {
+        "start": 42.66,
+        "end": 42.8,
+        "word": " this"
+      },
+      {
+        "start": 42.8,
+        "end": 43.06,
+        "word": " room"
+      },
+      {
+        "start": 43.06,
+        "end": 43.46,
+        "word": " contained"
+      },
+      {
+        "start": 43.46,
+        "end": 43.76,
+        "word": " a"
+      },
+      {
+        "start": 43.76,
+        "end": 44.04,
+        "word": " rusty"
+      },
+      {
+        "start": 44.04,
+        "end": 44.46,
+        "word": "-looking"
+      },
+      {
+        "start": 44.46,
+        "end": 44.62,
+        "word": " cook"
+      },
+      {
+        "start": 44.62,
+        "end": 45.04,
+        "word": " stove,"
+      },
+      {
+        "start": 45.72,
+        "end": 45.86,
+        "word": " a"
+      },
+      {
+        "start": 45.86,
+        "end": 46.16,
+        "word": " cupboard"
+      },
+      {
+        "start": 46.16,
+        "end": 46.32,
+        "word": " for"
+      },
+      {
+        "start": 46.32,
+        "end": 46.44,
+        "word": " the"
+      },
+      {
+        "start": 46.44,
+        "end": 46.68,
+        "word": " dishes,"
+      },
+      {
+        "start": 47.38,
+        "end": 47.5,
+        "word": " a"
+      },
+      {
+        "start": 47.5,
+        "end": 47.86,
+        "word": " table,"
+      },
+      {
+        "start": 48.48,
+        "end": 48.6,
+        "word": " three"
+      },
+      {
+        "start": 48.6,
+        "end": 48.72,
+        "word": " or"
+      },
+      {
+        "start": 48.72,
+        "end": 48.9,
+        "word": " four"
+      }
+    ]
+  },
+  {
+    "start": 48.9,
+    "end": 57.34,
+    "text": "chairs, and the beds. Uncle Henry, in Aunt Em, had a big bed in one corner, and Dorothy a little bed",
+    "words": [
+      {
+        "start": 48.9,
+        "end": 49.28,
+        "word": " chairs,"
+      },
+      {
+        "start": 49.94,
+        "end": 50.18,
+        "word": " and"
+      },
+      {
+        "start": 50.18,
+        "end": 50.28,
+        "word": " the"
+      },
+      {
+        "start": 50.28,
+        "end": 50.5,
+        "word": " beds."
+      },
+      {
+        "start": 51.84,
+        "end": 52.32,
+        "word": " Uncle"
+      },
+      {
+        "start": 52.32,
+        "end": 52.64,
+        "word": " Henry,"
+      },
+      {
+        "start": 53.02,
+        "end": 53.26,
+        "word": " in"
+      },
+      {
+        "start": 53.26,
+        "end": 53.4,
+        "word": " Aunt"
+      },
+      {
+        "start": 53.4,
+        "end": 53.78,
+        "word": " Em,"
+      },
+      {
+        "start": 54.34,
+        "end": 54.54,
+        "word": " had"
+      },
+      {
+        "start": 54.54,
+        "end": 54.64,
+        "word": " a"
+      },
+      {
+        "start": 54.64,
+        "end": 54.9,
+        "word": " big"
+      },
+      {
+        "start": 54.9,
+        "end": 55.18,
+        "word": " bed"
+      },
+      {
+        "start": 55.18,
+        "end": 55.36,
+        "word": " in"
+      },
+      {
+        "start": 55.36,
+        "end": 55.54,
+        "word": " one"
+      },
+      {
+        "start": 55.54,
+        "end": 56.0,
+        "word": " corner,"
+      },
+      {
+        "start": 56.36,
+        "end": 56.46,
+        "word": " and"
+      },
+      {
+        "start": 56.46,
+        "end": 56.62,
+        "word": " Dorothy"
+      },
+      {
+        "start": 56.62,
+        "end": 56.94,
+        "word": " a"
+      },
+      {
+        "start": 56.94,
+        "end": 57.12,
+        "word": " little"
+      },
+      {
+        "start": 57.12,
+        "end": 57.34,
+        "word": " bed"
+      }
+    ]
+  },
+  {
+    "start": 57.34,
+    "end": 63.08,
+    "text": "in another corner. There was no garret at all, and no cellar, except a small hole dug in the ground,",
+    "words": [
+      {
+        "start": 57.34,
+        "end": 57.5,
+        "word": " in"
+      },
+      {
+        "start": 57.5,
+        "end": 57.66,
+        "word": " another"
+      },
+      {
+        "start": 57.66,
+        "end": 58.1,
+        "word": " corner."
+      },
+      {
+        "start": 58.72,
+        "end": 58.9,
+        "word": " There"
+      },
+      {
+        "start": 58.9,
+        "end": 59.0,
+        "word": " was"
+      },
+      {
+        "start": 59.0,
+        "end": 59.2,
+        "word": " no"
+      },
+      {
+        "start": 59.2,
+        "end": 59.54,
+        "word": " garret"
+      },
+      {
+        "start": 59.54,
+        "end": 59.64,
+        "word": " at"
+      },
+      {
+        "start": 59.64,
+        "end": 59.86,
+        "word": " all,"
+      },
+      {
+        "start": 60.3,
+        "end": 60.4,
+        "word": " and"
+      },
+      {
+        "start": 60.4,
+        "end": 60.56,
+        "word": " no"
+      },
+      {
+        "start": 60.56,
+        "end": 60.82,
+        "word": " cellar,"
+      },
+      {
+        "start": 61.46,
+        "end": 61.64,
+        "word": " except"
+      },
+      {
+        "start": 61.64,
+        "end": 61.84,
+        "word": " a"
+      },
+      {
+        "start": 61.84,
+        "end": 62.06,
+        "word": " small"
+      },
+      {
+        "start": 62.06,
+        "end": 62.32,
+        "word": " hole"
+      },
+      {
+        "start": 62.32,
+        "end": 62.6,
+        "word": " dug"
+      },
+      {
+        "start": 62.6,
+        "end": 62.76,
+        "word": " in"
+      },
+      {
+        "start": 62.76,
+        "end": 62.84,
+        "word": " the"
+      },
+      {
+        "start": 62.84,
+        "end": 63.08,
+        "word": " ground,"
+      }
+    ]
+  },
+  {
+    "start": 63.38,
+    "end": 68.14,
+    "text": "called a cyclone cellar, where the family could go in case one of those great whirlwinds arose,",
+    "words": [
+      {
+        "start": 63.38,
+        "end": 63.52,
+        "word": " called"
+      },
+      {
+        "start": 63.52,
+        "end": 63.64,
+        "word": " a"
+      },
+      {
+        "start": 63.64,
+        "end": 64.12,
+        "word": " cyclone"
+      },
+      {
+        "start": 64.12,
+        "end": 64.38,
+        "word": " cellar,"
+      },
+      {
+        "start": 64.98,
+        "end": 65.1,
+        "word": " where"
+      },
+      {
+        "start": 65.1,
+        "end": 65.18,
+        "word": " the"
+      },
+      {
+        "start": 65.18,
+        "end": 65.46,
+        "word": " family"
+      },
+      {
+        "start": 65.46,
+        "end": 65.62,
+        "word": " could"
+      },
+      {
+        "start": 65.62,
+        "end": 65.82,
+        "word": " go"
+      },
+      {
+        "start": 65.82,
+        "end": 65.96,
+        "word": " in"
+      },
+      {
+        "start": 65.96,
+        "end": 66.12,
+        "word": " case"
+      },
+      {
+        "start": 66.12,
+        "end": 66.36,
+        "word": " one"
+      },
+      {
+        "start": 66.36,
+        "end": 66.46,
+        "word": " of"
+      },
+      {
+        "start": 66.46,
+        "end": 66.64,
+        "word": " those"
+      },
+      {
+        "start": 66.64,
+        "end": 66.94,
+        "word": " great"
+      },
+      {
+        "start": 66.94,
+        "end": 67.92,
+        "word": " whirlwinds"
+      },
+      {
+        "start": 67.92,
+        "end": 68.14,
+        "word": " arose,"
+      }
+    ]
+  },
+  {
+    "start": 68.78,
+    "end": 73.48,
+    "text": "mighty enough to crush any building in its path. It was reached by a trap-door in the middle of the",
+    "words": [
+      {
+        "start": 68.78,
+        "end": 68.94,
+        "word": " mighty"
+      },
+      {
+        "start": 68.94,
+        "end": 69.22,
+        "word": " enough"
+      },
+      {
+        "start": 69.22,
+        "end": 69.4,
+        "word": " to"
+      },
+      {
+        "start": 69.4,
+        "end": 69.54,
+        "word": " crush"
+      },
+      {
+        "start": 69.54,
+        "end": 69.82,
+        "word": " any"
+      },
+      {
+        "start": 69.82,
+        "end": 70.12,
+        "word": " building"
+      },
+      {
+        "start": 70.12,
+        "end": 70.38,
+        "word": " in"
+      },
+      {
+        "start": 70.38,
+        "end": 70.52,
+        "word": " its"
+      },
+      {
+        "start": 70.52,
+        "end": 70.82,
+        "word": " path."
+      },
+      {
+        "start": 71.48,
+        "end": 71.68,
+        "word": " It"
+      },
+      {
+        "start": 71.68,
+        "end": 71.76,
+        "word": " was"
+      },
+      {
+        "start": 71.76,
+        "end": 71.96,
+        "word": " reached"
+      },
+      {
+        "start": 71.96,
+        "end": 72.2,
+        "word": " by"
+      },
+      {
+        "start": 72.2,
+        "end": 72.3,
+        "word": " a"
+      },
+      {
+        "start": 72.3,
+        "end": 72.5,
+        "word": " trap"
+      },
+      {
+        "start": 72.5,
+        "end": 72.74,
+        "word": "-door"
+      },
+      {
+        "start": 72.74,
+        "end": 72.9,
+        "word": " in"
+      },
+      {
+        "start": 72.9,
+        "end": 73.0,
+        "word": " the"
+      },
+      {
+        "start": 73.0,
+        "end": 73.16,
+        "word": " middle"
+      },
+      {
+        "start": 73.16,
+        "end": 73.34,
+        "word": " of"
+      },
+      {
+        "start": 73.34,
+        "end": 73.48,
+        "word": " the"
+      }
+    ]
+  },
+  {
+    "start": 73.48,
+    "end": 79.92,
+    "text": "floor, from which a ladder led down into the small, dark hole. When Dorothy stood in the doorway and",
+    "words": [
+      {
+        "start": 73.48,
+        "end": 73.74,
+        "word": " floor,"
+      },
+      {
+        "start": 74.3,
+        "end": 74.64,
+        "word": " from"
+      },
+      {
+        "start": 74.64,
+        "end": 74.78,
+        "word": " which"
+      },
+      {
+        "start": 74.78,
+        "end": 74.9,
+        "word": " a"
+      },
+      {
+        "start": 74.9,
+        "end": 75.12,
+        "word": " ladder"
+      },
+      {
+        "start": 75.12,
+        "end": 75.42,
+        "word": " led"
+      },
+      {
+        "start": 75.42,
+        "end": 75.76,
+        "word": " down"
+      },
+      {
+        "start": 75.76,
+        "end": 75.92,
+        "word": " into"
+      },
+      {
+        "start": 75.92,
+        "end": 76.1,
+        "word": " the"
+      },
+      {
+        "start": 76.1,
+        "end": 76.38,
+        "word": " small,"
+      },
+      {
+        "start": 76.66,
+        "end": 76.82,
+        "word": " dark"
+      },
+      {
+        "start": 76.82,
+        "end": 77.16,
+        "word": " hole."
+      },
+      {
+        "start": 78.06,
+        "end": 78.5,
+        "word": " When"
+      },
+      {
+        "start": 78.5,
+        "end": 78.66,
+        "word": " Dorothy"
+      },
+      {
+        "start": 78.66,
+        "end": 79.06,
+        "word": " stood"
+      },
+      {
+        "start": 79.06,
+        "end": 79.26,
+        "word": " in"
+      },
+      {
+        "start": 79.26,
+        "end": 79.36,
+        "word": " the"
+      },
+      {
+        "start": 79.36,
+        "end": 79.58,
+        "word": " doorway"
+      },
+      {
+        "start": 79.58,
+        "end": 79.92,
+        "word": " and"
+      }
+    ]
+  },
+  {
+    "start": 79.92,
+    "end": 86.10000000000001,
+    "text": "looked around, she could see nothing but the great gray prairie on every side. Not a tree nor a house",
+    "words": [
+      {
+        "start": 79.92,
+        "end": 80.06,
+        "word": " looked"
+      },
+      {
+        "start": 80.06,
+        "end": 80.42,
+        "word": " around,"
+      },
+      {
+        "start": 80.86,
+        "end": 81.06,
+        "word": " she"
+      },
+      {
+        "start": 81.06,
+        "end": 81.18,
+        "word": " could"
+      },
+      {
+        "start": 81.18,
+        "end": 81.36,
+        "word": " see"
+      },
+      {
+        "start": 81.36,
+        "end": 81.7,
+        "word": " nothing"
+      },
+      {
+        "start": 81.7,
+        "end": 81.94,
+        "word": " but"
+      },
+      {
+        "start": 81.94,
+        "end": 82.08,
+        "word": " the"
+      },
+      {
+        "start": 82.08,
+        "end": 82.34,
+        "word": " great"
+      },
+      {
+        "start": 82.34,
+        "end": 82.66,
+        "word": " gray"
+      },
+      {
+        "start": 82.66,
+        "end": 83.44,
+        "word": " prairie"
+      },
+      {
+        "start": 83.44,
+        "end": 83.62,
+        "word": " on"
+      },
+      {
+        "start": 83.62,
+        "end": 83.88,
+        "word": " every"
+      },
+      {
+        "start": 83.88,
+        "end": 84.28,
+        "word": " side."
+      },
+      {
+        "start": 84.84,
+        "end": 85.08,
+        "word": " Not"
+      },
+      {
+        "start": 85.08,
+        "end": 85.18,
+        "word": " a"
+      },
+      {
+        "start": 85.18,
+        "end": 85.42,
+        "word": " tree"
+      },
+      {
+        "start": 85.42,
+        "end": 85.72,
+        "word": " nor"
+      },
+      {
+        "start": 85.72,
+        "end": 85.88,
+        "word": " a"
+      },
+      {
+        "start": 85.88,
+        "end": 86.10000000000001,
+        "word": " house"
+      }
+    ]
+  },
+  {
+    "start": 86.1,
+    "end": 92.56,
+    "text": "broke the broad sweep of flat country that reached to the edge of the sky in all directions. The sun",
+    "words": [
+      {
+        "start": 86.1,
+        "end": 86.5,
+        "word": " broke"
+      },
+      {
+        "start": 86.5,
+        "end": 86.74,
+        "word": " the"
+      },
+      {
+        "start": 86.74,
+        "end": 87.02,
+        "word": " broad"
+      },
+      {
+        "start": 87.02,
+        "end": 87.4,
+        "word": " sweep"
+      },
+      {
+        "start": 87.4,
+        "end": 87.76,
+        "word": " of"
+      },
+      {
+        "start": 87.76,
+        "end": 88.14,
+        "word": " flat"
+      },
+      {
+        "start": 88.14,
+        "end": 88.62,
+        "word": " country"
+      },
+      {
+        "start": 88.62,
+        "end": 88.9,
+        "word": " that"
+      },
+      {
+        "start": 88.9,
+        "end": 89.16,
+        "word": " reached"
+      },
+      {
+        "start": 89.16,
+        "end": 89.46,
+        "word": " to"
+      },
+      {
+        "start": 89.46,
+        "end": 89.56,
+        "word": " the"
+      },
+      {
+        "start": 89.56,
+        "end": 89.8,
+        "word": " edge"
+      },
+      {
+        "start": 89.8,
+        "end": 89.94,
+        "word": " of"
+      },
+      {
+        "start": 89.94,
+        "end": 90.04,
+        "word": " the"
+      },
+      {
+        "start": 90.04,
+        "end": 90.3,
+        "word": " sky"
+      },
+      {
+        "start": 90.3,
+        "end": 90.58,
+        "word": " in"
+      },
+      {
+        "start": 90.58,
+        "end": 90.76,
+        "word": " all"
+      },
+      {
+        "start": 90.76,
+        "end": 91.1,
+        "word": " directions."
+      },
+      {
+        "start": 92.2,
+        "end": 92.34,
+        "word": " The"
+      },
+      {
+        "start": 92.34,
+        "end": 92.56,
+        "word": " sun"
+      }
+    ]
+  },
+  {
+    "start": 92.56,
+    "end": 98.46,
+    "text": "had baked the plowed land into a gray mass, with little cracks running through it. Even the grass",
+    "words": [
+      {
+        "start": 92.56,
+        "end": 92.76,
+        "word": " had"
+      },
+      {
+        "start": 92.76,
+        "end": 93.14,
+        "word": " baked"
+      },
+      {
+        "start": 93.14,
+        "end": 93.46,
+        "word": " the"
+      },
+      {
+        "start": 93.46,
+        "end": 93.8,
+        "word": " plowed"
+      },
+      {
+        "start": 93.8,
+        "end": 94.06,
+        "word": " land"
+      },
+      {
+        "start": 94.06,
+        "end": 94.38,
+        "word": " into"
+      },
+      {
+        "start": 94.38,
+        "end": 94.54,
+        "word": " a"
+      },
+      {
+        "start": 94.54,
+        "end": 94.74,
+        "word": " gray"
+      },
+      {
+        "start": 94.74,
+        "end": 95.12,
+        "word": " mass,"
+      },
+      {
+        "start": 95.76,
+        "end": 95.98,
+        "word": " with"
+      },
+      {
+        "start": 95.98,
+        "end": 96.16,
+        "word": " little"
+      },
+      {
+        "start": 96.16,
+        "end": 96.42,
+        "word": " cracks"
+      },
+      {
+        "start": 96.42,
+        "end": 96.82,
+        "word": " running"
+      },
+      {
+        "start": 96.82,
+        "end": 97.12,
+        "word": " through"
+      },
+      {
+        "start": 97.12,
+        "end": 97.26,
+        "word": " it."
+      },
+      {
+        "start": 97.88,
+        "end": 98.12,
+        "word": " Even"
+      },
+      {
+        "start": 98.12,
+        "end": 98.3,
+        "word": " the"
+      },
+      {
+        "start": 98.3,
+        "end": 98.46,
+        "word": " grass"
+      }
+    ]
+  },
+  {
+    "start": 98.46,
+    "end": 103.78,
+    "text": "was not green, for the sun had burned the tops of the long blades until they were the same gray color",
+    "words": [
+      {
+        "start": 98.46,
+        "end": 98.7,
+        "word": " was"
+      },
+      {
+        "start": 98.7,
+        "end": 98.9,
+        "word": " not"
+      },
+      {
+        "start": 98.9,
+        "end": 99.16,
+        "word": " green,"
+      },
+      {
+        "start": 99.7,
+        "end": 99.88,
+        "word": " for"
+      },
+      {
+        "start": 99.88,
+        "end": 99.96,
+        "word": " the"
+      },
+      {
+        "start": 99.96,
+        "end": 100.18,
+        "word": " sun"
+      },
+      {
+        "start": 100.18,
+        "end": 100.4,
+        "word": " had"
+      },
+      {
+        "start": 100.4,
+        "end": 100.64,
+        "word": " burned"
+      },
+      {
+        "start": 100.64,
+        "end": 100.9,
+        "word": " the"
+      },
+      {
+        "start": 100.9,
+        "end": 101.14,
+        "word": " tops"
+      },
+      {
+        "start": 101.14,
+        "end": 101.4,
+        "word": " of"
+      },
+      {
+        "start": 101.4,
+        "end": 101.48,
+        "word": " the"
+      },
+      {
+        "start": 101.48,
+        "end": 101.66,
+        "word": " long"
+      },
+      {
+        "start": 101.66,
+        "end": 102.02,
+        "word": " blades"
+      },
+      {
+        "start": 102.02,
+        "end": 102.3,
+        "word": " until"
+      },
+      {
+        "start": 102.3,
+        "end": 102.64,
+        "word": " they"
+      },
+      {
+        "start": 102.64,
+        "end": 102.78,
+        "word": " were"
+      },
+      {
+        "start": 102.78,
+        "end": 102.9,
+        "word": " the"
+      },
+      {
+        "start": 102.9,
+        "end": 103.12,
+        "word": " same"
+      },
+      {
+        "start": 103.12,
+        "end": 103.4,
+        "word": " gray"
+      },
+      {
+        "start": 103.4,
+        "end": 103.78,
+        "word": " color"
+      }
+    ]
+  },
+  {
+    "start": 103.78,
+    "end": 109.38,
+    "text": "to be seen everywhere. Once the house had been painted, the sun blistered to paint, and the rains",
+    "words": [
+      {
+        "start": 103.78,
+        "end": 104.0,
+        "word": " to"
+      },
+      {
+        "start": 104.0,
+        "end": 104.12,
+        "word": " be"
+      },
+      {
+        "start": 104.12,
+        "end": 104.34,
+        "word": " seen"
+      },
+      {
+        "start": 104.34,
+        "end": 104.7,
+        "word": " everywhere."
+      },
+      {
+        "start": 105.66,
+        "end": 105.96,
+        "word": " Once"
+      },
+      {
+        "start": 105.96,
+        "end": 106.12,
+        "word": " the"
+      },
+      {
+        "start": 106.12,
+        "end": 106.3,
+        "word": " house"
+      },
+      {
+        "start": 106.3,
+        "end": 106.5,
+        "word": " had"
+      },
+      {
+        "start": 106.5,
+        "end": 106.64,
+        "word": " been"
+      },
+      {
+        "start": 106.64,
+        "end": 106.96,
+        "word": " painted,"
+      },
+      {
+        "start": 107.46,
+        "end": 107.62,
+        "word": " the"
+      },
+      {
+        "start": 107.62,
+        "end": 107.9,
+        "word": " sun"
+      },
+      {
+        "start": 107.9,
+        "end": 108.28,
+        "word": " blistered"
+      },
+      {
+        "start": 108.28,
+        "end": 108.48,
+        "word": " to"
+      },
+      {
+        "start": 108.48,
+        "end": 108.68,
+        "word": " paint,"
+      },
+      {
+        "start": 108.9,
+        "end": 108.96,
+        "word": " and"
+      },
+      {
+        "start": 108.96,
+        "end": 109.1,
+        "word": " the"
+      },
+      {
+        "start": 109.1,
+        "end": 109.38,
+        "word": " rains"
+      }
+    ]
+  },
+  {
+    "start": 109.38,
+    "end": 115.56,
+    "text": "washed it away, and now the house was as dull and gray as everything else. When Aunt Em came there",
+    "words": [
+      {
+        "start": 109.38,
+        "end": 109.64,
+        "word": " washed"
+      },
+      {
+        "start": 109.64,
+        "end": 109.92,
+        "word": " it"
+      },
+      {
+        "start": 109.92,
+        "end": 110.16,
+        "word": " away,"
+      },
+      {
+        "start": 110.6,
+        "end": 110.9,
+        "word": " and"
+      },
+      {
+        "start": 110.9,
+        "end": 111.04,
+        "word": " now"
+      },
+      {
+        "start": 111.04,
+        "end": 111.16,
+        "word": " the"
+      },
+      {
+        "start": 111.16,
+        "end": 111.38,
+        "word": " house"
+      },
+      {
+        "start": 111.38,
+        "end": 111.66,
+        "word": " was"
+      },
+      {
+        "start": 111.66,
+        "end": 111.84,
+        "word": " as"
+      },
+      {
+        "start": 111.84,
+        "end": 112.1,
+        "word": " dull"
+      },
+      {
+        "start": 112.1,
+        "end": 112.42,
+        "word": " and"
+      },
+      {
+        "start": 112.42,
+        "end": 112.68,
+        "word": " gray"
+      },
+      {
+        "start": 112.68,
+        "end": 112.92,
+        "word": " as"
+      },
+      {
+        "start": 112.92,
+        "end": 113.18,
+        "word": " everything"
+      },
+      {
+        "start": 113.18,
+        "end": 113.56,
+        "word": " else."
+      },
+      {
+        "start": 114.08,
+        "end": 114.6,
+        "word": " When"
+      },
+      {
+        "start": 114.6,
+        "end": 114.74,
+        "word": " Aunt"
+      },
+      {
+        "start": 114.74,
+        "end": 115.0,
+        "word": " Em"
+      },
+      {
+        "start": 115.0,
+        "end": 115.34,
+        "word": " came"
+      },
+      {
+        "start": 115.34,
+        "end": 115.56,
+        "word": " there"
+      }
+    ]
+  },
+  {
+    "start": 115.56,
+    "end": 121.78,
+    "text": "to live, she was a young, pretty wife. The sun and wind had changed her, too. They had taken the",
+    "words": [
+      {
+        "start": 115.56,
+        "end": 115.74,
+        "word": " to"
+      },
+      {
+        "start": 115.74,
+        "end": 115.94,
+        "word": " live,"
+      },
+      {
+        "start": 116.24,
+        "end": 116.42,
+        "word": " she"
+      },
+      {
+        "start": 116.42,
+        "end": 116.56,
+        "word": " was"
+      },
+      {
+        "start": 116.56,
+        "end": 116.7,
+        "word": " a"
+      },
+      {
+        "start": 116.7,
+        "end": 116.94,
+        "word": " young,"
+      },
+      {
+        "start": 116.94,
+        "end": 117.34,
+        "word": " pretty"
+      },
+      {
+        "start": 117.34,
+        "end": 117.68,
+        "word": " wife."
+      },
+      {
+        "start": 118.4,
+        "end": 118.5,
+        "word": " The"
+      },
+      {
+        "start": 118.5,
+        "end": 118.7,
+        "word": " sun"
+      },
+      {
+        "start": 118.7,
+        "end": 118.9,
+        "word": " and"
+      },
+      {
+        "start": 118.9,
+        "end": 119.08,
+        "word": " wind"
+      },
+      {
+        "start": 119.08,
+        "end": 119.3,
+        "word": " had"
+      },
+      {
+        "start": 119.3,
+        "end": 119.58,
+        "word": " changed"
+      },
+      {
+        "start": 119.58,
+        "end": 119.92,
+        "word": " her,"
+      },
+      {
+        "start": 120.08,
+        "end": 120.2,
+        "word": " too."
+      },
+      {
+        "start": 121.0,
+        "end": 121.24,
+        "word": " They"
+      },
+      {
+        "start": 121.24,
+        "end": 121.34,
+        "word": " had"
+      },
+      {
+        "start": 121.34,
+        "end": 121.62,
+        "word": " taken"
+      },
+      {
+        "start": 121.62,
+        "end": 121.78,
+        "word": " the"
+      }
+    ]
+  },
+  {
+    "start": 121.78,
+    "end": 126.8,
+    "text": "sparkle from her eyes and left them a sober gray. They had also taken the red from her cheeks and",
+    "words": [
+      {
+        "start": 121.78,
+        "end": 122.22,
+        "word": " sparkle"
+      },
+      {
+        "start": 122.22,
+        "end": 122.38,
+        "word": " from"
+      },
+      {
+        "start": 122.38,
+        "end": 122.54,
+        "word": " her"
+      },
+      {
+        "start": 122.54,
+        "end": 122.8,
+        "word": " eyes"
+      },
+      {
+        "start": 122.8,
+        "end": 123.02,
+        "word": " and"
+      },
+      {
+        "start": 123.02,
+        "end": 123.22,
+        "word": " left"
+      },
+      {
+        "start": 123.22,
+        "end": 123.4,
+        "word": " them"
+      },
+      {
+        "start": 123.4,
+        "end": 123.52,
+        "word": " a"
+      },
+      {
+        "start": 123.52,
+        "end": 123.78,
+        "word": " sober"
+      },
+      {
+        "start": 123.78,
+        "end": 124.18,
+        "word": " gray."
+      },
+      {
+        "start": 124.64,
+        "end": 124.94,
+        "word": " They"
+      },
+      {
+        "start": 124.94,
+        "end": 125.02,
+        "word": " had"
+      },
+      {
+        "start": 125.02,
+        "end": 125.26,
+        "word": " also"
+      },
+      {
+        "start": 125.26,
+        "end": 125.58,
+        "word": " taken"
+      },
+      {
+        "start": 125.58,
+        "end": 125.76,
+        "word": " the"
+      },
+      {
+        "start": 125.76,
+        "end": 125.9,
+        "word": " red"
+      },
+      {
+        "start": 125.9,
+        "end": 126.14,
+        "word": " from"
+      },
+      {
+        "start": 126.14,
+        "end": 126.24,
+        "word": " her"
+      },
+      {
+        "start": 126.24,
+        "end": 126.48,
+        "word": " cheeks"
+      },
+      {
+        "start": 126.48,
+        "end": 126.8,
+        "word": " and"
+      }
+    ]
+  },
+  {
+    "start": 126.8,
+    "end": 134.52,
+    "text": "lips, and they were gray also. She was thin and gaunt, and never smiled now. When Dorothy, who was an",
+    "words": [
+      {
+        "start": 126.8,
+        "end": 127.06,
+        "word": " lips,"
+      },
+      {
+        "start": 127.52,
+        "end": 127.76,
+        "word": " and"
+      },
+      {
+        "start": 127.76,
+        "end": 127.92,
+        "word": " they"
+      },
+      {
+        "start": 127.92,
+        "end": 128.12,
+        "word": " were"
+      },
+      {
+        "start": 128.12,
+        "end": 128.42,
+        "word": " gray"
+      },
+      {
+        "start": 128.42,
+        "end": 128.88,
+        "word": " also."
+      },
+      {
+        "start": 129.62,
+        "end": 130.1,
+        "word": " She"
+      },
+      {
+        "start": 130.1,
+        "end": 130.24,
+        "word": " was"
+      },
+      {
+        "start": 130.24,
+        "end": 130.52,
+        "word": " thin"
+      },
+      {
+        "start": 130.52,
+        "end": 130.72,
+        "word": " and"
+      },
+      {
+        "start": 130.72,
+        "end": 131.08,
+        "word": " gaunt,"
+      },
+      {
+        "start": 131.44,
+        "end": 131.54,
+        "word": " and"
+      },
+      {
+        "start": 131.54,
+        "end": 131.78,
+        "word": " never"
+      },
+      {
+        "start": 131.78,
+        "end": 132.06,
+        "word": " smiled"
+      },
+      {
+        "start": 132.06,
+        "end": 132.54,
+        "word": " now."
+      },
+      {
+        "start": 133.34,
+        "end": 133.5,
+        "word": " When"
+      },
+      {
+        "start": 133.5,
+        "end": 133.68,
+        "word": " Dorothy,"
+      },
+      {
+        "start": 134.12,
+        "end": 134.28,
+        "word": " who"
+      },
+      {
+        "start": 134.28,
+        "end": 134.4,
+        "word": " was"
+      },
+      {
+        "start": 134.4,
+        "end": 134.52,
+        "word": " an"
+      }
+    ]
+  },
+  {
+    "start": 134.52,
+    "end": 140.64000000000001,
+    "text": "orphan, first came to her, and Em had been so startled by the child's laughter that she would scream and",
+    "words": [
+      {
+        "start": 134.52,
+        "end": 134.68,
+        "word": " orphan,"
+      },
+      {
+        "start": 135.24,
+        "end": 135.48,
+        "word": " first"
+      },
+      {
+        "start": 135.48,
+        "end": 135.72,
+        "word": " came"
+      },
+      {
+        "start": 135.72,
+        "end": 135.9,
+        "word": " to"
+      },
+      {
+        "start": 135.9,
+        "end": 136.08,
+        "word": " her,"
+      },
+      {
+        "start": 136.8,
+        "end": 136.86,
+        "word": " and"
+      },
+      {
+        "start": 136.86,
+        "end": 137.06,
+        "word": " Em"
+      },
+      {
+        "start": 137.06,
+        "end": 137.28,
+        "word": " had"
+      },
+      {
+        "start": 137.28,
+        "end": 137.48,
+        "word": " been"
+      },
+      {
+        "start": 137.48,
+        "end": 137.72,
+        "word": " so"
+      },
+      {
+        "start": 137.72,
+        "end": 138.02,
+        "word": " startled"
+      },
+      {
+        "start": 138.02,
+        "end": 138.34,
+        "word": " by"
+      },
+      {
+        "start": 138.34,
+        "end": 138.46,
+        "word": " the"
+      },
+      {
+        "start": 138.46,
+        "end": 138.88,
+        "word": " child's"
+      },
+      {
+        "start": 138.88,
+        "end": 139.08,
+        "word": " laughter"
+      },
+      {
+        "start": 139.08,
+        "end": 139.76,
+        "word": " that"
+      },
+      {
+        "start": 139.76,
+        "end": 139.88,
+        "word": " she"
+      },
+      {
+        "start": 139.88,
+        "end": 139.98,
+        "word": " would"
+      },
+      {
+        "start": 139.98,
+        "end": 140.28,
+        "word": " scream"
+      },
+      {
+        "start": 140.28,
+        "end": 140.64000000000001,
+        "word": " and"
+      }
+    ]
+  },
+  {
+    "start": 140.64,
+    "end": 145.9,
+    "text": "press her hands upon her heart whenever Dorothy's merry voice reached her ears, and she still looked",
+    "words": [
+      {
+        "start": 140.64,
+        "end": 140.82,
+        "word": " press"
+      },
+      {
+        "start": 140.82,
+        "end": 140.96,
+        "word": " her"
+      },
+      {
+        "start": 140.96,
+        "end": 141.18,
+        "word": " hands"
+      },
+      {
+        "start": 141.18,
+        "end": 141.54,
+        "word": " upon"
+      },
+      {
+        "start": 141.54,
+        "end": 141.74,
+        "word": " her"
+      },
+      {
+        "start": 141.74,
+        "end": 142.02,
+        "word": " heart"
+      },
+      {
+        "start": 142.02,
+        "end": 142.24,
+        "word": " whenever"
+      },
+      {
+        "start": 142.24,
+        "end": 142.96,
+        "word": " Dorothy's"
+      },
+      {
+        "start": 142.96,
+        "end": 143.12,
+        "word": " merry"
+      },
+      {
+        "start": 143.12,
+        "end": 143.5,
+        "word": " voice"
+      },
+      {
+        "start": 143.5,
+        "end": 143.82,
+        "word": " reached"
+      },
+      {
+        "start": 143.82,
+        "end": 144.08,
+        "word": " her"
+      },
+      {
+        "start": 144.08,
+        "end": 144.26,
+        "word": " ears,"
+      },
+      {
+        "start": 145.1,
+        "end": 145.26,
+        "word": " and"
+      },
+      {
+        "start": 145.26,
+        "end": 145.38,
+        "word": " she"
+      },
+      {
+        "start": 145.38,
+        "end": 145.64,
+        "word": " still"
+      },
+      {
+        "start": 145.64,
+        "end": 145.9,
+        "word": " looked"
+      }
+    ]
+  },
+  {
+    "start": 145.9,
+    "end": 152.36,
+    "text": "at the little girl with wonder that she could find anything to laugh at. Uncle Henry never laughed. He",
+    "words": [
+      {
+        "start": 145.9,
+        "end": 146.06,
+        "word": " at"
+      },
+      {
+        "start": 146.06,
+        "end": 146.18,
+        "word": " the"
+      },
+      {
+        "start": 146.18,
+        "end": 146.34,
+        "word": " little"
+      },
+      {
+        "start": 146.34,
+        "end": 146.6,
+        "word": " girl"
+      },
+      {
+        "start": 146.6,
+        "end": 146.78,
+        "word": " with"
+      },
+      {
+        "start": 146.78,
+        "end": 147.06,
+        "word": " wonder"
+      },
+      {
+        "start": 147.06,
+        "end": 147.76,
+        "word": " that"
+      },
+      {
+        "start": 147.76,
+        "end": 147.9,
+        "word": " she"
+      },
+      {
+        "start": 147.9,
+        "end": 148.0,
+        "word": " could"
+      },
+      {
+        "start": 148.0,
+        "end": 148.2,
+        "word": " find"
+      },
+      {
+        "start": 148.2,
+        "end": 148.44,
+        "word": " anything"
+      },
+      {
+        "start": 148.44,
+        "end": 148.82,
+        "word": " to"
+      },
+      {
+        "start": 148.82,
+        "end": 149.0,
+        "word": " laugh"
+      },
+      {
+        "start": 149.0,
+        "end": 149.36,
+        "word": " at."
+      },
+      {
+        "start": 150.08,
+        "end": 150.52,
+        "word": " Uncle"
+      },
+      {
+        "start": 150.52,
+        "end": 150.76,
+        "word": " Henry"
+      },
+      {
+        "start": 150.76,
+        "end": 151.16,
+        "word": " never"
+      },
+      {
+        "start": 151.16,
+        "end": 151.58,
+        "word": " laughed."
+      },
+      {
+        "start": 152.16,
+        "end": 152.36,
+        "word": " He"
+      }
+    ]
+  },
+  {
+    "start": 152.36,
+    "end": 158.12,
+    "text": "worked hard from morning till night and did not know what joy was. He was gray also, from his long",
+    "words": [
+      {
+        "start": 152.36,
+        "end": 152.5,
+        "word": " worked"
+      },
+      {
+        "start": 152.5,
+        "end": 152.78,
+        "word": " hard"
+      },
+      {
+        "start": 152.78,
+        "end": 153.1,
+        "word": " from"
+      },
+      {
+        "start": 153.1,
+        "end": 153.38,
+        "word": " morning"
+      },
+      {
+        "start": 153.38,
+        "end": 153.78,
+        "word": " till"
+      },
+      {
+        "start": 153.78,
+        "end": 154.06,
+        "word": " night"
+      },
+      {
+        "start": 154.06,
+        "end": 154.44,
+        "word": " and"
+      },
+      {
+        "start": 154.44,
+        "end": 154.6,
+        "word": " did"
+      },
+      {
+        "start": 154.6,
+        "end": 154.78,
+        "word": " not"
+      },
+      {
+        "start": 154.78,
+        "end": 154.98,
+        "word": " know"
+      },
+      {
+        "start": 154.98,
+        "end": 155.14,
+        "word": " what"
+      },
+      {
+        "start": 155.14,
+        "end": 155.28,
+        "word": " joy"
+      },
+      {
+        "start": 155.28,
+        "end": 155.68,
+        "word": " was."
+      },
+      {
+        "start": 156.24,
+        "end": 156.5,
+        "word": " He"
+      },
+      {
+        "start": 156.5,
+        "end": 156.66,
+        "word": " was"
+      },
+      {
+        "start": 156.66,
+        "end": 156.84,
+        "word": " gray"
+      },
+      {
+        "start": 156.84,
+        "end": 157.28,
+        "word": " also,"
+      },
+      {
+        "start": 157.72,
+        "end": 157.84,
+        "word": " from"
+      },
+      {
+        "start": 157.84,
+        "end": 157.96,
+        "word": " his"
+      },
+      {
+        "start": 157.96,
+        "end": 158.12,
+        "word": " long"
+      }
+    ]
+  },
+  {
+    "start": 158.12,
+    "end": 170.62,
+    "text": "beard to his rough boots, and he looked stern and solemn and rarely spoke. It was Toto that made",
+    "words": [
+      {
+        "start": 158.12,
+        "end": 158.58,
+        "word": " beard"
+      },
+      {
+        "start": 158.58,
+        "end": 158.92,
+        "word": " to"
+      },
+      {
+        "start": 158.92,
+        "end": 159.22,
+        "word": " his"
+      },
+      {
+        "start": 159.22,
+        "end": 159.4,
+        "word": " rough"
+      },
+      {
+        "start": 159.4,
+        "end": 159.74,
+        "word": " boots,"
+      },
+      {
+        "start": 160.34,
+        "end": 160.52,
+        "word": " and"
+      },
+      {
+        "start": 160.52,
+        "end": 160.62,
+        "word": " he"
+      },
+      {
+        "start": 160.62,
+        "end": 160.76,
+        "word": " looked"
+      },
+      {
+        "start": 160.76,
+        "end": 161.08,
+        "word": " stern"
+      },
+      {
+        "start": 161.08,
+        "end": 161.4,
+        "word": " and"
+      },
+      {
+        "start": 161.4,
+        "end": 161.7,
+        "word": " solemn"
+      },
+      {
+        "start": 161.7,
+        "end": 162.32,
+        "word": " and"
+      },
+      {
+        "start": 162.32,
+        "end": 162.52,
+        "word": " rarely"
+      },
+      {
+        "start": 162.52,
+        "end": 162.94,
+        "word": " spoke."
+      },
+      {
+        "start": 163.8,
+        "end": 164.12,
+        "word": " It"
+      },
+      {
+        "start": 164.12,
+        "end": 164.22,
+        "word": " was"
+      },
+      {
+        "start": 164.22,
+        "end": 164.48,
+        "word": " Toto"
+      },
+      {
+        "start": 164.48,
+        "end": 170.62,
+        "word": " that"
+      },
+      {
+        "start": 170.62,
+        "end": 170.62,
+        "word": " made"
+      }
+    ]
+  },
+  {
+    "start": 171.42000000000002,
+    "end": 176.4,
+    "text": "he was a little black dog with long silky hair and small black eyes that twinkled merrily on",
+    "words": [
+      {
+        "start": 171.36,
+        "end": 171.62,
+        "word": " he"
+      },
+      {
+        "start": 171.62,
+        "end": 171.78,
+        "word": " was"
+      },
+      {
+        "start": 171.78,
+        "end": 171.92,
+        "word": " a"
+      },
+      {
+        "start": 171.92,
+        "end": 172.14,
+        "word": " little"
+      },
+      {
+        "start": 172.14,
+        "end": 172.42,
+        "word": " black"
+      },
+      {
+        "start": 172.42,
+        "end": 172.72,
+        "word": " dog"
+      },
+      {
+        "start": 172.72,
+        "end": 173.02,
+        "word": " with"
+      },
+      {
+        "start": 173.02,
+        "end": 173.24,
+        "word": " long"
+      },
+      {
+        "start": 173.24,
+        "end": 173.72,
+        "word": " silky"
+      },
+      {
+        "start": 173.72,
+        "end": 173.98,
+        "word": " hair"
+      },
+      {
+        "start": 173.98,
+        "end": 174.2,
+        "word": " and"
+      },
+      {
+        "start": 174.2,
+        "end": 174.44,
+        "word": " small"
+      },
+      {
+        "start": 174.44,
+        "end": 174.76,
+        "word": " black"
+      },
+      {
+        "start": 174.76,
+        "end": 175.12,
+        "word": " eyes"
+      },
+      {
+        "start": 175.12,
+        "end": 175.4,
+        "word": " that"
+      },
+      {
+        "start": 175.4,
+        "end": 175.78,
+        "word": " twinkled"
+      },
+      {
+        "start": 175.78,
+        "end": 176.22,
+        "word": " merrily"
+      },
+      {
+        "start": 176.22,
+        "end": 176.4,
+        "word": " on"
+      }
+    ]
+  },
+  {
+    "start": 176.4,
+    "end": 182.92,
+    "text": "either side of his funny wee nose. Toto played all day long, and Dorothy played with him, and loved",
+    "words": [
+      {
+        "start": 176.4,
+        "end": 176.66,
+        "word": " either"
+      },
+      {
+        "start": 176.66,
+        "end": 177.12,
+        "word": " side"
+      },
+      {
+        "start": 177.12,
+        "end": 177.26,
+        "word": " of"
+      },
+      {
+        "start": 177.26,
+        "end": 177.38,
+        "word": " his"
+      },
+      {
+        "start": 177.38,
+        "end": 177.68,
+        "word": " funny"
+      },
+      {
+        "start": 177.68,
+        "end": 178.04,
+        "word": " wee"
+      },
+      {
+        "start": 178.04,
+        "end": 178.4,
+        "word": " nose."
+      },
+      {
+        "start": 179.44,
+        "end": 179.64,
+        "word": " Toto"
+      },
+      {
+        "start": 179.64,
+        "end": 179.96,
+        "word": " played"
+      },
+      {
+        "start": 179.96,
+        "end": 180.24,
+        "word": " all"
+      },
+      {
+        "start": 180.24,
+        "end": 180.48,
+        "word": " day"
+      },
+      {
+        "start": 180.48,
+        "end": 180.76,
+        "word": " long,"
+      },
+      {
+        "start": 181.32,
+        "end": 181.4,
+        "word": " and"
+      },
+      {
+        "start": 181.4,
+        "end": 181.52,
+        "word": " Dorothy"
+      },
+      {
+        "start": 181.52,
+        "end": 181.86,
+        "word": " played"
+      },
+      {
+        "start": 181.86,
+        "end": 182.06,
+        "word": " with"
+      },
+      {
+        "start": 182.06,
+        "end": 182.26,
+        "word": " him,"
+      },
+      {
+        "start": 182.58,
+        "end": 182.7,
+        "word": " and"
+      },
+      {
+        "start": 182.7,
+        "end": 182.92,
+        "word": " loved"
+      }
+    ]
+  },
+  {
+    "start": 182.92,
+    "end": 188.66,
+    "text": "him dearly. Today, however, they were not playing, Uncle Henry sat upon the doorstep and looked",
+    "words": [
+      {
+        "start": 182.92,
+        "end": 183.12,
+        "word": " him"
+      },
+      {
+        "start": 183.12,
+        "end": 183.3,
+        "word": " dearly."
+      },
+      {
+        "start": 184.44,
+        "end": 184.74,
+        "word": " Today,"
+      },
+      {
+        "start": 184.88,
+        "end": 185.08,
+        "word": " however,"
+      },
+      {
+        "start": 185.2,
+        "end": 185.4,
+        "word": " they"
+      },
+      {
+        "start": 185.4,
+        "end": 185.52,
+        "word": " were"
+      },
+      {
+        "start": 185.52,
+        "end": 185.74,
+        "word": " not"
+      },
+      {
+        "start": 185.74,
+        "end": 186.02,
+        "word": " playing,"
+      },
+      {
+        "start": 186.48,
+        "end": 186.7,
+        "word": " Uncle"
+      },
+      {
+        "start": 186.7,
+        "end": 186.96,
+        "word": " Henry"
+      },
+      {
+        "start": 186.96,
+        "end": 187.34,
+        "word": " sat"
+      },
+      {
+        "start": 187.34,
+        "end": 187.62,
+        "word": " upon"
+      },
+      {
+        "start": 187.62,
+        "end": 187.88,
+        "word": " the"
+      },
+      {
+        "start": 187.88,
+        "end": 188.16,
+        "word": " doorstep"
+      },
+      {
+        "start": 188.16,
+        "end": 188.52,
+        "word": " and"
+      },
+      {
+        "start": 188.52,
+        "end": 188.66,
+        "word": " looked"
+      }
+    ]
+  },
+  {
+    "start": 188.66,
+    "end": 200.6,
+    "text": "anxiously at the sky, which was even grayer than usual. Dorothy stood in the door with Toto in her",
+    "words": [
+      {
+        "start": 188.66,
+        "end": 189.14,
+        "word": " anxiously"
+      },
+      {
+        "start": 189.14,
+        "end": 189.42,
+        "word": " at"
+      },
+      {
+        "start": 189.42,
+        "end": 189.54,
+        "word": " the"
+      },
+      {
+        "start": 189.54,
+        "end": 189.8,
+        "word": " sky,"
+      },
+      {
+        "start": 190.26,
+        "end": 190.38,
+        "word": " which"
+      },
+      {
+        "start": 190.38,
+        "end": 190.54,
+        "word": " was"
+      },
+      {
+        "start": 190.54,
+        "end": 190.78,
+        "word": " even"
+      },
+      {
+        "start": 190.78,
+        "end": 191.16,
+        "word": " grayer"
+      },
+      {
+        "start": 191.16,
+        "end": 191.42,
+        "word": " than"
+      },
+      {
+        "start": 191.42,
+        "end": 191.62,
+        "word": " usual."
+      },
+      {
+        "start": 192.94,
+        "end": 192.94,
+        "word": " Dorothy"
+      },
+      {
+        "start": 192.94,
+        "end": 193.18,
+        "word": " stood"
+      },
+      {
+        "start": 193.18,
+        "end": 193.36,
+        "word": " in"
+      },
+      {
+        "start": 193.36,
+        "end": 193.46,
+        "word": " the"
+      },
+      {
+        "start": 193.46,
+        "end": 193.68,
+        "word": " door"
+      },
+      {
+        "start": 193.68,
+        "end": 193.86,
+        "word": " with"
+      },
+      {
+        "start": 193.86,
+        "end": 194.12,
+        "word": " Toto"
+      },
+      {
+        "start": 194.12,
+        "end": 200.6,
+        "word": " in"
+      },
+      {
+        "start": 200.6,
+        "end": 200.6,
+        "word": " her"
+      }
+    ]
+  },
+  {
+    "start": 200.6,
+    "end": 205.42,
+    "text": "from the far north they heard a low whale of the wind, and Uncle Henry and Dorothy could see with",
+    "words": [
+      {
+        "start": 200.6,
+        "end": 201.04,
+        "word": " from"
+      },
+      {
+        "start": 201.04,
+        "end": 201.18,
+        "word": " the"
+      },
+      {
+        "start": 201.18,
+        "end": 201.42,
+        "word": " far"
+      },
+      {
+        "start": 201.42,
+        "end": 201.76,
+        "word": " north"
+      },
+      {
+        "start": 201.76,
+        "end": 202.02,
+        "word": " they"
+      },
+      {
+        "start": 202.02,
+        "end": 202.14,
+        "word": " heard"
+      },
+      {
+        "start": 202.14,
+        "end": 202.26,
+        "word": " a"
+      },
+      {
+        "start": 202.26,
+        "end": 202.48,
+        "word": " low"
+      },
+      {
+        "start": 202.48,
+        "end": 202.8,
+        "word": " whale"
+      },
+      {
+        "start": 202.8,
+        "end": 203.0,
+        "word": " of"
+      },
+      {
+        "start": 203.0,
+        "end": 203.12,
+        "word": " the"
+      },
+      {
+        "start": 203.12,
+        "end": 203.34,
+        "word": " wind,"
+      },
+      {
+        "start": 203.82,
+        "end": 203.94,
+        "word": " and"
+      },
+      {
+        "start": 203.94,
+        "end": 204.12,
+        "word": " Uncle"
+      },
+      {
+        "start": 204.12,
+        "end": 204.38,
+        "word": " Henry"
+      },
+      {
+        "start": 204.38,
+        "end": 204.6,
+        "word": " and"
+      },
+      {
+        "start": 204.6,
+        "end": 204.78,
+        "word": " Dorothy"
+      },
+      {
+        "start": 204.78,
+        "end": 205.08,
+        "word": " could"
+      },
+      {
+        "start": 205.08,
+        "end": 205.28,
+        "word": " see"
+      },
+      {
+        "start": 205.28,
+        "end": 205.42,
+        "word": " with"
+      }
+    ]
+  },
+  {
+    "start": 205.42,
+    "end": 211.28,
+    "text": "a long grass bowed in waves before the coming storm. There now came a sharp whistling in the air from",
+    "words": [
+      {
+        "start": 205.42,
+        "end": 205.54,
+        "word": " a"
+      },
+      {
+        "start": 205.54,
+        "end": 205.78,
+        "word": " long"
+      },
+      {
+        "start": 205.78,
+        "end": 206.12,
+        "word": " grass"
+      },
+      {
+        "start": 206.12,
+        "end": 206.48,
+        "word": " bowed"
+      },
+      {
+        "start": 206.48,
+        "end": 206.76,
+        "word": " in"
+      },
+      {
+        "start": 206.76,
+        "end": 206.94,
+        "word": " waves"
+      },
+      {
+        "start": 206.94,
+        "end": 207.4,
+        "word": " before"
+      },
+      {
+        "start": 207.4,
+        "end": 207.6,
+        "word": " the"
+      },
+      {
+        "start": 207.6,
+        "end": 207.8,
+        "word": " coming"
+      },
+      {
+        "start": 207.8,
+        "end": 208.2,
+        "word": " storm."
+      },
+      {
+        "start": 209.04,
+        "end": 209.4,
+        "word": " There"
+      },
+      {
+        "start": 209.4,
+        "end": 209.56,
+        "word": " now"
+      },
+      {
+        "start": 209.56,
+        "end": 209.76,
+        "word": " came"
+      },
+      {
+        "start": 209.76,
+        "end": 209.9,
+        "word": " a"
+      },
+      {
+        "start": 209.9,
+        "end": 210.16,
+        "word": " sharp"
+      },
+      {
+        "start": 210.16,
+        "end": 210.66,
+        "word": " whistling"
+      },
+      {
+        "start": 210.66,
+        "end": 210.78,
+        "word": " in"
+      },
+      {
+        "start": 210.78,
+        "end": 210.88,
+        "word": " the"
+      },
+      {
+        "start": 210.88,
+        "end": 211.08,
+        "word": " air"
+      },
+      {
+        "start": 211.08,
+        "end": 211.28,
+        "word": " from"
+      }
+    ]
+  },
+  {
+    "start": 211.28,
+    "end": 216.12,
+    "text": "the south, and as they turned their eyes that way they saw ripples in the grass coming from that",
+    "words": [
+      {
+        "start": 211.28,
+        "end": 211.42,
+        "word": " the"
+      },
+      {
+        "start": 211.42,
+        "end": 211.76,
+        "word": " south,"
+      },
+      {
+        "start": 212.24,
+        "end": 212.46,
+        "word": " and"
+      },
+      {
+        "start": 212.46,
+        "end": 212.6,
+        "word": " as"
+      },
+      {
+        "start": 212.6,
+        "end": 212.76,
+        "word": " they"
+      },
+      {
+        "start": 212.76,
+        "end": 213.0,
+        "word": " turned"
+      },
+      {
+        "start": 213.0,
+        "end": 213.22,
+        "word": " their"
+      },
+      {
+        "start": 213.22,
+        "end": 213.46,
+        "word": " eyes"
+      },
+      {
+        "start": 213.46,
+        "end": 213.74,
+        "word": " that"
+      },
+      {
+        "start": 213.74,
+        "end": 214.0,
+        "word": " way"
+      },
+      {
+        "start": 214.0,
+        "end": 214.22,
+        "word": " they"
+      },
+      {
+        "start": 214.22,
+        "end": 214.44,
+        "word": " saw"
+      },
+      {
+        "start": 214.44,
+        "end": 214.82,
+        "word": " ripples"
+      },
+      {
+        "start": 214.82,
+        "end": 215.02,
+        "word": " in"
+      },
+      {
+        "start": 215.02,
+        "end": 215.12,
+        "word": " the"
+      },
+      {
+        "start": 215.12,
+        "end": 215.32,
+        "word": " grass"
+      },
+      {
+        "start": 215.32,
+        "end": 215.64,
+        "word": " coming"
+      },
+      {
+        "start": 215.64,
+        "end": 215.92,
+        "word": " from"
+      },
+      {
+        "start": 215.92,
+        "end": 216.12,
+        "word": " that"
+      }
+    ]
+  },
+  {
+    "start": 216.12,
+    "end": 223.32,
+    "text": "direction also. Suddenly Uncle Henry stood up. There's a cyclone coming in, he called to his wife,",
+    "words": [
+      {
+        "start": 216.12,
+        "end": 216.56,
+        "word": " direction"
+      },
+      {
+        "start": 216.56,
+        "end": 217.06,
+        "word": " also."
+      },
+      {
+        "start": 218.1,
+        "end": 218.54,
+        "word": " Suddenly"
+      },
+      {
+        "start": 218.54,
+        "end": 219.08,
+        "word": " Uncle"
+      },
+      {
+        "start": 219.08,
+        "end": 219.48,
+        "word": " Henry"
+      },
+      {
+        "start": 219.48,
+        "end": 219.76,
+        "word": " stood"
+      },
+      {
+        "start": 219.76,
+        "end": 220.02,
+        "word": " up."
+      },
+      {
+        "start": 220.7,
+        "end": 221.06,
+        "word": " There's"
+      },
+      {
+        "start": 221.06,
+        "end": 221.14,
+        "word": " a"
+      },
+      {
+        "start": 221.14,
+        "end": 221.6,
+        "word": " cyclone"
+      },
+      {
+        "start": 221.6,
+        "end": 221.8,
+        "word": " coming"
+      },
+      {
+        "start": 221.8,
+        "end": 222.12,
+        "word": " in,"
+      },
+      {
+        "start": 222.44,
+        "end": 222.64,
+        "word": " he"
+      },
+      {
+        "start": 222.64,
+        "end": 222.82,
+        "word": " called"
+      },
+      {
+        "start": 222.82,
+        "end": 223.02,
+        "word": " to"
+      },
+      {
+        "start": 223.02,
+        "end": 223.16,
+        "word": " his"
+      },
+      {
+        "start": 223.16,
+        "end": 223.32,
+        "word": " wife,"
+      }
+    ]
+  },
+  {
+    "start": 223.92,
+    "end": 228.38,
+    "text": "I'll go look after the stalk, then he ran toward the sheds where the cows and horses were kept.",
+    "words": [
+      {
+        "start": 223.92,
+        "end": 224.16,
+        "word": " I'll"
+      },
+      {
+        "start": 224.16,
+        "end": 224.26,
+        "word": " go"
+      },
+      {
+        "start": 224.26,
+        "end": 224.46,
+        "word": " look"
+      },
+      {
+        "start": 224.46,
+        "end": 224.62,
+        "word": " after"
+      },
+      {
+        "start": 224.62,
+        "end": 224.88,
+        "word": " the"
+      },
+      {
+        "start": 224.88,
+        "end": 225.1,
+        "word": " stalk,"
+      },
+      {
+        "start": 225.74,
+        "end": 225.94,
+        "word": " then"
+      },
+      {
+        "start": 225.94,
+        "end": 226.02,
+        "word": " he"
+      },
+      {
+        "start": 226.02,
+        "end": 226.18,
+        "word": " ran"
+      },
+      {
+        "start": 226.18,
+        "end": 226.46,
+        "word": " toward"
+      },
+      {
+        "start": 226.46,
+        "end": 226.66,
+        "word": " the"
+      },
+      {
+        "start": 226.66,
+        "end": 226.86,
+        "word": " sheds"
+      },
+      {
+        "start": 226.86,
+        "end": 227.16,
+        "word": " where"
+      },
+      {
+        "start": 227.16,
+        "end": 227.26,
+        "word": " the"
+      },
+      {
+        "start": 227.26,
+        "end": 227.46,
+        "word": " cows"
+      },
+      {
+        "start": 227.46,
+        "end": 227.7,
+        "word": " and"
+      },
+      {
+        "start": 227.7,
+        "end": 227.88,
+        "word": " horses"
+      },
+      {
+        "start": 227.88,
+        "end": 228.18,
+        "word": " were"
+      },
+      {
+        "start": 228.18,
+        "end": 228.38,
+        "word": " kept."
+      }
+    ]
+  },
+  {
+    "start": 229.06,
+    "end": 234.12,
+    "text": "Aunt Am dropped her work and came to the door, one glance told her of the danger close at hand.",
+    "words": [
+      {
+        "start": 229.06,
+        "end": 229.5,
+        "word": " Aunt"
+      },
+      {
+        "start": 229.5,
+        "end": 229.72,
+        "word": " Am"
+      },
+      {
+        "start": 229.72,
+        "end": 229.98,
+        "word": " dropped"
+      },
+      {
+        "start": 229.98,
+        "end": 230.26,
+        "word": " her"
+      },
+      {
+        "start": 230.26,
+        "end": 230.42,
+        "word": " work"
+      },
+      {
+        "start": 230.42,
+        "end": 230.6,
+        "word": " and"
+      },
+      {
+        "start": 230.6,
+        "end": 230.76,
+        "word": " came"
+      },
+      {
+        "start": 230.76,
+        "end": 230.92,
+        "word": " to"
+      },
+      {
+        "start": 230.92,
+        "end": 231.02,
+        "word": " the"
+      },
+      {
+        "start": 231.02,
+        "end": 231.26,
+        "word": " door,"
+      },
+      {
+        "start": 231.72,
+        "end": 231.84,
+        "word": " one"
+      },
+      {
+        "start": 231.84,
+        "end": 232.08,
+        "word": " glance"
+      },
+      {
+        "start": 232.08,
+        "end": 232.46,
+        "word": " told"
+      },
+      {
+        "start": 232.46,
+        "end": 232.68,
+        "word": " her"
+      },
+      {
+        "start": 232.68,
+        "end": 233.04,
+        "word": " of"
+      },
+      {
+        "start": 233.04,
+        "end": 233.12,
+        "word": " the"
+      },
+      {
+        "start": 233.12,
+        "end": 233.36,
+        "word": " danger"
+      },
+      {
+        "start": 233.36,
+        "end": 233.64,
+        "word": " close"
+      },
+      {
+        "start": 233.64,
+        "end": 233.86,
+        "word": " at"
+      },
+      {
+        "start": 233.86,
+        "end": 234.12,
+        "word": " hand."
+      }
+    ]
+  },
+  {
+    "start": 234.92,
+    "end": 240.3,
+    "text": "Quick Dorothy, she screamed, run for the cellar. Toto jumped out of Dorothy's arms and hid under",
+    "words": [
+      {
+        "start": 234.92,
+        "end": 235.2,
+        "word": " Quick"
+      },
+      {
+        "start": 235.2,
+        "end": 235.4,
+        "word": " Dorothy,"
+      },
+      {
+        "start": 235.46,
+        "end": 235.78,
+        "word": " she"
+      },
+      {
+        "start": 235.78,
+        "end": 235.98,
+        "word": " screamed,"
+      },
+      {
+        "start": 236.52,
+        "end": 236.6,
+        "word": " run"
+      },
+      {
+        "start": 236.6,
+        "end": 236.78,
+        "word": " for"
+      },
+      {
+        "start": 236.78,
+        "end": 236.88,
+        "word": " the"
+      },
+      {
+        "start": 236.88,
+        "end": 237.1,
+        "word": " cellar."
+      },
+      {
+        "start": 238.16,
+        "end": 238.5,
+        "word": " Toto"
+      },
+      {
+        "start": 238.5,
+        "end": 238.74,
+        "word": " jumped"
+      },
+      {
+        "start": 238.74,
+        "end": 239.06,
+        "word": " out"
+      },
+      {
+        "start": 239.06,
+        "end": 239.2,
+        "word": " of"
+      },
+      {
+        "start": 239.2,
+        "end": 239.6,
+        "word": " Dorothy's"
+      },
+      {
+        "start": 239.6,
+        "end": 239.78,
+        "word": " arms"
+      },
+      {
+        "start": 239.78,
+        "end": 240.0,
+        "word": " and"
+      },
+      {
+        "start": 240.0,
+        "end": 240.16,
+        "word": " hid"
+      },
+      {
+        "start": 240.16,
+        "end": 240.3,
+        "word": " under"
+      }
+    ]
+  },
+  {
+    "start": 240.3,
+    "end": 245.82,
+    "text": "the bed, and the girl started to get him. Aunt Am, badly frightened, threw open the trap door in the",
+    "words": [
+      {
+        "start": 240.3,
+        "end": 240.52,
+        "word": " the"
+      },
+      {
+        "start": 240.52,
+        "end": 240.76,
+        "word": " bed,"
+      },
+      {
+        "start": 241.16,
+        "end": 241.22,
+        "word": " and"
+      },
+      {
+        "start": 241.22,
+        "end": 241.32,
+        "word": " the"
+      },
+      {
+        "start": 241.32,
+        "end": 241.5,
+        "word": " girl"
+      },
+      {
+        "start": 241.5,
+        "end": 241.82,
+        "word": " started"
+      },
+      {
+        "start": 241.82,
+        "end": 242.04,
+        "word": " to"
+      },
+      {
+        "start": 242.04,
+        "end": 242.18,
+        "word": " get"
+      },
+      {
+        "start": 242.18,
+        "end": 242.36,
+        "word": " him."
+      },
+      {
+        "start": 243.04,
+        "end": 243.2,
+        "word": " Aunt"
+      },
+      {
+        "start": 243.2,
+        "end": 243.46,
+        "word": " Am,"
+      },
+      {
+        "start": 243.66,
+        "end": 243.94,
+        "word": " badly"
+      },
+      {
+        "start": 243.94,
+        "end": 244.28,
+        "word": " frightened,"
+      },
+      {
+        "start": 244.66,
+        "end": 244.74,
+        "word": " threw"
+      },
+      {
+        "start": 244.74,
+        "end": 245.02,
+        "word": " open"
+      },
+      {
+        "start": 245.02,
+        "end": 245.16,
+        "word": " the"
+      },
+      {
+        "start": 245.16,
+        "end": 245.36,
+        "word": " trap"
+      },
+      {
+        "start": 245.36,
+        "end": 245.58,
+        "word": " door"
+      },
+      {
+        "start": 245.58,
+        "end": 245.74,
+        "word": " in"
+      },
+      {
+        "start": 245.74,
+        "end": 245.82,
+        "word": " the"
+      }
+    ]
+  },
+  {
+    "start": 245.82,
+    "end": 251.06,
+    "text": "floor and climbed down the ladder into the small dark hole. Dorothy caught Toto at last and started",
+    "words": [
+      {
+        "start": 245.82,
+        "end": 246.02,
+        "word": " floor"
+      },
+      {
+        "start": 246.02,
+        "end": 246.26,
+        "word": " and"
+      },
+      {
+        "start": 246.26,
+        "end": 246.52,
+        "word": " climbed"
+      },
+      {
+        "start": 246.52,
+        "end": 246.9,
+        "word": " down"
+      },
+      {
+        "start": 246.9,
+        "end": 247.04,
+        "word": " the"
+      },
+      {
+        "start": 247.04,
+        "end": 247.24,
+        "word": " ladder"
+      },
+      {
+        "start": 247.24,
+        "end": 247.5,
+        "word": " into"
+      },
+      {
+        "start": 247.5,
+        "end": 247.64,
+        "word": " the"
+      },
+      {
+        "start": 247.64,
+        "end": 247.9,
+        "word": " small"
+      },
+      {
+        "start": 247.9,
+        "end": 248.14,
+        "word": " dark"
+      },
+      {
+        "start": 248.14,
+        "end": 248.48,
+        "word": " hole."
+      },
+      {
+        "start": 249.28,
+        "end": 249.54,
+        "word": " Dorothy"
+      },
+      {
+        "start": 249.54,
+        "end": 249.74,
+        "word": " caught"
+      },
+      {
+        "start": 249.74,
+        "end": 250.08,
+        "word": " Toto"
+      },
+      {
+        "start": 250.08,
+        "end": 250.32,
+        "word": " at"
+      },
+      {
+        "start": 250.32,
+        "end": 250.5,
+        "word": " last"
+      },
+      {
+        "start": 250.5,
+        "end": 250.78,
+        "word": " and"
+      },
+      {
+        "start": 250.78,
+        "end": 251.06,
+        "word": " started"
+      }
+    ]
+  },
+  {
+    "start": 251.06,
+    "end": 256.38,
+    "text": "to follow her aunt. When she was halfway across the room there came a great shriek from the wind,",
+    "words": [
+      {
+        "start": 251.06,
+        "end": 251.34,
+        "word": " to"
+      },
+      {
+        "start": 251.34,
+        "end": 251.62,
+        "word": " follow"
+      },
+      {
+        "start": 251.62,
+        "end": 251.84,
+        "word": " her"
+      },
+      {
+        "start": 251.84,
+        "end": 252.02,
+        "word": " aunt."
+      },
+      {
+        "start": 252.8,
+        "end": 253.2,
+        "word": " When"
+      },
+      {
+        "start": 253.2,
+        "end": 253.42,
+        "word": " she"
+      },
+      {
+        "start": 253.42,
+        "end": 253.54,
+        "word": " was"
+      },
+      {
+        "start": 253.54,
+        "end": 253.9,
+        "word": " halfway"
+      },
+      {
+        "start": 253.9,
+        "end": 254.14,
+        "word": " across"
+      },
+      {
+        "start": 254.14,
+        "end": 254.44,
+        "word": " the"
+      },
+      {
+        "start": 254.44,
+        "end": 254.66,
+        "word": " room"
+      },
+      {
+        "start": 254.66,
+        "end": 254.94,
+        "word": " there"
+      },
+      {
+        "start": 254.94,
+        "end": 255.1,
+        "word": " came"
+      },
+      {
+        "start": 255.1,
+        "end": 255.22,
+        "word": " a"
+      },
+      {
+        "start": 255.22,
+        "end": 255.44,
+        "word": " great"
+      },
+      {
+        "start": 255.44,
+        "end": 255.9,
+        "word": " shriek"
+      },
+      {
+        "start": 255.9,
+        "end": 256.04,
+        "word": " from"
+      },
+      {
+        "start": 256.04,
+        "end": 256.2,
+        "word": " the"
+      },
+      {
+        "start": 256.2,
+        "end": 256.38,
+        "word": " wind,"
+      }
+    ]
+  },
+  {
+    "start": 256.38,
+    "end": 261.12,
+    "text": "and the house shook so hard that she lost her footing and sat down suddenly upon the floor.",
+    "words": [
+      {
+        "start": 256.38,
+        "end": 256.48,
+        "word": " and"
+      },
+      {
+        "start": 256.48,
+        "end": 257.08,
+        "word": " the"
+      },
+      {
+        "start": 257.08,
+        "end": 257.26,
+        "word": " house"
+      },
+      {
+        "start": 257.26,
+        "end": 257.58,
+        "word": " shook"
+      },
+      {
+        "start": 257.58,
+        "end": 257.84,
+        "word": " so"
+      },
+      {
+        "start": 257.84,
+        "end": 258.14,
+        "word": " hard"
+      },
+      {
+        "start": 258.14,
+        "end": 258.44,
+        "word": " that"
+      },
+      {
+        "start": 258.44,
+        "end": 258.58,
+        "word": " she"
+      },
+      {
+        "start": 258.58,
+        "end": 258.76,
+        "word": " lost"
+      },
+      {
+        "start": 258.76,
+        "end": 258.96,
+        "word": " her"
+      },
+      {
+        "start": 258.96,
+        "end": 259.16,
+        "word": " footing"
+      },
+      {
+        "start": 259.16,
+        "end": 259.42,
+        "word": " and"
+      },
+      {
+        "start": 259.42,
+        "end": 259.62,
+        "word": " sat"
+      },
+      {
+        "start": 259.62,
+        "end": 259.96,
+        "word": " down"
+      },
+      {
+        "start": 259.96,
+        "end": 260.32,
+        "word": " suddenly"
+      },
+      {
+        "start": 260.32,
+        "end": 260.66,
+        "word": " upon"
+      },
+      {
+        "start": 260.66,
+        "end": 260.86,
+        "word": " the"
+      },
+      {
+        "start": 260.86,
+        "end": 261.12,
+        "word": " floor."
+      }
+    ]
+  },
+  {
+    "start": 262.18,
+    "end": 267.38,
+    "text": "Then a strange thing happened. The house whirled around two or three times and rose slowly through",
+    "words": [
+      {
+        "start": 262.18,
+        "end": 262.64,
+        "word": " Then"
+      },
+      {
+        "start": 262.64,
+        "end": 262.76,
+        "word": " a"
+      },
+      {
+        "start": 262.76,
+        "end": 262.98,
+        "word": " strange"
+      },
+      {
+        "start": 262.98,
+        "end": 263.32,
+        "word": " thing"
+      },
+      {
+        "start": 263.32,
+        "end": 263.7,
+        "word": " happened."
+      },
+      {
+        "start": 264.38,
+        "end": 264.52,
+        "word": " The"
+      },
+      {
+        "start": 264.52,
+        "end": 264.76,
+        "word": " house"
+      },
+      {
+        "start": 264.76,
+        "end": 265.18,
+        "word": " whirled"
+      },
+      {
+        "start": 265.18,
+        "end": 265.42,
+        "word": " around"
+      },
+      {
+        "start": 265.42,
+        "end": 265.66,
+        "word": " two"
+      },
+      {
+        "start": 265.66,
+        "end": 265.76,
+        "word": " or"
+      },
+      {
+        "start": 265.76,
+        "end": 265.94,
+        "word": " three"
+      },
+      {
+        "start": 265.94,
+        "end": 266.26,
+        "word": " times"
+      },
+      {
+        "start": 266.26,
+        "end": 266.5,
+        "word": " and"
+      },
+      {
+        "start": 266.5,
+        "end": 266.68,
+        "word": " rose"
+      },
+      {
+        "start": 266.68,
+        "end": 267.08,
+        "word": " slowly"
+      },
+      {
+        "start": 267.08,
+        "end": 267.38,
+        "word": " through"
+      }
+    ]
+  },
+  {
+    "start": 267.38,
+    "end": 272.74,
+    "text": "the air. Dorothy felt as if she were going up in a balloon. North and South winds met where the",
+    "words": [
+      {
+        "start": 267.38,
+        "end": 267.52,
+        "word": " the"
+      },
+      {
+        "start": 267.52,
+        "end": 267.78,
+        "word": " air."
+      },
+      {
+        "start": 268.46,
+        "end": 268.72,
+        "word": " Dorothy"
+      },
+      {
+        "start": 268.72,
+        "end": 268.94,
+        "word": " felt"
+      },
+      {
+        "start": 268.94,
+        "end": 269.18,
+        "word": " as"
+      },
+      {
+        "start": 269.18,
+        "end": 269.34,
+        "word": " if"
+      },
+      {
+        "start": 269.34,
+        "end": 269.46,
+        "word": " she"
+      },
+      {
+        "start": 269.46,
+        "end": 269.58,
+        "word": " were"
+      },
+      {
+        "start": 269.58,
+        "end": 269.8,
+        "word": " going"
+      },
+      {
+        "start": 269.8,
+        "end": 270.0,
+        "word": " up"
+      },
+      {
+        "start": 270.0,
+        "end": 270.16,
+        "word": " in"
+      },
+      {
+        "start": 270.16,
+        "end": 270.22,
+        "word": " a"
+      },
+      {
+        "start": 270.22,
+        "end": 270.48,
+        "word": " balloon."
+      },
+      {
+        "start": 271.08,
+        "end": 271.22,
+        "word": " North"
+      },
+      {
+        "start": 271.22,
+        "end": 271.42,
+        "word": " and"
+      },
+      {
+        "start": 271.42,
+        "end": 271.68,
+        "word": " South"
+      },
+      {
+        "start": 271.68,
+        "end": 272.0,
+        "word": " winds"
+      },
+      {
+        "start": 272.0,
+        "end": 272.4,
+        "word": " met"
+      },
+      {
+        "start": 272.4,
+        "end": 272.64,
+        "word": " where"
+      },
+      {
+        "start": 272.64,
+        "end": 272.74,
+        "word": " the"
+      }
+    ]
+  },
+  {
+    "start": 272.74,
+    "end": 277.86,
+    "text": "house stood and made it the exact center of the cyclone. In the middle of a cyclone the air is",
+    "words": [
+      {
+        "start": 272.74,
+        "end": 272.94,
+        "word": " house"
+      },
+      {
+        "start": 272.94,
+        "end": 273.3,
+        "word": " stood"
+      },
+      {
+        "start": 273.3,
+        "end": 273.54,
+        "word": " and"
+      },
+      {
+        "start": 273.54,
+        "end": 273.7,
+        "word": " made"
+      },
+      {
+        "start": 273.7,
+        "end": 273.84,
+        "word": " it"
+      },
+      {
+        "start": 273.84,
+        "end": 273.98,
+        "word": " the"
+      },
+      {
+        "start": 273.98,
+        "end": 274.24,
+        "word": " exact"
+      },
+      {
+        "start": 274.24,
+        "end": 274.64,
+        "word": " center"
+      },
+      {
+        "start": 274.64,
+        "end": 274.84,
+        "word": " of"
+      },
+      {
+        "start": 274.84,
+        "end": 274.94,
+        "word": " the"
+      },
+      {
+        "start": 274.94,
+        "end": 275.48,
+        "word": " cyclone."
+      },
+      {
+        "start": 276.08,
+        "end": 276.42,
+        "word": " In"
+      },
+      {
+        "start": 276.42,
+        "end": 276.52,
+        "word": " the"
+      },
+      {
+        "start": 276.52,
+        "end": 276.7,
+        "word": " middle"
+      },
+      {
+        "start": 276.7,
+        "end": 276.84,
+        "word": " of"
+      },
+      {
+        "start": 276.84,
+        "end": 276.92,
+        "word": " a"
+      },
+      {
+        "start": 276.92,
+        "end": 277.38,
+        "word": " cyclone"
+      },
+      {
+        "start": 277.38,
+        "end": 277.5,
+        "word": " the"
+      },
+      {
+        "start": 277.5,
+        "end": 277.7,
+        "word": " air"
+      },
+      {
+        "start": 277.7,
+        "end": 277.86,
+        "word": " is"
+      }
+    ]
+  },
+  {
+    "start": 277.86,
+    "end": 283.54,
+    "text": "generally still, but the great pressure of the wind on every side of the house raised it up higher",
+    "words": [
+      {
+        "start": 277.86,
+        "end": 278.22,
+        "word": " generally"
+      },
+      {
+        "start": 278.22,
+        "end": 278.64,
+        "word": " still,"
+      },
+      {
+        "start": 279.44,
+        "end": 279.58,
+        "word": " but"
+      },
+      {
+        "start": 279.58,
+        "end": 279.7,
+        "word": " the"
+      },
+      {
+        "start": 279.7,
+        "end": 279.88,
+        "word": " great"
+      },
+      {
+        "start": 279.88,
+        "end": 280.2,
+        "word": " pressure"
+      },
+      {
+        "start": 280.2,
+        "end": 280.64,
+        "word": " of"
+      },
+      {
+        "start": 280.64,
+        "end": 280.78,
+        "word": " the"
+      },
+      {
+        "start": 280.78,
+        "end": 280.96,
+        "word": " wind"
+      },
+      {
+        "start": 280.96,
+        "end": 281.36,
+        "word": " on"
+      },
+      {
+        "start": 281.36,
+        "end": 281.58,
+        "word": " every"
+      },
+      {
+        "start": 281.58,
+        "end": 281.94,
+        "word": " side"
+      },
+      {
+        "start": 281.94,
+        "end": 282.04,
+        "word": " of"
+      },
+      {
+        "start": 282.04,
+        "end": 282.14,
+        "word": " the"
+      },
+      {
+        "start": 282.14,
+        "end": 282.4,
+        "word": " house"
+      },
+      {
+        "start": 282.4,
+        "end": 282.76,
+        "word": " raised"
+      },
+      {
+        "start": 282.76,
+        "end": 283.12,
+        "word": " it"
+      },
+      {
+        "start": 283.12,
+        "end": 283.22,
+        "word": " up"
+      },
+      {
+        "start": 283.22,
+        "end": 283.54,
+        "word": " higher"
+      }
+    ]
+  },
+  {
+    "start": 283.54,
+    "end": 289.14,
+    "text": "and higher until it was at the very top of the cyclone, and there it remained and was carried",
+    "words": [
+      {
+        "start": 283.54,
+        "end": 283.82,
+        "word": " and"
+      },
+      {
+        "start": 283.82,
+        "end": 284.06,
+        "word": " higher"
+      },
+      {
+        "start": 284.06,
+        "end": 284.78,
+        "word": " until"
+      },
+      {
+        "start": 284.78,
+        "end": 285.08,
+        "word": " it"
+      },
+      {
+        "start": 285.08,
+        "end": 285.24,
+        "word": " was"
+      },
+      {
+        "start": 285.24,
+        "end": 285.36,
+        "word": " at"
+      },
+      {
+        "start": 285.36,
+        "end": 285.48,
+        "word": " the"
+      },
+      {
+        "start": 285.48,
+        "end": 285.72,
+        "word": " very"
+      },
+      {
+        "start": 285.72,
+        "end": 286.04,
+        "word": " top"
+      },
+      {
+        "start": 286.04,
+        "end": 286.18,
+        "word": " of"
+      },
+      {
+        "start": 286.18,
+        "end": 286.26,
+        "word": " the"
+      },
+      {
+        "start": 286.26,
+        "end": 286.82,
+        "word": " cyclone,"
+      },
+      {
+        "start": 287.24,
+        "end": 287.46,
+        "word": " and"
+      },
+      {
+        "start": 287.46,
+        "end": 287.6,
+        "word": " there"
+      },
+      {
+        "start": 287.6,
+        "end": 287.74,
+        "word": " it"
+      },
+      {
+        "start": 287.74,
+        "end": 288.06,
+        "word": " remained"
+      },
+      {
+        "start": 288.06,
+        "end": 288.76,
+        "word": " and"
+      },
+      {
+        "start": 288.76,
+        "end": 288.86,
+        "word": " was"
+      },
+      {
+        "start": 288.86,
+        "end": 289.14,
+        "word": " carried"
+      }
+    ]
+  },
+  {
+    "start": 289.14,
+    "end": 296.02,
+    "text": "miles and miles away as easily as you could carry a feather. It was very dark and the wind",
+    "words": [
+      {
+        "start": 289.14,
+        "end": 289.56,
+        "word": " miles"
+      },
+      {
+        "start": 289.56,
+        "end": 289.84,
+        "word": " and"
+      },
+      {
+        "start": 289.84,
+        "end": 290.06,
+        "word": " miles"
+      },
+      {
+        "start": 290.06,
+        "end": 290.5,
+        "word": " away"
+      },
+      {
+        "start": 290.5,
+        "end": 291.22,
+        "word": " as"
+      },
+      {
+        "start": 291.22,
+        "end": 291.58,
+        "word": " easily"
+      },
+      {
+        "start": 291.58,
+        "end": 291.82,
+        "word": " as"
+      },
+      {
+        "start": 291.82,
+        "end": 291.96,
+        "word": " you"
+      },
+      {
+        "start": 291.96,
+        "end": 292.12,
+        "word": " could"
+      },
+      {
+        "start": 292.12,
+        "end": 292.38,
+        "word": " carry"
+      },
+      {
+        "start": 292.38,
+        "end": 292.54,
+        "word": " a"
+      },
+      {
+        "start": 292.54,
+        "end": 292.76,
+        "word": " feather."
+      },
+      {
+        "start": 293.88,
+        "end": 294.42,
+        "word": " It"
+      },
+      {
+        "start": 294.42,
+        "end": 294.54,
+        "word": " was"
+      },
+      {
+        "start": 294.54,
+        "end": 294.86,
+        "word": " very"
+      },
+      {
+        "start": 294.86,
+        "end": 295.2,
+        "word": " dark"
+      },
+      {
+        "start": 295.2,
+        "end": 295.72,
+        "word": " and"
+      },
+      {
+        "start": 295.72,
+        "end": 295.84,
+        "word": " the"
+      },
+      {
+        "start": 295.84,
+        "end": 296.02,
+        "word": " wind"
+      }
+    ]
+  },
+  {
+    "start": 296.02,
+    "end": 301.94,
+    "text": "howled horribly around her, but Dorothy found she was riding quite easily after the first few",
+    "words": [
+      {
+        "start": 296.02,
+        "end": 296.52,
+        "word": " howled"
+      },
+      {
+        "start": 296.52,
+        "end": 296.78,
+        "word": " horribly"
+      },
+      {
+        "start": 296.78,
+        "end": 297.34,
+        "word": " around"
+      },
+      {
+        "start": 297.34,
+        "end": 297.6,
+        "word": " her,"
+      },
+      {
+        "start": 298.08,
+        "end": 298.16,
+        "word": " but"
+      },
+      {
+        "start": 298.16,
+        "end": 298.3,
+        "word": " Dorothy"
+      },
+      {
+        "start": 298.3,
+        "end": 298.72,
+        "word": " found"
+      },
+      {
+        "start": 298.72,
+        "end": 299.12,
+        "word": " she"
+      },
+      {
+        "start": 299.12,
+        "end": 299.26,
+        "word": " was"
+      },
+      {
+        "start": 299.26,
+        "end": 299.54,
+        "word": " riding"
+      },
+      {
+        "start": 299.54,
+        "end": 299.9,
+        "word": " quite"
+      },
+      {
+        "start": 299.9,
+        "end": 300.28,
+        "word": " easily"
+      },
+      {
+        "start": 300.28,
+        "end": 301.12,
+        "word": " after"
+      },
+      {
+        "start": 301.12,
+        "end": 301.42,
+        "word": " the"
+      },
+      {
+        "start": 301.42,
+        "end": 301.64,
+        "word": " first"
+      },
+      {
+        "start": 301.64,
+        "end": 301.94,
+        "word": " few"
+      }
+    ]
+  },
+  {
+    "start": 301.94,
+    "end": 307.38,
+    "text": "whirls around, and another one time when the house tipped badly she felt as if she were being",
+    "words": [
+      {
+        "start": 301.94,
+        "end": 302.36,
+        "word": " whirls"
+      },
+      {
+        "start": 302.36,
+        "end": 302.5,
+        "word": " around,"
+      },
+      {
+        "start": 303.3,
+        "end": 303.36,
+        "word": " and"
+      },
+      {
+        "start": 303.36,
+        "end": 303.62,
+        "word": " another"
+      },
+      {
+        "start": 303.62,
+        "end": 303.92,
+        "word": " one"
+      },
+      {
+        "start": 303.92,
+        "end": 304.22,
+        "word": " time"
+      },
+      {
+        "start": 304.22,
+        "end": 304.4,
+        "word": " when"
+      },
+      {
+        "start": 304.4,
+        "end": 304.52,
+        "word": " the"
+      },
+      {
+        "start": 304.52,
+        "end": 304.7,
+        "word": " house"
+      },
+      {
+        "start": 304.7,
+        "end": 304.98,
+        "word": " tipped"
+      },
+      {
+        "start": 304.98,
+        "end": 305.32,
+        "word": " badly"
+      },
+      {
+        "start": 305.32,
+        "end": 306.3,
+        "word": " she"
+      },
+      {
+        "start": 306.3,
+        "end": 306.44,
+        "word": " felt"
+      },
+      {
+        "start": 306.44,
+        "end": 306.66,
+        "word": " as"
+      },
+      {
+        "start": 306.66,
+        "end": 306.82,
+        "word": " if"
+      },
+      {
+        "start": 306.82,
+        "end": 306.98,
+        "word": " she"
+      },
+      {
+        "start": 306.98,
+        "end": 307.14,
+        "word": " were"
+      },
+      {
+        "start": 307.14,
+        "end": 307.40999999999997,
+        "word": " being"
+      }
+    ]
+  },
+  {
+    "start": 307.41,
+    "end": 309.57,
+    "text": "rocked gently like a baby in a cradle.",
+    "words": [
+      {
+        "start": 307.41,
+        "end": 307.75,
+        "word": " rocked"
+      },
+      {
+        "start": 307.75,
+        "end": 307.99,
+        "word": " gently"
+      },
+      {
+        "start": 307.99,
+        "end": 308.75,
+        "word": " like"
+      },
+      {
+        "start": 308.75,
+        "end": 308.85,
+        "word": " a"
+      },
+      {
+        "start": 308.85,
+        "end": 309.11,
+        "word": " baby"
+      },
+      {
+        "start": 309.11,
+        "end": 309.27,
+        "word": " in"
+      },
+      {
+        "start": 309.27,
+        "end": 309.35,
+        "word": " a"
+      },
+      {
+        "start": 309.35,
+        "end": 309.57,
+        "word": " cradle."
+      }
+    ]
+  },
+  {
+    "start": 310.81,
+    "end": 316.47,
+    "text": "Toto did not like it. He ran about the room, now here, now there, barking loudly, but Dorothy",
+    "words": [
+      {
+        "start": 310.81,
+        "end": 311.17,
+        "word": " Toto"
+      },
+      {
+        "start": 311.17,
+        "end": 311.43,
+        "word": " did"
+      },
+      {
+        "start": 311.43,
+        "end": 311.65,
+        "word": " not"
+      },
+      {
+        "start": 311.65,
+        "end": 311.93,
+        "word": " like"
+      },
+      {
+        "start": 311.93,
+        "end": 312.13,
+        "word": " it."
+      },
+      {
+        "start": 312.71,
+        "end": 312.83,
+        "word": " He"
+      },
+      {
+        "start": 312.83,
+        "end": 313.01,
+        "word": " ran"
+      },
+      {
+        "start": 313.01,
+        "end": 313.27,
+        "word": " about"
+      },
+      {
+        "start": 313.27,
+        "end": 313.45,
+        "word": " the"
+      },
+      {
+        "start": 313.45,
+        "end": 313.67,
+        "word": " room,"
+      },
+      {
+        "start": 313.99,
+        "end": 314.09,
+        "word": " now"
+      },
+      {
+        "start": 314.09,
+        "end": 314.29,
+        "word": " here,"
+      },
+      {
+        "start": 314.51,
+        "end": 314.67,
+        "word": " now"
+      },
+      {
+        "start": 314.67,
+        "end": 314.89,
+        "word": " there,"
+      },
+      {
+        "start": 315.17,
+        "end": 315.39,
+        "word": " barking"
+      },
+      {
+        "start": 315.39,
+        "end": 315.65,
+        "word": " loudly,"
+      },
+      {
+        "start": 316.29,
+        "end": 316.31,
+        "word": " but"
+      },
+      {
+        "start": 316.31,
+        "end": 316.47,
+        "word": " Dorothy"
+      }
+    ]
+  },
+  {
+    "start": 316.47,
+    "end": 322.99,
+    "text": "sat quite still on the floor and waited to see what would happen. Once Toto got too near the open",
+    "words": [
+      {
+        "start": 316.47,
+        "end": 316.91,
+        "word": " sat"
+      },
+      {
+        "start": 316.91,
+        "end": 317.33,
+        "word": " quite"
+      },
+      {
+        "start": 317.33,
+        "end": 317.67,
+        "word": " still"
+      },
+      {
+        "start": 317.67,
+        "end": 317.87,
+        "word": " on"
+      },
+      {
+        "start": 317.87,
+        "end": 317.99,
+        "word": " the"
+      },
+      {
+        "start": 317.99,
+        "end": 318.21,
+        "word": " floor"
+      },
+      {
+        "start": 318.21,
+        "end": 318.41,
+        "word": " and"
+      },
+      {
+        "start": 318.41,
+        "end": 318.57,
+        "word": " waited"
+      },
+      {
+        "start": 318.57,
+        "end": 318.81,
+        "word": " to"
+      },
+      {
+        "start": 318.81,
+        "end": 318.97,
+        "word": " see"
+      },
+      {
+        "start": 318.97,
+        "end": 319.13,
+        "word": " what"
+      },
+      {
+        "start": 319.13,
+        "end": 319.25,
+        "word": " would"
+      },
+      {
+        "start": 319.25,
+        "end": 319.59,
+        "word": " happen."
+      },
+      {
+        "start": 320.61,
+        "end": 321.05,
+        "word": " Once"
+      },
+      {
+        "start": 321.05,
+        "end": 321.67,
+        "word": " Toto"
+      },
+      {
+        "start": 321.67,
+        "end": 321.93,
+        "word": " got"
+      },
+      {
+        "start": 321.93,
+        "end": 322.27,
+        "word": " too"
+      },
+      {
+        "start": 322.27,
+        "end": 322.49,
+        "word": " near"
+      },
+      {
+        "start": 322.49,
+        "end": 322.67,
+        "word": " the"
+      },
+      {
+        "start": 322.67,
+        "end": 322.99,
+        "word": " open"
+      }
+    ]
+  },
+  {
+    "start": 322.99,
+    "end": 328.91,
+    "text": "trap door and fell in, and at first the little girl thought she had lost him, but soon she saw",
+    "words": [
+      {
+        "start": 322.99,
+        "end": 323.27,
+        "word": " trap"
+      },
+      {
+        "start": 323.27,
+        "end": 323.57,
+        "word": " door"
+      },
+      {
+        "start": 323.57,
+        "end": 323.85,
+        "word": " and"
+      },
+      {
+        "start": 323.85,
+        "end": 324.07,
+        "word": " fell"
+      },
+      {
+        "start": 324.07,
+        "end": 324.35,
+        "word": " in,"
+      },
+      {
+        "start": 325.03,
+        "end": 325.39,
+        "word": " and"
+      },
+      {
+        "start": 325.39,
+        "end": 325.49,
+        "word": " at"
+      },
+      {
+        "start": 325.49,
+        "end": 325.67,
+        "word": " first"
+      },
+      {
+        "start": 325.67,
+        "end": 325.95,
+        "word": " the"
+      },
+      {
+        "start": 325.95,
+        "end": 326.11,
+        "word": " little"
+      },
+      {
+        "start": 326.11,
+        "end": 326.35,
+        "word": " girl"
+      },
+      {
+        "start": 326.35,
+        "end": 326.67,
+        "word": " thought"
+      },
+      {
+        "start": 326.67,
+        "end": 326.89,
+        "word": " she"
+      },
+      {
+        "start": 326.89,
+        "end": 327.01,
+        "word": " had"
+      },
+      {
+        "start": 327.01,
+        "end": 327.25,
+        "word": " lost"
+      },
+      {
+        "start": 327.25,
+        "end": 327.53,
+        "word": " him,"
+      },
+      {
+        "start": 328.05,
+        "end": 328.21,
+        "word": " but"
+      },
+      {
+        "start": 328.21,
+        "end": 328.43,
+        "word": " soon"
+      },
+      {
+        "start": 328.43,
+        "end": 328.71,
+        "word": " she"
+      },
+      {
+        "start": 328.71,
+        "end": 328.91,
+        "word": " saw"
+      }
+    ]
+  },
+  {
+    "start": 328.91,
+    "end": 333.41,
+    "text": "one of his ears sticking up through the hole, for the strong pressure of the air was keeping him",
+    "words": [
+      {
+        "start": 328.91,
+        "end": 329.11,
+        "word": " one"
+      },
+      {
+        "start": 329.11,
+        "end": 329.19,
+        "word": " of"
+      },
+      {
+        "start": 329.19,
+        "end": 329.31,
+        "word": " his"
+      },
+      {
+        "start": 329.31,
+        "end": 329.45,
+        "word": " ears"
+      },
+      {
+        "start": 329.45,
+        "end": 329.81,
+        "word": " sticking"
+      },
+      {
+        "start": 329.81,
+        "end": 330.07,
+        "word": " up"
+      },
+      {
+        "start": 330.07,
+        "end": 330.25,
+        "word": " through"
+      },
+      {
+        "start": 330.25,
+        "end": 330.37,
+        "word": " the"
+      },
+      {
+        "start": 330.37,
+        "end": 330.57,
+        "word": " hole,"
+      },
+      {
+        "start": 331.29,
+        "end": 331.43,
+        "word": " for"
+      },
+      {
+        "start": 331.43,
+        "end": 331.55,
+        "word": " the"
+      },
+      {
+        "start": 331.55,
+        "end": 331.77,
+        "word": " strong"
+      },
+      {
+        "start": 331.77,
+        "end": 332.07,
+        "word": " pressure"
+      },
+      {
+        "start": 332.07,
+        "end": 332.33,
+        "word": " of"
+      },
+      {
+        "start": 332.33,
+        "end": 332.45,
+        "word": " the"
+      },
+      {
+        "start": 332.45,
+        "end": 332.63,
+        "word": " air"
+      },
+      {
+        "start": 332.63,
+        "end": 332.81,
+        "word": " was"
+      },
+      {
+        "start": 332.81,
+        "end": 333.07,
+        "word": " keeping"
+      },
+      {
+        "start": 333.07,
+        "end": 333.41,
+        "word": " him"
+      }
+    ]
+  },
+  {
+    "start": 333.41,
+    "end": 339.27,
+    "text": "up so that he could not fall. She crept to the hole, caught Toto by the year, and dragged him",
+    "words": [
+      {
+        "start": 333.41,
+        "end": 333.57,
+        "word": " up"
+      },
+      {
+        "start": 333.57,
+        "end": 333.79,
+        "word": " so"
+      },
+      {
+        "start": 333.79,
+        "end": 333.91,
+        "word": " that"
+      },
+      {
+        "start": 333.91,
+        "end": 333.99,
+        "word": " he"
+      },
+      {
+        "start": 333.99,
+        "end": 334.13,
+        "word": " could"
+      },
+      {
+        "start": 334.13,
+        "end": 334.31,
+        "word": " not"
+      },
+      {
+        "start": 334.31,
+        "end": 334.63,
+        "word": " fall."
+      },
+      {
+        "start": 335.55,
+        "end": 335.73,
+        "word": " She"
+      },
+      {
+        "start": 335.73,
+        "end": 335.89,
+        "word": " crept"
+      },
+      {
+        "start": 335.89,
+        "end": 336.09,
+        "word": " to"
+      },
+      {
+        "start": 336.09,
+        "end": 336.21,
+        "word": " the"
+      },
+      {
+        "start": 336.21,
+        "end": 336.43,
+        "word": " hole,"
+      },
+      {
+        "start": 336.93,
+        "end": 337.15,
+        "word": " caught"
+      },
+      {
+        "start": 337.15,
+        "end": 337.39,
+        "word": " Toto"
+      },
+      {
+        "start": 337.39,
+        "end": 337.61,
+        "word": " by"
+      },
+      {
+        "start": 337.61,
+        "end": 337.77,
+        "word": " the"
+      },
+      {
+        "start": 337.77,
+        "end": 338.05,
+        "word": " year,"
+      },
+      {
+        "start": 338.57,
+        "end": 338.67,
+        "word": " and"
+      },
+      {
+        "start": 338.67,
+        "end": 338.97,
+        "word": " dragged"
+      },
+      {
+        "start": 338.97,
+        "end": 339.27,
+        "word": " him"
+      }
+    ]
+  },
+  {
+    "start": 339.27,
+    "end": 344.01,
+    "text": "into the room again, afterward closing the trap door so that no more accidents could happen.",
+    "words": [
+      {
+        "start": 339.27,
+        "end": 339.43,
+        "word": " into"
+      },
+      {
+        "start": 339.43,
+        "end": 339.59,
+        "word": " the"
+      },
+      {
+        "start": 339.59,
+        "end": 339.77,
+        "word": " room"
+      },
+      {
+        "start": 339.77,
+        "end": 340.07,
+        "word": " again,"
+      },
+      {
+        "start": 340.63,
+        "end": 341.07,
+        "word": " afterward"
+      },
+      {
+        "start": 341.07,
+        "end": 341.53,
+        "word": " closing"
+      },
+      {
+        "start": 341.53,
+        "end": 341.85,
+        "word": " the"
+      },
+      {
+        "start": 341.85,
+        "end": 342.07,
+        "word": " trap"
+      },
+      {
+        "start": 342.07,
+        "end": 342.25,
+        "word": " door"
+      },
+      {
+        "start": 342.25,
+        "end": 342.51,
+        "word": " so"
+      },
+      {
+        "start": 342.51,
+        "end": 342.65,
+        "word": " that"
+      },
+      {
+        "start": 342.65,
+        "end": 342.81,
+        "word": " no"
+      },
+      {
+        "start": 342.81,
+        "end": 343.01,
+        "word": " more"
+      },
+      {
+        "start": 343.01,
+        "end": 343.31,
+        "word": " accidents"
+      },
+      {
+        "start": 343.31,
+        "end": 343.67,
+        "word": " could"
+      },
+      {
+        "start": 343.67,
+        "end": 344.01,
+        "word": " happen."
+      }
+    ]
+  },
+  {
+    "start": 344.67,
+    "end": 350.13,
+    "text": "Hour after hour passed away and slowly Dorothy got over her fright, but she felt quite lonely,",
+    "words": [
+      {
+        "start": 344.67,
+        "end": 345.05,
+        "word": " Hour"
+      },
+      {
+        "start": 345.05,
+        "end": 345.37,
+        "word": " after"
+      },
+      {
+        "start": 345.37,
+        "end": 345.77,
+        "word": " hour"
+      },
+      {
+        "start": 345.77,
+        "end": 345.99,
+        "word": " passed"
+      },
+      {
+        "start": 345.99,
+        "end": 346.43,
+        "word": " away"
+      },
+      {
+        "start": 346.43,
+        "end": 346.73,
+        "word": " and"
+      },
+      {
+        "start": 346.73,
+        "end": 347.03,
+        "word": " slowly"
+      },
+      {
+        "start": 347.03,
+        "end": 347.39,
+        "word": " Dorothy"
+      },
+      {
+        "start": 347.39,
+        "end": 347.75,
+        "word": " got"
+      },
+      {
+        "start": 347.75,
+        "end": 348.01,
+        "word": " over"
+      },
+      {
+        "start": 348.01,
+        "end": 348.17,
+        "word": " her"
+      },
+      {
+        "start": 348.17,
+        "end": 348.45,
+        "word": " fright,"
+      },
+      {
+        "start": 349.01,
+        "end": 349.25,
+        "word": " but"
+      },
+      {
+        "start": 349.25,
+        "end": 349.39,
+        "word": " she"
+      },
+      {
+        "start": 349.39,
+        "end": 349.59,
+        "word": " felt"
+      },
+      {
+        "start": 349.59,
+        "end": 349.89,
+        "word": " quite"
+      },
+      {
+        "start": 349.89,
+        "end": 350.13,
+        "word": " lonely,"
+      }
+    ]
+  },
+  {
+    "start": 350.77,
+    "end": 354.37,
+    "text": "and the wind shriek so loudly all about her that she nearly became deaf.",
+    "words": [
+      {
+        "start": 350.77,
+        "end": 351.13,
+        "word": " and"
+      },
+      {
+        "start": 351.13,
+        "end": 351.21,
+        "word": " the"
+      },
+      {
+        "start": 351.21,
+        "end": 351.35,
+        "word": " wind"
+      },
+      {
+        "start": 351.35,
+        "end": 351.75,
+        "word": " shriek"
+      },
+      {
+        "start": 351.75,
+        "end": 351.97,
+        "word": " so"
+      },
+      {
+        "start": 351.97,
+        "end": 352.33,
+        "word": " loudly"
+      },
+      {
+        "start": 352.33,
+        "end": 352.71,
+        "word": " all"
+      },
+      {
+        "start": 352.71,
+        "end": 352.91,
+        "word": " about"
+      },
+      {
+        "start": 352.91,
+        "end": 353.15,
+        "word": " her"
+      },
+      {
+        "start": 353.15,
+        "end": 353.29,
+        "word": " that"
+      },
+      {
+        "start": 353.29,
+        "end": 353.51,
+        "word": " she"
+      },
+      {
+        "start": 353.51,
+        "end": 353.73,
+        "word": " nearly"
+      },
+      {
+        "start": 353.73,
+        "end": 354.11,
+        "word": " became"
+      },
+      {
+        "start": 354.11,
+        "end": 354.37,
+        "word": " deaf."
+      }
+    ]
+  },
+  {
+    "start": 355.07,
+    "end": 360.07,
+    "text": "At first she wondered if she would be dashed to pieces when the house fell again, but as the hours",
+    "words": [
+      {
+        "start": 355.07,
+        "end": 355.41,
+        "word": " At"
+      },
+      {
+        "start": 355.41,
+        "end": 355.65,
+        "word": " first"
+      },
+      {
+        "start": 355.65,
+        "end": 356.21,
+        "word": " she"
+      },
+      {
+        "start": 356.21,
+        "end": 356.37,
+        "word": " wondered"
+      },
+      {
+        "start": 356.37,
+        "end": 356.59,
+        "word": " if"
+      },
+      {
+        "start": 356.59,
+        "end": 356.69,
+        "word": " she"
+      },
+      {
+        "start": 356.69,
+        "end": 356.83,
+        "word": " would"
+      },
+      {
+        "start": 356.83,
+        "end": 356.97,
+        "word": " be"
+      },
+      {
+        "start": 356.97,
+        "end": 357.23,
+        "word": " dashed"
+      },
+      {
+        "start": 357.23,
+        "end": 357.45,
+        "word": " to"
+      },
+      {
+        "start": 357.45,
+        "end": 357.63,
+        "word": " pieces"
+      },
+      {
+        "start": 357.63,
+        "end": 357.91,
+        "word": " when"
+      },
+      {
+        "start": 357.91,
+        "end": 358.03,
+        "word": " the"
+      },
+      {
+        "start": 358.03,
+        "end": 358.17,
+        "word": " house"
+      },
+      {
+        "start": 358.17,
+        "end": 358.45,
+        "word": " fell"
+      },
+      {
+        "start": 358.45,
+        "end": 358.73,
+        "word": " again,"
+      },
+      {
+        "start": 359.19,
+        "end": 359.59,
+        "word": " but"
+      },
+      {
+        "start": 359.59,
+        "end": 359.69,
+        "word": " as"
+      },
+      {
+        "start": 359.69,
+        "end": 359.83,
+        "word": " the"
+      },
+      {
+        "start": 359.83,
+        "end": 360.07,
+        "word": " hours"
+      }
+    ]
+  },
+  {
+    "start": 360.07,
+    "end": 365.27,
+    "text": "passed and nothing terrible happened she stopped worrying and resolved to wait calmly and see",
+    "words": [
+      {
+        "start": 360.07,
+        "end": 360.45,
+        "word": " passed"
+      },
+      {
+        "start": 360.45,
+        "end": 360.71,
+        "word": " and"
+      },
+      {
+        "start": 360.71,
+        "end": 360.99,
+        "word": " nothing"
+      },
+      {
+        "start": 360.99,
+        "end": 361.25,
+        "word": " terrible"
+      },
+      {
+        "start": 361.25,
+        "end": 361.71,
+        "word": " happened"
+      },
+      {
+        "start": 361.71,
+        "end": 362.43,
+        "word": " she"
+      },
+      {
+        "start": 362.43,
+        "end": 362.63,
+        "word": " stopped"
+      },
+      {
+        "start": 362.63,
+        "end": 362.97,
+        "word": " worrying"
+      },
+      {
+        "start": 362.97,
+        "end": 363.75,
+        "word": " and"
+      },
+      {
+        "start": 363.75,
+        "end": 363.99,
+        "word": " resolved"
+      },
+      {
+        "start": 363.99,
+        "end": 364.25,
+        "word": " to"
+      },
+      {
+        "start": 364.25,
+        "end": 364.39,
+        "word": " wait"
+      },
+      {
+        "start": 364.39,
+        "end": 364.65,
+        "word": " calmly"
+      },
+      {
+        "start": 364.65,
+        "end": 365.07,
+        "word": " and"
+      },
+      {
+        "start": 365.07,
+        "end": 365.27,
+        "word": " see"
+      }
+    ]
+  },
+  {
+    "start": 365.27,
+    "end": 371.59,
+    "text": "what the future would bring. At last she crawled over the swaying floor to her bed and laid down",
+    "words": [
+      {
+        "start": 365.27,
+        "end": 365.55,
+        "word": " what"
+      },
+      {
+        "start": 365.55,
+        "end": 365.67,
+        "word": " the"
+      },
+      {
+        "start": 365.67,
+        "end": 365.85,
+        "word": " future"
+      },
+      {
+        "start": 365.85,
+        "end": 366.11,
+        "word": " would"
+      },
+      {
+        "start": 366.11,
+        "end": 366.41,
+        "word": " bring."
+      },
+      {
+        "start": 367.21,
+        "end": 367.69,
+        "word": " At"
+      },
+      {
+        "start": 367.69,
+        "end": 367.89,
+        "word": " last"
+      },
+      {
+        "start": 367.89,
+        "end": 368.17,
+        "word": " she"
+      },
+      {
+        "start": 368.17,
+        "end": 368.37,
+        "word": " crawled"
+      },
+      {
+        "start": 368.37,
+        "end": 368.79,
+        "word": " over"
+      },
+      {
+        "start": 368.79,
+        "end": 368.93,
+        "word": " the"
+      },
+      {
+        "start": 368.93,
+        "end": 369.37,
+        "word": " swaying"
+      },
+      {
+        "start": 369.37,
+        "end": 369.57,
+        "word": " floor"
+      },
+      {
+        "start": 369.57,
+        "end": 369.85,
+        "word": " to"
+      },
+      {
+        "start": 369.85,
+        "end": 369.97,
+        "word": " her"
+      },
+      {
+        "start": 369.97,
+        "end": 370.21,
+        "word": " bed"
+      },
+      {
+        "start": 370.21,
+        "end": 371.13,
+        "word": " and"
+      },
+      {
+        "start": 371.13,
+        "end": 371.33,
+        "word": " laid"
+      },
+      {
+        "start": 371.33,
+        "end": 371.59,
+        "word": " down"
+      }
+    ]
+  },
+  {
+    "start": 371.59,
+    "end": 378.55,
+    "text": "upon it, and Toto followed and laid down beside her. In spite of the swaying of the house and the",
+    "words": [
+      {
+        "start": 371.59,
+        "end": 371.89,
+        "word": " upon"
+      },
+      {
+        "start": 371.89,
+        "end": 372.13,
+        "word": " it,"
+      },
+      {
+        "start": 372.71,
+        "end": 372.75,
+        "word": " and"
+      },
+      {
+        "start": 372.75,
+        "end": 373.01,
+        "word": " Toto"
+      },
+      {
+        "start": 373.01,
+        "end": 373.47,
+        "word": " followed"
+      },
+      {
+        "start": 373.47,
+        "end": 373.73,
+        "word": " and"
+      },
+      {
+        "start": 373.73,
+        "end": 373.91,
+        "word": " laid"
+      },
+      {
+        "start": 373.91,
+        "end": 374.21,
+        "word": " down"
+      },
+      {
+        "start": 374.21,
+        "end": 374.49,
+        "word": " beside"
+      },
+      {
+        "start": 374.49,
+        "end": 374.85,
+        "word": " her."
+      },
+      {
+        "start": 375.93,
+        "end": 376.17,
+        "word": " In"
+      },
+      {
+        "start": 376.17,
+        "end": 376.41,
+        "word": " spite"
+      },
+      {
+        "start": 376.41,
+        "end": 376.67,
+        "word": " of"
+      },
+      {
+        "start": 376.67,
+        "end": 376.81,
+        "word": " the"
+      },
+      {
+        "start": 376.81,
+        "end": 377.25,
+        "word": " swaying"
+      },
+      {
+        "start": 377.25,
+        "end": 377.35,
+        "word": " of"
+      },
+      {
+        "start": 377.35,
+        "end": 377.45,
+        "word": " the"
+      },
+      {
+        "start": 377.45,
+        "end": 377.71,
+        "word": " house"
+      },
+      {
+        "start": 377.71,
+        "end": 378.43,
+        "word": " and"
+      },
+      {
+        "start": 378.43,
+        "end": 378.55,
+        "word": " the"
+      }
+    ]
+  },
+  {
+    "start": 378.55,
+    "end": 383.73,
+    "text": "wailing of the wind, Dorothy soon closed her eyes and fell fast asleep.",
+    "words": [
+      {
+        "start": 378.55,
+        "end": 378.79,
+        "word": " wailing"
+      },
+      {
+        "start": 378.79,
+        "end": 379.05,
+        "word": " of"
+      },
+      {
+        "start": 379.05,
+        "end": 379.19,
+        "word": " the"
+      },
+      {
+        "start": 379.19,
+        "end": 379.39,
+        "word": " wind,"
+      },
+      {
+        "start": 380.41,
+        "end": 380.43,
+        "word": " Dorothy"
+      },
+      {
+        "start": 380.43,
+        "end": 380.93,
+        "word": " soon"
+      },
+      {
+        "start": 380.93,
+        "end": 381.29,
+        "word": " closed"
+      },
+      {
+        "start": 381.29,
+        "end": 381.53,
+        "word": " her"
+      },
+      {
+        "start": 381.53,
+        "end": 381.89,
+        "word": " eyes"
+      },
+      {
+        "start": 381.89,
+        "end": 382.65,
+        "word": " and"
+      },
+      {
+        "start": 382.65,
+        "end": 382.87,
+        "word": " fell"
+      },
+      {
+        "start": 382.87,
+        "end": 383.37,
+        "word": " fast"
+      },
+      {
+        "start": 383.37,
+        "end": 383.73,
+        "word": " asleep."
+      }
+    ]
+  }
+]

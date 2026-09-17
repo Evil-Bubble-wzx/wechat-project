@@ -1,8 +1,9 @@
 const content = require('../../services/content')
 const store = require('../../services/store')
 const playback = require('../../services/player')
+const subtitles = require('../../services/subtitles')
 Page({
-  data: { book: null, chapter: null, current: -1, position: 0, percent: 0, time: '0:00', total: '0:00', state: 'paused', translation: false, word: null, saved: false, chapterOpen: false, chapters: [], rate: 1, ended: false, error: '', follow: true, scrollTo: '' },
+  data: { book: null, chapter: null, subtitleRows: [], current: -1, position: 0, percent: 0, time: '0:00', total: '0:00', state: 'paused', word: null, saved: false, chapterOpen: false, chapters: [], rate: 1, ended: false, error: '' },
   onLoad(options) {
     const book = content.getBook(options.book), chapter = content.chapterData(options.book, options.piece)
     if (!book || !chapter) { this.setData({ error: '没有找到这一章，请返回书库重新选择。' }); return }
@@ -10,6 +11,7 @@ Page({
       wx.redirectTo({ url: '/modules/listen-read/pages/book/index?id=' + book.id }); return
     }
     this.bookId = book.id; this.pieceId = chapter.id
+    this.subtitleLayout = subtitles.prepare(chapter.cues)
     this.lastSave = 0
     const saved = store.read().progress[chapter.id]
     const position = saved && !saved.completed ? Math.min(saved.seconds, chapter.duration - .1) : 0
@@ -38,10 +40,15 @@ Page({
   sync(seconds) {
     if (!this.data.chapter || this.seeking) return
     const ch = this.data.chapter, position = Math.max(0, Math.min(seconds, ch.duration))
-    const index = ch.cues.findIndex(c => position >= c.start && position < c.end)
-    const current = position >= ch.duration ? ch.cues.length - 1 : index
+    let current = -1
+    if (position < ch.duration) {
+      for (let i = 0; i < ch.cues.length && ch.cues[i].start <= position; i++) current = i
+    }
     const patch = { position, percent: position / ch.duration * 100, time: content.time(position) }
-    if (current !== this.data.current) { patch.current = current; if (this.data.follow && current >= 0) patch.scrollTo = 'line-' + current }
+    if (!this.subtitleLayout) this.subtitleLayout = subtitles.prepare(ch.cues)
+    const window = subtitles.display(this.subtitleLayout, ch.cues, current, position)
+    if (current !== this.data.current) patch.current = current
+    if (window.start !== this.subtitleStart || current !== this.data.current) { patch.subtitleRows = window.rows; this.subtitleStart = window.start }
     this.setData(patch)
     if (Date.now() - this.lastSave > 4000 && this.player) this.persist()
   },
@@ -60,14 +67,12 @@ Page({
     const delta = Number(e.currentTarget.dataset.delta), target = Math.max(0, Math.min(this.data.chapter.cues.length - 1, Math.max(0, this.data.current) + delta))
     this.setData({ ended: false }); this.player.seek(this.data.chapter.cues[target].start)
   },
-  toggleTranslation() { this.setData({ translation: !this.data.translation }) },
-  toggleFollow() { const follow = !this.data.follow; this.setData({ follow, scrollTo: follow ? 'line-' + Math.max(0, this.data.current) : '' }) },
   rate() { const rates = [0.8, 1, 1.2], value = rates[(rates.indexOf(this.data.rate) + 1) % rates.length]; this.player.rate(value); this.setData({ rate: value }) },
   wordTap(e) {
     const { word, line } = e.currentTarget.dataset
     if (!word) return
     this.player.pause()
-    const cue = this.data.chapter.cues[Number(line)], meaning = content.meaning(word)
+    const cue = this.data.chapter.cues[Number(line)], meaning = content.meaning(word, this.bookId)
     const detail = Object.assign({}, meaning, { surface: word, showLemma: meaning.lemma.toLowerCase() !== word.toLowerCase(), key: this.pieceId + ':' + line + ':' + word.toLowerCase(), sentence: cue.text, translation: cue.zh, bookId: this.bookId, pieceId: this.pieceId, bookTitle: this.data.book.zh })
     this.setData({ word: detail, saved: !!store.read().words[detail.key] })
   },

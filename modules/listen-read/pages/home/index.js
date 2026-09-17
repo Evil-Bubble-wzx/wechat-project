@@ -28,6 +28,8 @@ Page({
   toWords() { wx.navigateTo({ url: '/modules/listen-read/pages/vocab/index' }) },
   toQuiz() {
     const l = store.read().last || { bookId: 'little-seed', pieceId: 'seed-1' }
-    wx.navigateTo({ url: '/modules/listen-read/pages/quiz/index?book=' + l.bookId + '&piece=' + l.pieceId })
+    const chapter = content.getChapter(l.bookId, l.pieceId)
+    const target = chapter && chapter.quiz.length ? l : { bookId: 'little-seed', pieceId: 'seed-1' }
+    wx.navigateTo({ url: '/modules/listen-read/pages/quiz/index?book=' + target.bookId + '&piece=' + target.pieceId })
   }
 })

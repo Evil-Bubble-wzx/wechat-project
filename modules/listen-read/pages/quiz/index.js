@@ -14,7 +14,7 @@ Page({
   renderQuestion() {
     if (this.optionAudio) this.optionAudio.stop()
     const q = this.questions[this.data.index]
-    this.setData({ question: q, selected: -1, checked: false, percent: this.data.index / this.questions.length * 100, options: q.options.map((text, i) => ({ text, index: i, letter: ['A','B','C','D'][i], audio: '/assets/quiz-audio/' + this.pieceId + '-' + this.data.index + '-' + i + '.wav' })) })
+    this.setData({ question: q, selected: -1, checked: false, percent: this.data.index / this.questions.length * 100, options: q.options.map((text, i) => ({ text, index: i, letter: ['A','B','C','D'][i], audio: '/assets/quiz-audio/' + this.pieceId + '-' + this.data.index + '-' + i + '.mp3' })) })
   },
   select(e) { if (!this.data.checked) this.setData({ selected: Number(e.currentTarget.dataset.index) }) },
   playOption(e) {

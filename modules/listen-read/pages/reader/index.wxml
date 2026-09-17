@@ -1,27 +1,20 @@
 <view wx:if="{{chapter}}" class="reader">
-  <view class="reading-top row"><image class="reading-cover" src="{{book.cover}}" mode="aspectFill"/><view class="reading-title"><view>{{chapter.title}}</view><text>{{book.zh}} · {{chapter.zh}}</text></view><button class="chapter-menu" bindtap="openChapters">目录 ☰</button></view>
-  <view class="reading-tools between"><view class="row"><view class="live-dot"></view><text>跟着声音，读懂故事</text></view><button class="translation-button {{translation ? 'enabled' : ''}}" bindtap="toggleTranslation">译文 {{translation ? '开' : '关'}}</button></view>
-  <scroll-view class="transcript" scroll-y scroll-into-view="{{scrollTo}}" scroll-with-animation>
-    <view class="transcript-inner">
-      <view class="chapter-label">CHAPTER {{chapters[0].id === chapter.id ? '01' : '02'}}</view>
-      <view class="transcript-heading">{{chapter.title}}</view><view class="reading-hint">轻点英文单词，看看它的意思</view>
-      <view wx:for="{{chapter.cues}}" wx:for-item="cue" wx:for-index="line" wx:key="start" id="line-{{line}}" class="sentence {{current === line ? 'sentence-active' : ''}}">
-        <view class="sentence-english"><block wx:for="{{cue.tokens}}" wx:for-item="token" wx:key="id"><text wx:if="{{token.word}}" class="word-token" data-word="{{token.value}}" data-line="{{line}}" bindtap="wordTap">{{token.value}}</text><text wx:else>{{token.value}}</text></block></view>
-        <view wx:if="{{translation}}" class="sentence-chinese">{{cue.zh}}</view>
-      </view>
-      <view class="end-mark">✦</view>
-      <view wx:if="{{ended}}" class="chapter-finished"><view>这一章，听完啦！</view><text>做个小测，看看你发现了什么。</text><button class="secondary" bindtap="quiz">开始阅读小测 →</button></view>
+  <view class="reading-top"><view class="reading-heading"><view class="reading-book-title">{{book.title}}</view><button class="chapter-menu" bindtap="openChapters">目录 ☰</button></view></view>
+  <view class="cover-stage"><image class="reading-cover" src="{{book.cover}}" mode="aspectFit"/><view class="cover-chapter">{{chapter.title}}</view></view>
+  <view class="subtitle-stage">
+    <view wx:for="{{subtitleRows}}" wx:for-item="row" wx:key="slot" class="subtitle-row {{row.active ? 'subtitle-active' : ''}} {{row.edge ? (row.slot === 0 ? 'subtitle-fade-top' : 'subtitle-fade-bottom') : ''}}">
+      <view class="subtitle-text"><block wx:for="{{row.tokens}}" wx:for-item="token" wx:key="id"><text wx:if="{{token.word && book.hasDictionary !== false}}" class="word-token" data-word="{{token.value}}" data-line="{{row.cueIndex}}" bindtap="wordTap">{{token.value}}</text><text wx:else>{{token.value}}</text></block></view>
     </view>
-  </scroll-view>
+  </view>
   <view class="player-panel">
     <view wx:if="{{error}}" class="audio-error" bindtap="retry">{{error}}</view>
-    <view class="player-meta between"><button bindtap="rate">{{rate}}× 倍速</button><button class="{{follow?'follow-active':''}}" bindtap="toggleFollow">{{follow ? '✓ 自动跟随' : '自动跟随已关'}}</button></view>
+    <view class="player-meta between"><button bindtap="rate">{{rate}}× 倍速</button><text wx:if="{{book.hasDictionary !== false}}">轻点字幕可查词</text></view>
     <slider class="seekbar" min="0" max="100" step="0.1" value="{{percent}}" activeColor="#5B845F" backgroundColor="#E7EBDD" block-color="#4D7856" block-size="14" bindchanging="seekingStart" bindchange="seek"/>
     <view class="time-row between"><text>{{time}}</text><text>{{total}}</text></view>
-    <view class="transport"><button class="transport-side" data-delta="-1" bindtap="move"><image src="/assets/icons/back-on.png"/><text>上一句</text></button><button class="play-button" bindtap="togglePlay"><image src="/assets/icons/{{state==='playing' || state==='loading' ? 'pause' : 'play'}}-white.png"/></button><button class="transport-side" data-delta="1" bindtap="move"><image src="/assets/icons/next-on.png"/><text>下一句</text></button></view>
-    <view class="player-bottom between"><text>{{state === 'loading' ? '正在加载声音…' : (state === 'playing' ? '小耳朵，认真听' : '准备好了，就点播放吧')}}</text><button bindtap="quiz">阅读小测 →</button></view>
+    <view class="transport"><button class="transport-side" data-delta="-1" bindtap="move"><image src="/assets/icons/back-on.png"/><text>上一句</text></button><view class="play-button" bindtap="togglePlay" aria-role="button" aria-label="播放或暂停"><image src="/assets/icons/{{state==='playing' || state==='loading' ? 'pause' : 'play'}}-white.png"/></view><button class="transport-side" data-delta="1" bindtap="move"><image src="/assets/icons/next-on.png"/><text>下一句</text></button></view>
+    <view class="player-bottom between"><text>{{state === 'loading' ? '正在加载声音…' : (state === 'playing' ? '小耳朵，认真听' : '准备好了，就点播放吧')}}</text><button wx:if="{{book.hasQuiz !== false}}" bindtap="quiz">阅读小测 →</button></view>
   </view>
-  <view wx:if="{{word}}" class="modal-mask" bindtap="closeWord"><view class="sheet word-sheet" catchtap="noop"><view class="sheet-handle"></view><view class="between"><text class="word-label">认识一个新单词</text><button class="close" bindtap="closeWord">×</button></view><view class="word-name">{{word.surface}}</view><view class="word-phonetic">{{word.ph}} <text wx:if="{{word.showLemma}}">原形：{{word.lemma}}</text></view><view class="definition"><text>{{word.pos}}</text>{{word.zh}}</view><view class="word-en">{{word.en}}</view><view class="example"><text class="example-label">在这个故事里</text><view>{{word.sentence}}</view><text>{{word.translation}}</text></view><button class="{{saved ? 'secondary' : 'primary'}}" bindtap="toggleSave">{{saved ? '✓ 已收藏 · 点击移出' : '＋ 加入单词花园'}}</button><view class="footer-note">音频已暂停 · 关闭后可继续听</view></view></view>
+  <view wx:if="{{word}}" class="modal-mask" bindtap="closeWord"><view class="sheet word-sheet" catchtap="noop"><view class="sheet-handle"></view><view class="between"><text class="word-label">认识一个新单词</text><button class="close" bindtap="closeWord">×</button></view><view class="word-name">{{word.surface}}</view><view wx:if="{{word.ph || word.showLemma}}" class="word-phonetic">{{word.ph}} <text wx:if="{{word.showLemma}}">原形：{{word.lemma}}</text></view><view class="definition"><text wx:if="{{word.pos}}">{{word.pos}}</text>{{word.zh}}</view><view wx:if="{{word.en}}" class="word-en">{{word.en}}</view><view class="example"><text class="example-label">在这个故事里</text><view>{{word.sentence}}</view><text wx:if="{{word.translation}}">{{word.translation}}</text></view><button class="{{saved ? 'secondary' : 'primary'}}" bindtap="toggleSave">{{saved ? '✓ 已收藏 · 点击移出' : '＋ 加入单词花园'}}</button><view class="footer-note">音频已暂停 · 关闭后可继续听</view></view></view>
   <view wx:if="{{chapterOpen}}" class="modal-mask" bindtap="closeChapters"><view class="sheet" catchtap="noop"><view class="sheet-handle"></view><view class="between"><view class="section-title">{{book.zh}}</view><button class="close" bindtap="closeChapters">×</button></view><view wx:for="{{chapters}}" wx:key="id" class="chapter-option row" data-id="{{item.id}}" bindtap="chooseChapter"><text>{{item.number}}</text><view><view>{{item.title}}</view><text>{{item.zh}}</text></view><image class="icon" src="/assets/icons/{{item.locked?'lock-off':(item.id===chapter.id?'headphones-on':'play-on')}}.png"/></view></view></view>
 </view>
 <view wx:else class="empty"><view>{{error || '正在打开故事…'}}</view><button class="secondary" bindtap="home">返回书库</button></view>

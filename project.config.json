@@ -4,10 +4,12 @@
   "packOptions": {
     "ignore": [
       {"type":"folder","value":"tools"},
+      {"type":"folder","value":"book"},
       {"type":"folder","value":"docs"},
       {"type":"file","value":"README.md"},
       {"type":"file","value":"modules/listen-read/content/stories.json"},
       {"type":"file","value":"modules/listen-read/content/dictionary.json"},
+      {"type":"file","value":"modules/listen-read/content/oz-dictionary.json"},
       {"type":"file","value":"modules/listen-read/content/timings.json"}
     ],
     "include": []

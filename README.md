@@ -11,7 +11,7 @@
 ## 建议体验顺序
 
 - 首页点击“免费听一章”，进入《小兔的种子》的第一章。
-- 点播放：真实英语合成音频、句子同步高亮；可切换译文、倍速、上一句/下一句、拖动进度。
+- 点播放：真实英语合成音频、七行字幕同步高亮；每句从第二行开始，短句保持位置，超过窗口的长句只在后半段需要显示剩余文字时移动。可调倍速、上一句/下一句和拖动进度。
 - 点击 `seed` / `rabbit` 等单词：自动暂停，显示音标、词性、释义、原句，可收藏到单词花园。
 - 返回图书详情，选择第二章或“解锁整本”，先体验微信/手机号登录，再点击“模拟购买”。不会扣款。
 - 完成阅读小测，点击每个选项末尾的小喇叭可单独听选项朗读，再查看逐题解释和成绩。
@@ -20,7 +20,7 @@
 
 ## 本次范围
 
-3 本原创示例短故事，每本 2 章；6 段真实合成音频，24 句配套中英原文；每章 3 道示例题。示例章节刻意较短，便于快速体验完整流程。
+3 本原创示例短故事，每本 2 章；另收录《The Wonderful Wizard of Oz》第一章《The Cyclone》，可在发现页免费打开。Oz 使用随项目提供的 Project Gutenberg EPUB 和 LibriVox 朗读，含 53 句英文正文、独立章节标题时间点、逐句高亮和离线点词释义；片头尚未进入标题时不高亮，句间停顿保持上一句高亮至下一句开始。Oz 暂无逐句译文和测验。示例章节刻意较短，便于快速体验完整流程。
 
 本版仅模拟购买、微信登录、手机号登录和邀请发券，不接真实支付、身份校验、短信或服务器。购买、进度、生词、成绩和优惠券存储在本机；换设备不同步。游客可免费体验第一章，模拟购书需要先登录。好友首次登录由本机按钮演示，真实跨设备邀请归因及双方发券需要后端。优惠券为满 ¥12 减 ¥5，30 天有效，每个演示邀请仅触发一次。分享本身不发券。
 
@@ -55,12 +55,15 @@ docs/             交付说明与后续实现建议
 python tools/assemble-audio.py
 ./tools/make-quiz-audio.ps1
 python tools/assemble-quiz-audio.py
+python tools/compress-audio.py
 python tools/make-art.py
 node tools/build-content.js
 node tools/check.js
 ```
 
-音频生成依赖 Windows 已安装的 Microsoft Zira 语音，插画生成依赖 Python Pillow。自动检查覆盖首章权限、进度与生词存储、题目评分、登录与优惠券演示、路由、词典覆盖和素材引用；微信开发者工具内另做实际界面与播放检查。
+音频生成依赖 Windows 已安装的 Microsoft Zira 语音，插画生成依赖 Python Pillow。压缩步骤需要 `imageio-ffmpeg` 或 PATH 中的 `ffmpeg`；`tools/audio-parts` 与 `tools/quiz-audio-parts` 保留了示例音频片段，可重新生成打包用的 MP3。自动检查覆盖首章权限、进度与生词存储、题目评分、登录与优惠券演示、路由、词典覆盖和素材引用；微信开发者工具内另做实际界面与播放检查。
+
+Oz 的提取、转写和对齐脚本位于 `tools/prepare-oz.py`、`tools/transcribe-oz.py`、`tools/align-oz.py`。`tools/oz-alignment-review.json` 记录每句时间与逐词匹配数；自动对齐命中 1097/1145 个原文词，未命中多为人名和识别差异。`tools/oz-glosses.tsv` 保存这一章的逐词中文释义；修改后运行 `python tools/build-oz-dictionary.py` 和 `node tools/build-content.js`。上线前请在微信开发者工具和真机上逐句试听复核。`book/` 中原始 EPUB、OGG 由打包配置排除，小程序只使用 `assets/` 中的封面和 MP3。
 
 ## 后续接入正式产品
 

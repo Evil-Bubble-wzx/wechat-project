@@ -1,12 +1,12 @@
 <view wx:if="{{book}}" class="book-page">
-  <view class="book-stage" style="background: {{book.color}}"><view class="stage-ring"></view><image class="detail-cover" src="{{book.cover}}" mode="aspectFill"/><view class="stage-caption">YAYA ORIGINAL STORIES</view></view>
+  <view class="book-stage" style="background: {{book.color}}"><view class="stage-ring"></view><image class="detail-cover" src="{{book.cover}}" mode="aspectFill"/><view class="stage-caption">{{book.free ? 'CLASSIC STORY · ORIGINAL AUDIO' : 'YAYA ORIGINAL STORIES'}}</view></view>
   <view class="book-body">
     <view class="between"><view class="pill">{{book.level}} · {{book.levelName}}</view><text class="age">{{book.age}} · {{book.chapterCount}} 章 · {{book.duration}}</text></view>
     <view class="book-title">{{book.title}}</view><view class="book-zh">{{book.zh}}<text>{{book.subtitle}}</text></view>
     <view class="tags"><text wx:for="{{book.tags}}" wx:key="*this">{{item}}</text></view>
     <view class="section-title intro-title">故事里的小世界</view><view class="intro">{{book.intro}}</view>
     <view class="learning row"><image class="small-icon" src="/assets/icons/leaf-on.png"/><text>{{book.focus}}</text></view>
-    <view class="section between"><view class="section-title">故事目录</view><text class="section-link">{{owned ? '整本已解锁' : '第一章免费体验'}}</text></view>
+    <view class="section between"><view class="section-title">故事目录</view><text class="section-link">{{book.free ? '已收录章节免费阅读' : (owned ? '整本已解锁' : '第一章免费体验')}}</text></view>
     <view class="chapters card">
       <view wx:for="{{chapters}}" wx:key="id" class="chapter row" data-id="{{item.id}}" bindtap="openChapter">
         <text class="chapter-number">{{item.number}}</text><view class="chapter-copy"><view>{{item.title}}</view><text>{{item.zh}} · {{item.duration}}</text></view>
@@ -14,9 +14,9 @@
         <image class="icon" src="/assets/icons/{{item.locked ? 'lock-off' : 'play-on'}}.png"/>
       </view>
     </view>
-    <view class="footer-note">原创示例故事 · 英语合成朗读 · 支持原文同步与点词查义</view>
+    <view class="footer-note">{{book.sourceCredit || '原创示例故事 · 英语合成朗读 · 支持原文同步与点词查义'}}</view>
   </view>
-  <view class="purchase-bar"><button wx:if="{{!owned}}" class="secondary trial-button" bindtap="trial">试听第一章</button><button class="primary purchase-button" bindtap="buy">{{owned ? '开始听阅' : '¥' + book.price + ' 解锁整本'}}</button></view>
+  <view class="purchase-bar"><button wx:if="{{book.free}}" class="primary purchase-button" bindtap="trial">开始听阅</button><block wx:else><button wx:if="{{!owned}}" class="secondary trial-button" bindtap="trial">试听第一章</button><button class="primary purchase-button" bindtap="buy">{{owned ? '开始听阅' : '¥' + book.price + ' 解锁整本'}}</button></block></view>
   <view wx:if="{{purchaseOpen}}" class="modal-mask" bindtap="closePurchase"><view class="sheet" catchtap="noop"><view class="sheet-handle"></view><view class="between"><view class="section-title">把好故事带回家</view><button class="close" bindtap="closePurchase">×</button></view><view class="order row"><image src="{{book.cover}}"/><view><view class="order-title">{{book.zh}}</view><view class="subheading">整本 {{book.chapterCount}} 章 · 听阅与阅读小测</view><view class="order-price">¥{{book.price}}</view></view></view><view wx:if="{{coupon}}" class="demo-note">邀请优惠券 -¥{{coupon.amount}} · 演示应付 ¥{{finalPrice}}</view><view class="demo-note">本次为前端体验，点击后仅模拟解锁，不会产生扣款。</view><button class="primary" bindtap="confirmPurchase">{{coupon ? '模拟优惠购买，解锁整本' : '模拟购买，解锁整本'}}</button><view class="footer-note">解锁状态仅保存在当前设备</view></view></view>
 </view>
 <mini-player raised="{{true}}"/>
