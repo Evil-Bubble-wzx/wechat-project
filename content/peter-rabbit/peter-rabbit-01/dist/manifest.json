@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 0,
+  "status": "needs_review",
+  "publishable": false,
+  "language": "en",
+  "audio": {
+    "source": "source/audio-original.mp3",
+    "durationMs": 322026,
+    "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36"
+  },
+  "artifacts": {
+    "cues": "dist/cues.json",
+    "vocabDraft": "work/vocab.draft.json",
+    "qaReport": "dist/qa-report.json"
+  },
+  "counts": {
+    "cues": 57,
+    "words": 952,
+    "tokens": 2006,
+    "clickableTokens": 909,
+    "vocabEntries": 371
+  },
+  "blockers": [
+    "45 low-confidence word alignments require review.",
+    "2 electronic-text sentences are not substantially present in the recording.",
+    "Vocabulary entries require POS, sense, phonetics and definitions.",
+    "Human subtitle and vocabulary review is pending.",
+    "Rights need release-jurisdiction review."
+  ]
+}

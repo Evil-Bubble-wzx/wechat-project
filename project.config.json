@@ -1,0 +1,6 @@
+{
+  "description": "听阅 · 英文阅读与实体借阅", "miniprogramRoot": "miniprogram/",
+  "compileType": "miniprogram", "appid": "touristappid", "projectname": "听阅",
+  "setting": { "es6": true, "enhance": true, "postcss": true, "minified": true, "urlCheck": true },
+  "libVersion": "trial"
+}

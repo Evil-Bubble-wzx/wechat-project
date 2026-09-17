@@ -1,0 +1,18 @@
+# Re-downloadable local speech-recognition runtime and model cache
+.tools/
+.models/
+
+# Dependency and build caches
+node_modules/
+coverage/
+.cache/
+
+# Local-only WeChat/Codex settings
+project.private.config.json
+.codex/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp

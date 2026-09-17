@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "status": "pending",
+  "cueCorrections": [],
+  "tokenCorrections": [],
+  "vocabCorrections": [],
+  "reviewedBy": null,
+  "reviewedAt": null,
+  "notes": [
+    "Sentence timing must be aligned to the recording before publication.",
+    "Vocabulary definitions, senses, phonetics and parts of speech require editorial review.",
+    "Intro and outro spoken by LibriVox must be transcribed separately from the book text."
+  ]
+}

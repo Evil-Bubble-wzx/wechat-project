@@ -1,0 +1,4 @@
+{
+  "name": "tingyue-miniapp", "version": "0.1.0", "private": true,
+  "scripts": { "preview": "node tools/content-check.js --build && node tools/preview-server.js", "content:build": "node tools/content-check.js --build", "content:peter": "node tools/content-pipeline/build-source-package.js content/peter-rabbit/peter-rabbit-01", "content:peter:align": "python tools/content-pipeline/align_known_text.py content/peter-rabbit/peter-rabbit-01", "content:peter:export": "node tools/content-pipeline/export-miniapp-cues.js content/peter-rabbit/peter-rabbit-01 miniprogram/modules/listen-read/cues-data.js", "test": "node --test tests/*.test.js", "check": "node tools/check.js" }
+}
