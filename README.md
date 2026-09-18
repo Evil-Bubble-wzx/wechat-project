@@ -62,3 +62,5 @@ node tools/content-check.js
 浏览器自动验收脚本为 `tools/interaction-check.js` 和 `tools/visual-check.js`，需要本机 Playwright 与 Edge，以及已启动的预览服务。产物位于 `artifacts/`。已覆盖浏览器 320/390/430px 的页面宽度与主交互；尚未使用微信开发者工具编译或 iOS/Android 真机验收。
 
 原始需求文档保留。本次遵循最新用户要求，包含实体借阅，覆盖旧文档中“不做实体借阅”的陈述。
+
+移植说明：`C:\demo11\docs\production-plan.md` 的正式付费/同步要点已提炼至 `docs/正式产品实施计划-移植版-v1.0.md`，商业闭环以该移植版 + v1.2 为准；本 README 仍为前端演示边界说明。
