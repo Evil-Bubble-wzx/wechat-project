@@ -2,7 +2,7 @@ const http = require('node:http')
 const fs = require('node:fs')
 const path = require('node:path')
 const root = path.resolve(__dirname,'..')
-const modules = ['modules/catalog/catalog-data','modules/catalog/books','modules/account/session','modules/physical-loan/rules','modules/listen-read/player','modules/listen-read/cues-data','services/host','ui/controller']
+const modules = ['modules/catalog/catalog-data','modules/catalog/books','modules/account/session','modules/physical-loan/rules','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','services/host','ui/controller']
 const server = http.createServer((req,res) => {
   const url = new URL(req.url,'http://localhost')
   let file

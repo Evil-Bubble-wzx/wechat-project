@@ -1,0 +1,359 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 2462,
+    "text": "Pip gives the seed water every day.",
+    "translation": "Pip 每天都给种子浇水。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "Pip",
+        "kind": "word",
+        "vocabKey": "pip"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "gives",
+        "kind": "word",
+        "vocabKey": "gives"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "seed",
+        "kind": "word",
+        "vocabKey": "seed"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "water",
+        "kind": "word",
+        "vocabKey": "water"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t10",
+        "surface": "every",
+        "kind": "word",
+        "vocabKey": "every"
+      },
+      {
+        "id": "c0001:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t12",
+        "surface": "day",
+        "kind": "word",
+        "vocabKey": "day"
+      },
+      {
+        "id": "c0001:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 2462,
+    "endMs": 5299,
+    "text": "One morning, he sees a green leaf.",
+    "translation": "一天早晨，他看见了一片绿叶。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "One",
+        "kind": "word",
+        "vocabKey": "one"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "morning",
+        "kind": "word",
+        "vocabKey": "morning"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": ",",
+        "kind": "punctuation"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": "he",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": "sees",
+        "kind": "word",
+        "vocabKey": "sees"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": "green",
+        "kind": "word",
+        "vocabKey": "green"
+      },
+      {
+        "id": "c0002:t12",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t13",
+        "surface": "leaf",
+        "kind": "word",
+        "vocabKey": "leaf"
+      },
+      {
+        "id": "c0002:t14",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 5299,
+    "endMs": 7735,
+    "text": "A yellow flower opens in the sun.",
+    "translation": "一朵黄色的小花在阳光下绽放。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "A",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "yellow",
+        "kind": "word",
+        "vocabKey": "yellow"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "flower",
+        "kind": "word",
+        "vocabKey": "flower"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "opens",
+        "kind": "word",
+        "vocabKey": "opens"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "in",
+        "kind": "word",
+        "vocabKey": "in"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "sun",
+        "kind": "word",
+        "vocabKey": "sun"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 7735,
+    "endMs": 10176,
+    "text": "Pip smiles at his new little friend.",
+    "translation": "Pip 对他的新朋友笑了。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "Pip",
+        "kind": "word",
+        "vocabKey": "pip"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "smiles",
+        "kind": "word",
+        "vocabKey": "smiles"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "at",
+        "kind": "word",
+        "vocabKey": "at"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "his",
+        "kind": "word",
+        "vocabKey": "his"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "new",
+        "kind": "word",
+        "vocabKey": "new"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "little",
+        "kind": "word",
+        "vocabKey": "little"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t12",
+        "surface": "friend",
+        "kind": "word",
+        "vocabKey": "friend"
+      },
+      {
+        "id": "c0004:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

@@ -28,6 +28,8 @@ Quiz 当前只有彼得兔的 5 道示例题，其他书籍不误用这些题。
 
 ## 内容如何补充
 
+旧项目的三本原创故事与《The Wonderful Wizard of Oz》第一章已导入 `content/legacy-listen-read/`，共七段音频和 78 条逐句字幕。四本书已出现在本地书目，详情页可选章节，播放器可以播放对应的打包音频并显示字幕、点词释义。源材料、重建方式和上线复核状态见 [旧内容导入说明](content/legacy-listen-read/README.md)。执行 `npm run content:legacy` 可重复生成导入内容；Peter Rabbit 内容包保持独立。
+
 样例内容统一维护在 `miniprogram/modules/catalog/catalog.json`，封面位于 `miniprogram/assets/`，每本书使用稳定 `id`。复制一项填写标题、作者、分类、封面、时长、库存等即可增加本地样例，不需改页面代码。
 
 ```sh

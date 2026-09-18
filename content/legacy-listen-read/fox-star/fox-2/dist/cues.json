@@ -1,0 +1,343 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 2488,
+    "text": "The fox climbs a tall green hill.",
+    "translation": "小狐狸爬上一座绿色的高山丘。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "The",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "fox",
+        "kind": "word",
+        "vocabKey": "fox"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "climbs",
+        "kind": "word",
+        "vocabKey": "climbs"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "tall",
+        "kind": "word",
+        "vocabKey": "tall"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t10",
+        "surface": "green",
+        "kind": "word",
+        "vocabKey": "green"
+      },
+      {
+        "id": "c0001:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t12",
+        "surface": "hill",
+        "kind": "word",
+        "vocabKey": "hill"
+      },
+      {
+        "id": "c0001:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 2488,
+    "endMs": 4600,
+    "text": "The star is still far away.",
+    "translation": "星星依然很遥远。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "The",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "star",
+        "kind": "word",
+        "vocabKey": "star"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": "is",
+        "kind": "word",
+        "vocabKey": "is"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": "still",
+        "kind": "word",
+        "vocabKey": "still"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": "far",
+        "kind": "word",
+        "vocabKey": "far"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": "away",
+        "kind": "word",
+        "vocabKey": "away"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 4600,
+    "endMs": 7067,
+    "text": "He sits down and watches the sky.",
+    "translation": "他坐下来，望着天空。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "sits",
+        "kind": "word",
+        "vocabKey": "sits"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "down",
+        "kind": "word",
+        "vocabKey": "down"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "and",
+        "kind": "word",
+        "vocabKey": "and"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "watches",
+        "kind": "word",
+        "vocabKey": "watches"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "sky",
+        "kind": "word",
+        "vocabKey": "sky"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 7067,
+    "endMs": 9736,
+    "text": "His bright friend follows him all night.",
+    "translation": "他明亮的朋友整晚都陪着他。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "His",
+        "kind": "word",
+        "vocabKey": "his"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "bright",
+        "kind": "word",
+        "vocabKey": "bright"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "friend",
+        "kind": "word",
+        "vocabKey": "friend"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "follows",
+        "kind": "word",
+        "vocabKey": "follows"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "him",
+        "kind": "word",
+        "vocabKey": "him"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "all",
+        "kind": "word",
+        "vocabKey": "all"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t12",
+        "surface": "night",
+        "kind": "word",
+        "vocabKey": "night"
+      },
+      {
+        "id": "c0004:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

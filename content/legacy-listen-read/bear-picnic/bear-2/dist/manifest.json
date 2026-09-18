@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "bear-2",
+  "contentVersion": 0,
+  "status": "needs_review",
+  "publishable": false,
+  "audio": {
+    "source": "source/audio-original.mp3",
+    "durationMs": 10155,
+    "sha256": "60ff18e9302bae8ad7720b111a5ce0b63b821552f9ea83dfed1ff8b38afed6e7"
+  },
+  "artifacts": {
+    "cues": "dist/cues.json"
+  },
+  "counts": {
+    "cues": 4,
+    "words": 26
+  },
+  "blockers": [
+    "Human subtitle and audio review pending.",
+    "Commercial rights and target-jurisdiction review pending."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "fox-2",
+  "contentVersion": 0,
+  "status": "needs_review",
+  "publishable": false,
+  "audio": {
+    "source": "source/audio-original.mp3",
+    "durationMs": 9736,
+    "sha256": "1617d202a496f636d72ae865d537c658bd2f025ef74c1e3f5e30a2662098c4f7"
+  },
+  "artifacts": {
+    "cues": "dist/cues.json"
+  },
+  "counts": {
+    "cues": 4,
+    "words": 27
+  },
+  "blockers": [
+    "Human subtitle and audio review pending.",
+    "Commercial rights and target-jurisdiction review pending."
+  ]
+}

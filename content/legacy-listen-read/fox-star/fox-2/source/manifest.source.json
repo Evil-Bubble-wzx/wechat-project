@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "fox-star",
+  "pieceId": "fox-2",
+  "index": 2,
+  "title": "Always Beside You",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 9736,
+    "mimeType": "audio/mpeg",
+    "sha256": "1617d202a496f636d72ae865d537c658bd2f025ef74c1e3f5e30a2662098c4f7",
+    "sourceName": "Microsoft Zira demonstration synthesis"
+  }
+}
