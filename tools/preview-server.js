@@ -2,7 +2,7 @@ const http = require('node:http')
 const fs = require('node:fs')
 const path = require('node:path')
 const root = path.resolve(__dirname,'..')
-const modules = ['modules/catalog/catalog-data','modules/catalog/books','modules/account/session','modules/physical-loan/rules','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','services/host','ui/controller']
+const modules = ['modules/catalog/catalog-data','modules/catalog/books','modules/account/session','modules/physical-loan/rules','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','modules/listen-read/legacy-quiz-data','modules/listen-read/subtitles','services/host','ui/controller']
 const server = http.createServer((req,res) => {
   const url = new URL(req.url,'http://localhost')
   let file
@@ -13,8 +13,14 @@ const server = http.createServer((req,res) => {
   }
   if(url.pathname==='/native.css') { res.writeHead(200,{'Content-Type':'text/css'});res.end(fs.readFileSync(path.join(root,'miniprogram/app.wxss'),'utf8').replace(/(-?[\d.]+)rpx/g,(_,n)=>Number(n)/2+'px').replace(/\bpage\s*\{/g,'.device {').replace(/(?<![-\w])(view|text|image)(?![-\w])/g,tag=>({view:'div',text:'span',image:'img'})[tag]));return }
   if(url.pathname==='/')file=path.join(root,'preview/index.html')
-  else if(url.pathname==='/screen.wxml')file=path.join(root,'miniprogram/ui/screen.wxml')
-  else if(url.pathname.startsWith('/assets/'))file=path.join(root,'miniprogram',decodeURIComponent(url.pathname))
+  else if(url.pathname==='/screen.wxml'){
+    const ui=path.join(root,'miniprogram/ui')
+    const screen=fs.readFileSync(path.join(ui,'screen.wxml'),'utf8')
+      .replace('<include src="./player.wxml" />',fs.readFileSync(path.join(ui,'player.wxml'),'utf8'))
+      .replace('<include src="./quiz.wxml" />',fs.readFileSync(path.join(ui,'quiz.wxml'),'utf8'))
+    res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'});res.end(screen);return
+  }
+  else if(url.pathname.startsWith('/assets/')||url.pathname.startsWith('/quiz/assets/'))file=path.join(root,'miniprogram',decodeURIComponent(url.pathname))
   else file=path.join(root,'preview',decodeURIComponent(url.pathname))
   const allowed=[path.join(root,'preview')+path.sep,path.join(root,'miniprogram')+path.sep]
   if(!allowed.some(p=>file.startsWith(p))){res.writeHead(403);res.end();return}

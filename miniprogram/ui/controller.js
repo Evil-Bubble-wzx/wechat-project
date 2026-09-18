@@ -5,13 +5,15 @@ const host = require('../services/host')
 const player = require('../modules/listen-read/player')
 const cuesByBook = Object.assign({}, require('../modules/listen-read/cues-data'), require('../modules/listen-read/legacy-cues-data'))
 const legacyVocab = require('../modules/listen-read/legacy-vocab-data')
+const legacyQuizzes = require('../modules/listen-read/legacy-quiz-data')
+const subtitles = require('../modules/listen-read/subtitles')
 const defaults = () => ({ favorites:[], loans:[], recent:[], progress:{}, results:[], user:null })
 const tabs = [{id:'home',label:'Home',icon:'home'},{id:'recent',label:'Recent',icon:'play'},{id:'me',label:'Me',icon:'user'}]
 const titles = { home:'Tingyue',library:'Find Books',loans:'Borrowed',me:'Me',detail:'Book Details',player:'Read for Me',recent:'Recent',report:'My Quizzes',ranking:'Rankings',login:'Welcome',quiz:'Take Quiz' }
 const time = s => Math.floor(s/60).toString().padStart(2,'0') + ':' + Math.floor(s%60).toString().padStart(2,'0')
 function playableBook(book, chapterId) {
   const chapter = (book.chapters || []).find(item => item.id === chapterId) || (book.chapters || [])[0]
-  return chapter ? Object.assign({}, book, { chapterId: chapter.id, chapterTitle: chapter.title, duration: chapter.duration, localAudio: chapter.localAudio }) : book
+  return chapter ? Object.assign({}, book, { chapterId: chapter.id, chapterTitle: chapter.title, duration: chapter.duration, localAudio: chapter.localAudio, hasQuiz: chapter.hasQuiz }) : book
 }
 function cueKey(book) { return book.chapterId || book.id }
 const findCue = (cues, milliseconds) => {
@@ -21,8 +23,22 @@ const findCue = (cues, milliseconds) => {
 }
 function createPage(route) {
   return {
-    data: { route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books, featured:books.slice(0,3), recommendations:[books[4],books[3]], book:books[0], query:'',filter:'all', loanFilter:'all', loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}], filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:books, loanList:[], totalLoans:0, favorites:[], recent:[], user:null, sheet:'', agreed:false, loginMethod:'wechat', phone:'',code:'',codeSent:false, playing:false, rate:1, position:0, formatted:'00:00',duration:time(books[0].duration), subtitle:false, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, result:false, score:0, scores:[], quizTotal:questions.length, results:[], period:'week', stats:{pieces:0,words:0,correct:0}, currentFavorite:false, isDemo:true },
-    onLoad(options) {const [bookId,chapterId]=((options&&options.id)||books[0].id).split(':');const base=books.find(b=>b.id===bookId)||books[0];const book=route==='player'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration),activeCue:findCue(cuesByBook[cueKey(book)]||[],0)});this.refresh()},
+    data: { route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books, featured:books.slice(0,3), recommendations:[books[4],books[3]], book:books[0], query:'',filter:'all', loanFilter:'all', loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}], filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:books, loanList:[], totalLoans:0, favorites:[], recent:[], user:null, sheet:'', agreed:false, loginMethod:'wechat', phone:'',code:'',codeSent:false, playing:false, rate:1, position:0, formatted:'00:00',duration:time(books[0].duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 示例测验', quizOptions:[], results:[], period:'week', stats:{pieces:0,words:0,correct:0}, currentFavorite:false, isDemo:true },
+    onLoad(options) {const [bookId,chapterId]=((options&&options.id)||books[0].id).split(':');const base=books.find(b=>b.id===bookId)||books[0];const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration)});if(route==='player')this.updateSubtitles(0,true);if(route==='quiz')this.setupQuiz();this.refresh()},
+    setupQuiz() {
+      const book=this.data.book
+      this.questions=book.id==='peter'?questions:(legacyQuizzes[book.chapterId]||[])
+      const question=this.questions[0]||null
+      this.setData({question,questionIndex:0,answer:-1,checked:false,result:false,score:0,scores:[],quizTotal:this.questions.length,quizProgress:this.questions.length?100/this.questions.length:0,quizLabel:(book.chapterTitle||book.title)+' · 阅读小测',quizOptions:question?this.quizOptions(question):[]})
+    },
+    quizOptions(question) {return question.options.map((text,index)=>({text,index,letter:['A','B','C','D'][index],audio:(question.audio||[])[index]||''}))},
+    updateSubtitles(seconds, force) {
+      const key=cueKey(this.data.book)
+      const cues=cuesByBook[key]||[]
+      if(this.subtitleKey!==key){this.subtitleKey=key;this.subtitleLayout=subtitles.prepare(cues)}
+      const view=subtitles.display(this.subtitleLayout,cues,Math.round(seconds*1000))
+      if(force||view.start!==this.data.subtitleStart||view.current!==this.data.subtitleCurrent){this.setData({subtitleRows:view.rows,subtitleStart:view.start,subtitleCurrent:view.current,activeCue:view.current>=0?cues[view.current]:null})}
+    },
     onShow() { this.refresh() },
     refresh() {
       this.state = Object.assign(defaults(),host.read())
@@ -65,7 +81,7 @@ function createPage(route) {
       const pieceId=cueKey(this.data.book)
       const ok=player.play(this.data.book,(seconds,actualDuration)=>{
         const update={position:seconds,formatted:time(seconds)}
-        const cue=findCue(cuesByBook[cueKey(this.data.book)]||[],Math.round(seconds*1000));if((cue&&cue.id)!==(this.data.activeCue&&this.data.activeCue.id))update.activeCue=cue
+        this.updateSubtitles(seconds,false)
         if(Number.isFinite(actualDuration)&&actualDuration>0) {update.book=Object.assign({},this.data.book,{duration:actualDuration});update.duration=time(actualDuration)}
         this.setData(update)
         this.state.progress[pieceId]={seconds,completed:!!this.state.progress[pieceId]?.completed};host.write(this.state)
@@ -75,17 +91,20 @@ function createPage(route) {
       },()=>{this.setData({playing:false});host.toast('音频加载失败，请稍后重试')})
       if(ok){player.rate(this.data.rate);this.setData({playing:true})}else this.setData({sheet:'audio'})
     },
-    seek(e) {const seconds=Number(e.detail.value);this.setData({position:seconds,formatted:time(seconds),activeCue:findCue(cuesByBook[cueKey(this.data.book)]||[],Math.round(seconds*1000))});player.seek(seconds)},
+    seek(e) {const seconds=Number(e.detail.value);this.setData({position:seconds,formatted:time(seconds)});this.updateSubtitles(seconds,true);player.seek(seconds)},
+    stepSentence(e) {const cues=cuesByBook[cueKey(this.data.book)]||[];if(!cues.length)return;const delta=Number(e.currentTarget.dataset.step);const current=this.data.subtitleCurrent;const target=Math.max(0,Math.min(cues.length-1,Math.max(0,current)+delta));const seconds=cues[target].startMs/1000;this.setData({position:seconds,formatted:time(seconds)});this.updateSubtitles(seconds,true);player.seek(seconds)},
     speed() {const rates=[0.75,1,1.25,1.5,2];const rate=rates[(rates.indexOf(this.data.rate)+1)%rates.length];this.setData({rate});player.rate(rate)},
     loop() {this.setData({loop:!this.data.loop});host.toast(this.data.loop?'单篇循环':'顺序播放')},
     toggleSubtitle() {this.setData({subtitle:!this.data.subtitle})},
-    word(e) {const surface=e.currentTarget.dataset.word;const key=e.currentTarget.dataset.vocabKey||surface.toLowerCase();const entry=legacyVocab[key];const garden=surface.toLowerCase()==='garden';player.pause();this.setData({playing:false,sheet:'word',selectedWord:{surface,phonetic:entry?.ph|| (garden?'/ˈɡɑːdn/':'—'),partOfSpeech:entry?.pos|| (garden?'noun':'pending'),definitionZh:entry?.zh|| (garden?'花园；园子':'释义待审核'),definitionEn:entry?.en|| (garden?'A place where flowers, fruit, or vegetables grow.':'This word is waiting for editorial review.'),example:this.data.activeCue?this.data.activeCue.text:''}})},
+    word(e) {const surface=e.currentTarget.dataset.word;const key=e.currentTarget.dataset.vocabKey||surface.toLowerCase();const entry=legacyVocab[key];const garden=surface.toLowerCase()==='garden';const cues=cuesByBook[cueKey(this.data.book)]||[];const cue=cues[Number(e.currentTarget.dataset.cueIndex)]||this.data.activeCue;player.pause();this.setData({playing:false,sheet:'word',selectedWord:{surface,phonetic:entry?.ph|| (garden?'/ˈɡɑːdn/':'—'),partOfSpeech:entry?.pos|| (garden?'noun':'待审核'),definitionZh:entry?.zh|| (garden?'花园；园子':'释义待审核'),definitionEn:entry?.en|| (garden?'A place where flowers, fruit, or vegetables grow.':'This word is waiting for editorial review.'),example:cue?cue.text:'',translation:cue?.translation||''}})},
     saveWord() {if(!this.requireUser())return;const word=this.data.selectedWord.surface;this.state.words=[...new Set([...(this.state.words||[]),word])];this.save();host.toast(word+' 已加入生词本');this.setData({sheet:''})},
-    nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const base=books.find(b=>b.id===current.id);const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=books.findIndex(b=>b.id===current.id);book=playableBook(books[(i+step+books.length)%books.length])}player.pause();this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false,activeCue:findCue(cuesByBook[cueKey(book)]||[],0)})},
-    openQuiz() {if(!this.requireUser())return;if(this.data.book.id!=='peter'){host.toast('当前仅彼得兔提供演示题目');return}host.go('quiz',this.data.book.id)},
-    answer(e) {this.setData({answer:Number(e.currentTarget.dataset.index)})},
-    nextQuestion() {if(this.data.answer<0){host.toast('先选择一个答案吧');return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];const n=this.data.questionIndex+1;if(n>=questions.length){const score=Math.round(scores.reduce((a,b)=>a+b,0)/questions.length*100);this.state.results=[{id:Date.now(),title:this.data.book.title,score,date:new Date().toLocaleDateString()},...this.state.results];this.save();this.setData({result:true,score,scores})}else this.setData({questionIndex:n,question:questions[n],answer:-1,scores})},
-    retryQuiz() {this.setData({questionIndex:0,question:questions[0],answer:-1,result:false,scores:[]})},
+    nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const base=books.find(b=>b.id===current.id);const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=books.findIndex(b=>b.id===current.id);book=playableBook(books[(i+step+books.length)%books.length])}player.pause();this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false});this.updateSubtitles(0,true)},
+    openQuiz() {const book=this.data.book;const pieceId=book.chapterId||(book.chapters||[])[0]?.id;if(book.id!=='peter'&&!(legacyQuizzes[pieceId]||[]).length){host.toast('这一章暂时没有小测');return}player.pause();host.go('quiz',book.id+(pieceId?':'+pieceId:''))},
+    playOption(e) {const option=this.data.quizOptions[Number(e.currentTarget.dataset.index)];if(!option?.audio)return;player.pause();if(!this.optionAudio)this.optionAudio=wx.createInnerAudioContext();this.optionAudio.stop();this.optionAudio.src=option.audio;this.optionAudio.play()},
+    onUnload() {if(this.optionAudio)this.optionAudio.destroy()},
+    answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
+    nextQuestion() {if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];const n=this.data.questionIndex+1;if(n>=this.questions.length){const score=Math.round(scores.reduce((a,b)=>a+b,0)/this.questions.length*100);this.state.results=[{id:Date.now(),title:this.data.book.chapterTitle||this.data.book.title,score,date:new Date().toLocaleDateString()},...this.state.results];this.save();this.setData({result:true,score,scores})}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
+    retryQuiz() {this.setupQuiz()},
     period(e) {this.setData({period:e.currentTarget.dataset.id})}
   }
 }

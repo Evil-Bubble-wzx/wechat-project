@@ -101,3 +101,38 @@ text { line-height:1.5; white-space:pre-line; }
 .subtitle>.muted { display:block; font-size:17rpx; color:#92aa9a; margin-bottom:8rpx; }
 .subtitle-line { min-height:82rpx; display:block; }
 .subtitle-pause { color:#92aa9a; font-size:28rpx; }
+
+/* Seven-line listening reader shared by all books with timed text. */
+.app.player-theme { height:100vh; min-height:0; display:flex; flex-direction:column; background:#fffef9; color:#344e3e; }
+.player-theme .nav { flex-shrink:0; background:#fffef9; color:#344e3e; }
+.player-theme .nav-left image { filter:none; }
+.player-theme .wx-capsule { border-color:#e0e8da; background:#fff; }
+.reader-content { flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; padding:12rpx 28rpx 0; text-align:left; }
+.reader-book-title { flex-shrink:0; width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; text-align:center; font:700 35rpx Georgia,serif; color:#344e3e; }
+.reader-cover-wrap { flex-shrink:0; height:235rpx; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8rpx; }
+.reader-cover { width:146rpx; height:180rpx; border-radius:9rpx; box-shadow:0 8rpx 24rpx #344e3e18; }
+.reader-chapter { font-size:20rpx; color:#93a18d; max-width:90%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.reader-subtitles { flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; padding:3rpx 0 8rpx; }
+.reader-row { flex:1; min-height:0; width:100%; display:flex; align-items:center; border-left:4rpx solid transparent; border-radius:10rpx; padding:0 15rpx; color:#71806e; }
+.reader-row-text { width:100%; overflow:hidden; white-space:nowrap; font:30rpx/1.5 Georgia,serif; }
+.reader-row-active { background:#eaf0dc; border-left-color:#75a071; color:#345b3e; font-weight:700; }
+.reader-row-fade-top { opacity:.7; -webkit-mask-image:linear-gradient(to bottom,transparent,#000 85%); }
+.reader-row-fade-bottom { opacity:.7; -webkit-mask-image:linear-gradient(to bottom,#000 15%,transparent); }
+.reader-word { padding:3rpx 0; }
+.reader-hidden { justify-content:center; align-items:center; color:#9aa98e; font-size:23rpx; }
+.reader-panel { flex-shrink:0; margin:0 -28rpx; padding:18rpx 36rpx calc(18rpx + env(safe-area-inset-bottom)); background:#fffef9; border-top:1rpx solid #e6eadf; border-radius:26rpx 26rpx 0 0; box-shadow:0 -5rpx 24rpx #344e3e0a; }
+.reader-panel-top { display:flex; justify-content:space-between; color:#738a70; font-size:22rpx; }
+.reader-panel slider { margin:12rpx 0 0; }
+.reader-time { display:flex; justify-content:space-between; color:#9aa893; font-size:19rpx; }
+.reader-controls { display:flex; align-items:center; justify-content:center; gap:70rpx; margin-top:5rpx; }
+.reader-step { width:90rpx; display:flex; flex-direction:column; align-items:center; color:#80977a; font-size:20rpx; }
+.reader-step text:first-child { font-size:43rpx; line-height:1; }
+.reader-controls .play-button { width:100rpx; height:100rpx; background:#497653; box-shadow:0 7rpx 15rpx #dce7d9; }
+.reader-controls .play-button image { width:44rpx; height:44rpx; filter:brightness(0) invert(1); }
+.reader-panel-bottom { display:flex; justify-content:space-between; gap:16rpx; color:#96a48c; font-size:19rpx; margin-top:10rpx; }
+.reader-panel-bottom text:last-child { color:#64805d; }
+.answer-text { flex:1; }
+.answer-speaker { flex-shrink:0; min-width:50rpx; height:50rpx; border-radius:50%; background:#edf3e7; color:#4f8055; text-align:center; line-height:50rpx; font-size:32rpx; }
+.answer.quiz-correct { border-color:#75a071; background:#edf4e6; }
+.answer.quiz-wrong { border-color:#c58b78; background:#f9eee9; }
+.quiz-feedback { display:flex; flex-direction:column; gap:8rpx; background:#edf3e7; border-radius:18rpx; padding:20rpx; margin-top:22rpx; color:#4c7154; font-size:24rpx; }

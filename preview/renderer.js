@@ -7,7 +7,7 @@ function value(text,scope){const exact=text.match(/^\{\{([^{}]*?)\}\}$/);if(exac
 function renderNode(node,scope,inLoop=false){
   if(node.nodeType===3)return document.createTextNode(value(node.textContent,scope))
   if(node.nodeType!==1)return null
-  if(node.hasAttribute('wx:for')&&!inLoop){const frag=document.createDocumentFragment(),items=value(node.getAttribute('wx:for'),scope)||[];items.forEach((item,index)=>{const el=renderNode(node,{...scope,item,index},true);if(el)frag.appendChild(el)});return frag}
+  if(node.hasAttribute('wx:for')&&!inLoop){const frag=document.createDocumentFragment(),items=value(node.getAttribute('wx:for'),scope)||[],itemName=node.getAttribute('wx:for-item')||'item',indexName=node.getAttribute('wx:for-index')||'index';items.forEach((item,index)=>{const el=renderNode(node,{...scope,[itemName]:item,[indexName]:index},true);if(el)frag.appendChild(el)});return frag}
   if(node.hasAttribute('wx:if')&&!value(node.getAttribute('wx:if'),scope))return null
   const tag=node.tagName.toLowerCase(),isSlider=tag==='slider',el=document.createElement(({view:'div',text:'span',image:'img',slider:'input'})[tag]||tag)
   let handler
