@@ -1,16 +1,25 @@
 const { books, questions } = require('../modules/catalog/books')
 const { demoLogin } = require('../modules/account/session')
 const rules = require('../modules/physical-loan/rules')
+const promotion = require('../modules/promotion/demo')
 const host = require('../services/host')
 const player = require('../modules/listen-read/player')
 const cuesByBook = Object.assign({}, require('../modules/listen-read/cues-data'), require('../modules/listen-read/legacy-cues-data'))
 const legacyVocab = require('../modules/listen-read/legacy-vocab-data')
 const legacyQuizzes = require('../modules/listen-read/legacy-quiz-data')
 const subtitles = require('../modules/listen-read/subtitles')
-const defaults = () => ({ favorites:[], loans:[], recent:[], progress:{}, results:[], user:null, listeningSec:0, listenDaily:{} })
+const defaults = () => ({ favorites:[], loans:[], recent:[], progress:{}, results:[], user:null, listeningSec:0, listenDaily:{}, demoCoupons:[], demoInvitationCompleted:false, demoPurchases:[] })
 const pad2 = n => String(n).padStart(2,'0')
 const dayKey = (d = new Date()) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
-const fmtHMS = total => { const s = Math.max(0, Math.floor(total || 0)); return pad2(Math.floor(s / 3600)) + ':' + pad2(Math.floor(s % 3600 / 60)) + ':' + pad2(s % 60) }
+const fmtListening = total => { const s = Math.max(0, Math.floor(total || 0)); return s < 3600 ? pad2(Math.floor(s / 60)) + ':' + pad2(s % 60) : pad2(Math.floor(s / 3600)) + ':' + pad2(Math.floor(s % 3600 / 60)) }
+const fmtDate = timestamp => { const d = new Date(timestamp); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) }
+const couponViews = (state, now = Date.now()) => (state.demoCoupons || []).map(coupon => Object.assign({}, coupon, {
+  amountLabel:'¥' + coupon.amount,
+  conditionLabel:'满 ¥' + coupon.minimum + ' 可用',
+  expiresLabel:'有效期至 ' + fmtDate(coupon.expires),
+  status:coupon.used ? 'Used' : coupon.expires <= now ? 'Expired' : 'Available',
+  available:!coupon.used && coupon.expires > now
+}))
 // 阅读总时间（listen_sec 口径）：只计 onTimeUpdate 真实推进，seek/切后台跳变丢弃，单日单篇上限 duration×1.2
 function addListenSeconds(state, pieceId, delta, duration) {
   if (!(delta > 0) || delta > 2) return 0
@@ -24,7 +33,7 @@ function addListenSeconds(state, pieceId, delta, duration) {
   return add
 }
 const tabs = [{id:'home',label:'Home',icon:'home'},{id:'recent',label:'Recent',icon:'play'},{id:'me',label:'Me',icon:'user'}]
-const titles = { home:'Tingyue',library:'Find Books',loans:'Borrowed',me:'Me',detail:'Book Details',player:'Read for Me',recent:'Recent',report:'My Quizzes',ranking:'Rankings',login:'Welcome',quiz:'Take Quiz' }
+const titles = { home:'Tingyue',library:'Find Books',loans:'Borrowed',me:'Me',detail:'Book Details',player:'Read for Me',recent:'Recent',report:'My Quizzes',ranking:'Rankings',login:'Welcome',coupons:'My Coupons',invite:'Invite Friends',quiz:'Take Quiz' }
 const campusOptions = [{id:'a',label:'A Campus'},{id:'b',label:'B Campus'}]
 const rankingTypes = [
   {id:'seven',label:'7-Day',description:'Rolling last 7 days'},
@@ -59,7 +68,7 @@ const findCue = (cues, milliseconds) => {
 }
 function createPage(route) {
   return {
-    data: { route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books, featured:books.slice(0,3), recommendations:[books[4],books[3]], book:books[0], query:'',filter:'all', loanFilter:'all', loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}], filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:books, loanList:[], totalLoans:0, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, sheet:'', agreed:false, loginMethod:'wechat', phone:'',code:'',codeSent:false, playing:false, rate:1, position:0, formatted:'00:00',duration:time(books[0].duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 示例测验', quizOptions:[], results:[], campusOptions, campus:'a', campusLabel:'A Campus', rankingTypes, rankingType:'seven', rankingTypeLabel:'7-Day', weekOptions, monthOptions, selectedWeek:'2026-W38', selectedWeekLabel:'2026 · Week 38', selectedMonth:'2026-09', selectedMonthLabel:'September 2026', gradeOptions, levelOptions, rankGrade:'all', rankGradeLabel:'All Grades', rankLevel:'all', rankLevelLabel:'All Levels', stats:{pieces:0,words:0,correct:0,listening:'00:00:00'}, currentFavorite:false, isDemo:true },
+    data: { route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books, featured:books.slice(0,3), recommendations:[books[4],books[3]], book:books[0], query:'',filter:'all', loanFilter:'all', loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}], filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:books, loanList:[], totalLoans:0, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, sheet:'', agreed:false, loginMethod:'wechat', phone:'',code:'',codeSent:false, playing:false, rate:1, position:0, formatted:'00:00',duration:time(books[0].duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 示例测验', quizOptions:[], results:[], campusOptions, campus:'a', campusLabel:'A Campus', rankingTypes, rankingType:'seven', rankingTypeLabel:'7-Day', weekOptions, monthOptions, selectedWeek:'2026-W38', selectedWeekLabel:'2026 · Week 38', selectedMonth:'2026-09', selectedMonthLabel:'September 2026', gradeOptions, levelOptions, rankGrade:'all', rankGradeLabel:'All Grades', rankLevel:'all', rankLevelLabel:'All Levels', stats:{pieces:0,words:0,correct:0,listening:'00:00'}, currentFavorite:false, coupons:[], couponCount:0, invitationClaimed:false, promoBooks:[], purchaseEligible:false, purchaseCompleted:false, purchasePrice:'¥15', purchaseDiscount:'¥0', purchaseTotal:'¥15', purchaseResult:null, isDemo:true },
     onLoad(options) {const [bookId,chapterId]=((options&&options.id)||books[0].id).split(':');const base=books.find(b=>b.id===bookId)||books[0];const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration)});if(route==='player')this.updateSubtitles(0,true);if(route==='quiz')this.setupQuiz();this.refresh()},
     setupQuiz() {
       const book=this.data.book
@@ -85,7 +94,11 @@ function createPage(route) {
       const pieces=Object.values(s.progress).filter(p=>p.completed).length
       const favoriteBooks=books.filter(b=>s.favorites.includes(b.id))
       const readingList=this.data.recentMode==='favorites'?favoriteBooks:recent
-      this.setData({user:s.user,favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?'garden  /ˈɡɑːdn/  n. 花园；园子':'在听读字幕中点击单词，把新认识的词收进来。',loanList,totalLoans:s.loans.filter(l=>l.status!=='cancelled').length,recent,results:s.results, currentFavorite:s.favorites.includes(this.data.book.id),stats:{pieces,words:books.filter(b=>s.progress[b.id]?.completed).reduce((a,b)=>a+b.words,0),correct:s.results.length?Math.round(s.results.reduce((a,r)=>a+r.score,0)/s.results.length):0,listening:fmtHMS(s.listeningSec)}})
+      const coupons=couponViews(s), activeCoupons=coupons.filter(c=>c.available)
+      const applicable=promotion.applicableCoupon(s,this.data.book.id)
+      const purchaseCompleted=s.demoPurchases.includes(this.data.book.id)
+      const promoBooks=books.filter(b=>promotion.eligibleBook(b.id)).map(b=>Object.assign({},b,{purchaseCompleted:s.demoPurchases.includes(b.id),priceLabel:'¥'+promotion.PRICE}))
+      this.setData({user:s.user,favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?'garden  /ˈɡɑːdn/  n. 花园；园子':'在听读字幕中点击单词，把新认识的词收进来。',loanList,totalLoans:s.loans.filter(l=>l.status!=='cancelled').length,recent,results:s.results, currentFavorite:s.favorites.includes(this.data.book.id),coupons,couponCount:activeCoupons.length,invitationClaimed:!!s.demoInvitationCompleted,promoBooks,purchaseEligible:promotion.eligibleBook(this.data.book.id),purchaseCompleted,purchasePrice:'¥'+promotion.PRICE,purchaseDiscount:'¥'+(applicable?applicable.amount:0),purchaseTotal:'¥'+(promotion.PRICE-(applicable?applicable.amount:0)),stats:{pieces,words:books.filter(b=>s.progress[b.id]?.completed).reduce((a,b)=>a+b.words,0),correct:s.results.length?Math.round(s.results.reduce((a,r)=>a+r.score,0)/s.results.length):0,listening:fmtListening(s.listeningSec)}})
     },
     save() { host.write(this.state); this.refresh() },
     nav(e) {host.go(e.currentTarget.dataset.page,e.currentTarget.dataset.id)},
@@ -99,6 +112,9 @@ function createPage(route) {
     toggleFavorite() {if(!this.requireUser())return;const id=this.data.book.id;this.state.favorites=this.state.favorites.includes(id)?this.state.favorites.filter(x=>x!==id):[...this.state.favorites,id];this.save();host.toast(this.data.currentFavorite?'已加入收藏':'已取消收藏')},
     openReserve() {if(!this.requireUser())return;if(!this.data.book.stock){host.toast('暂无可借库存，可以先听读');return}this.setData({sheet:'reserve'})},
     confirmReserve() {try{this.state.loans=rules.reserve(this.state.loans,this.data.book);this.save();this.setData({sheet:''});host.go('loans')}catch(e){host.toast(e.message)}},
+    openPurchase() {if(!this.requireUser())return;if(!promotion.eligibleBook(this.data.book.id)){host.toast('这本书暂无购书演示');return}if(this.state.demoPurchases.includes(this.data.book.id)){host.toast('这本书已经完成演示购买');return}this.setData({sheet:'purchase'})},
+    confirmPurchase() {try{const result=promotion.simulatePurchase(this.state,this.data.book.id);this.save();this.setData({sheet:'purchaseResult',purchaseResult:{total:'¥'+result.total,couponUsed:result.couponUsed}})}catch(e){host.toast(e.message)}},
+    claimInviteReward() {if(!this.requireUser())return;try{promotion.simulateInvitation(this.state);this.save();host.toast('¥5 优惠券已到账')}catch(e){host.toast(e.message)}},
     loanFilter(e) {this.setData({loanFilter:e.currentTarget.dataset.id});this.refresh()},
     cancelLoan(e) {this.state.loans=this.state.loans.map(l=>l.id===e.currentTarget.dataset.id&&l.status==='reserved'?Object.assign({},l,{status:'cancelled',label:'已取消',due:'库存将在正式服务中释放'}):l);this.save();host.toast('演示预约已取消')},
     renewLoan(e) {try{this.state.loans=this.state.loans.map(l=>l.id===e.currentTarget.dataset.id?rules.renew(l):l);this.save();host.toast('续借成功')}catch(e){host.toast(e.message)}},

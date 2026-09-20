@@ -1,5 +1,6 @@
-// HTTPS recordings use background audio; bundled legacy clips use inner audio
-// in the native mini program and the browser audio bridge in local preview.
+// All story recordings use the singleton background audio manager so playback
+// can continue when the mini program moves to the background. Short quiz option
+// recordings intentionally keep using InnerAudioContext in the page controller.
 //
 // NOTE: wx.getBackgroundAudioManager() is a singleton and (unlike
 // wx.createInnerAudioContext()) provides no offTimeUpdate/offEnded/offError
@@ -22,31 +23,17 @@ function bindBackground(ctx) {
   backgroundBound = true
 }
 
-function bindInner(ctx) {
-  ctx.onTimeUpdate(function () { if (ctx === context && tickFn) tickFn(ctx.currentTime, ctx.duration) })
-  ctx.onEnded(function () { if (ctx === context && endFn) endFn() })
-  ctx.onError(function (err) { if (ctx === context && errorFn) errorFn(err) })
-}
-
-function createContext(nextMode) {
-  const ctx = nextMode === 'inner' ? wx.createInnerAudioContext() : wx.getBackgroundAudioManager()
-  if (nextMode === 'inner') bindInner(ctx)
-  else bindBackground(ctx)
+function createContext() {
+  const ctx = wx.getBackgroundAudioManager()
+  bindBackground(ctx)
   return ctx
 }
 
 module.exports = {
   play(book, onTick, onEnd, onError) {
     if (!book.audioUrl && !book.localAudio) return false
-    const nextMode = book.localAudio && !wx.isBrowserPreview ? 'inner' : 'background'
-    if (context && mode !== nextMode) {
-      try { context.stop() } catch (_) {}
-      if (mode === 'inner') {
-        try { context.destroy() } catch (_) {}
-      }
-      context = null
-    }
-    if (!context) context = createContext(nextMode)
+    const nextMode = 'background'
+    if (!context) context = createContext()
     mode = nextMode
     tickFn = onTick
     endFn = onEnd
@@ -54,7 +41,7 @@ module.exports = {
     if (mode === 'background') {
       context.title = book.title
       context.singer = book.narrator || book.author
-      if (book.coverUrl) context.coverImgUrl = book.coverUrl
+      if (book.coverUrl || book.cover) context.coverImgUrl = book.coverUrl || book.cover
     }
     const source = book.localAudio || (wx.isBrowserPreview && book.previewAudioUrl ? book.previewAudioUrl : book.audioUrl)
     if (context.src === source) {
@@ -62,10 +49,7 @@ module.exports = {
     } else {
       context.src = source
       // BackgroundAudioManager auto-plays on src assignment (same for the
-      // browser preview bridge); inner contexts need an explicit play().
-      if (mode === 'inner') {
-        try { context.play() } catch (err) { if (errorFn) errorFn(err) }
-      }
+      // browser preview bridge).
     }
     return true
   },

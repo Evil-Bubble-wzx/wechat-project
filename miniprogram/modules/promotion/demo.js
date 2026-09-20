@@ -7,7 +7,7 @@ const DAY = 86400000
 
 function eligibleBook(bookId) { return BOOK_IDS.includes(bookId) }
 function activeCoupons(state, now = Date.now()) {
-  return (state.demoCoupons || []).filter(c => !c.used && c.expires > now)
+  return (state.demoCoupons || []).filter(c => !c.used && c.expires > now).sort((a, b) => a.expires - b.expires)
 }
 function applicableCoupon(state, bookId, now = Date.now()) {
   return eligibleBook(bookId) && PRICE >= MINIMUM ? activeCoupons(state, now)[0] || null : null
