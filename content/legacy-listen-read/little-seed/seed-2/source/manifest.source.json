@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "little-seed",
+  "pieceId": "seed-2",
+  "index": 2,
+  "title": "Hello, Little Leaf",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 10176,
+    "mimeType": "audio/mpeg",
+    "sha256": "588e8bea5de118d6cf19f10eec5743b00bdee28f713b00edc214860f3eae1735",
+    "sourceName": "Microsoft Zira demonstration synthesis"
+  }
+}

@@ -110,5 +110,153 @@
     "stock": 2,
     "number": "10006",
     "desc": "夜幕降临，抬头看一看。和我们一起认识月亮、星星与遥远的银河。"
+  },
+  {
+    "id": "little-seed",
+    "title": "The Little Seed",
+    "zh": "小兔的种子",
+    "author": "Tingyue original story",
+    "series": "Tingyue Original",
+    "level": "L1",
+    "words": 54,
+    "pages": 0,
+    "duration": 19.0242,
+    "time": "1 min",
+    "category": "fiction",
+    "cover": "/assets/covers/little-seed.png",
+    "color": "#E8EDCE",
+    "stock": 0,
+    "number": "20001",
+    "desc": "跟着小兔 Pip 种下一颗种子，一起发现阳光、雨水和等待的魔法。用简单的英文，读懂成长的小惊喜。",
+    "audioSource": "Microsoft Zira",
+    "narrator": "Microsoft Zira",
+    "localAudio": "/assets/audio/seed-1.mp3",
+    "chapters": [
+      {
+        "id": "seed-1",
+        "title": "A Tiny Seed",
+        "zh": "一颗小小的种子",
+        "duration": 8.8484,
+        "localAudio": "/assets/audio/seed-1.mp3",
+        "hasQuiz": true
+      },
+      {
+        "id": "seed-2",
+        "title": "Hello, Little Leaf",
+        "zh": "你好，小叶子",
+        "duration": 10.1758,
+        "localAudio": "/assets/audio/seed-2.mp3",
+        "hasQuiz": true
+      }
+    ]
+  },
+  {
+    "id": "fox-star",
+    "title": "Fox and the Star",
+    "zh": "小狐狸与星星",
+    "author": "Tingyue original story",
+    "series": "Tingyue Original",
+    "level": "L2",
+    "words": 55,
+    "pages": 0,
+    "duration": 19.3658,
+    "time": "1 min",
+    "category": "fiction",
+    "cover": "/assets/covers/fox-star.png",
+    "color": "#E2E8F0",
+    "stock": 0,
+    "number": "20002",
+    "desc": "小狐狸追着星光走进安静的森林。他能把星星带回家吗？一个关于好奇、陪伴和发现的晚安故事。",
+    "audioSource": "Microsoft Zira",
+    "narrator": "Microsoft Zira",
+    "localAudio": "/assets/audio/fox-1.mp3",
+    "chapters": [
+      {
+        "id": "fox-1",
+        "title": "A Light in the Sky",
+        "zh": "天空中的光",
+        "duration": 9.6301,
+        "localAudio": "/assets/audio/fox-1.mp3",
+        "hasQuiz": true
+      },
+      {
+        "id": "fox-2",
+        "title": "Always Beside You",
+        "zh": "一直陪着你",
+        "duration": 9.7357,
+        "localAudio": "/assets/audio/fox-2.mp3",
+        "hasQuiz": true
+      }
+    ]
+  },
+  {
+    "id": "bear-picnic",
+    "title": "Bear's Picnic",
+    "zh": "小熊的野餐",
+    "author": "Tingyue original story",
+    "series": "Tingyue Original",
+    "level": "L1",
+    "words": 51,
+    "pages": 0,
+    "duration": 19.317500000000003,
+    "time": "1 min",
+    "category": "fiction",
+    "cover": "/assets/covers/bear-picnic.png",
+    "color": "#F3E4D1",
+    "stock": 0,
+    "number": "20003",
+    "desc": "小熊准备了一篮子点心，邀请森林里的朋友来野餐。认识食物和颜色，也学会分享与关心。",
+    "audioSource": "Microsoft Zira",
+    "narrator": "Microsoft Zira",
+    "localAudio": "/assets/audio/bear-1.mp3",
+    "chapters": [
+      {
+        "id": "bear-1",
+        "title": "A Basket of Good Things",
+        "zh": "装满美味的篮子",
+        "duration": 9.1629,
+        "localAudio": "/assets/audio/bear-1.mp3",
+        "hasQuiz": true
+      },
+      {
+        "id": "bear-2",
+        "title": "Better Together",
+        "zh": "一起分享更快乐",
+        "duration": 10.1546,
+        "localAudio": "/assets/audio/bear-2.mp3",
+        "hasQuiz": true
+      }
+    ]
+  },
+  {
+    "id": "wonderful-wizard-oz",
+    "title": "The Wonderful Wizard of Oz",
+    "zh": "绿野仙踪",
+    "author": "L. Frank Baum",
+    "series": "Classic Stories · Chapter 1",
+    "level": "L2",
+    "words": 1143,
+    "pages": 0,
+    "duration": 384.63,
+    "time": "6 min",
+    "category": "fiction",
+    "cover": "/assets/covers/wonderful-wizard-oz.jpg",
+    "color": "#E6E9D8",
+    "stock": 0,
+    "number": "20004",
+    "desc": "本次收录第一章《The Cyclone》。跟着朗读认识 Dorothy 和 Toto，逐句阅读故事原文。",
+    "audioSource": "LibriVox",
+    "narrator": "LibriVox volunteer",
+    "localAudio": "/assets/audio/oz-1.mp3",
+    "chapters": [
+      {
+        "id": "oz-1",
+        "title": "The Cyclone",
+        "zh": "第一章：旋风",
+        "duration": 384.63,
+        "localAudio": "/assets/audio/oz-1.mp3",
+        "hasQuiz": false
+      }
+    ]
   }
 ]

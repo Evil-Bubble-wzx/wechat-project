@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "bear-picnic",
+  "pieceId": "bear-2",
+  "index": 2,
+  "title": "Better Together",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 10155,
+    "mimeType": "audio/mpeg",
+    "sha256": "60ff18e9302bae8ad7720b111a5ce0b63b821552f9ea83dfed1ff8b38afed6e7",
+    "sourceName": "Microsoft Zira demonstration synthesis"
+  }
+}

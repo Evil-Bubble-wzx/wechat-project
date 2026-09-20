@@ -1,0 +1,332 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 2589,
+    "text": "Rabbit brings a cup of sweet juice.",
+    "translation": "小兔带来一杯甜甜的果汁。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "Rabbit",
+        "kind": "word",
+        "vocabKey": "rabbit"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "brings",
+        "kind": "word",
+        "vocabKey": "brings"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "cup",
+        "kind": "word",
+        "vocabKey": "cup"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "of",
+        "kind": "word",
+        "vocabKey": "of"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t10",
+        "surface": "sweet",
+        "kind": "word",
+        "vocabKey": "sweet"
+      },
+      {
+        "id": "c0001:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t12",
+        "surface": "juice",
+        "kind": "word",
+        "vocabKey": "juice"
+      },
+      {
+        "id": "c0001:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 2589,
+    "endMs": 5200,
+    "text": "Fox brings three little red cups.",
+    "translation": "小狐狸带来三个红色的小杯子。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "Fox",
+        "kind": "word",
+        "vocabKey": "fox"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "brings",
+        "kind": "word",
+        "vocabKey": "brings"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": "three",
+        "kind": "word",
+        "vocabKey": "three"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": "little",
+        "kind": "word",
+        "vocabKey": "little"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": "red",
+        "kind": "word",
+        "vocabKey": "red"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": "cups",
+        "kind": "word",
+        "vocabKey": "cups"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 5200,
+    "endMs": 7356,
+    "text": "They share the food under a tree.",
+    "translation": "他们在树下分享食物。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "They",
+        "kind": "word",
+        "vocabKey": "they"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "share",
+        "kind": "word",
+        "vocabKey": "share"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "food",
+        "kind": "word",
+        "vocabKey": "food"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "under",
+        "kind": "word",
+        "vocabKey": "under"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "tree",
+        "kind": "word",
+        "vocabKey": "tree"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 7356,
+    "endMs": 10155,
+    "text": "Everything tastes better with good friends.",
+    "translation": "和好朋友一起，什么都更好吃了。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "Everything",
+        "kind": "word",
+        "vocabKey": "everything"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "tastes",
+        "kind": "word",
+        "vocabKey": "tastes"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "better",
+        "kind": "word",
+        "vocabKey": "better"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "with",
+        "kind": "word",
+        "vocabKey": "with"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "good",
+        "kind": "word",
+        "vocabKey": "good"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "friends",
+        "kind": "word",
+        "vocabKey": "friends"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

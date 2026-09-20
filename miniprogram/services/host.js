@@ -5,7 +5,8 @@ module.exports = {
   write(state) { wx.setStorageSync(key, state) },
   toast(title) { wx.showToast({ title, icon:'none', duration:2200 }) },
   go(page, id) {
-    const url = '/pages/' + page + '/index' + (id ? '?id=' + encodeURIComponent(id) : '')
+    const route = page === 'quiz' && !wx.isBrowserPreview ? '/quiz/pages/index' : '/pages/' + page + '/index'
+    const url = route + (id ? '?id=' + encodeURIComponent(id) : '')
     if (['home','recent','me'].includes(page)) wx.switchTab({ url })
     else wx.navigateTo({ url })
   },

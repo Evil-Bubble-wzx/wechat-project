@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "little-seed",
+  "pieceId": "seed-1",
+  "index": 1,
+  "title": "A Tiny Seed",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 8848,
+    "mimeType": "audio/mpeg",
+    "sha256": "7c73d0f8cfd33ead4a4f8d56de75c58674a29c682c4c53c27c76741794b8f5e0",
+    "sourceName": "Microsoft Zira demonstration synthesis"
+  }
+}

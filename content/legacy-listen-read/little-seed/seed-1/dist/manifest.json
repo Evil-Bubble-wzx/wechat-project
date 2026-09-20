@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "seed-1",
+  "contentVersion": 0,
+  "status": "needs_review",
+  "publishable": false,
+  "audio": {
+    "source": "source/audio-original.mp3",
+    "durationMs": 8848,
+    "sha256": "7c73d0f8cfd33ead4a4f8d56de75c58674a29c682c4c53c27c76741794b8f5e0"
+  },
+  "artifacts": {
+    "cues": "dist/cues.json"
+  },
+  "counts": {
+    "cues": 4,
+    "words": 26
+  },
+  "blockers": [
+    "Human subtitle and audio review pending.",
+    "Commercial rights and target-jurisdiction review pending."
+  ]
+}

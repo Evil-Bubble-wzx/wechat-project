@@ -1,0 +1,321 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 2310,
+    "text": "Bear has a big picnic basket.",
+    "translation": "小熊有一个大大的野餐篮。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "Bear",
+        "kind": "word",
+        "vocabKey": "bear"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "has",
+        "kind": "word",
+        "vocabKey": "has"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "big",
+        "kind": "word",
+        "vocabKey": "big"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "picnic",
+        "kind": "word",
+        "vocabKey": "picnic"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t10",
+        "surface": "basket",
+        "kind": "word",
+        "vocabKey": "basket"
+      },
+      {
+        "id": "c0001:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 2310,
+    "endMs": 4696,
+    "text": "He puts apples and bread inside.",
+    "translation": "他把苹果和面包放进去。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "puts",
+        "kind": "word",
+        "vocabKey": "puts"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": "apples",
+        "kind": "word",
+        "vocabKey": "apples"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": "and",
+        "kind": "word",
+        "vocabKey": "and"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": "bread",
+        "kind": "word",
+        "vocabKey": "bread"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": "inside",
+        "kind": "word",
+        "vocabKey": "inside"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 4696,
+    "endMs": 6911,
+    "text": "He takes a blanket to the park.",
+    "translation": "他带着一条毯子来到公园。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "takes",
+        "kind": "word",
+        "vocabKey": "takes"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "blanket",
+        "kind": "word",
+        "vocabKey": "blanket"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "to",
+        "kind": "word",
+        "vocabKey": "to"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "park",
+        "kind": "word",
+        "vocabKey": "park"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 6911,
+    "endMs": 9163,
+    "text": "His friends are coming for lunch.",
+    "translation": "他的朋友们要来一起吃午饭。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "His",
+        "kind": "word",
+        "vocabKey": "his"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "friends",
+        "kind": "word",
+        "vocabKey": "friends"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "are",
+        "kind": "word",
+        "vocabKey": "are"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "coming",
+        "kind": "word",
+        "vocabKey": "coming"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "for",
+        "kind": "word",
+        "vocabKey": "for"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "lunch",
+        "kind": "word",
+        "vocabKey": "lunch"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

@@ -9,3 +9,8 @@
 @media(max-width:1140px){body{grid-template-columns:240px 1fr}.design-notes{display:none}.design-rail{padding:30px 23px}}
 @media(max-width:720px){body{display:block;background:#f7f8f5}.design-rail,.design-notes,.preview-topline,.preview-caption{display:none}.canvas{padding:0;background:none}.phone-shell{width:100%;padding:0;border:0;box-shadow:none;border-radius:0}.device{width:100%;height:100dvh;max-height:none;min-height:0;border-radius:0}.status-bar{display:none}.device .nav{padding-top:12px!important}.device .bottom-nav{padding-bottom:calc(10px + env(safe-area-inset-bottom))}.device .player-content{min-height:0}.device .hero-title{font-size:21px}.device .hero-copy{width:61%}}
 @media(max-width:720px){.phone-shell>.bottom-nav{left:0;right:0;bottom:0;border-radius:0;padding-bottom:calc(10px + env(safe-area-inset-bottom))}.phone-shell>.modal-backdrop{inset:0;border-radius:0}}
+.device:has(.player-theme),.device:has(.player-theme) .status-bar{background:#fffef9;color:#344e3e}
+.device:has(.player-theme) #app{height:calc(100% - 34px)}
+.device:has(.player-theme) .app{height:100%}
+.device .reader-content{min-height:0}
+@media(max-width:720px){.device:has(.player-theme) #app{height:100%}}

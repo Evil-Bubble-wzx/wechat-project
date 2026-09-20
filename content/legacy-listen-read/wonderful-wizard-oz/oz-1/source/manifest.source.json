@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "wonderful-wizard-oz",
+  "pieceId": "oz-1",
+  "index": 1,
+  "title": "The Cyclone",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 384630,
+    "mimeType": "audio/mpeg",
+    "sha256": "dcffc769b65d3d434ead144cb058e06f793ee44251240e7e2e5ff3178918d9b2",
+    "sourceName": "LibriVox chapter recording"
+  }
+}

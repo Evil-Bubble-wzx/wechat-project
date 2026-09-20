@@ -17,7 +17,7 @@ function createAudioManager() {
     get src(){ return source }, set src(value){source=value; audio.src=value; play()},
     get currentTime(){return audio.currentTime},get duration(){return audio.duration},
     get playbackRate(){return audio.playbackRate},set playbackRate(value){audio.playbackRate=value},
-    play,pause(){audio.pause()},seek(seconds){if(audio.readyState>0)audio.currentTime=seconds},
+    play,pause(){audio.pause()},stop(){audio.pause();audio.currentTime=0},destroy(){audio.pause();audio.src=''},seek(seconds){if(audio.readyState>0)audio.currentTime=seconds},
     onTimeUpdate(fn){listeners.time.add(fn)},offTimeUpdate(fn){listeners.time.delete(fn)},
     onEnded(fn){listeners.end.add(fn)},offEnded(fn){listeners.end.delete(fn)},
     onError(fn){listeners.error.add(fn)},offError(fn){listeners.error.delete(fn)}
@@ -31,7 +31,8 @@ window.wx = {
   getWindowInfo() {return {statusBarHeight:0}},
   switchTab({url}) {window.goUrl(url)}, navigateTo({url}) {window.goUrl(url)},
   navigateBack() {if(window.previewDepth>0){window.previewDepth--;history.back()}else location.hash='home'},
-  getBackgroundAudioManager(){if(!audioManager)audioManager=createAudioManager();return audioManager}
+  getBackgroundAudioManager(){if(!audioManager)audioManager=createAudioManager();return audioManager},
+  createInnerAudioContext(){return createAudioManager()}
 }
 window.getCurrentPages=()=>window.previewDepth>0?[{},{}]:[{}]
 window.goUrl=url=>{const match=url.match(/\/pages\/([^/]+)\/index(.*)/);if(match){window.previewDepth++;location.hash=match[1]+match[2]}}

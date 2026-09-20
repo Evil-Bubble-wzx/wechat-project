@@ -1,0 +1,354 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 2642,
+    "text": "A little fox walks through the forest.",
+    "translation": "一只小狐狸走过森林。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "A",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "little",
+        "kind": "word",
+        "vocabKey": "little"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "fox",
+        "kind": "word",
+        "vocabKey": "fox"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "walks",
+        "kind": "word",
+        "vocabKey": "walks"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "through",
+        "kind": "word",
+        "vocabKey": "through"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0001:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t12",
+        "surface": "forest",
+        "kind": "word",
+        "vocabKey": "forest"
+      },
+      {
+        "id": "c0001:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 2642,
+    "endMs": 5000,
+    "text": "He sees a bright star above him.",
+    "translation": "他看见头顶有一颗明亮的星星。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "sees",
+        "kind": "word",
+        "vocabKey": "sees"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": "bright",
+        "kind": "word",
+        "vocabKey": "bright"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": "star",
+        "kind": "word",
+        "vocabKey": "star"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": "above",
+        "kind": "word",
+        "vocabKey": "above"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t12",
+        "surface": "him",
+        "kind": "word",
+        "vocabKey": "him"
+      },
+      {
+        "id": "c0002:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 5000,
+    "endMs": 7312,
+    "text": "The star looks like a tiny lamp.",
+    "translation": "星星看起来像一盏小灯。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "The",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "star",
+        "kind": "word",
+        "vocabKey": "star"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "looks",
+        "kind": "word",
+        "vocabKey": "looks"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "like",
+        "kind": "word",
+        "vocabKey": "like"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "tiny",
+        "kind": "word",
+        "vocabKey": "tiny"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "lamp",
+        "kind": "word",
+        "vocabKey": "lamp"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 7312,
+    "endMs": 9630,
+    "text": "He wants to bring the star home.",
+    "translation": "他想把星星带回家。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "wants",
+        "kind": "word",
+        "vocabKey": "wants"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "to",
+        "kind": "word",
+        "vocabKey": "to"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "bring",
+        "kind": "word",
+        "vocabKey": "bring"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "star",
+        "kind": "word",
+        "vocabKey": "star"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t12",
+        "surface": "home",
+        "kind": "word",
+        "vocabKey": "home"
+      },
+      {
+        "id": "c0004:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

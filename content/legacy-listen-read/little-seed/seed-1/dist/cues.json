@@ -1,0 +1,332 @@
+[
+  {
+    "id": "c0001",
+    "kind": "content",
+    "startMs": 0,
+    "endMs": 1683,
+    "text": "Pip is a little rabbit.",
+    "translation": "Pip 是一只小兔子。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0001:t00",
+        "surface": "Pip",
+        "kind": "word",
+        "vocabKey": "pip"
+      },
+      {
+        "id": "c0001:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t02",
+        "surface": "is",
+        "kind": "word",
+        "vocabKey": "is"
+      },
+      {
+        "id": "c0001:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0001:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t06",
+        "surface": "little",
+        "kind": "word",
+        "vocabKey": "little"
+      },
+      {
+        "id": "c0001:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0001:t08",
+        "surface": "rabbit",
+        "kind": "word",
+        "vocabKey": "rabbit"
+      },
+      {
+        "id": "c0001:t09",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0002",
+    "kind": "content",
+    "startMs": 1683,
+    "endMs": 3885,
+    "text": "He finds a seed in the garden.",
+    "translation": "他在花园里找到一颗种子。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0002:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0002:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t02",
+        "surface": "finds",
+        "kind": "word",
+        "vocabKey": "finds"
+      },
+      {
+        "id": "c0002:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t04",
+        "surface": "a",
+        "kind": "word",
+        "vocabKey": "a"
+      },
+      {
+        "id": "c0002:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t06",
+        "surface": "seed",
+        "kind": "word",
+        "vocabKey": "seed"
+      },
+      {
+        "id": "c0002:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t08",
+        "surface": "in",
+        "kind": "word",
+        "vocabKey": "in"
+      },
+      {
+        "id": "c0002:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0002:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0002:t12",
+        "surface": "garden",
+        "kind": "word",
+        "vocabKey": "garden"
+      },
+      {
+        "id": "c0002:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0003",
+    "kind": "content",
+    "startMs": 3885,
+    "endMs": 6047,
+    "text": "He puts the seed in the soil.",
+    "translation": "他把种子放进泥土里。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0003:t00",
+        "surface": "He",
+        "kind": "word",
+        "vocabKey": "he"
+      },
+      {
+        "id": "c0003:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t02",
+        "surface": "puts",
+        "kind": "word",
+        "vocabKey": "puts"
+      },
+      {
+        "id": "c0003:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t04",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t06",
+        "surface": "seed",
+        "kind": "word",
+        "vocabKey": "seed"
+      },
+      {
+        "id": "c0003:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t08",
+        "surface": "in",
+        "kind": "word",
+        "vocabKey": "in"
+      },
+      {
+        "id": "c0003:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t10",
+        "surface": "the",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0003:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0003:t12",
+        "surface": "soil",
+        "kind": "word",
+        "vocabKey": "soil"
+      },
+      {
+        "id": "c0003:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  },
+  {
+    "id": "c0004",
+    "kind": "content",
+    "startMs": 6047,
+    "endMs": 8848,
+    "text": "The little seed needs water and sunshine.",
+    "translation": "小种子需要水和阳光。",
+    "reviewStatus": "needs_review",
+    "tokens": [
+      {
+        "id": "c0004:t00",
+        "surface": "The",
+        "kind": "word",
+        "vocabKey": "the"
+      },
+      {
+        "id": "c0004:t01",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t02",
+        "surface": "little",
+        "kind": "word",
+        "vocabKey": "little"
+      },
+      {
+        "id": "c0004:t03",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t04",
+        "surface": "seed",
+        "kind": "word",
+        "vocabKey": "seed"
+      },
+      {
+        "id": "c0004:t05",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t06",
+        "surface": "needs",
+        "kind": "word",
+        "vocabKey": "needs"
+      },
+      {
+        "id": "c0004:t07",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t08",
+        "surface": "water",
+        "kind": "word",
+        "vocabKey": "water"
+      },
+      {
+        "id": "c0004:t09",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t10",
+        "surface": "and",
+        "kind": "word",
+        "vocabKey": "and"
+      },
+      {
+        "id": "c0004:t11",
+        "surface": " ",
+        "kind": "space"
+      },
+      {
+        "id": "c0004:t12",
+        "surface": "sunshine",
+        "kind": "word",
+        "vocabKey": "sunshine"
+      },
+      {
+        "id": "c0004:t13",
+        "surface": ".",
+        "kind": "punctuation"
+      }
+    ]
+  }
+]

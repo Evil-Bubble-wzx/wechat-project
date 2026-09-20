@@ -1,0 +1,382 @@
+{
+  "title": {
+    "start": 20.36,
+    "end": 22.2,
+    "text": "Chapter I. The Cyclone."
+  },
+  "cues": [
+    {
+      "start": 23.4,
+      "end": 31.56,
+      "matchedWords": 23,
+      "totalWords": 25,
+      "text": "Dorothy lived in the midst of the great Kansas prairies, with Uncle Henry, who was a farmer, and Aunt Em, who was the farmer's wife."
+    },
+    {
+      "start": 32.1,
+      "end": 36.88,
+      "matchedWords": 18,
+      "totalWords": 18,
+      "text": "Their house was small, for the lumber to build it had to be carried by wagon many miles."
+    },
+    {
+      "start": 37.62,
+      "end": 50.9,
+      "matchedWords": 35,
+      "totalWords": 36,
+      "text": "There were four walls, a floor and a roof, which made one room; and this room contained a rusty looking cooking stove, a cupboard for the dishes, a table, three or four chairs, and the beds."
+    },
+    {
+      "start": 52.2,
+      "end": 58.48,
+      "matchedWords": 17,
+      "totalWords": 20,
+      "text": "Uncle Henry and Aunt Em had a big bed in one corner, and Dorothy a little bed in another corner."
+    },
+    {
+      "start": 58.96,
+      "end": 71.2,
+      "matchedWords": 43,
+      "totalWords": 43,
+      "text": "There was no garret at all, and no cellar—except a small hole, dug in the ground, called a cyclone cellar, where the family could go in case one of those great whirlwinds arose, mighty enough to crush any building in its path."
+    },
+    {
+      "start": 71.7,
+      "end": 77.5,
+      "matchedWords": 24,
+      "totalWords": 24,
+      "text": "It was reached by a trap-door in the middle of the floor, from which a ladder led down into the small, dark hole."
+    },
+    {
+      "start": 78.44,
+      "end": 84.62,
+      "matchedWords": 21,
+      "totalWords": 21,
+      "text": "When Dorothy stood in the doorway and looked around, she could see nothing but the great gray prairie on every side."
+    },
+    {
+      "start": 85.06,
+      "end": 91.56,
+      "matchedWords": 23,
+      "totalWords": 23,
+      "text": "Not a tree nor a house broke the broad sweep of flat country that reached the edge of the sky in all directions."
+    },
+    {
+      "start": 92.32,
+      "end": 97.78,
+      "matchedWords": 17,
+      "totalWords": 17,
+      "text": "The sun had baked the plowed land into a gray mass, with little cracks running through it."
+    },
+    {
+      "start": 98.1,
+      "end": 105.14,
+      "matchedWords": 28,
+      "totalWords": 28,
+      "text": "Even the grass was not green, for the sun had burned the tops of the long blades until they were the same gray color to be seen everywhere."
+    },
+    {
+      "start": 105.9,
+      "end": 113.96,
+      "matchedWords": 29,
+      "totalWords": 30,
+      "text": "Once the house had been painted, but the sun blistered the paint and the rains washed it away, and now the house was as dull and gray as everything else."
+    },
+    {
+      "start": 114.52,
+      "end": 118.0,
+      "matchedWords": 11,
+      "totalWords": 13,
+      "text": "When Aunt Em came there to live she was a young, pretty wife."
+    },
+    {
+      "start": 118.6,
+      "end": 120.62,
+      "matchedWords": 8,
+      "totalWords": 8,
+      "text": "The sun and wind had changed her, too."
+    },
+    {
+      "start": 121.4,
+      "end": 129.3,
+      "matchedWords": 28,
+      "totalWords": 29,
+      "text": "They had taken the sparkle from her eyes and left them a sober gray; they had taken the red from her cheeks and lips, and they were gray also."
+    },
+    {
+      "start": 130.06,
+      "end": 133.0,
+      "matchedWords": 9,
+      "totalWords": 9,
+      "text": "She was thin and gaunt, and never smiled, now."
+    },
+    {
+      "start": 133.54,
+      "end": 149.68,
+      "matchedWords": 53,
+      "totalWords": 56,
+      "text": "When Dorothy, who was an orphan, first came to her, Aunt Em had been so startled by the child's laughter that she would scream and press her hand upon her heart whenever Dorothy's merry voice reached her ears; and she still looked at the little girl with wonder that she could find anything to laugh at."
+    },
+    {
+      "start": 150.34,
+      "end": 151.88,
+      "matchedWords": 4,
+      "totalWords": 4,
+      "text": "Uncle Henry never laughed."
+    },
+    {
+      "start": 152.26,
+      "end": 155.96,
+      "matchedWords": 14,
+      "totalWords": 14,
+      "text": "He worked hard from morning till night and did not know what joy was."
+    },
+    {
+      "start": 156.44,
+      "end": 163.28,
+      "matchedWords": 21,
+      "totalWords": 21,
+      "text": "He was gray also, from his long beard to his rough boots, and he looked stern and solemn, and rarely spoke."
+    },
+    {
+      "start": 164.1,
+      "end": 169.06,
+      "matchedWords": 18,
+      "totalWords": 18,
+      "text": "It was Toto that made Dorothy laugh, and saved her from growing as gray as her other surroundings."
+    },
+    {
+      "start": 169.88,
+      "end": 178.82,
+      "matchedWords": 29,
+      "totalWords": 29,
+      "text": "Toto was not gray; he was a little black dog, with long, silky hair and small black eyes that twinkled merrily on either side of his funny, wee nose."
+    },
+    {
+      "start": 179.66,
+      "end": 183.56,
+      "matchedWords": 14,
+      "totalWords": 14,
+      "text": "Toto played all day long, and Dorothy played with him, and loved him dearly."
+    },
+    {
+      "start": 185.04,
+      "end": 186.36,
+      "matchedWords": 5,
+      "totalWords": 7,
+      "text": "To-day, however, they were not playing."
+    },
+    {
+      "start": 186.68,
+      "end": 192.28,
+      "matchedWords": 16,
+      "totalWords": 19,
+      "text": "Uncle Henry sat upon the door-step and looked anxiously at the sky, which was even grayer than usual."
+    },
+    {
+      "start": 192.94,
+      "end": 197.36,
+      "matchedWords": 16,
+      "totalWords": 16,
+      "text": "Dorothy stood in the door with Toto in her arms, and looked at the sky too."
+    },
+    {
+      "start": 198.22,
+      "end": 199.3,
+      "matchedWords": 4,
+      "totalWords": 6,
+      "text": "Aunt Em was washing the dishes."
+    },
+    {
+      "start": 200.94,
+      "end": 208.44,
+      "matchedWords": 25,
+      "totalWords": 30,
+      "text": "From the far north they heard a low wail of the wind, and Uncle Henry and Dorothy could see where the long grass bowed in waves before the coming storm."
+    },
+    {
+      "start": 209.5,
+      "end": 217.44,
+      "matchedWords": 30,
+      "totalWords": 31,
+      "text": "There now came a sharp whistling in the air from the south, and as they turned their eyes that way they saw ripples in the grass coming from that direction also."
+    },
+    {
+      "start": 218.38,
+      "end": 220.66,
+      "matchedWords": 5,
+      "totalWords": 5,
+      "text": "Suddenly Uncle Henry stood up."
+    },
+    {
+      "start": 220.98,
+      "end": 228.68,
+      "matchedWords": 27,
+      "totalWords": 29,
+      "text": "\"There's a cyclone coming, Em,\" he called to his wife; \"I'll go look after the stock.\" Then he ran toward the sheds where the cows and horses were kept."
+    },
+    {
+      "start": 229.9,
+      "end": 231.46,
+      "matchedWords": 8,
+      "totalWords": 10,
+      "text": "Aunt Em dropped her work and came to the door."
+    },
+    {
+      "start": 231.82,
+      "end": 234.4,
+      "matchedWords": 10,
+      "totalWords": 10,
+      "text": "One glance told her of the danger close at hand."
+    },
+    {
+      "start": 235.12,
+      "end": 237.46,
+      "matchedWords": 8,
+      "totalWords": 8,
+      "text": "\"Quick, Dorothy!\" she screamed; \"run for the cellar!\""
+    },
+    {
+      "start": 238.44,
+      "end": 242.72,
+      "matchedWords": 18,
+      "totalWords": 18,
+      "text": "Toto jumped out of Dorothy's arms and hid under the bed, and the girl started to get him."
+    },
+    {
+      "start": 244.14,
+      "end": 249.04,
+      "matchedWords": 17,
+      "totalWords": 22,
+      "text": "Aunt Em, badly frightened, threw open the trap-door in the floor and climbed down the ladder into the small, dark hole."
+    },
+    {
+      "start": 249.62,
+      "end": 252.46,
+      "matchedWords": 11,
+      "totalWords": 11,
+      "text": "Dorothy caught Toto at last, and started to follow her aunt."
+    },
+    {
+      "start": 253.16,
+      "end": 261.34,
+      "matchedWords": 32,
+      "totalWords": 34,
+      "text": "When she was half way across the room there came a great shriek from the wind, and the house shook so hard that she lost her footing and sat down suddenly upon the floor."
+    },
+    {
+      "start": 262.76,
+      "end": 264.0,
+      "matchedWords": 4,
+      "totalWords": 5,
+      "text": "A strange thing then happened."
+    },
+    {
+      "start": 264.5,
+      "end": 268.12,
+      "matchedWords": 14,
+      "totalWords": 14,
+      "text": "The house whirled around two or three times and rose slowly through the air."
+    },
+    {
+      "start": 268.7,
+      "end": 270.76,
+      "matchedWords": 11,
+      "totalWords": 11,
+      "text": "Dorothy felt as if she were going up in a balloon."
+    },
+    {
+      "start": 271.42,
+      "end": 275.72,
+      "matchedWords": 17,
+      "totalWords": 19,
+      "text": "The north and south winds met where the house stood, and made it the exact center of the cyclone."
+    },
+    {
+      "start": 276.26,
+      "end": 292.92,
+      "matchedWords": 59,
+      "totalWords": 59,
+      "text": "In the middle of a cyclone the air is generally still, but the great pressure of the wind on every side of the house raised it up higher and higher, until it was at the very top of the cyclone; and there it remained and was carried miles and miles away as easily as you could carry a feather."
+    },
+    {
+      "start": 294.22,
+      "end": 300.12,
+      "matchedWords": 17,
+      "totalWords": 19,
+      "text": "It was very dark, and the wind howled horribly around her, but Dorothy found she was riding quite easily."
+    },
+    {
+      "start": 300.78,
+      "end": 309.94,
+      "matchedWords": 28,
+      "totalWords": 30,
+      "text": "After the first few whirls around, and one other time when the house tipped badly, she felt as if she were being rocked gently, like a baby in a cradle."
+    },
+    {
+      "start": 311.16,
+      "end": 312.52,
+      "matchedWords": 5,
+      "totalWords": 5,
+      "text": "Toto did not like it."
+    },
+    {
+      "start": 312.84,
+      "end": 319.96,
+      "matchedWords": 26,
+      "totalWords": 26,
+      "text": "He ran about the room, now here, now there, barking loudly; but Dorothy sat quite still on the floor and waited to see what would happen."
+    },
+    {
+      "start": 320.88,
+      "end": 327.94,
+      "matchedWords": 22,
+      "totalWords": 23,
+      "text": "Once Toto got too near the open trap-door, and fell in; and at first the little girl thought she had lost him."
+    },
+    {
+      "start": 328.28,
+      "end": 334.96,
+      "matchedWords": 30,
+      "totalWords": 30,
+      "text": "But soon she saw one of his ears sticking up through the hole, for the strong pressure of the air was keeping him up so that he could not fall."
+    },
+    {
+      "start": 335.68,
+      "end": 344.4,
+      "matchedWords": 29,
+      "totalWords": 29,
+      "text": "She crept to the hole, caught Toto by the ear, and dragged him into the room again; afterward closing the trap-door so that no more accidents could happen."
+    },
+    {
+      "start": 344.96,
+      "end": 354.76,
+      "matchedWords": 30,
+      "totalWords": 31,
+      "text": "Hour after hour passed away, and slowly Dorothy got over her fright; but she felt quite lonely, and the wind shrieked so loudly all about her that she nearly became deaf."
+    },
+    {
+      "start": 355.32,
+      "end": 366.76,
+      "matchedWords": 40,
+      "totalWords": 41,
+      "text": "At first she had wondered if she would be dashed to pieces when the house fell again; but as the hours passed and nothing terrible happened, she stopped worrying and resolved to wait calmly and see what the future would bring."
+    },
+    {
+      "start": 367.66,
+      "end": 375.34,
+      "matchedWords": 23,
+      "totalWords": 24,
+      "text": "At last she crawled over the swaying floor to her bed, and lay down upon it; and Toto followed and lay down beside her."
+    },
+    {
+      "start": 376.08,
+      "end": 384.1,
+      "matchedWords": 23,
+      "totalWords": 23,
+      "text": "In spite of the swaying of the house and the wailing of the wind, Dorothy soon closed her eyes and fell fast asleep."
+    }
+  ],
+  "matchedWords": 1097,
+  "totalWords": 1145
+}

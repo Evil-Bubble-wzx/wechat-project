@@ -1,0 +1,18 @@
+<view class="content quiz-content" wx:if="{{route === 'quiz'}}">
+  <text class="eyebrow">A LITTLE QUIZ, A BIG DISCOVERY</text>
+  <view wx:if="{{quizTotal}}">
+    <view wx:if="{{!result}}">
+      <view class="quiz-heading">Take Quiz<text>{{questionIndex + 1}} / {{quizTotal}}</text></view>
+      <view class="progress-track"><view style="width: {{quizProgress}}%"></view></view>
+      <text class="tag">{{quizLabel}}</text>
+      <view class="question">{{question.q}}</view><text class="muted">{{question.zh}}</text>
+      <view class="answer {{answer === item.index ? 'selected' : ''}} {{checked && item.index === question.answer ? 'quiz-correct' : ''}} {{checked && answer === item.index && answer !== question.answer ? 'quiz-wrong' : ''}}" wx:for="{{quizOptions}}" wx:key="index" data-index="{{item.index}}" bindtap="answer">
+        <text class="answer-letter">{{item.letter}}</text><text class="answer-text">{{item.text}}</text><text wx:if="{{checked && item.index === question.answer}}">✓</text><text wx:if="{{item.audio}}" class="answer-speaker" data-index="{{item.index}}" catchtap="playOption">♪</text>
+      </view>
+      <view class="quiz-feedback" wx:if="{{checked}}"><text>{{answer === question.answer ? '答对啦！' : '再看一看，正确答案是 ' + question.options[question.answer]}}</text><text wx:if="{{question.explanation}}">{{question.explanation}}</text></view>
+      <button class="primary full" bindtap="nextQuestion">{{checked ? (questionIndex === quizTotal - 1 ? 'Finish Quiz' : 'Next Question') : 'Check Answer'}} →</button>
+    </view>
+    <view wx:if="{{result}}" class="quiz-result"><image src="/assets/icon-trophy.png" /><view class="result-big">{{score}}<text>分</text></view><view class="section-title">又多了一个属于你的故事！</view><text class="muted">{{score >= 80 ? '读得很认真，继续探索下一本吧。' : '再读一次，每一次都有新的发现。'}}</text><button class="primary full" data-page="report" bindtap="nav">View Report</button><button class="secondary full" bindtap="retryQuiz">Try Again</button></view>
+  </view>
+  <view class="empty" wx:if="{{!quizTotal}}"><text>这一章暂时没有小测</text><button class="secondary" bindtap="back">返回阅读</button></view>
+</view>
