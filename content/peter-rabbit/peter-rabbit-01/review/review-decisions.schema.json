@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tingyue.local/schemas/subtitle-review-decisions-v1.json",
+  "title": "Tingyue subtitle review decisions",
+  "type": "object",
+  "required": ["schemaVersion", "pieceId", "status", "audio", "policy", "decisions", "signoff"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "pieceId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "completed"] },
+    "decisions": {
+      "type": "array",
+      "minItems": 28,
+      "maxItems": 28,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "cueId", "action", "confirmed"],
+        "properties": {
+          "id": { "pattern": "^(R(0[1-9]|1[0-9]|2[0-6])|O[12])$" },
+          "type": { "enum": ["token", "omittedCue"] },
+          "cueId": { "pattern": "^c[0-9]{4}$" },
+          "action": { "enum": ["keepCanonical", "replaceSurface", "adjustTiming", "restoreCue", "omitCue"] },
+          "confirmed": { "const": true }
+        }
+      }
+    },
+    "signoff": {
+      "type": "object",
+      "required": ["reviewer", "fullListenCompleted", "fullListenCoverage", "fullListenCompletedAt", "reviewedAt"],
+      "properties": {
+        "reviewer": { "type": "string", "minLength": 1 },
+        "fullListenCompleted": { "const": true },
+        "fullListenCoverage": { "type": "number", "minimum": 0.95, "maximum": 1 },
+        "fullListenCompletedAt": { "type": "string", "format": "date-time" },
+        "reviewedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tingyue.local/schemas/subtitle-corrections-v1.json",
+  "title": "Tingyue approved subtitle corrections",
+  "type": "object",
+  "required": ["schemaVersion", "pieceId", "status", "cueCorrections", "tokenCorrections", "vocabCorrections", "reviewedBy", "reviewedAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "pieceId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["pending", "subtitle_approved"] },
+    "cueCorrections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reviewId", "cueId", "action"],
+        "properties": {
+          "reviewId": { "pattern": "^O[12]$" },
+          "cueId": { "pattern": "^c[0-9]{4}$" },
+          "action": { "enum": ["restoreCue", "omitCue"] },
+          "actualText": { "type": ["string", "null"] },
+          "startMs": { "type": ["integer", "null"], "minimum": 0 },
+          "endMs": { "type": ["integer", "null"], "minimum": 1 },
+          "reason": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "tokenCorrections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reviewId", "cueId", "tokenId", "action"],
+        "properties": {
+          "reviewId": { "pattern": "^R(0[1-9]|1[0-9]|2[0-6])$" },
+          "cueId": { "pattern": "^c[0-9]{4}$" },
+          "tokenId": { "pattern": "^c[0-9]{4}:t[0-9]{2}$" },
+          "action": { "enum": ["keepCanonical", "replaceSurface", "adjustTiming"] },
+          "replacementText": { "type": ["string", "null"] },
+          "startMs": { "type": ["integer", "null"], "minimum": 0 },
+          "endMs": { "type": ["integer", "null"], "minimum": 1 }
+        }
+      }
+    },
+    "vocabCorrections": { "type": "array" },
+    "reviewedBy": { "type": ["string", "null"] },
+    "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

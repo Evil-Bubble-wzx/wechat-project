@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "bookId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "index": 1,
+  "title": "The Tale of Peter Rabbit",
+  "author": "Beatrix Potter",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rawText": "source/text-project-gutenberg-14838.txt",
+  "rights": "source/rights.json",
+  "properNouns": [
+    "Peter",
+    "Flopsy",
+    "Mopsy",
+    "Cotton-tail",
+    "Cottontail",
+    "McGregor",
+    "Mrs. Rabbit"
+  ],
+  "textExtraction": {
+    "start": "Once upon a time there were four little Rabbits",
+    "end": "THE END",
+    "removeStandaloneLines": ["[Illustration]"]
+  },
+  "audioMetadata": {
+    "narrator": "Julian Pratley",
+    "sourceName": "LibriVox",
+    "sourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
+    "durationMs": 322026,
+    "mimeType": "audio/mpeg",
+    "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36"
+  }
+}

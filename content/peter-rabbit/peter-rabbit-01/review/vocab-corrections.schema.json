@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tingyue.local/schema/vocab-corrections-v1.json",
+  "title": "Tingyue applied vocabulary corrections",
+  "type": "object",
+  "required": ["schemaVersion", "pieceId", "status", "corrections", "reviewedBy", "reviewedAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "pieceId": { "type": "string", "minLength": 1 },
+    "status": { "const": "vocabulary_approved" },
+    "corrections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reviewId", "action"],
+        "properties": {
+          "reviewId": { "type": "string" },
+          "action": { "enum": ["approve", "excludeProperNoun"] },
+          "sourceKey": { "type": "string" },
+          "finalKeys": { "type": "array", "items": { "type": "string" } },
+          "reason": { "type": "string" },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "reviewedBy": { "type": "string", "minLength": 1 },
+    "reviewedAt": { "type": "string", "format": "date-time" }
+  }
+}

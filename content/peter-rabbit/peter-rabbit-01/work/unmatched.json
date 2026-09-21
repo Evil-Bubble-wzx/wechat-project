@@ -1,0 +1,457 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "status": "needs_review",
+  "items": [
+    {
+      "cueId": "c0001",
+      "tokenId": "c0001:t39",
+      "canonical": "Peter",
+      "recognized": "Peter.",
+      "startMs": 24560,
+      "endMs": 24740,
+      "matchKind": "exact",
+      "confidence": 0.3013
+    },
+    {
+      "cueId": "c0002",
+      "tokenId": "c0002:t31",
+      "canonical": "fir-tree",
+      "recognized": "tree.",
+      "startMs": 29340,
+      "endMs": 29580,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0003",
+      "tokenId": "c0003:t01",
+      "canonical": "Now",
+      "recognized": "Now,",
+      "startMs": 30940,
+      "endMs": 31340,
+      "matchKind": "exact",
+      "confidence": 0.0464
+    },
+    {
+      "cueId": "c0003",
+      "tokenId": "c0003:t05",
+      "canonical": "dears",
+      "recognized": "dears,",
+      "startMs": 31560,
+      "endMs": 32000,
+      "matchKind": "exact",
+      "confidence": 0.3691
+    },
+    {
+      "cueId": "c0004",
+      "tokenId": "c0004:t03",
+      "canonical": "run",
+      "recognized": "run",
+      "startMs": 43220,
+      "endMs": 43380,
+      "matchKind": "exact",
+      "confidence": 0.3996
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t00",
+      "canonical": "But",
+      "recognized": null,
+      "startMs": 74700,
+      "endMs": 75073,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t02",
+      "canonical": "round",
+      "recognized": null,
+      "startMs": 75138,
+      "endMs": 75511,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t04",
+      "canonical": "the",
+      "recognized": null,
+      "startMs": 75577,
+      "endMs": 75950,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t06",
+      "canonical": "end",
+      "recognized": null,
+      "startMs": 76015,
+      "endMs": 76388,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t08",
+      "canonical": "of",
+      "recognized": null,
+      "startMs": 76454,
+      "endMs": 76827,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t10",
+      "canonical": "a",
+      "recognized": null,
+      "startMs": 76892,
+      "endMs": 77265,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t12",
+      "canonical": "cucumber",
+      "recognized": null,
+      "startMs": 77331,
+      "endMs": 77704,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t14",
+      "canonical": "frame",
+      "recognized": null,
+      "startMs": 77769,
+      "endMs": 78142,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t17",
+      "canonical": "whom",
+      "recognized": null,
+      "startMs": 78208,
+      "endMs": 78581,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t19",
+      "canonical": "should",
+      "recognized": null,
+      "startMs": 78646,
+      "endMs": 79019,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t21",
+      "canonical": "he",
+      "recognized": null,
+      "startMs": 79085,
+      "endMs": 79458,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t23",
+      "canonical": "meet",
+      "recognized": null,
+      "startMs": 79523,
+      "endMs": 79896,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t27",
+      "canonical": "Mr",
+      "recognized": null,
+      "startMs": 80640,
+      "endMs": 80660,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0012",
+      "tokenId": "c0012:t30",
+      "canonical": "McGregor",
+      "recognized": null,
+      "startMs": 80680,
+      "endMs": 80700,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0013",
+      "tokenId": "c0013:t00",
+      "canonical": "Mr",
+      "recognized": "Mr.",
+      "startMs": 80640,
+      "endMs": 80660,
+      "matchKind": "exact",
+      "confidence": 0.4314
+    },
+    {
+      "cueId": "c0013",
+      "tokenId": "c0013:t57",
+      "canonical": "Stop",
+      "recognized": "stop",
+      "startMs": 87160,
+      "endMs": 87340,
+      "matchKind": "exact",
+      "confidence": 0.0056
+    },
+    {
+      "cueId": "c0016",
+      "tokenId": "c0016:t62",
+      "canonical": "net",
+      "recognized": "-brenet",
+      "startMs": 106980,
+      "endMs": 107380,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0018",
+      "tokenId": "c0018:t08",
+      "canonical": "for",
+      "recognized": "the",
+      "startMs": 115040,
+      "endMs": 115220,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0019",
+      "tokenId": "c0019:t03",
+      "canonical": "McGregor",
+      "recognized": "McGregor",
+      "startMs": 124520,
+      "endMs": 124740,
+      "matchKind": "exact",
+      "confidence": 0.1395
+    },
+    {
+      "cueId": "c0020",
+      "tokenId": "c0020:t08",
+      "canonical": "tool-shed",
+      "recognized": "shed",
+      "startMs": 133420,
+      "endMs": 133680,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0022",
+      "tokenId": "c0022:t23",
+      "canonical": "tool-shed",
+      "recognized": "shed,",
+      "startMs": 142740,
+      "endMs": 143000,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0022",
+      "tokenId": "c0022:t28",
+      "canonical": "hidden",
+      "recognized": "hidden",
+      "startMs": 143560,
+      "endMs": 143820,
+      "matchKind": "exact",
+      "confidence": 0.2068
+    },
+    {
+      "cueId": "c0022",
+      "tokenId": "c0022:t32",
+      "canonical": "a",
+      "recognized": "the",
+      "startMs": 144260,
+      "endMs": 144660,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0024",
+      "tokenId": "c0024:t06",
+      "canonical": "Kertyschoo",
+      "recognized": "kuchishu!",
+      "startMs": 150760,
+      "endMs": 151400,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0028",
+      "tokenId": "c0028:t02",
+      "canonical": "went",
+      "recognized": null,
+      "startMs": 167460,
+      "endMs": 167480,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0028",
+      "tokenId": "c0028:t04",
+      "canonical": "back",
+      "recognized": null,
+      "startMs": 167500,
+      "endMs": 167520,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0028",
+      "tokenId": "c0028:t06",
+      "canonical": "to",
+      "recognized": null,
+      "startMs": 167540,
+      "endMs": 167560,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0028",
+      "tokenId": "c0028:t08",
+      "canonical": "his",
+      "recognized": null,
+      "startMs": 167580,
+      "endMs": 167600,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0028",
+      "tokenId": "c0028:t10",
+      "canonical": "work",
+      "recognized": null,
+      "startMs": 167620,
+      "endMs": 167640,
+      "matchKind": "inferred",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0029",
+      "tokenId": "c0029:t00",
+      "canonical": "Peter",
+      "recognized": "He",
+      "startMs": 167460,
+      "endMs": 167480,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0029",
+      "tokenId": "c0029:t02",
+      "canonical": "sat",
+      "recognized": "sat",
+      "startMs": 167460,
+      "endMs": 167480,
+      "matchKind": "exact",
+      "confidence": 0.271
+    },
+    {
+      "cueId": "c0041",
+      "tokenId": "c0041:t10",
+      "canonical": "tool-shed",
+      "recognized": "shed,",
+      "startMs": 230540,
+      "endMs": 230800,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0041",
+      "tokenId": "c0041:t39",
+      "canonical": "hoe",
+      "recognized": "ho,",
+      "startMs": 233660,
+      "endMs": 233780,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0041",
+      "tokenId": "c0041:t41",
+      "canonical": "scr-r-ritch",
+      "recognized": "scritch,",
+      "startMs": 234320,
+      "endMs": 234820,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0042",
+      "tokenId": "c0042:t02",
+      "canonical": "scuttered",
+      "recognized": "scarred",
+      "startMs": 238580,
+      "endMs": 238920,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0048",
+      "tokenId": "c0048:t25",
+      "canonical": "wood",
+      "recognized": "ward",
+      "startMs": 266960,
+      "endMs": 267080,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0050",
+      "tokenId": "c0050:t30",
+      "canonical": "fir-tree",
+      "recognized": "poetry.",
+      "startMs": 277700,
+      "endMs": 277940,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0057",
+      "tokenId": "c0057:t02",
+      "canonical": "Flopsy",
+      "recognized": "flopsie,",
+      "startMs": 307440,
+      "endMs": 307900,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0057",
+      "tokenId": "c0057:t05",
+      "canonical": "Mopsy",
+      "recognized": "mopsie,",
+      "startMs": 307960,
+      "endMs": 308320,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    },
+    {
+      "cueId": "c0057",
+      "tokenId": "c0057:t14",
+      "canonical": "bread",
+      "recognized": "red",
+      "startMs": 309200,
+      "endMs": 309400,
+      "matchKind": "substitution",
+      "confidence": 0.0
+    }
+  ]
+}

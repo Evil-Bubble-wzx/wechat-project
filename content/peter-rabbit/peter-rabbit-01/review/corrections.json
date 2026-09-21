@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "status": "subtitle_approved",
+  "cueCorrections": [
+    {
+      "reviewId": "O1",
+      "cueId": "c0012",
+      "action": "restoreCue",
+      "actualText": "But round the end of a cucumber frame, whom should he meet but Mr. McGregor!",
+      "startMs": 75000,
+      "endMs": 80600,
+      "reason": null,
+      "note": null
+    },
+    {
+      "reviewId": "O2",
+      "cueId": "c0028",
+      "action": "restoreCue",
+      "actualText": "He went back to his work.",
+      "startMs": 164080,
+      "endMs": 167460,
+      "reason": null,
+      "note": null
+    }
+  ],
+  "tokenCorrections": [
+    {
+      "reviewId": "R01",
+      "cueId": "c0001",
+      "tokenId": "c0001:t39",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R02",
+      "cueId": "c0002",
+      "tokenId": "c0002:t31",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R03",
+      "cueId": "c0003",
+      "tokenId": "c0003:t01",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R04",
+      "cueId": "c0003",
+      "tokenId": "c0003:t05",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R05",
+      "cueId": "c0004",
+      "tokenId": "c0004:t03",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R06",
+      "cueId": "c0013",
+      "tokenId": "c0013:t00",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R07",
+      "cueId": "c0013",
+      "tokenId": "c0013:t57",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R08",
+      "cueId": "c0016",
+      "tokenId": "c0016:t62",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R09",
+      "cueId": "c0018",
+      "tokenId": "c0018:t08",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R10",
+      "cueId": "c0019",
+      "tokenId": "c0019:t03",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R11",
+      "cueId": "c0020",
+      "tokenId": "c0020:t08",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R12",
+      "cueId": "c0022",
+      "tokenId": "c0022:t23",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R13",
+      "cueId": "c0022",
+      "tokenId": "c0022:t28",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R14",
+      "cueId": "c0022",
+      "tokenId": "c0022:t32",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R15",
+      "cueId": "c0024",
+      "tokenId": "c0024:t06",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R16",
+      "cueId": "c0029",
+      "tokenId": "c0029:t00",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R17",
+      "cueId": "c0029",
+      "tokenId": "c0029:t02",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R18",
+      "cueId": "c0041",
+      "tokenId": "c0041:t10",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R19",
+      "cueId": "c0041",
+      "tokenId": "c0041:t39",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R20",
+      "cueId": "c0041",
+      "tokenId": "c0041:t41",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R21",
+      "cueId": "c0042",
+      "tokenId": "c0042:t02",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R22",
+      "cueId": "c0048",
+      "tokenId": "c0048:t25",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R23",
+      "cueId": "c0050",
+      "tokenId": "c0050:t30",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R24",
+      "cueId": "c0057",
+      "tokenId": "c0057:t02",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R25",
+      "cueId": "c0057",
+      "tokenId": "c0057:t05",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    },
+    {
+      "reviewId": "R26",
+      "cueId": "c0057",
+      "tokenId": "c0057:t14",
+      "action": "keepCanonical",
+      "replacementText": null,
+      "startMs": null,
+      "endMs": null,
+      "note": null
+    }
+  ],
+  "vocabCorrections": [],
+  "subtitleReview": {
+    "complete": true,
+    "decisionCount": 28,
+    "fullListenCompleted": true,
+    "fullListenCoverage": 1
+  },
+  "reviewedBy": "wzx",
+  "reviewedAt": "2026-09-21T07:17:05.533Z",
+  "notes": [
+    "Subtitle/audio review is complete; vocabulary editorial review remains pending.",
+    "Rights and release-jurisdiction approval remain pending.",
+    "This record does not make the package publishable."
+  ]
+}

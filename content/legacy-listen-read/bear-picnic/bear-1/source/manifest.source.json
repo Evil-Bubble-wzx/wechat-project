@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "bookId": "bear-picnic",
+  "pieceId": "bear-1",
+  "index": 1,
+  "title": "A Basket of Good Things",
+  "language": "en",
+  "audio": "source/audio-original.mp3",
+  "text": "source/text-original.txt",
+  "rights": "source/rights.json",
+  "previousSource": "content/legacy-listen-read/source/stories.json",
+  "audioMetadata": {
+    "durationMs": 9163,
+    "mimeType": "audio/mpeg",
+    "sha256": "31b4e021a2e2504bbf11d1bbda23baa99fad6c7dc4cfc8235e83eaccdafd410b",
+    "sourceName": "Microsoft Zira demonstration synthesis"
+  }
+}

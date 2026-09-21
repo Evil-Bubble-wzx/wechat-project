@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "generatedAt": "2026-09-21T08:27:38.948Z",
+  "status": "needs_review",
+  "publishable": false,
+  "checks": {
+    "sourceManifestPresent": true,
+    "sourceAudioPresent": true,
+    "sourceTextPresent": true,
+    "audioSha256MatchesManifest": true,
+    "canonicalTextExtracted": true,
+    "tokenRoundTrip": true,
+    "cueTimingComplete": true,
+    "introOutroSeparated": true,
+    "vocabularyApproved": false,
+    "subtitleReviewComplete": true,
+    "humanReviewComplete": false,
+    "rightsReleaseApproved": false
+  },
+  "counts": {
+    "cues": 59,
+    "words": 952,
+    "tokens": 2006,
+    "clickableTokens": 909,
+    "vocabEntries": 371
+  },
+  "blockers": [
+    "371 vocabulary review units require human editorial approval.",
+    "Vocabulary editorial review is pending.",
+    "Rights need release-jurisdiction review."
+  ],
+  "alignment": {
+    "engine": "faster-whisper-base.en-plus-known-text-dp",
+    "recognizedCoverage": 0.962185,
+    "lowConfidenceCount": 45,
+    "omittedCanonicalCueCount": 2,
+    "timingMonotonic": true
+  },
+  "subtitleReview": {
+    "status": "approved",
+    "reviewedBy": "wzx",
+    "reviewedAt": "2026-09-21T07:17:05.533Z",
+    "decisionCount": 28,
+    "fullListenCoverage": 1
+  },
+  "vocabularyReview": {
+    "status": "ready_for_review",
+    "reviewUnitCount": 371,
+    "evidenceMatchedUnits": 352,
+    "highRiskUnits": 277,
+    "sourceCueSha256": "5fb30d93295bfc0c9eab98f4bfa9254d0766de961f5c32bba5870179b0270e6a"
+  }
+}

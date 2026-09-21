@@ -1,0 +1,671 @@
+{
+  "schemaVersion": 1,
+  "books": [
+    {
+      "id": "little-seed",
+      "title": "The Little Seed",
+      "zh": "小兔的种子",
+      "subtitle": "一颗小种子，一份大耐心",
+      "level": "L1",
+      "levelName": "启蒙入门",
+      "age": "3–6 岁",
+      "theme": "自然",
+      "color": "#E8EDCE",
+      "price": "12.00",
+      "intro": "跟着小兔 Pip 种下一颗种子，一起发现阳光、雨水和等待的魔法。用简单的英文，读懂成长的小惊喜。",
+      "focus": "自然认知 · 耐心与成长",
+      "tags": [
+        "自然探索",
+        "温暖成长",
+        "简单短句"
+      ],
+      "chapters": [
+        {
+          "id": "seed-1",
+          "title": "A Tiny Seed",
+          "zh": "一颗小小的种子",
+          "sentences": [
+            [
+              "Pip is a little rabbit.",
+              "Pip 是一只小兔子。"
+            ],
+            [
+              "He finds a seed in the garden.",
+              "他在花园里找到一颗种子。"
+            ],
+            [
+              "He puts the seed in the soil.",
+              "他把种子放进泥土里。"
+            ],
+            [
+              "The little seed needs water and sunshine.",
+              "小种子需要水和阳光。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What animal is Pip?",
+              "zh": "Pip 是什么动物？",
+              "options": [
+                "A rabbit.",
+                "A bear.",
+                "A fox."
+              ],
+              "answer": 0,
+              "explanation": "第一句告诉我们：Pip is a little rabbit. Pip 是一只小兔子。"
+            },
+            {
+              "q": "Where does Pip find the seed?",
+              "zh": "Pip 在哪里找到种子？",
+              "options": [
+                "In a boat.",
+                "In the garden.",
+                "In a bag."
+              ],
+              "answer": 1,
+              "explanation": "故事中说 He finds a seed in the garden. 他在花园里找到了种子。"
+            },
+            {
+              "q": "What does the seed need?",
+              "zh": "种子需要什么？",
+              "options": [
+                "Milk and bread.",
+                "A hat.",
+                "Water and sunshine."
+              ],
+              "answer": 2,
+              "explanation": "种子需要 water（水）和 sunshine（阳光）才能生长。"
+            }
+          ]
+        },
+        {
+          "id": "seed-2",
+          "title": "Hello, Little Leaf",
+          "zh": "你好，小叶子",
+          "sentences": [
+            [
+              "Pip gives the seed water every day.",
+              "Pip 每天都给种子浇水。"
+            ],
+            [
+              "One morning, he sees a green leaf.",
+              "一天早晨，他看见了一片绿叶。"
+            ],
+            [
+              "A yellow flower opens in the sun.",
+              "一朵黄色的小花在阳光下绽放。"
+            ],
+            [
+              "Pip smiles at his new little friend.",
+              "Pip 对他的新朋友笑了。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "When does Pip water the seed?",
+              "zh": "Pip 什么时候给种子浇水？",
+              "options": [
+                "Every day.",
+                "Only at night.",
+                "Never."
+              ],
+              "answer": 0,
+              "explanation": "every day 的意思是“每天”。Pip 每天都照顾种子。"
+            },
+            {
+              "q": "What color is the leaf?",
+              "zh": "叶子是什么颜色？",
+              "options": [
+                "Blue.",
+                "Green.",
+                "Red."
+              ],
+              "answer": 1,
+              "explanation": "原文说 a green leaf，也就是“一片绿叶”。"
+            },
+            {
+              "q": "How does Pip feel at the end?",
+              "zh": "故事最后 Pip 的心情怎样？",
+              "options": [
+                "Angry.",
+                "Sad.",
+                "Happy."
+              ],
+              "answer": 2,
+              "explanation": "Pip smiles，Pip 笑了。看到小花长大，他很开心。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/little-seed.png"
+    },
+    {
+      "id": "fox-star",
+      "title": "Fox and the Star",
+      "zh": "小狐狸与星星",
+      "subtitle": "抬头看看，朋友一直都在",
+      "level": "L2",
+      "levelName": "基础进阶",
+      "age": "5–8 岁",
+      "theme": "友谊",
+      "color": "#E2E8F0",
+      "price": "15.00",
+      "intro": "小狐狸追着星光走进安静的森林。他能把星星带回家吗？一个关于好奇、陪伴和发现的晚安故事。",
+      "focus": "自然观察 · 友谊与陪伴",
+      "tags": [
+        "晚安故事",
+        "友谊陪伴",
+        "想象力"
+      ],
+      "chapters": [
+        {
+          "id": "fox-1",
+          "title": "A Light in the Sky",
+          "zh": "天空中的光",
+          "sentences": [
+            [
+              "A little fox walks through the forest.",
+              "一只小狐狸走过森林。"
+            ],
+            [
+              "He sees a bright star above him.",
+              "他看见头顶有一颗明亮的星星。"
+            ],
+            [
+              "The star looks like a tiny lamp.",
+              "星星看起来像一盏小灯。"
+            ],
+            [
+              "He wants to bring the star home.",
+              "他想把星星带回家。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "Where does the fox walk?",
+              "zh": "小狐狸走在哪里？",
+              "options": [
+                "In a school.",
+                "Through the forest.",
+                "On a beach."
+              ],
+              "answer": 1,
+              "explanation": "through the forest 意思是“穿过森林”。"
+            },
+            {
+              "q": "What does the star look like?",
+              "zh": "星星看起来像什么？",
+              "options": [
+                "A tiny lamp.",
+                "A big tree.",
+                "A flower."
+              ],
+              "answer": 0,
+              "explanation": "原文把星星比作 a tiny lamp，一盏小灯。"
+            },
+            {
+              "q": "What does the fox want to do?",
+              "zh": "小狐狸想做什么？",
+              "options": [
+                "Eat the star.",
+                "Hide in the forest.",
+                "Bring the star home."
+              ],
+              "answer": 2,
+              "explanation": "他想 bring the star home，把星星带回家。"
+            }
+          ]
+        },
+        {
+          "id": "fox-2",
+          "title": "Always Beside You",
+          "zh": "一直陪着你",
+          "sentences": [
+            [
+              "The fox climbs a tall green hill.",
+              "小狐狸爬上一座绿色的高山丘。"
+            ],
+            [
+              "The star is still far away.",
+              "星星依然很遥远。"
+            ],
+            [
+              "He sits down and watches the sky.",
+              "他坐下来，望着天空。"
+            ],
+            [
+              "His bright friend follows him all night.",
+              "他明亮的朋友整晚都陪着他。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does the fox climb?",
+              "zh": "小狐狸爬上了什么？",
+              "options": [
+                "A tall hill.",
+                "A house.",
+                "A chair."
+              ],
+              "answer": 0,
+              "explanation": "他爬上 a tall green hill，一座绿色的高山丘。"
+            },
+            {
+              "q": "Is the star close to the fox?",
+              "zh": "星星离小狐狸近吗？",
+              "options": [
+                "Yes, very close.",
+                "No, it is far away.",
+                "It is in his hand."
+              ],
+              "answer": 1,
+              "explanation": "far away 的意思是“遥远”。即使爬上山丘，星星依然很远。"
+            },
+            {
+              "q": "Who is the fox's bright friend?",
+              "zh": "小狐狸明亮的朋友是谁？",
+              "options": [
+                "A rabbit.",
+                "The moon.",
+                "The star."
+              ],
+              "answer": 2,
+              "explanation": "明亮的朋友指的就是整晚陪伴他的星星。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/fox-star.png"
+    },
+    {
+      "id": "bear-picnic",
+      "title": "Bear's Picnic",
+      "zh": "小熊的野餐",
+      "subtitle": "好吃的点心，一起分享才甜",
+      "level": "L1",
+      "levelName": "启蒙入门",
+      "age": "3–6 岁",
+      "theme": "生活",
+      "color": "#F3E4D1",
+      "price": "12.00",
+      "intro": "小熊准备了一篮子点心，邀请森林里的朋友来野餐。认识食物和颜色，也学会分享与关心。",
+      "focus": "日常表达 · 分享与关爱",
+      "tags": [
+        "日常生活",
+        "学会分享",
+        "简单短句"
+      ],
+      "chapters": [
+        {
+          "id": "bear-1",
+          "title": "A Basket of Good Things",
+          "zh": "装满美味的篮子",
+          "sentences": [
+            [
+              "Bear has a big picnic basket.",
+              "小熊有一个大大的野餐篮。"
+            ],
+            [
+              "He puts apples and bread inside.",
+              "他把苹果和面包放进去。"
+            ],
+            [
+              "He takes a blanket to the park.",
+              "他带着一条毯子来到公园。"
+            ],
+            [
+              "His friends are coming for lunch.",
+              "他的朋友们要来一起吃午饭。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does Bear put in the basket?",
+              "zh": "小熊往篮子里放了什么？",
+              "options": [
+                "Toys.",
+                "Apples and bread.",
+                "Books."
+              ],
+              "answer": 1,
+              "explanation": "他放了 apples（苹果）和 bread（面包）。"
+            },
+            {
+              "q": "Where does Bear go?",
+              "zh": "小熊去了哪里？",
+              "options": [
+                "The park.",
+                "The sea.",
+                "The shop."
+              ],
+              "answer": 0,
+              "explanation": "小熊带着毯子去了 the park，公园。"
+            },
+            {
+              "q": "Who is coming for lunch?",
+              "zh": "谁要来一起吃午饭？",
+              "options": [
+                "Only Bear.",
+                "Nobody.",
+                "His friends."
+              ],
+              "answer": 2,
+              "explanation": "His friends are coming for lunch. 他的朋友们要来吃午饭。"
+            }
+          ]
+        },
+        {
+          "id": "bear-2",
+          "title": "Better Together",
+          "zh": "一起分享更快乐",
+          "sentences": [
+            [
+              "Rabbit brings a cup of sweet juice.",
+              "小兔带来一杯甜甜的果汁。"
+            ],
+            [
+              "Fox brings three little red cups.",
+              "小狐狸带来三个红色的小杯子。"
+            ],
+            [
+              "They share the food under a tree.",
+              "他们在树下分享食物。"
+            ],
+            [
+              "Everything tastes better with good friends.",
+              "和好朋友一起，什么都更好吃了。"
+            ]
+          ],
+          "quiz": [
+            {
+              "q": "What does Rabbit bring?",
+              "zh": "小兔带来了什么？",
+              "options": [
+                "Sweet juice.",
+                "A flower.",
+                "A book."
+              ],
+              "answer": 0,
+              "explanation": "小兔带来了 a cup of sweet juice，一杯甜甜的果汁。"
+            },
+            {
+              "q": "How many cups does Fox bring?",
+              "zh": "小狐狸带来几个杯子？",
+              "options": [
+                "Two.",
+                "Three.",
+                "Five."
+              ],
+              "answer": 1,
+              "explanation": "three little red cups 是“三个红色的小杯子”。"
+            },
+            {
+              "q": "What makes the picnic special?",
+              "zh": "是什么让这次野餐很特别？",
+              "options": [
+                "Eating alone.",
+                "A very big basket.",
+                "Sharing with friends."
+              ],
+              "answer": 2,
+              "explanation": "故事说和朋友一起分享，食物也变得更美味了。"
+            }
+          ]
+        }
+      ],
+      "cover": "/assets/covers/bear-picnic.png"
+    },
+    {
+      "id": "wonderful-wizard-oz",
+      "title": "The Wonderful Wizard of Oz",
+      "zh": "绿野仙踪",
+      "subtitle": "跟着原声朗读，走进奥兹国",
+      "level": "L2",
+      "levelName": "进阶阅读",
+      "age": "亲子共读",
+      "theme": "奇幻",
+      "color": "#E6E9D8",
+      "price": "0.00",
+      "free": true,
+      "hasTranslation": false,
+      "hasQuiz": false,
+      "hasDictionary": true,
+      "sourceCredit": "L. Frank Baum 原著 · Project Gutenberg 文本 · LibriVox 朗读",
+      "intro": "本次收录第一章《The Cyclone》。跟着朗读认识 Dorothy 和 Toto，逐句阅读故事原文。",
+      "focus": "英文原著 · 原声朗读 · 逐句跟读",
+      "tags": [
+        "英文原著",
+        "原声朗读",
+        "第一章"
+      ],
+      "chapters": [
+        {
+          "id": "oz-1",
+          "title": "The Cyclone",
+          "zh": "第一章：旋风",
+          "audio": "/assets/audio/oz-1.mp3",
+          "sentences": [
+            [
+              "Chapter I. The Cyclone.",
+              ""
+            ],
+            [
+              "Dorothy lived in the midst of the great Kansas prairies, with Uncle Henry, who was a farmer, and Aunt Em, who was the farmer's wife.",
+              ""
+            ],
+            [
+              "Their house was small, for the lumber to build it had to be carried by wagon many miles.",
+              ""
+            ],
+            [
+              "There were four walls, a floor and a roof, which made one room; and this room contained a rusty looking cooking stove, a cupboard for the dishes, a table, three or four chairs, and the beds.",
+              ""
+            ],
+            [
+              "Uncle Henry and Aunt Em had a big bed in one corner, and Dorothy a little bed in another corner.",
+              ""
+            ],
+            [
+              "There was no garret at all, and no cellar—except a small hole, dug in the ground, called a cyclone cellar, where the family could go in case one of those great whirlwinds arose, mighty enough to crush any building in its path.",
+              ""
+            ],
+            [
+              "It was reached by a trap-door in the middle of the floor, from which a ladder led down into the small, dark hole.",
+              ""
+            ],
+            [
+              "When Dorothy stood in the doorway and looked around, she could see nothing but the great gray prairie on every side.",
+              ""
+            ],
+            [
+              "Not a tree nor a house broke the broad sweep of flat country that reached the edge of the sky in all directions.",
+              ""
+            ],
+            [
+              "The sun had baked the plowed land into a gray mass, with little cracks running through it.",
+              ""
+            ],
+            [
+              "Even the grass was not green, for the sun had burned the tops of the long blades until they were the same gray color to be seen everywhere.",
+              ""
+            ],
+            [
+              "Once the house had been painted, but the sun blistered the paint and the rains washed it away, and now the house was as dull and gray as everything else.",
+              ""
+            ],
+            [
+              "When Aunt Em came there to live she was a young, pretty wife.",
+              ""
+            ],
+            [
+              "The sun and wind had changed her, too.",
+              ""
+            ],
+            [
+              "They had taken the sparkle from her eyes and left them a sober gray; they had taken the red from her cheeks and lips, and they were gray also.",
+              ""
+            ],
+            [
+              "She was thin and gaunt, and never smiled, now.",
+              ""
+            ],
+            [
+              "When Dorothy, who was an orphan, first came to her, Aunt Em had been so startled by the child's laughter that she would scream and press her hand upon her heart whenever Dorothy's merry voice reached her ears; and she still looked at the little girl with wonder that she could find anything to laugh at.",
+              ""
+            ],
+            [
+              "Uncle Henry never laughed.",
+              ""
+            ],
+            [
+              "He worked hard from morning till night and did not know what joy was.",
+              ""
+            ],
+            [
+              "He was gray also, from his long beard to his rough boots, and he looked stern and solemn, and rarely spoke.",
+              ""
+            ],
+            [
+              "It was Toto that made Dorothy laugh, and saved her from growing as gray as her other surroundings.",
+              ""
+            ],
+            [
+              "Toto was not gray; he was a little black dog, with long, silky hair and small black eyes that twinkled merrily on either side of his funny, wee nose.",
+              ""
+            ],
+            [
+              "Toto played all day long, and Dorothy played with him, and loved him dearly.",
+              ""
+            ],
+            [
+              "To-day, however, they were not playing.",
+              ""
+            ],
+            [
+              "Uncle Henry sat upon the door-step and looked anxiously at the sky, which was even grayer than usual.",
+              ""
+            ],
+            [
+              "Dorothy stood in the door with Toto in her arms, and looked at the sky too.",
+              ""
+            ],
+            [
+              "Aunt Em was washing the dishes.",
+              ""
+            ],
+            [
+              "From the far north they heard a low wail of the wind, and Uncle Henry and Dorothy could see where the long grass bowed in waves before the coming storm.",
+              ""
+            ],
+            [
+              "There now came a sharp whistling in the air from the south, and as they turned their eyes that way they saw ripples in the grass coming from that direction also.",
+              ""
+            ],
+            [
+              "Suddenly Uncle Henry stood up.",
+              ""
+            ],
+            [
+              "\"There's a cyclone coming, Em,\" he called to his wife; \"I'll go look after the stock.\" Then he ran toward the sheds where the cows and horses were kept.",
+              ""
+            ],
+            [
+              "Aunt Em dropped her work and came to the door.",
+              ""
+            ],
+            [
+              "One glance told her of the danger close at hand.",
+              ""
+            ],
+            [
+              "\"Quick, Dorothy!\" she screamed; \"run for the cellar!\"",
+              ""
+            ],
+            [
+              "Toto jumped out of Dorothy's arms and hid under the bed, and the girl started to get him.",
+              ""
+            ],
+            [
+              "Aunt Em, badly frightened, threw open the trap-door in the floor and climbed down the ladder into the small, dark hole.",
+              ""
+            ],
+            [
+              "Dorothy caught Toto at last, and started to follow her aunt.",
+              ""
+            ],
+            [
+              "When she was half way across the room there came a great shriek from the wind, and the house shook so hard that she lost her footing and sat down suddenly upon the floor.",
+              ""
+            ],
+            [
+              "A strange thing then happened.",
+              ""
+            ],
+            [
+              "The house whirled around two or three times and rose slowly through the air.",
+              ""
+            ],
+            [
+              "Dorothy felt as if she were going up in a balloon.",
+              ""
+            ],
+            [
+              "The north and south winds met where the house stood, and made it the exact center of the cyclone.",
+              ""
+            ],
+            [
+              "In the middle of a cyclone the air is generally still, but the great pressure of the wind on every side of the house raised it up higher and higher, until it was at the very top of the cyclone; and there it remained and was carried miles and miles away as easily as you could carry a feather.",
+              ""
+            ],
+            [
+              "It was very dark, and the wind howled horribly around her, but Dorothy found she was riding quite easily.",
+              ""
+            ],
+            [
+              "After the first few whirls around, and one other time when the house tipped badly, she felt as if she were being rocked gently, like a baby in a cradle.",
+              ""
+            ],
+            [
+              "Toto did not like it.",
+              ""
+            ],
+            [
+              "He ran about the room, now here, now there, barking loudly; but Dorothy sat quite still on the floor and waited to see what would happen.",
+              ""
+            ],
+            [
+              "Once Toto got too near the open trap-door, and fell in; and at first the little girl thought she had lost him.",
+              ""
+            ],
+            [
+              "But soon she saw one of his ears sticking up through the hole, for the strong pressure of the air was keeping him up so that he could not fall.",
+              ""
+            ],
+            [
+              "She crept to the hole, caught Toto by the ear, and dragged him into the room again; afterward closing the trap-door so that no more accidents could happen.",
+              ""
+            ],
+            [
+              "Hour after hour passed away, and slowly Dorothy got over her fright; but she felt quite lonely, and the wind shrieked so loudly all about her that she nearly became deaf.",
+              ""
+            ],
+            [
+              "At first she had wondered if she would be dashed to pieces when the house fell again; but as the hours passed and nothing terrible happened, she stopped worrying and resolved to wait calmly and see what the future would bring.",
+              ""
+            ],
+            [
+              "At last she crawled over the swaying floor to her bed, and lay down upon it; and Toto followed and lay down beside her.",
+              ""
+            ],
+            [
+              "In spite of the swaying of the house and the wailing of the wind, Dorothy soon closed her eyes and fell fast asleep.",
+              ""
+            ]
+          ],
+          "quiz": []
+        }
+      ],
+      "cover": "/assets/covers/wonderful-wizard-oz.jpg"
+    }
+  ]
+}

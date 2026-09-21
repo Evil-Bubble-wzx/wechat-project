@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 0,
+  "status": "needs_review",
+  "publishable": false,
+  "language": "en",
+  "audio": {
+    "source": "source/audio-original.mp3",
+    "durationMs": 322026,
+    "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36"
+  },
+  "artifacts": {
+    "cues": "dist/cues.json",
+    "vocabDraft": "work/vocab.draft.json",
+    "qaReport": "dist/qa-report.json",
+    "reviewDecisions": "review/review-decisions.json",
+    "corrections": "review/corrections.json",
+    "vocabCandidates": "work/vocab.candidates.json",
+    "vocabReviewDecisions": "review/vocab-decisions.json",
+    "vocabReviewWorkbench": "review/vocab-index.html"
+  },
+  "counts": {
+    "cues": 59,
+    "words": 952,
+    "tokens": 2006,
+    "clickableTokens": 909,
+    "vocabEntries": 371
+  },
+  "blockers": [
+    "371 vocabulary review units require human editorial approval.",
+    "Vocabulary editorial review is pending.",
+    "Rights need release-jurisdiction review."
+  ],
+  "subtitleReview": {
+    "status": "approved",
+    "reviewedBy": "wzx",
+    "reviewedAt": "2026-09-21T07:17:05.533Z",
+    "decisionCount": 28,
+    "fullListenCoverage": 1
+  },
+  "vocabularyReview": {
+    "status": "ready_for_review",
+    "reviewUnitCount": 371,
+    "evidenceMatchedUnits": 352,
+    "highRiskUnits": 277,
+    "sourceCueSha256": "5fb30d93295bfc0c9eab98f4bfa9254d0766de961f5c32bba5870179b0270e6a"
+  }
+}

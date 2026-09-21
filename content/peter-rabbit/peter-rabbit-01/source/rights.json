@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "text": {
+    "work": "The Tale of Peter Rabbit",
+    "author": "Beatrix Potter",
+    "source": "Project Gutenberg eBook #14838",
+    "sourceUrl": "https://www.gutenberg.org/ebooks/14838",
+    "licensePage": "https://www.gutenberg.org/policy/license.html",
+    "rightsStatement": "Public domain in the USA according to Project Gutenberg. Project Gutenberg trademark and license terms still apply to redistributed Project Gutenberg files.",
+    "jurisdictionNote": "Confirm public-domain status and any distribution requirements in each release jurisdiction before production publication."
+  },
+  "audio": {
+    "source": "LibriVox",
+    "collection": "The Tale of Peter Rabbit and Others",
+    "narrator": "Julian Pratley",
+    "sourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
+    "downloadUrl": "https://archive.org/download/peter_rabbit_others_1008_librivox/peterrabbit_01_potter_64kb.mp3",
+    "rightsStatement": "LibriVox recordings are dedicated to the public domain. Confirm source attribution and jurisdiction requirements before production publication."
+  },
+  "verifiedOn": "2026-09-17",
+  "releaseApproved": false,
+  "reviewStatus": "needs_legal_review"
+}
