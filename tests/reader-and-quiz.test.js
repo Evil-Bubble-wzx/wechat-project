@@ -73,35 +73,56 @@ test('Peter Rabbit player resolves every reviewed contextual word card and prese
 
   const previousWx = global.wx
   const player = require('../miniprogram/modules/listen-read/player')
-  const previousPause = player.pause
-  const previousResume = player.resume
-  let pauses = 0, resumes = 0
-  player.pause = () => { pauses++ }
-  player.resume = () => { resumes++ }
-  global.wx = { isBrowserPreview:true, getStorageSync: () => ({}), setStorageSync: () => {}, getWindowInfo: () => ({ statusBarHeight:24 }), showToast:() => {} }
+  const listeners = {}
+  let pauses = 0, plays = 0, stored = {}
+  const manager = {
+    _src:'', currentTime:0, duration:322, playbackRate:1,
+    get src() { return this._src },
+    set src(value) { this._src=value;listeners.play?.() },
+    onTimeUpdate(fn) { listeners.time=fn }, onEnded(fn) { listeners.ended=fn }, onError(fn) { listeners.error=fn },
+    onPlay(fn) { listeners.play=fn }, onPause(fn) { listeners.pause=fn }, onStop(fn) { listeners.stop=fn },
+    play() { plays++;listeners.play?.() },
+    pause() { pauses++;listeners.pause?.() },
+    stop() { listeners.stop?.() }, seek(value) { this.currentTime=value }
+  }
+  global.wx = {
+    isBrowserPreview:true,
+    getBackgroundAudioManager:() => manager,
+    getStorageSync:() => stored,
+    setStorageSync:(_key,value) => { stored=value },
+    getWindowInfo:() => ({ statusBarHeight:24 }),
+    showToast:() => {}
+  }
   try {
+    player._resetForTests()
     const { createPage } = require('../miniprogram/ui/controller')
     const page = createPage('player')
     page.setData = patch => Object.assign(page.data, patch)
     page.onLoad({ id:'peter-rabbit' })
+    player.playTrack(page.data.book)
     const cueIndex = peterCues.findIndex(cue => cue.id === 'c0001')
     const token = peterCues[cueIndex].tokens.find(item => item.vocabKey === 'once:adverb:1')
-    page.setData({ playing:true })
     page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
     assert.equal(pauses, 1)
     assert.equal(page.data.selectedWord.definitionZh, peterVocab[token.vocabKey].definitionZh)
     assert.equal(page.data.selectedWord.example, peterCues[cueIndex].text)
     page.closeSheet()
-    assert.equal(resumes, 1)
+    assert.equal(plays, 1)
     assert.equal(page.data.playing, true)
 
-    page.setData({ playing:false })
+    page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
+    listeners.pause()
+    assert.equal(player.snapshot().pauseReason, 'system')
+    page.closeSheet()
+    assert.equal(plays, 1)
+
+    player.pause('user')
     page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
     page.closeSheet()
-    assert.equal(resumes, 1)
+    assert.equal(plays, 1)
+    page.onUnload()
   } finally {
-    player.pause = previousPause
-    player.resume = previousResume
+    player._resetForTests()
     global.wx = previousWx
   }
 })

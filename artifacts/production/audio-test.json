@@ -8,6 +8,9 @@
   "pauseResume": "PASS",
   "seek": "PASS",
   "rate": "PASS",
+  "crossPageSession": "PASS",
+  "userPauseGuard": "PASS",
+  "lifecycleCleanup": "PASS",
   "ended": "PASS",
   "productionCatalogGuard": "PASS",
   "errors": []

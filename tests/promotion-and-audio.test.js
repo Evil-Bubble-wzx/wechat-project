@@ -39,6 +39,63 @@ test('all story audio, including bundled chapters, uses background audio', () =>
   } finally { global.wx = previousWx }
 })
 
+test('playback session survives page subscriptions and system media controls', () => {
+  const previousWx = global.wx
+  const listeners = {}
+  let stored = {}
+  const manager = {
+    _src:'', currentTime:0, duration:322, playbackRate:1,
+    get src() { return this._src },
+    set src(value) { this._src=value;listeners.play?.() },
+    onTimeUpdate(fn) { listeners.time=fn }, onEnded(fn) { listeners.ended=fn }, onError(fn) { listeners.error=fn },
+    onPlay(fn) { listeners.play=fn }, onPause(fn) { listeners.pause=fn }, onStop(fn) { listeners.stop=fn },
+    play() { listeners.play?.() }, pause() { listeners.pause?.() }, stop() { listeners.stop?.() },
+    seek(value) { this.currentTime=value }
+  }
+  global.wx = {
+    isBrowserPreview:true,
+    __tingyueMode:'production',
+    getBackgroundAudioManager:() => manager,
+    getStorageSync:() => stored,
+    setStorageSync:(_key,value) => { stored=value }
+  }
+  try {
+    delete require.cache[require.resolve('../miniprogram/modules/listen-read/player')]
+    const player = require('../miniprogram/modules/listen-read/player')
+    player._resetForTests()
+    const first = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-01', title:'Peter Rabbit', audioUrl:'https://example.test/peter.mp3', duration:322 }
+    const second = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-02', title:'Peter Rabbit 2', audioUrl:'https://example.test/peter-2.mp3', duration:200 }
+    const oldSnapshots = []
+    const currentSnapshots = []
+    const unsubscribe = player.subscribe(value => oldSnapshots.push(value))
+    assert.equal(player.playTrack(first), true)
+    player.setRate(1.25)
+    manager.currentTime=10;listeners.time()
+    manager.currentTime=11;listeners.time()
+    assert.equal(stored.progress['peter-rabbit-01'].seconds, 11)
+    assert.equal(stored.listeningSec, 1)
+
+    unsubscribe()
+    const oldCount = oldSnapshots.length
+    player.subscribe(value => currentSnapshots.push(value))
+    listeners.pause()
+    assert.equal(player.snapshot().status, 'paused')
+    assert.equal(player.snapshot().pauseReason, 'system')
+    listeners.play()
+    assert.equal(player.snapshot().status, 'playing')
+    assert.equal(oldSnapshots.length, oldCount)
+    assert.ok(currentSnapshots.length >= 3)
+
+    player.selectTrack(second)
+    const replaced = player.snapshot()
+    assert.equal(replaced.pieceId, 'peter-rabbit-02')
+    assert.equal(replaced.position, 0)
+    assert.equal(replaced.rate, 1.25)
+    assert.equal(replaced.status, 'paused')
+    player._resetForTests()
+  } finally { global.wx = previousWx }
+})
+
 test('listening metric uses compact five-character display', () => {
   const previousWx = global.wx
   let stored = { listeningSec:57 }

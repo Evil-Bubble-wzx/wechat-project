@@ -128,3 +128,30 @@ test('legacy Peter client state migrates once to canonical work and piece IDs', 
     assert.equal(state.idMigrationVersion, 1)
   } finally { global.wx = previousWx }
 })
+
+test('atomic host mutations preserve unrelated playback and page updates', () => {
+  const previousWx = global.wx
+  const stores = { [productMode.PRODUCT_STORAGE_KEY]:{} }
+  global.wx = {
+    isBrowserPreview:true,
+    __tingyueMode:'production',
+    getStorageSync:key => stores[key],
+    setStorageSync:(key,value) => { stores[key]=value }
+  }
+  try {
+    const host = require('../miniprogram/services/host')
+    host.mutate(state => {
+      state.progress = { 'peter-rabbit-01':{ seconds:75, completed:false } }
+      state.listeningSec = 12
+      return state
+    })
+    host.mutate(state => {
+      state.favorites = ['peter-rabbit']
+      return state
+    })
+    const state = host.read()
+    assert.deepEqual(state.progress['peter-rabbit-01'], { seconds:75, completed:false })
+    assert.equal(state.listeningSec, 12)
+    assert.deepEqual(state.favorites, ['peter-rabbit'])
+  } finally { global.wx = previousWx }
+})
