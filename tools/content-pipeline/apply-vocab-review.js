@@ -12,7 +12,7 @@ if (!validation.valid) {
   for (const error of validation.errors) console.error(`- ${error}`)
   process.exitCode = 1
 } else if (checkOnly) {
-  console.log(`Vocabulary review is valid: ${validation.expectedCount} review units and human sign-off.`)
+  console.log(`Vocabulary review is valid: ${validation.expectedCount} review units and an authorized editorial sign-off.`)
 } else {
   const result = applyVocabularyReview(document, packageDir)
   console.log(JSON.stringify({

@@ -1,0 +1,3384 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "status": "vocabulary_approved",
+  "corrections": [
+    {
+      "reviewId": "V001",
+      "action": "approve",
+      "sourceKey": "a:pending:1",
+      "finalKeys": [
+        "a:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V002",
+      "action": "approve",
+      "sourceKey": "about:pending:1",
+      "finalKeys": [
+        "about:adverb:1",
+        "about:preposition:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V003",
+      "action": "approve",
+      "sourceKey": "accident:pending:1",
+      "finalKeys": [
+        "accident:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V004",
+      "action": "approve",
+      "sourceKey": "across:pending:1",
+      "finalKeys": [
+        "across:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V005",
+      "action": "approve",
+      "sourceKey": "after:pending:1",
+      "finalKeys": [
+        "after:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V006",
+      "action": "approve",
+      "sourceKey": "alive:pending:1",
+      "finalKeys": [
+        "alive:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V007",
+      "action": "approve",
+      "sourceKey": "all:pending:1",
+      "finalKeys": [
+        "all:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V008",
+      "action": "approve",
+      "sourceKey": "along:pending:1",
+      "finalKeys": [
+        "along:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V009",
+      "action": "approve",
+      "sourceKey": "also:pending:1",
+      "finalKeys": [
+        "also:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V010",
+      "action": "approve",
+      "sourceKey": "altogether:pending:1",
+      "finalKeys": [
+        "altogether:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V011",
+      "action": "approve",
+      "sourceKey": "am:pending:1",
+      "finalKeys": [
+        "be:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V012",
+      "action": "approve",
+      "sourceKey": "among:pending:1",
+      "finalKeys": [
+        "among:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V013",
+      "action": "approve",
+      "sourceKey": "amongst:pending:1",
+      "finalKeys": [
+        "amongst:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V014",
+      "action": "approve",
+      "sourceKey": "an:pending:1",
+      "finalKeys": [
+        "an:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V015",
+      "action": "approve",
+      "sourceKey": "and:pending:1",
+      "finalKeys": [
+        "and:conjunction:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V016",
+      "action": "approve",
+      "sourceKey": "answer:pending:1",
+      "finalKeys": [
+        "answer:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V017",
+      "action": "approve",
+      "sourceKey": "as:pending:1",
+      "finalKeys": [
+        "as:conjunction:1",
+        "as:adverb:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V018",
+      "action": "approve",
+      "sourceKey": "asked:pending:1",
+      "finalKeys": [
+        "ask:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V019",
+      "action": "approve",
+      "sourceKey": "at:pending:1",
+      "finalKeys": [
+        "at:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V020",
+      "action": "approve",
+      "sourceKey": "ate:pending:1",
+      "finalKeys": [
+        "eat:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V021",
+      "action": "approve",
+      "sourceKey": "away:pending:1",
+      "finalKeys": [
+        "away:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V022",
+      "action": "approve",
+      "sourceKey": "back:pending:1",
+      "finalKeys": [
+        "back:adverb:1",
+        "back:noun:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V023",
+      "action": "approve",
+      "sourceKey": "baker's:pending:1",
+      "finalKeys": [
+        "baker:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V024",
+      "action": "approve",
+      "sourceKey": "basket:pending:1",
+      "finalKeys": [
+        "basket:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V025",
+      "action": "approve",
+      "sourceKey": "be:pending:1",
+      "finalKeys": [
+        "be:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V026",
+      "action": "approve",
+      "sourceKey": "beans:pending:1",
+      "finalKeys": [
+        "bean:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V027",
+      "action": "approve",
+      "sourceKey": "beautiful:pending:1",
+      "finalKeys": [
+        "beautiful:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V028",
+      "action": "approve",
+      "sourceKey": "became:pending:1",
+      "finalKeys": [
+        "become:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V029",
+      "action": "approve",
+      "sourceKey": "bed:pending:1",
+      "finalKeys": [
+        "bed:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V030",
+      "action": "approve",
+      "sourceKey": "bed-time:pending:1",
+      "finalKeys": [
+        "bedtime:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V031",
+      "action": "approve",
+      "sourceKey": "been:pending:1",
+      "finalKeys": [
+        "be:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V032",
+      "action": "approve",
+      "sourceKey": "began:pending:1",
+      "finalKeys": [
+        "begin:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V033",
+      "action": "approve",
+      "sourceKey": "behind:pending:1",
+      "finalKeys": [
+        "behind:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V034",
+      "action": "excludeProperNoun",
+      "reason": "Benjamin is a character name in this story."
+    },
+    {
+      "reviewId": "V035",
+      "action": "approve",
+      "sourceKey": "best:pending:1",
+      "finalKeys": [
+        "best:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V036",
+      "action": "approve",
+      "sourceKey": "beyond:pending:1",
+      "finalKeys": [
+        "beyond:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V037",
+      "action": "approve",
+      "sourceKey": "big:pending:1",
+      "finalKeys": [
+        "big:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V038",
+      "action": "approve",
+      "sourceKey": "black-currant:pending:1",
+      "finalKeys": [
+        "blackcurrant:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V039",
+      "action": "approve",
+      "sourceKey": "blackberries:pending:1",
+      "finalKeys": [
+        "blackberry:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V040",
+      "action": "approve",
+      "sourceKey": "blackbirds:pending:1",
+      "finalKeys": [
+        "blackbird:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V041",
+      "action": "approve",
+      "sourceKey": "blue:pending:1",
+      "finalKeys": [
+        "blue:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V042",
+      "action": "approve",
+      "sourceKey": "bought:pending:1",
+      "finalKeys": [
+        "buy:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V043",
+      "action": "approve",
+      "sourceKey": "brass:pending:1",
+      "finalKeys": [
+        "brass:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V044",
+      "action": "approve",
+      "sourceKey": "bread:pending:1",
+      "finalKeys": [
+        "bread:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V045",
+      "action": "approve",
+      "sourceKey": "breath:pending:1",
+      "finalKeys": [
+        "breath:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V046",
+      "action": "approve",
+      "sourceKey": "brown:pending:1",
+      "finalKeys": [
+        "brown:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V047",
+      "action": "approve",
+      "sourceKey": "bunnies:pending:1",
+      "finalKeys": [
+        "bunny:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V048",
+      "action": "approve",
+      "sourceKey": "bunny:pending:1",
+      "finalKeys": [
+        "bunny:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V049",
+      "action": "approve",
+      "sourceKey": "buns:pending:1",
+      "finalKeys": [
+        "bun:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V050",
+      "action": "approve",
+      "sourceKey": "bushes:pending:1",
+      "finalKeys": [
+        "bush:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V051",
+      "action": "approve",
+      "sourceKey": "busy:pending:1",
+      "finalKeys": [
+        "busy:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V052",
+      "action": "approve",
+      "sourceKey": "but:pending:1",
+      "finalKeys": [
+        "but:conjunction:1",
+        "but:preposition:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V053",
+      "action": "approve",
+      "sourceKey": "buttons:pending:1",
+      "finalKeys": [
+        "button:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V054",
+      "action": "approve",
+      "sourceKey": "by:pending:1",
+      "finalKeys": [
+        "by:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V055",
+      "action": "approve",
+      "sourceKey": "cabbages:pending:1",
+      "finalKeys": [
+        "cabbage:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V056",
+      "action": "approve",
+      "sourceKey": "calling:pending:1",
+      "finalKeys": [
+        "call:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V057",
+      "action": "approve",
+      "sourceKey": "came:pending:1",
+      "finalKeys": [
+        "come:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V058",
+      "action": "approve",
+      "sourceKey": "camomile:pending:1",
+      "finalKeys": [
+        "camomile:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V059",
+      "action": "approve",
+      "sourceKey": "can:pending:1",
+      "finalKeys": [
+        "can:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V060",
+      "action": "approve",
+      "sourceKey": "care:pending:1",
+      "finalKeys": [
+        "care:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V061",
+      "action": "approve",
+      "sourceKey": "carefully:pending:1",
+      "finalKeys": [
+        "carefully:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V062",
+      "action": "approve",
+      "sourceKey": "carrying:pending:1",
+      "finalKeys": [
+        "carry:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V063",
+      "action": "approve",
+      "sourceKey": "cat:pending:1",
+      "finalKeys": [
+        "cat:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V064",
+      "action": "approve",
+      "sourceKey": "cats:pending:1",
+      "finalKeys": [
+        "cat:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V065",
+      "action": "approve",
+      "sourceKey": "caught:pending:1",
+      "finalKeys": [
+        "catch:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V066",
+      "action": "approve",
+      "sourceKey": "climbed:pending:1",
+      "finalKeys": [
+        "climb:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V067",
+      "action": "approve",
+      "sourceKey": "close:pending:1",
+      "finalKeys": [
+        "close:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V068",
+      "action": "approve",
+      "sourceKey": "clothes:pending:1",
+      "finalKeys": [
+        "clothes:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V069",
+      "action": "approve",
+      "sourceKey": "cooking:pending:1",
+      "finalKeys": [
+        "cook:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V070",
+      "action": "approve",
+      "sourceKey": "corner:pending:1",
+      "finalKeys": [
+        "corner:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V071",
+      "action": "approve",
+      "sourceKey": "could:pending:1",
+      "finalKeys": [
+        "could:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V072",
+      "action": "approve",
+      "sourceKey": "cousin:pending:1",
+      "finalKeys": [
+        "cousin:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V073",
+      "action": "approve",
+      "sourceKey": "cry:pending:1",
+      "finalKeys": [
+        "cry:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V074",
+      "action": "approve",
+      "sourceKey": "cucumber:pending:1",
+      "finalKeys": [
+        "cucumber:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V075",
+      "action": "approve",
+      "sourceKey": "currant:pending:1",
+      "finalKeys": [
+        "currant:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V076",
+      "action": "approve",
+      "sourceKey": "damp:pending:1",
+      "finalKeys": [
+        "damp:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V077",
+      "action": "approve",
+      "sourceKey": "dears:pending:1",
+      "finalKeys": [
+        "dear:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V078",
+      "action": "approve",
+      "sourceKey": "did:pending:1",
+      "finalKeys": [
+        "do:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V079",
+      "action": "approve",
+      "sourceKey": "don't:pending:1",
+      "finalKeys": [
+        "don't:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V080",
+      "action": "approve",
+      "sourceKey": "done:pending:1",
+      "finalKeys": [
+        "do:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V081",
+      "action": "approve",
+      "sourceKey": "door:pending:1",
+      "finalKeys": [
+        "door:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V082",
+      "action": "approve",
+      "sourceKey": "doorstep:pending:1",
+      "finalKeys": [
+        "doorstep:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V083",
+      "action": "approve",
+      "sourceKey": "dose:pending:1",
+      "finalKeys": [
+        "dose:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V084",
+      "action": "approve",
+      "sourceKey": "down:pending:1",
+      "finalKeys": [
+        "down:preposition:1",
+        "down:adverb:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V085",
+      "action": "approve",
+      "sourceKey": "dreadfully:pending:1",
+      "finalKeys": [
+        "dreadfully:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V086",
+      "action": "approve",
+      "sourceKey": "during:pending:1",
+      "finalKeys": [
+        "during:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V087",
+      "action": "approve",
+      "sourceKey": "each:pending:1",
+      "finalKeys": [
+        "each:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V088",
+      "action": "approve",
+      "sourceKey": "end:pending:1",
+      "finalKeys": [
+        "end:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V089",
+      "action": "approve",
+      "sourceKey": "evening:pending:1",
+      "finalKeys": [
+        "evening:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V090",
+      "action": "approve",
+      "sourceKey": "excitement:pending:1",
+      "finalKeys": [
+        "excitement:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V091",
+      "action": "approve",
+      "sourceKey": "exert:pending:1",
+      "finalKeys": [
+        "exert:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V092",
+      "action": "approve",
+      "sourceKey": "eyes:pending:1",
+      "finalKeys": [
+        "eye:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V093",
+      "action": "approve",
+      "sourceKey": "family:pending:1",
+      "finalKeys": [
+        "family:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V094",
+      "action": "approve",
+      "sourceKey": "fast:pending:1",
+      "finalKeys": [
+        "fast:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V095",
+      "action": "approve",
+      "sourceKey": "faster:pending:1",
+      "finalKeys": [
+        "faster:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V096",
+      "action": "approve",
+      "sourceKey": "fat:pending:1",
+      "finalKeys": [
+        "fat:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V097",
+      "action": "approve",
+      "sourceKey": "father:pending:1",
+      "finalKeys": [
+        "father:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V098",
+      "action": "approve",
+      "sourceKey": "feeling:pending:1",
+      "finalKeys": [
+        "feel:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V099",
+      "action": "approve",
+      "sourceKey": "fields:pending:1",
+      "finalKeys": [
+        "field:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V100",
+      "action": "approve",
+      "sourceKey": "filled:pending:1",
+      "finalKeys": [
+        "fill:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V101",
+      "action": "approve",
+      "sourceKey": "find:pending:1",
+      "finalKeys": [
+        "find:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V102",
+      "action": "approve",
+      "sourceKey": "fir-tree:pending:1",
+      "finalKeys": [
+        "fir_tree:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V103",
+      "action": "approve",
+      "sourceKey": "first:pending:1",
+      "finalKeys": [
+        "first:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V104",
+      "action": "approve",
+      "sourceKey": "five:pending:1",
+      "finalKeys": [
+        "five:numeral:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V105",
+      "action": "approve",
+      "sourceKey": "flew:pending:1",
+      "finalKeys": [
+        "fly:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V106",
+      "action": "approve",
+      "sourceKey": "floor:pending:1",
+      "finalKeys": [
+        "floor:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V107",
+      "action": "approve",
+      "sourceKey": "flopped:pending:1",
+      "finalKeys": [
+        "flop:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V108",
+      "action": "approve",
+      "sourceKey": "flower-pot:pending:1",
+      "finalKeys": [
+        "flowerpot:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V109",
+      "action": "approve",
+      "sourceKey": "foot:pending:1",
+      "finalKeys": [
+        "foot:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V110",
+      "action": "approve",
+      "sourceKey": "for:pending:1",
+      "finalKeys": [
+        "for:preposition:1",
+        "for:conjunction:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V111",
+      "action": "approve",
+      "sourceKey": "forgotten:pending:1",
+      "finalKeys": [
+        "forget:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V112",
+      "action": "approve",
+      "sourceKey": "fortnight:pending:1",
+      "finalKeys": [
+        "fortnight:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V113",
+      "action": "approve",
+      "sourceKey": "found:pending:1",
+      "finalKeys": [
+        "find:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V114",
+      "action": "approve",
+      "sourceKey": "four:pending:1",
+      "finalKeys": [
+        "four:numeral:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V115",
+      "action": "approve",
+      "sourceKey": "frame:pending:1",
+      "finalKeys": [
+        "frame:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V116",
+      "action": "approve",
+      "sourceKey": "french:pending:1",
+      "finalKeys": [
+        "french:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V117",
+      "action": "approve",
+      "sourceKey": "friendly:pending:1",
+      "finalKeys": [
+        "friendly:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V118",
+      "action": "approve",
+      "sourceKey": "fright:pending:1",
+      "finalKeys": [
+        "fright:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V119",
+      "action": "approve",
+      "sourceKey": "frighten:pending:1",
+      "finalKeys": [
+        "frighten:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V120",
+      "action": "approve",
+      "sourceKey": "frightened:pending:1",
+      "finalKeys": [
+        "frightened:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V121",
+      "action": "approve",
+      "sourceKey": "from:pending:1",
+      "finalKeys": [
+        "from:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V122",
+      "action": "approve",
+      "sourceKey": "garden:pending:1",
+      "finalKeys": [
+        "garden:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V123",
+      "action": "approve",
+      "sourceKey": "gate:pending:1",
+      "finalKeys": [
+        "gate:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V124",
+      "action": "approve",
+      "sourceKey": "gather:pending:1",
+      "finalKeys": [
+        "gather:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V125",
+      "action": "approve",
+      "sourceKey": "gave:pending:1",
+      "finalKeys": [
+        "give:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V126",
+      "action": "approve",
+      "sourceKey": "get:pending:1",
+      "finalKeys": [
+        "get:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V127",
+      "action": "approve",
+      "sourceKey": "go:pending:1",
+      "finalKeys": [
+        "go:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V128",
+      "action": "approve",
+      "sourceKey": "going:pending:1",
+      "finalKeys": [
+        "go:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V129",
+      "action": "approve",
+      "sourceKey": "gold-fish:pending:1",
+      "finalKeys": [
+        "goldfish:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V130",
+      "action": "approve",
+      "sourceKey": "good:pending:1",
+      "finalKeys": [
+        "good:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V131",
+      "action": "approve",
+      "sourceKey": "gooseberry:pending:1",
+      "finalKeys": [
+        "gooseberry:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V132",
+      "action": "approve",
+      "sourceKey": "got:pending:1",
+      "finalKeys": [
+        "get:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V133",
+      "action": "approve",
+      "sourceKey": "great:pending:1",
+      "finalKeys": [
+        "great:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V134",
+      "action": "approve",
+      "sourceKey": "had:pending:1",
+      "finalKeys": [
+        "have:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V135",
+      "action": "approve",
+      "sourceKey": "hands:pending:1",
+      "finalKeys": [
+        "hand:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V136",
+      "action": "approve",
+      "sourceKey": "happened:pending:1",
+      "finalKeys": [
+        "happen:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V137",
+      "action": "approve",
+      "sourceKey": "have:pending:1",
+      "finalKeys": [
+        "have:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V138",
+      "action": "approve",
+      "sourceKey": "he:pending:1",
+      "finalKeys": [
+        "he:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V139",
+      "action": "approve",
+      "sourceKey": "head:pending:1",
+      "finalKeys": [
+        "head:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V140",
+      "action": "approve",
+      "sourceKey": "heard:pending:1",
+      "finalKeys": [
+        "hear:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V141",
+      "action": "approve",
+      "sourceKey": "her:pending:1",
+      "finalKeys": [
+        "her:determiner:1",
+        "her:pronoun:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V142",
+      "action": "approve",
+      "sourceKey": "hidden:pending:1",
+      "finalKeys": [
+        "hide:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V143",
+      "action": "approve",
+      "sourceKey": "hide:pending:1",
+      "finalKeys": [
+        "hide:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V144",
+      "action": "approve",
+      "sourceKey": "him:pending:1",
+      "finalKeys": [
+        "him:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V145",
+      "action": "approve",
+      "sourceKey": "himself:pending:1",
+      "finalKeys": [
+        "himself:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V146",
+      "action": "approve",
+      "sourceKey": "his:pending:1",
+      "finalKeys": [
+        "his:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V147",
+      "action": "approve",
+      "sourceKey": "hoe:pending:1",
+      "finalKeys": [
+        "hoe:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V148",
+      "action": "approve",
+      "sourceKey": "hoeing:pending:1",
+      "finalKeys": [
+        "hoe:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V149",
+      "action": "approve",
+      "sourceKey": "home:pending:1",
+      "finalKeys": [
+        "home:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V150",
+      "action": "approve",
+      "sourceKey": "hung:pending:1",
+      "finalKeys": [
+        "hang:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V151",
+      "action": "approve",
+      "sourceKey": "i:pending:1",
+      "finalKeys": [
+        "i:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V152",
+      "action": "approve",
+      "sourceKey": "idea:pending:1",
+      "finalKeys": [
+        "idea:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V153",
+      "action": "approve",
+      "sourceKey": "if:pending:1",
+      "finalKeys": [
+        "if:conjunction:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V154",
+      "action": "approve",
+      "sourceKey": "implored:pending:1",
+      "finalKeys": [
+        "implore:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V155",
+      "action": "approve",
+      "sourceKey": "in:pending:1",
+      "finalKeys": [
+        "in:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V156",
+      "action": "approve",
+      "sourceKey": "intended:pending:1",
+      "finalKeys": [
+        "intend:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V157",
+      "action": "approve",
+      "sourceKey": "into:pending:1",
+      "finalKeys": [
+        "into:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V158",
+      "action": "approve",
+      "sourceKey": "it:pending:1",
+      "finalKeys": [
+        "it:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V159",
+      "action": "approve",
+      "sourceKey": "jacket:pending:1",
+      "finalKeys": [
+        "jacket:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V160",
+      "action": "approve",
+      "sourceKey": "jumped:pending:1",
+      "finalKeys": [
+        "jump:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V161",
+      "action": "approve",
+      "sourceKey": "just:pending:1",
+      "finalKeys": [
+        "just:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V162",
+      "action": "approve",
+      "sourceKey": "kertyschoo:pending:1",
+      "finalKeys": [
+        "kertyschoo:interjection:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V163",
+      "action": "approve",
+      "sourceKey": "knees:pending:1",
+      "finalKeys": [
+        "knee:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V164",
+      "action": "approve",
+      "sourceKey": "lane:pending:1",
+      "finalKeys": [
+        "lane:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V165",
+      "action": "approve",
+      "sourceKey": "large:pending:1",
+      "finalKeys": [
+        "large:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V166",
+      "action": "approve",
+      "sourceKey": "last:pending:1",
+      "finalKeys": [
+        "last:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V167",
+      "action": "approve",
+      "sourceKey": "least:pending:1",
+      "finalKeys": [
+        "least:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V168",
+      "action": "approve",
+      "sourceKey": "leaving:pending:1",
+      "finalKeys": [
+        "leave:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V169",
+      "action": "approve",
+      "sourceKey": "legs:pending:1",
+      "finalKeys": [
+        "leg:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V170",
+      "action": "approve",
+      "sourceKey": "lettuces:pending:1",
+      "finalKeys": [
+        "lettuce:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V171",
+      "action": "approve",
+      "sourceKey": "lippity:pending:1",
+      "finalKeys": [
+        "lippity:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V172",
+      "action": "approve",
+      "sourceKey": "little:pending:1",
+      "finalKeys": [
+        "little:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V173",
+      "action": "approve",
+      "sourceKey": "lived:pending:1",
+      "finalKeys": [
+        "live:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V174",
+      "action": "approve",
+      "sourceKey": "loaf:pending:1",
+      "finalKeys": [
+        "loaf:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V175",
+      "action": "approve",
+      "sourceKey": "locked:pending:1",
+      "finalKeys": [
+        "lock:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V176",
+      "action": "approve",
+      "sourceKey": "look:pending:1",
+      "finalKeys": [
+        "look:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V177",
+      "action": "approve",
+      "sourceKey": "looked:pending:1",
+      "finalKeys": [
+        "look:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V178",
+      "action": "approve",
+      "sourceKey": "looking:pending:1",
+      "finalKeys": [
+        "look:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V179",
+      "action": "approve",
+      "sourceKey": "losing:pending:1",
+      "finalKeys": [
+        "lose:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V180",
+      "action": "approve",
+      "sourceKey": "lost:pending:1",
+      "finalKeys": [
+        "lost:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V181",
+      "action": "approve",
+      "sourceKey": "made:pending:1",
+      "finalKeys": [
+        "make:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V182",
+      "action": "approve",
+      "sourceKey": "may:pending:1",
+      "finalKeys": [
+        "may:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V183",
+      "action": "excludeProperNoun",
+      "reason": "McGregor's is the possessive form of the character name McGregor."
+    },
+    {
+      "reviewId": "V184",
+      "action": "approve",
+      "sourceKey": "meet:pending:1",
+      "finalKeys": [
+        "meet:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V185",
+      "action": "approve",
+      "sourceKey": "might:pending:1",
+      "finalKeys": [
+        "might:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V186",
+      "action": "approve",
+      "sourceKey": "milk:pending:1",
+      "finalKeys": [
+        "milk:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V187",
+      "action": "approve",
+      "sourceKey": "mischief:pending:1",
+      "finalKeys": [
+        "mischief:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V188",
+      "action": "approve",
+      "sourceKey": "more:pending:1",
+      "finalKeys": [
+        "more:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V189",
+      "action": "approve",
+      "sourceKey": "morning:pending:1",
+      "finalKeys": [
+        "morning:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V190",
+      "action": "approve",
+      "sourceKey": "most:pending:1",
+      "finalKeys": [
+        "most:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V191",
+      "action": "approve",
+      "sourceKey": "mother:pending:1",
+      "finalKeys": [
+        "mother:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V192",
+      "action": "approve",
+      "sourceKey": "mouse:pending:1",
+      "finalKeys": [
+        "mouse:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V193",
+      "action": "approve",
+      "sourceKey": "mouth:pending:1",
+      "finalKeys": [
+        "mouth:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V194",
+      "action": "approve",
+      "sourceKey": "mr:pending:1",
+      "finalKeys": [
+        "mr:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V195",
+      "action": "approve",
+      "sourceKey": "mrs:pending:1",
+      "finalKeys": [
+        "mrs:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V196",
+      "action": "approve",
+      "sourceKey": "much:pending:1",
+      "finalKeys": [
+        "much:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V197",
+      "action": "approve",
+      "sourceKey": "my:pending:1",
+      "finalKeys": [
+        "my:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V198",
+      "action": "approve",
+      "sourceKey": "names:pending:1",
+      "finalKeys": [
+        "name:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V199",
+      "action": "approve",
+      "sourceKey": "naughty:pending:1",
+      "finalKeys": [
+        "naughty:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V200",
+      "action": "approve",
+      "sourceKey": "net:pending:1",
+      "finalKeys": [
+        "net:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V201",
+      "action": "approve",
+      "sourceKey": "never:pending:1",
+      "finalKeys": [
+        "never:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V202",
+      "action": "approve",
+      "sourceKey": "new:pending:1",
+      "finalKeys": [
+        "new:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V203",
+      "action": "approve",
+      "sourceKey": "nice:pending:1",
+      "finalKeys": [
+        "nice:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V204",
+      "action": "approve",
+      "sourceKey": "no:pending:1",
+      "finalKeys": [
+        "no:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V205",
+      "action": "approve",
+      "sourceKey": "noise:pending:1",
+      "finalKeys": [
+        "noise:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V206",
+      "action": "approve",
+      "sourceKey": "not:pending:1",
+      "finalKeys": [
+        "not:particle:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V207",
+      "action": "approve",
+      "sourceKey": "nothing:pending:1",
+      "finalKeys": [
+        "nothing:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V208",
+      "action": "approve",
+      "sourceKey": "now:pending:1",
+      "finalKeys": [
+        "now:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V209",
+      "action": "approve",
+      "sourceKey": "of:pending:1",
+      "finalKeys": [
+        "of:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V210",
+      "action": "approve",
+      "sourceKey": "off:pending:1",
+      "finalKeys": [
+        "off:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V211",
+      "action": "approve",
+      "sourceKey": "old:pending:1",
+      "finalKeys": [
+        "old:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V212",
+      "action": "approve",
+      "sourceKey": "on:pending:1",
+      "finalKeys": [
+        "on:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V213",
+      "action": "approve",
+      "sourceKey": "once:pending:1",
+      "finalKeys": [
+        "once:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V214",
+      "action": "approve",
+      "sourceKey": "one:pending:1",
+      "finalKeys": [
+        "one:numeral:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V215",
+      "action": "approve",
+      "sourceKey": "onions:pending:1",
+      "finalKeys": [
+        "onion:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V216",
+      "action": "approve",
+      "sourceKey": "only:pending:1",
+      "finalKeys": [
+        "only:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V217",
+      "action": "approve",
+      "sourceKey": "or:pending:1",
+      "finalKeys": [
+        "or:conjunction:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V218",
+      "action": "approve",
+      "sourceKey": "other:pending:1",
+      "finalKeys": [
+        "other:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V219",
+      "action": "approve",
+      "sourceKey": "out:pending:1",
+      "finalKeys": [
+        "out:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V220",
+      "action": "approve",
+      "sourceKey": "outside:pending:1",
+      "finalKeys": [
+        "outside:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V221",
+      "action": "approve",
+      "sourceKey": "over:pending:1",
+      "finalKeys": [
+        "over:preposition:1",
+        "over:adverb:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V222",
+      "action": "approve",
+      "sourceKey": "overheard:pending:1",
+      "finalKeys": [
+        "overhear:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V223",
+      "action": "approve",
+      "sourceKey": "pair:pending:1",
+      "finalKeys": [
+        "pair:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V224",
+      "action": "approve",
+      "sourceKey": "parsley:pending:1",
+      "finalKeys": [
+        "parsley:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V225",
+      "action": "approve",
+      "sourceKey": "pea:pending:1",
+      "finalKeys": [
+        "pea:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V226",
+      "action": "approve",
+      "sourceKey": "peas:pending:1",
+      "finalKeys": [
+        "pea:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V227",
+      "action": "approve",
+      "sourceKey": "peeped:pending:1",
+      "finalKeys": [
+        "peep:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V228",
+      "action": "approve",
+      "sourceKey": "perhaps:pending:1",
+      "finalKeys": [
+        "perhaps:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V229",
+      "action": "approve",
+      "sourceKey": "pie:pending:1",
+      "finalKeys": [
+        "pie:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V230",
+      "action": "approve",
+      "sourceKey": "planting:pending:1",
+      "finalKeys": [
+        "plant:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V231",
+      "action": "approve",
+      "sourceKey": "plants:pending:1",
+      "finalKeys": [
+        "plant:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V232",
+      "action": "approve",
+      "sourceKey": "pond:pending:1",
+      "finalKeys": [
+        "pond:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V233",
+      "action": "approve",
+      "sourceKey": "pop:pending:1",
+      "finalKeys": [
+        "pop:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V234",
+      "action": "approve",
+      "sourceKey": "potatoes:pending:1",
+      "finalKeys": [
+        "potato:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V235",
+      "action": "approve",
+      "sourceKey": "presently:pending:1",
+      "finalKeys": [
+        "presently:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V236",
+      "action": "approve",
+      "sourceKey": "put:pending:1",
+      "finalKeys": [
+        "put:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V237",
+      "action": "approve",
+      "sourceKey": "puzzled:pending:1",
+      "finalKeys": [
+        "puzzled:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V238",
+      "action": "approve",
+      "sourceKey": "quietly:pending:1",
+      "finalKeys": [
+        "quietly:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V239",
+      "action": "approve",
+      "sourceKey": "quite:pending:1",
+      "finalKeys": [
+        "quite:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V240",
+      "action": "approve",
+      "sourceKey": "rabbit:pending:1",
+      "finalKeys": [
+        "rabbit:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V241",
+      "action": "approve",
+      "sourceKey": "rabbit-hole:pending:1",
+      "finalKeys": [
+        "rabbit_hole:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V242",
+      "action": "approve",
+      "sourceKey": "rabbits:pending:1",
+      "finalKeys": [
+        "rabbit:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V243",
+      "action": "approve",
+      "sourceKey": "radishes:pending:1",
+      "finalKeys": [
+        "radish:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V244",
+      "action": "approve",
+      "sourceKey": "rake:pending:1",
+      "finalKeys": [
+        "rake:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V245",
+      "action": "approve",
+      "sourceKey": "ran:pending:1",
+      "finalKeys": [
+        "run:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V246",
+      "action": "approve",
+      "sourceKey": "rather:pending:1",
+      "finalKeys": [
+        "rather:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V247",
+      "action": "approve",
+      "sourceKey": "rest:pending:1",
+      "finalKeys": [
+        "rest:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V248",
+      "action": "approve",
+      "sourceKey": "room:pending:1",
+      "finalKeys": [
+        "room:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V249",
+      "action": "approve",
+      "sourceKey": "root:pending:1",
+      "finalKeys": [
+        "root:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V250",
+      "action": "approve",
+      "sourceKey": "round:pending:1",
+      "finalKeys": [
+        "round:preposition:1",
+        "round:adverb:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V251",
+      "action": "approve",
+      "sourceKey": "run:pending:1",
+      "finalKeys": [
+        "run:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V252",
+      "action": "approve",
+      "sourceKey": "running:pending:1",
+      "finalKeys": [
+        "run:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V253",
+      "action": "approve",
+      "sourceKey": "rushed:pending:1",
+      "finalKeys": [
+        "rush:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V254",
+      "action": "approve",
+      "sourceKey": "safe:pending:1",
+      "finalKeys": [
+        "safe:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V255",
+      "action": "approve",
+      "sourceKey": "said:pending:1",
+      "finalKeys": [
+        "say:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V256",
+      "action": "approve",
+      "sourceKey": "sand:pending:1",
+      "finalKeys": [
+        "sand:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V257",
+      "action": "approve",
+      "sourceKey": "sand-bank:pending:1",
+      "finalKeys": [
+        "sandbank:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V258",
+      "action": "approve",
+      "sourceKey": "sat:pending:1",
+      "finalKeys": [
+        "sit:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V259",
+      "action": "approve",
+      "sourceKey": "saw:pending:1",
+      "finalKeys": [
+        "see:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V260",
+      "action": "approve",
+      "sourceKey": "say:pending:1",
+      "finalKeys": [
+        "say:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V261",
+      "action": "approve",
+      "sourceKey": "scare-crow:pending:1",
+      "finalKeys": [
+        "scarecrow:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V262",
+      "action": "approve",
+      "sourceKey": "scr-r-ritch:pending:1",
+      "finalKeys": [
+        "scr-r-ritch:interjection:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V263",
+      "action": "approve",
+      "sourceKey": "scratch:pending:1",
+      "finalKeys": [
+        "scratch:interjection:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V264",
+      "action": "approve",
+      "sourceKey": "scritch:pending:1",
+      "finalKeys": [
+        "scritch:interjection:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V265",
+      "action": "approve",
+      "sourceKey": "scuttered:pending:1",
+      "finalKeys": [
+        "scutter:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V266",
+      "action": "approve",
+      "sourceKey": "second:pending:1",
+      "finalKeys": [
+        "second:numeral:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V267",
+      "action": "approve",
+      "sourceKey": "she:pending:1",
+      "finalKeys": [
+        "she:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V268",
+      "action": "approve",
+      "sourceKey": "shed:pending:1",
+      "finalKeys": [
+        "shed:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V269",
+      "action": "approve",
+      "sourceKey": "shoe:pending:1",
+      "finalKeys": [
+        "shoe:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V270",
+      "action": "approve",
+      "sourceKey": "shoes:pending:1",
+      "finalKeys": [
+        "shoe:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V271",
+      "action": "approve",
+      "sourceKey": "shook:pending:1",
+      "finalKeys": [
+        "shake:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V272",
+      "action": "approve",
+      "sourceKey": "should:pending:1",
+      "finalKeys": [
+        "should:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V273",
+      "action": "approve",
+      "sourceKey": "shut:pending:1",
+      "finalKeys": [
+        "shut:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V274",
+      "action": "approve",
+      "sourceKey": "sick:pending:1",
+      "finalKeys": [
+        "sick:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V275",
+      "action": "approve",
+      "sourceKey": "sieve:pending:1",
+      "finalKeys": [
+        "sieve:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V276",
+      "action": "approve",
+      "sourceKey": "sight:pending:1",
+      "finalKeys": [
+        "sight:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V277",
+      "action": "approve",
+      "sourceKey": "sitting:pending:1",
+      "finalKeys": [
+        "sit:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V278",
+      "action": "approve",
+      "sourceKey": "slipped:pending:1",
+      "finalKeys": [
+        "slip:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V279",
+      "action": "approve",
+      "sourceKey": "small:pending:1",
+      "finalKeys": [
+        "small:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V280",
+      "action": "approve",
+      "sourceKey": "sneezed:pending:1",
+      "finalKeys": [
+        "sneeze:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V281",
+      "action": "approve",
+      "sourceKey": "so:pending:1",
+      "finalKeys": [
+        "so:conjunction:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V282",
+      "action": "approve",
+      "sourceKey": "sobs:pending:1",
+      "finalKeys": [
+        "sob:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V283",
+      "action": "approve",
+      "sourceKey": "soft:pending:1",
+      "finalKeys": [
+        "soft:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V284",
+      "action": "approve",
+      "sourceKey": "some:pending:1",
+      "finalKeys": [
+        "some:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V285",
+      "action": "approve",
+      "sourceKey": "somewhere:pending:1",
+      "finalKeys": [
+        "somewhere:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V286",
+      "action": "approve",
+      "sourceKey": "sorry:pending:1",
+      "finalKeys": [
+        "sorry:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V287",
+      "action": "approve",
+      "sourceKey": "sparrows:pending:1",
+      "finalKeys": [
+        "sparrow:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V288",
+      "action": "approve",
+      "sourceKey": "speaking:pending:1",
+      "finalKeys": [
+        "speak:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V289",
+      "action": "approve",
+      "sourceKey": "squeeze:pending:1",
+      "finalKeys": [
+        "squeeze:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V290",
+      "action": "approve",
+      "sourceKey": "squeezed:pending:1",
+      "finalKeys": [
+        "squeeze:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V291",
+      "action": "approve",
+      "sourceKey": "staring:pending:1",
+      "finalKeys": [
+        "stare:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V292",
+      "action": "approve",
+      "sourceKey": "started:pending:1",
+      "finalKeys": [
+        "start:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V293",
+      "action": "approve",
+      "sourceKey": "still:pending:1",
+      "finalKeys": [
+        "still:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V294",
+      "action": "approve",
+      "sourceKey": "stone:pending:1",
+      "finalKeys": [
+        "stone:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V295",
+      "action": "approve",
+      "sourceKey": "stop:pending:1",
+      "finalKeys": [
+        "stop:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V296",
+      "action": "approve",
+      "sourceKey": "stopped:pending:1",
+      "finalKeys": [
+        "stop:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V297",
+      "action": "approve",
+      "sourceKey": "straight:pending:1",
+      "finalKeys": [
+        "straight:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V298",
+      "action": "approve",
+      "sourceKey": "such:pending:1",
+      "finalKeys": [
+        "such:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V299",
+      "action": "approve",
+      "sourceKey": "suddenly:pending:1",
+      "finalKeys": [
+        "suddenly:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V300",
+      "action": "approve",
+      "sourceKey": "supper:pending:1",
+      "finalKeys": [
+        "supper:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V301",
+      "action": "approve",
+      "sourceKey": "sure:pending:1",
+      "finalKeys": [
+        "sure:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V302",
+      "action": "approve",
+      "sourceKey": "table-spoonful:pending:1",
+      "finalKeys": [
+        "tablespoonful:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V303",
+      "action": "approve",
+      "sourceKey": "tail:pending:1",
+      "finalKeys": [
+        "tail:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V304",
+      "action": "approve",
+      "sourceKey": "taken:pending:1",
+      "finalKeys": [
+        "take:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V305",
+      "action": "approve",
+      "sourceKey": "tea:pending:1",
+      "finalKeys": [
+        "tea:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V306",
+      "action": "approve",
+      "sourceKey": "tears:pending:1",
+      "finalKeys": [
+        "tear:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V307",
+      "action": "approve",
+      "sourceKey": "that:pending:1",
+      "finalKeys": [
+        "that:conjunction:1",
+        "that:determiner:2",
+        "that:pronoun:3"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V308",
+      "action": "approve",
+      "sourceKey": "the:pending:1",
+      "finalKeys": [
+        "the:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V309",
+      "action": "approve",
+      "sourceKey": "their:pending:1",
+      "finalKeys": [
+        "their:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V310",
+      "action": "approve",
+      "sourceKey": "them:pending:1",
+      "finalKeys": [
+        "them:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V311",
+      "action": "approve",
+      "sourceKey": "then:pending:1",
+      "finalKeys": [
+        "then:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V312",
+      "action": "approve",
+      "sourceKey": "there:pending:1",
+      "finalKeys": [
+        "there:adverb:1",
+        "there:adverb:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V313",
+      "action": "approve",
+      "sourceKey": "they:pending:1",
+      "finalKeys": [
+        "they:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V314",
+      "action": "approve",
+      "sourceKey": "thief:pending:1",
+      "finalKeys": [
+        "thief:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V315",
+      "action": "approve",
+      "sourceKey": "thing:pending:1",
+      "finalKeys": [
+        "thing:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V316",
+      "action": "approve",
+      "sourceKey": "think:pending:1",
+      "finalKeys": [
+        "think:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V317",
+      "action": "approve",
+      "sourceKey": "thought:pending:1",
+      "finalKeys": [
+        "think:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V318",
+      "action": "approve",
+      "sourceKey": "three:pending:1",
+      "finalKeys": [
+        "three:numeral:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V319",
+      "action": "approve",
+      "sourceKey": "through:pending:1",
+      "finalKeys": [
+        "through:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V320",
+      "action": "approve",
+      "sourceKey": "till:pending:1",
+      "finalKeys": [
+        "till:conjunction:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V321",
+      "action": "approve",
+      "sourceKey": "time:pending:1",
+      "finalKeys": [
+        "time:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V322",
+      "action": "approve",
+      "sourceKey": "tip:pending:1",
+      "finalKeys": [
+        "tip:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V323",
+      "action": "approve",
+      "sourceKey": "tired:pending:1",
+      "finalKeys": [
+        "tired:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V324",
+      "action": "approve",
+      "sourceKey": "to:pending:1",
+      "finalKeys": [
+        "to:preposition:1",
+        "to:particle:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V325",
+      "action": "approve",
+      "sourceKey": "too:pending:1",
+      "finalKeys": [
+        "too:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V326",
+      "action": "approve",
+      "sourceKey": "took:pending:1",
+      "finalKeys": [
+        "take:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V327",
+      "action": "approve",
+      "sourceKey": "tool-shed:pending:1",
+      "finalKeys": [
+        "tool_shed:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V328",
+      "action": "approve",
+      "sourceKey": "top:pending:1",
+      "finalKeys": [
+        "top:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V329",
+      "action": "approve",
+      "sourceKey": "towards:pending:1",
+      "finalKeys": [
+        "towards:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V330",
+      "action": "approve",
+      "sourceKey": "trembling:pending:1",
+      "finalKeys": [
+        "tremble:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V331",
+      "action": "approve",
+      "sourceKey": "tried:pending:1",
+      "finalKeys": [
+        "try:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V332",
+      "action": "approve",
+      "sourceKey": "turn:pending:1",
+      "finalKeys": [
+        "turn:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V333",
+      "action": "approve",
+      "sourceKey": "turned:pending:1",
+      "finalKeys": [
+        "turn:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V334",
+      "action": "approve",
+      "sourceKey": "twitched:pending:1",
+      "finalKeys": [
+        "twitch:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V335",
+      "action": "approve",
+      "sourceKey": "umbrella:pending:1",
+      "finalKeys": [
+        "umbrella:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V336",
+      "action": "approve",
+      "sourceKey": "under:pending:1",
+      "finalKeys": [
+        "under:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V337",
+      "action": "approve",
+      "sourceKey": "underneath:pending:1",
+      "finalKeys": [
+        "underneath:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V338",
+      "action": "approve",
+      "sourceKey": "unfortunately:pending:1",
+      "finalKeys": [
+        "unfortunately:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V339",
+      "action": "approve",
+      "sourceKey": "up:pending:1",
+      "finalKeys": [
+        "up:particle:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V340",
+      "action": "approve",
+      "sourceKey": "upon:pending:1",
+      "finalKeys": [
+        "upon:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V341",
+      "action": "approve",
+      "sourceKey": "upsetting:pending:1",
+      "finalKeys": [
+        "upset:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V342",
+      "action": "approve",
+      "sourceKey": "very:pending:1",
+      "finalKeys": [
+        "very:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V343",
+      "action": "approve",
+      "sourceKey": "walk:pending:1",
+      "finalKeys": [
+        "walk:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V344",
+      "action": "approve",
+      "sourceKey": "wall:pending:1",
+      "finalKeys": [
+        "wall:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V345",
+      "action": "approve",
+      "sourceKey": "wander:pending:1",
+      "finalKeys": [
+        "wander:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V346",
+      "action": "approve",
+      "sourceKey": "was:pending:1",
+      "finalKeys": [
+        "be:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V347",
+      "action": "approve",
+      "sourceKey": "water:pending:1",
+      "finalKeys": [
+        "water:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V348",
+      "action": "approve",
+      "sourceKey": "water-cans:pending:1",
+      "finalKeys": [
+        "watering_can:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; uncommon or story-specific form retained on the low-confidence follow-up list."
+    },
+    {
+      "reviewId": "V349",
+      "action": "approve",
+      "sourceKey": "waving:pending:1",
+      "finalKeys": [
+        "wave:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V350",
+      "action": "approve",
+      "sourceKey": "way:pending:1",
+      "finalKeys": [
+        "way:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V351",
+      "action": "approve",
+      "sourceKey": "well:pending:1",
+      "finalKeys": [
+        "well:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V352",
+      "action": "approve",
+      "sourceKey": "went:pending:1",
+      "finalKeys": [
+        "go:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V353",
+      "action": "approve",
+      "sourceKey": "were:pending:1",
+      "finalKeys": [
+        "be:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V354",
+      "action": "approve",
+      "sourceKey": "what:pending:1",
+      "finalKeys": [
+        "what:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V355",
+      "action": "approve",
+      "sourceKey": "wheelbarrow:pending:1",
+      "finalKeys": [
+        "wheelbarrow:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V356",
+      "action": "approve",
+      "sourceKey": "where:pending:1",
+      "finalKeys": [
+        "where:adverb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V357",
+      "action": "approve",
+      "sourceKey": "which:pending:1",
+      "finalKeys": [
+        "which:pronoun:1",
+        "which:determiner:2"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V358",
+      "action": "approve",
+      "sourceKey": "white:pending:1",
+      "finalKeys": [
+        "white:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V359",
+      "action": "approve",
+      "sourceKey": "who:pending:1",
+      "finalKeys": [
+        "who:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V360",
+      "action": "approve",
+      "sourceKey": "whom:pending:1",
+      "finalKeys": [
+        "whom:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V361",
+      "action": "approve",
+      "sourceKey": "window:pending:1",
+      "finalKeys": [
+        "window:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V362",
+      "action": "approve",
+      "sourceKey": "with:pending:1",
+      "finalKeys": [
+        "with:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V363",
+      "action": "approve",
+      "sourceKey": "without:pending:1",
+      "finalKeys": [
+        "without:preposition:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V364",
+      "action": "approve",
+      "sourceKey": "wondered:pending:1",
+      "finalKeys": [
+        "wonder:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V365",
+      "action": "approve",
+      "sourceKey": "wood:pending:1",
+      "finalKeys": [
+        "wood:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V366",
+      "action": "approve",
+      "sourceKey": "work:pending:1",
+      "finalKeys": [
+        "work:noun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V367",
+      "action": "approve",
+      "sourceKey": "would:pending:1",
+      "finalKeys": [
+        "would:auxiliary:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V368",
+      "action": "approve",
+      "sourceKey": "wriggled:pending:1",
+      "finalKeys": [
+        "wriggle:verb:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V369",
+      "action": "approve",
+      "sourceKey": "you:pending:1",
+      "finalKeys": [
+        "you:pronoun:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V370",
+      "action": "approve",
+      "sourceKey": "young:pending:1",
+      "finalKeys": [
+        "young:adjective:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    },
+    {
+      "reviewId": "V371",
+      "action": "approve",
+      "sourceKey": "your:pending:1",
+      "finalKeys": [
+        "your:determiner:1"
+      ],
+      "note": "AI-assisted full review authorized by wzx; checked against the approved cue context."
+    }
+  ],
+  "reviewedBy": "wzx",
+  "reviewedAt": "2026-09-22T02:13:50.733Z",
+  "reviewMethod": "ai_assisted_full_review",
+  "authorizedBy": "wzx",
+  "audit": {
+    "method": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedUnits": 371,
+    "reviewedOccurrenceTokens": 909,
+    "learnerDefinitionsRewritten": true,
+    "lowConfidenceReviewIds": [
+      "V023",
+      "V058",
+      "V162",
+      "V171",
+      "V183",
+      "V222",
+      "V262",
+      "V263",
+      "V264",
+      "V265",
+      "V302",
+      "V348"
+    ],
+    "statement": "Full vocabulary review performed with AI assistance under explicit authorization from wzx; this record does not claim that wzx personally inspected every item."
+  },
+  "notes": [
+    "Vocabulary editorial review is complete.",
+    "The sign-off method is recorded explicitly and does not claim personal manual inspection when AI assistance was used.",
+    "Rights and remaining content gates are still pending.",
+    "This record does not make the package publishable."
+  ]
+}

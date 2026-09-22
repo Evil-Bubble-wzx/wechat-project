@@ -1,24 +1,41 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "pieceId": "peter-rabbit-01",
+  "targetRegion": "Mainland China",
+  "intendedUse": "Public commercial digital reading product",
+  "operatingEntity": "PENDING_ENTITY",
   "text": {
     "work": "The Tale of Peter Rabbit",
     "author": "Beatrix Potter",
     "source": "Project Gutenberg eBook #14838",
     "sourceUrl": "https://www.gutenberg.org/ebooks/14838",
     "licensePage": "https://www.gutenberg.org/policy/license.html",
-    "rightsStatement": "Public domain in the USA according to Project Gutenberg. Project Gutenberg trademark and license terms still apply to redistributed Project Gutenberg files.",
-    "jurisdictionNote": "Confirm public-domain status and any distribution requirements in each release jurisdiction before production publication."
+    "rawTextSha256": "2bf0e04297038fd97697dfac2b8a2db14f2b80c2012727f7ac0f28cf0b146544",
+    "canonicalTextSha256": "768f434703b244ebd8b3088f97f224644746f8f30fa0bcd520ea3fe22bac64b9",
+    "rightsStatement": "Project Gutenberg identifies eBook #14838 as public domain in the USA. The product canonical text excludes Project Gutenberg headers, footers and illustration placeholders.",
+    "jurisdictionNote": "External reviewer must determine mainland-China commercial-use status and any remaining source or trademark conditions."
   },
   "audio": {
     "source": "LibriVox",
     "collection": "The Tale of Peter Rabbit and Others",
     "narrator": "Julian Pratley",
     "sourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
-    "downloadUrl": "https://archive.org/download/peter_rabbit_others_1008_librivox/peterrabbit_01_potter_64kb.mp3",
-    "rightsStatement": "LibriVox recordings are dedicated to the public domain. Confirm source attribution and jurisdiction requirements before production publication."
+    "downloadUrl": "https://archive.org/download/thetaleofpeterrabbitandothers_2008_librivox/peterrabbitandothertales_01_potter_64kb.mp3",
+    "collectionIdentifier": "thetaleofpeterrabbitandothers_2008_librivox",
+    "durationMs": 322026,
+    "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36",
+    "rightsStatement": "LibriVox and Internet Archive identify this recording as public domain in the USA and warn users outside the USA to verify local law. Mainland-China performance, recording and network-dissemination rights require external review."
   },
-  "verifiedOn": "2026-09-17",
+  "cover": {
+    "source": "Project-original geometric SVG",
+    "sourceFile": "source/cover/peter-rabbit-independent.svg",
+    "exportFile": "miniprogram/assets/peter.png",
+    "provenance": "source/editorial-provenance.json"
+  },
+  "interiorIllustrations": { "included": false, "status": "N/A" },
+  "evidencePack": "source/rights-evidence.json",
+  "externalReviewTemplate": "docs/rights/C03-external-review-signoff-template.md",
+  "verifiedOn": "2026-09-22",
   "releaseApproved": false,
-  "reviewStatus": "needs_legal_review"
+  "reviewStatus": "READY_FOR_EXTERNAL_REVIEW"
 }

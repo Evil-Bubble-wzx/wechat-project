@@ -1,6 +1,35 @@
 // Replace this adapter when embedding in another mini program.
 const productMode = require('../config/product-mode')
-const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words']
+const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','idMigrationVersion']
+const LEGACY_WORK_ID = 'peter'
+const WORK_ID = 'peter-rabbit'
+const PIECE_ID = 'peter-rabbit-01'
+function migrateState(input) {
+  const state = Object.assign({}, input || {})
+  if (state.idMigrationVersion >= 1) return state
+  for (const key of ['favorites','recent','demoPurchases']) {
+    if (Array.isArray(state[key])) state[key] = [...new Set(state[key].map(id => id === LEGACY_WORK_ID ? WORK_ID : id))]
+  }
+  state.progress = Object.assign({}, state.progress || {})
+  if (state.progress[LEGACY_WORK_ID]) {
+    const legacy = state.progress[LEGACY_WORK_ID]
+    const current = state.progress[PIECE_ID]
+    state.progress[PIECE_ID] = current ? {
+      seconds:Math.max(Number(current.seconds)||0, Number(legacy.seconds)||0),
+      completed:!!(current.completed || legacy.completed)
+    } : legacy
+    delete state.progress[LEGACY_WORK_ID]
+  }
+  state.listenDaily = Object.fromEntries(Object.entries(state.listenDaily || {}).map(([key,value]) => [key.endsWith(':'+LEGACY_WORK_ID) ? key.slice(0,-LEGACY_WORK_ID.length)+PIECE_ID : key,value]))
+  state.results = (state.results || []).map(result => {
+    const next = Object.assign({}, result)
+    if (next.bookId === LEGACY_WORK_ID) next.bookId = WORK_ID
+    if (next.pieceId === LEGACY_WORK_ID || (!next.pieceId && next.title === 'The Tale of Peter Rabbit')) next.pieceId = PIECE_ID
+    return next
+  })
+  state.idMigrationVersion = 1
+  return state
+}
 function productState(state) {
   return learningFields.reduce((out,key) => {
     if (state[key] !== undefined) out[key] = state[key]
@@ -9,8 +38,8 @@ function productState(state) {
 }
 module.exports = {
   policy() { return productMode.current() },
-  read() { try { const policy=productMode.current();const state=wx.getStorageSync(policy.storageKey)||{};return policy.isDemo?state:productState(state) } catch (_) { return {} } },
-  write(state) { const policy=productMode.current();wx.setStorageSync(policy.storageKey,policy.isDemo?state:productState(state)) },
+  read() { try { const policy=productMode.current();const state=migrateState(wx.getStorageSync(policy.storageKey)||{});wx.setStorageSync(policy.storageKey,policy.isDemo?state:productState(state));return policy.isDemo?state:productState(state) } catch (_) { return {} } },
+  write(state) { const policy=productMode.current();const migrated=migrateState(state);wx.setStorageSync(policy.storageKey,policy.isDemo?migrated:productState(migrated)) },
   toast(title) { wx.showToast({ title, icon:'none', duration:2200 }) },
   go(page, id) {
     const policy=productMode.current()

@@ -12,6 +12,6 @@
     <slider min="0" max="{{book.duration}}" value="{{position}}" activeColor="#497653" backgroundColor="#dce5d5" block-size="16" bindchange="seek" />
     <view class="reader-time"><text>{{formatted}}</text><text>{{duration}}</text></view>
     <view class="reader-controls"><view class="reader-step" data-step="-1" bindtap="stepSentence"><text>‹</text><text>上一句</text></view><button class="play-button" bindtap="togglePlay"><image src="/assets/icon-{{playing ? 'pause' : 'play'}}.png" /></button><view class="reader-step" data-step="1" bindtap="stepSentence"><text>›</text><text>下一句</text></view></view>
-    <view class="reader-panel-bottom"><text>{{book.localAudio || book.audioUrl ? '音频已导入 · ' + book.audioSource : '音频待导入'}}</text><text bindtap="openQuiz">{{book.hasQuiz || book.id === 'peter' ? '阅读小测 ›' : ''}}</text></view>
+    <view class="reader-panel-bottom"><text>{{book.localAudio || book.audioUrl ? '音频已导入 · ' + book.audioSource : '音频待导入'}}</text><text bindtap="openQuiz">{{book.hasQuiz || book.workId === 'peter-rabbit' ? '阅读小测 ›' : ''}}</text></view>
   </view>
 </view>

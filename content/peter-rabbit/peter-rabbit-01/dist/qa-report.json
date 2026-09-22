@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "pieceId": "peter-rabbit-01",
-  "generatedAt": "2026-09-21T08:27:38.948Z",
+  "generatedAt": "2026-09-22T02:13:51.162Z",
   "status": "needs_review",
   "publishable": false,
   "checks": {
@@ -13,22 +13,24 @@
     "tokenRoundTrip": true,
     "cueTimingComplete": true,
     "introOutroSeparated": true,
-    "vocabularyApproved": false,
+    "vocabularyApproved": true,
     "subtitleReviewComplete": true,
     "humanReviewComplete": false,
-    "rightsReleaseApproved": false
+    "rightsReleaseApproved": false,
+    "metadataApproved": true,
+    "quizApproved": true,
+    "vocabularyClientWired": true
   },
   "counts": {
     "cues": 59,
     "words": 952,
     "tokens": 2006,
-    "clickableTokens": 909,
-    "vocabEntries": 371
+    "clickableTokens": 906,
+    "vocabEntries": 358
   },
   "blockers": [
-    "371 vocabulary review units require human editorial approval.",
-    "Vocabulary editorial review is pending.",
-    "Rights need release-jurisdiction review."
+    "C-03 evidence pack is READY_FOR_EXTERNAL_REVIEW; external mainland-China commercial-use sign-off is pending.",
+    "Overall human-review completion gate remains open because this sign-off used authorized AI assistance."
   ],
   "alignment": {
     "engine": "faster-whisper-base.en-plus-known-text-dp",
@@ -45,10 +47,55 @@
     "fullListenCoverage": 1
   },
   "vocabularyReview": {
-    "status": "ready_for_review",
+    "status": "approved",
+    "reviewedBy": "wzx",
+    "reviewedAt": "2026-09-22T02:13:50.733Z",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
     "reviewUnitCount": 371,
-    "evidenceMatchedUnits": 352,
-    "highRiskUnits": 277,
-    "sourceCueSha256": "5fb30d93295bfc0c9eab98f4bfa9254d0766de961f5c32bba5870179b0270e6a"
+    "finalEntryCount": 358,
+    "lowConfidenceReviewIds": [
+      "V023",
+      "V058",
+      "V162",
+      "V171",
+      "V183",
+      "V222",
+      "V262",
+      "V263",
+      "V264",
+      "V265",
+      "V302",
+      "V348"
+    ]
+  },
+  "rightsReview": {
+    "status": "READY_FOR_EXTERNAL_REVIEW",
+    "targetRegion": "Mainland China",
+    "externalSignoffComplete": false,
+    "releaseApproved": false
+  },
+  "metadataReview": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false,
+    "notes": "Title and author are verified against the source package. Category and Chinese title are project editorial metadata. Unsupported level and page-count values were removed."
+  },
+  "quizReview": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false,
+    "questionCount": 10,
+    "quizVersion": 1
+  },
+  "clientIntegration": {
+    "vocabularyEntries": 358,
+    "clickableTokens": 906
   }
 }

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "workId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 1,
+  "status": "DONE_AI_ASSISTED",
+  "reviewMethod": "ai_assisted_full_review",
+  "authorizedBy": "wzx",
+  "reviewedBy": "wzx with authorized AI assistance",
+  "reviewedOn": "2026-09-22",
+  "humanReviewComplete": false,
+  "metadataDecisions": {
+    "unsupportedLevelRemoved": true,
+    "unsupportedPageCountRemoved": true,
+    "editionSeparatedFromSeries": true,
+    "internalNumberLabeled": true
+  },
+  "quizDecisions": {
+    "questionCount": 10,
+    "fixedOrder": true,
+    "evidenceLinked": true,
+    "bilingual": true,
+    "masteryFeedbackPercent": 80,
+    "blocksContent": false,
+    "optionAudioIncluded": false
+  }
+}

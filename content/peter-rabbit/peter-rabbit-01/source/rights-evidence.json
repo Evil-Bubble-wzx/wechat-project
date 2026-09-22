@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "reviewStatus": "READY_FOR_EXTERNAL_REVIEW",
+  "targetRegion": "Mainland China",
+  "intendedUse": "Public commercial digital reading product, including online access and paid access if later enabled",
+  "operatingEntity": "PENDING_ENTITY",
+  "accessedOn": "2026-09-22",
+  "assets": [
+    {
+      "evidenceId": "PR-TEXT-01",
+      "asset": "source/text-original.txt",
+      "sha256": "768f434703b244ebd8b3088f97f224644746f8f30fa0bcd520ea3fe22bac64b9",
+      "upstreamAsset": "source/text-project-gutenberg-14838.txt",
+      "upstreamSha256": "2bf0e04297038fd97697dfac2b8a2db14f2b80c2012727f7ac0f28cf0b146544",
+      "sourceUrl": "https://www.gutenberg.org/ebooks/14838",
+      "sourceFinding": "Project Gutenberg identifies eBook 14838 as public domain in the USA. The distributed canonical text excludes Project Gutenberg headers, footers and illustration placeholders.",
+      "externalDecisionRequired": "Confirm mainland-China copyright and cross-border source implications, and confirm the stripped-text redistribution approach."
+    },
+    {
+      "evidenceId": "PR-AUDIO-01",
+      "asset": "source/audio-original.mp3",
+      "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36",
+      "sourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
+      "downloadUrl": "https://archive.org/download/thetaleofpeterrabbitandothers_2008_librivox/peterrabbitandothertales_01_potter_64kb.mp3",
+      "collectionIdentifier": "thetaleofpeterrabbitandothers_2008_librivox",
+      "reader": "Julian Pratley",
+      "durationMs": 322026,
+      "sourceFinding": "The LibriVox catalog identifies chapter 1, reader Julian Pratley and duration 5:22; LibriVox and Internet Archive mark the recording public domain in the USA and warn users outside the USA to verify local law.",
+      "externalDecisionRequired": "Confirm mainland-China protection of the performance and sound recording, commercial network dissemination, attribution and any neighboring-rights restrictions."
+    },
+    {
+      "evidenceId": "PR-IMG-01",
+      "asset": "miniprogram/assets/peter.png",
+      "sha256": "9786d9bed6b9a6a592c1f919d312654f09ffa60076ef2598aeb5ef39d687cac7",
+      "sourceAsset": "source/cover/peter-rabbit-independent.svg",
+      "sourceSha256": "4ef92f75746657628a5b08e2bf0c1cd9254f991fd9d064e2728cc6ae7712ab5b",
+      "provenance": "source/editorial-provenance.json",
+      "sourceFinding": "Original project cover; no external illustration included.",
+      "externalDecisionRequired": "Confirm ownership chain after the operating entity is established and review title/branding presentation."
+    },
+    {
+      "evidenceId": "PR-INTERIOR-ILLUSTRATION-01",
+      "asset": null,
+      "status": "N/A",
+      "sourceFinding": "The first release contains no interior illustrations. Illustration placeholders were removed from the canonical text."
+    },
+    {
+      "evidenceId": "PR-ZH-01",
+      "asset": "Chinese catalog introduction and learner-facing vocabulary definitions",
+      "provenance": "source/editorial-provenance.json and review/vocab-decisions.completed.json",
+      "sourceFinding": "Chinese introduction and learner-facing definitions are project-authored with authorized AI assistance; external lexicons are retained only as evidence and are attributed separately.",
+      "externalDecisionRequired": "Confirm ownership chain after the operating entity is established and adequacy of third-party attribution."
+    },
+    {
+      "evidenceId": "PR-QUIZ-01",
+      "asset": "source/quiz.source.json",
+      "generatedAsset": "dist/quiz.json",
+      "provenance": "source/editorial-provenance.json",
+      "sourceFinding": "Ten project-authored bilingual questions based on approved story cues; C-04 content review is recorded as authorized AI-assisted review.",
+      "externalDecisionRequired": "Confirm ownership chain after the operating entity is established and confirm the rights treatment for authorized AI-assisted editorial content."
+    }
+  ],
+  "requiredExternalSignoff": {
+    "status": "PENDING",
+    "requiredFields": [
+      "reviewerName",
+      "reviewerOrganization",
+      "reviewDate",
+      "mainlandChinaCommercialUseConclusion",
+      "evidenceIdsReviewed",
+      "restrictionsOrConditions"
+    ],
+    "rule": "Do not set rightsReleaseApproved or publishable to true until every required field is completed by the external reviewer and all conditions are implemented."
+  }
+}

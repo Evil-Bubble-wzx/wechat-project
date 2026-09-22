@@ -11,6 +11,6 @@ let browser
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'artifacts/production/home-mobile.png',fullPage:true})
  await page.locator('#device').evaluate(el=>el.scrollTop=510);await page.screenshot({path:'artifacts/production/book-list-mobile.png'});await page.locator('#device').evaluate(el=>el.scrollTop=0)
  await page.goto('http://127.0.0.1:4173/#detail');await page.waitForSelector('.detail-cover');await page.screenshot({path:'artifacts/production/detail-mobile.png',fullPage:true})
- await page.goto('http://127.0.0.1:4173/#player?id=peter');await page.waitForSelector('.play-button');await page.screenshot({path:'artifacts/production/player-mobile.png',fullPage:true})
+ await page.goto('http://127.0.0.1:4173/#player?id=peter-rabbit');await page.waitForSelector('.play-button');await page.screenshot({path:'artifacts/production/player-mobile.png',fullPage:true})
  await browser.close()
 })().catch(async e=>{console.error(e);if(browser)await browser.close();process.exitCode=1})

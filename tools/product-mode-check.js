@@ -25,7 +25,7 @@ let browser
   await page.locator('.favorite').click()
   const productState=await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')))
   const demoState=await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.demo.v1')))
-  assert.deepEqual(productState.favorites,['peter'])
+  assert.deepEqual(productState.favorites,['peter-rabbit'])
   assert.equal(productState.user,undefined)
   assert.equal(productState.demoCoupons,undefined)
   assert.equal(demoState.user.id,'demo')

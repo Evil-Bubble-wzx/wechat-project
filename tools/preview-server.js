@@ -3,7 +3,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const root = path.resolve(__dirname,'..')
 const previewMode = process.argv.includes('--demo') ? 'demo' : 'production'
-const modules = ['config/product-mode','modules/catalog/catalog-data','modules/catalog/books','modules/account/session','modules/physical-loan/rules','modules/promotion/demo','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','modules/listen-read/legacy-quiz-data','modules/listen-read/subtitles','services/host','ui/controller']
+const modules = ['config/product-mode','modules/catalog/catalog-data','modules/catalog/books','modules/content-notices','modules/account/session','modules/physical-loan/rules','modules/promotion/demo','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/peter-quiz-data','modules/listen-read/peter-vocab-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','modules/listen-read/legacy-quiz-data','modules/listen-read/subtitles','services/host','ui/controller']
 const server = http.createServer((req,res) => {
   const url = new URL(req.url,'http://localhost')
   let file

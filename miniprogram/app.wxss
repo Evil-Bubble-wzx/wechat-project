@@ -200,3 +200,7 @@ text { line-height:1.5; white-space:pre-line; }
 .invite-steps>view>view>text { display:block; }
 .checkout-total { border-top:1rpx solid #e1e7da; margin-top:12rpx; padding-top:18rpx; font-size:30rpx; font-weight:650; }
 .purchase-result-total { font-size:68rpx; font-weight:700; color:#326748; text-align:center; margin:30rpx 0; }
+.notices-content { padding-bottom:70rpx; }
+.notice-card { background:#fff; border:2rpx solid #e2e7dc; border-radius:22rpx; padding:28rpx; margin-top:24rpx; display:flex; flex-direction:column; gap:16rpx; }
+.notice-card .description { white-space:normal; }
+.notice-url { color:#397358; font-size:21rpx; line-height:1.5; word-break:break-all; }

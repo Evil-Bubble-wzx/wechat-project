@@ -1,7 +1,7 @@
 // Generated from content/peter-rabbit/peter-rabbit-01/dist/cues.json.
 // Run the Peter Rabbit alignment/export pipeline instead of editing this file.
 module.exports = {
-  "peter": [
+  "peter-rabbit-01": [
     {
       "id": "intro-0001",
       "kind": "intro",
@@ -23,7 +23,7 @@ module.exports = {
           "id": "c0001:t00",
           "surface": "Once",
           "kind": "word",
-          "vocabKey": "once:pending:1"
+          "vocabKey": "once:adverb:1"
         },
         {
           "id": "c0001:t01",
@@ -35,7 +35,7 @@ module.exports = {
           "id": "c0001:t02",
           "surface": "upon",
           "kind": "word",
-          "vocabKey": "upon:pending:1"
+          "vocabKey": "upon:preposition:1"
         },
         {
           "id": "c0001:t03",
@@ -47,7 +47,7 @@ module.exports = {
           "id": "c0001:t04",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0001:t05",
@@ -59,7 +59,7 @@ module.exports = {
           "id": "c0001:t06",
           "surface": "time",
           "kind": "word",
-          "vocabKey": "time:pending:1"
+          "vocabKey": "time:noun:1"
         },
         {
           "id": "c0001:t07",
@@ -71,7 +71,7 @@ module.exports = {
           "id": "c0001:t08",
           "surface": "there",
           "kind": "word",
-          "vocabKey": "there:pending:1"
+          "vocabKey": "there:adverb:1"
         },
         {
           "id": "c0001:t09",
@@ -83,7 +83,7 @@ module.exports = {
           "id": "c0001:t10",
           "surface": "were",
           "kind": "word",
-          "vocabKey": "were:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0001:t11",
@@ -95,7 +95,7 @@ module.exports = {
           "id": "c0001:t12",
           "surface": "four",
           "kind": "word",
-          "vocabKey": "four:pending:1"
+          "vocabKey": "four:numeral:1"
         },
         {
           "id": "c0001:t13",
@@ -107,7 +107,7 @@ module.exports = {
           "id": "c0001:t14",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0001:t15",
@@ -119,7 +119,7 @@ module.exports = {
           "id": "c0001:t16",
           "surface": "Rabbits",
           "kind": "word",
-          "vocabKey": "rabbits:pending:1"
+          "vocabKey": "rabbit:noun:1"
         },
         {
           "id": "c0001:t17",
@@ -137,7 +137,7 @@ module.exports = {
           "id": "c0001:t19",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0001:t20",
@@ -149,7 +149,7 @@ module.exports = {
           "id": "c0001:t21",
           "surface": "their",
           "kind": "word",
-          "vocabKey": "their:pending:1"
+          "vocabKey": "their:determiner:1"
         },
         {
           "id": "c0001:t22",
@@ -161,7 +161,7 @@ module.exports = {
           "id": "c0001:t23",
           "surface": "names",
           "kind": "word",
-          "vocabKey": "names:pending:1"
+          "vocabKey": "name:noun:1"
         },
         {
           "id": "c0001:t24",
@@ -173,7 +173,7 @@ module.exports = {
           "id": "c0001:t25",
           "surface": "were",
           "kind": "word",
-          "vocabKey": "were:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0001:t26",
@@ -245,7 +245,7 @@ module.exports = {
           "id": "c0001:t37",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0001:t38",
@@ -279,7 +279,7 @@ module.exports = {
           "id": "c0002:t00",
           "surface": "They",
           "kind": "word",
-          "vocabKey": "they:pending:1"
+          "vocabKey": "they:pronoun:1"
         },
         {
           "id": "c0002:t01",
@@ -291,7 +291,7 @@ module.exports = {
           "id": "c0002:t02",
           "surface": "lived",
           "kind": "word",
-          "vocabKey": "lived:pending:1"
+          "vocabKey": "live:verb:1"
         },
         {
           "id": "c0002:t03",
@@ -303,7 +303,7 @@ module.exports = {
           "id": "c0002:t04",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0002:t05",
@@ -315,7 +315,7 @@ module.exports = {
           "id": "c0002:t06",
           "surface": "their",
           "kind": "word",
-          "vocabKey": "their:pending:1"
+          "vocabKey": "their:determiner:1"
         },
         {
           "id": "c0002:t07",
@@ -327,7 +327,7 @@ module.exports = {
           "id": "c0002:t08",
           "surface": "Mother",
           "kind": "word",
-          "vocabKey": "mother:pending:1"
+          "vocabKey": "mother:noun:1"
         },
         {
           "id": "c0002:t09",
@@ -339,7 +339,7 @@ module.exports = {
           "id": "c0002:t10",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0002:t11",
@@ -351,7 +351,7 @@ module.exports = {
           "id": "c0002:t12",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0002:t13",
@@ -363,7 +363,7 @@ module.exports = {
           "id": "c0002:t14",
           "surface": "sand-bank",
           "kind": "word",
-          "vocabKey": "sand-bank:pending:1"
+          "vocabKey": "sandbank:noun:1"
         },
         {
           "id": "c0002:t15",
@@ -381,7 +381,7 @@ module.exports = {
           "id": "c0002:t17",
           "surface": "underneath",
           "kind": "word",
-          "vocabKey": "underneath:pending:1"
+          "vocabKey": "underneath:adverb:1"
         },
         {
           "id": "c0002:t18",
@@ -393,7 +393,7 @@ module.exports = {
           "id": "c0002:t19",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0002:t20",
@@ -405,7 +405,7 @@ module.exports = {
           "id": "c0002:t21",
           "surface": "root",
           "kind": "word",
-          "vocabKey": "root:pending:1"
+          "vocabKey": "root:noun:1"
         },
         {
           "id": "c0002:t22",
@@ -417,7 +417,7 @@ module.exports = {
           "id": "c0002:t23",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0002:t24",
@@ -429,7 +429,7 @@ module.exports = {
           "id": "c0002:t25",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0002:t26",
@@ -441,7 +441,7 @@ module.exports = {
           "id": "c0002:t27",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0002:t28",
@@ -453,7 +453,7 @@ module.exports = {
           "id": "c0002:t29",
           "surface": "big",
           "kind": "word",
-          "vocabKey": "big:pending:1"
+          "vocabKey": "big:adjective:1"
         },
         {
           "id": "c0002:t30",
@@ -465,7 +465,7 @@ module.exports = {
           "id": "c0002:t31",
           "surface": "fir-tree",
           "kind": "word",
-          "vocabKey": "fir-tree:pending:1"
+          "vocabKey": "fir_tree:noun:1"
         },
         {
           "id": "c0002:t32",
@@ -493,7 +493,7 @@ module.exports = {
           "id": "c0003:t01",
           "surface": "Now",
           "kind": "word",
-          "vocabKey": "now:pending:1"
+          "vocabKey": "now:adverb:1"
         },
         {
           "id": "c0003:t02",
@@ -505,7 +505,7 @@ module.exports = {
           "id": "c0003:t03",
           "surface": "my",
           "kind": "word",
-          "vocabKey": "my:pending:1"
+          "vocabKey": "my:determiner:1"
         },
         {
           "id": "c0003:t04",
@@ -517,7 +517,7 @@ module.exports = {
           "id": "c0003:t05",
           "surface": "dears",
           "kind": "word",
-          "vocabKey": "dears:pending:1"
+          "vocabKey": "dear:noun:1"
         },
         {
           "id": "c0003:t06",
@@ -535,7 +535,7 @@ module.exports = {
           "id": "c0003:t08",
           "surface": "said",
           "kind": "word",
-          "vocabKey": "said:pending:1"
+          "vocabKey": "say:verb:1"
         },
         {
           "id": "c0003:t09",
@@ -547,7 +547,7 @@ module.exports = {
           "id": "c0003:t10",
           "surface": "old",
           "kind": "word",
-          "vocabKey": "old:pending:1"
+          "vocabKey": "old:adjective:1"
         },
         {
           "id": "c0003:t11",
@@ -559,7 +559,7 @@ module.exports = {
           "id": "c0003:t12",
           "surface": "Mrs",
           "kind": "word",
-          "vocabKey": "mrs:pending:1"
+          "vocabKey": "mrs:noun:1"
         },
         {
           "id": "c0003:t13",
@@ -577,7 +577,7 @@ module.exports = {
           "id": "c0003:t15",
           "surface": "Rabbit",
           "kind": "word",
-          "vocabKey": "rabbit:pending:1"
+          "vocabKey": "rabbit:noun:1"
         },
         {
           "id": "c0003:t16",
@@ -589,7 +589,7 @@ module.exports = {
           "id": "c0003:t17",
           "surface": "one",
           "kind": "word",
-          "vocabKey": "one:pending:1"
+          "vocabKey": "one:numeral:1"
         },
         {
           "id": "c0003:t18",
@@ -601,7 +601,7 @@ module.exports = {
           "id": "c0003:t19",
           "surface": "morning",
           "kind": "word",
-          "vocabKey": "morning:pending:1"
+          "vocabKey": "morning:noun:1"
         },
         {
           "id": "c0003:t20",
@@ -625,7 +625,7 @@ module.exports = {
           "id": "c0003:t23",
           "surface": "you",
           "kind": "word",
-          "vocabKey": "you:pending:1"
+          "vocabKey": "you:pronoun:1"
         },
         {
           "id": "c0003:t24",
@@ -637,7 +637,7 @@ module.exports = {
           "id": "c0003:t25",
           "surface": "may",
           "kind": "word",
-          "vocabKey": "may:pending:1"
+          "vocabKey": "may:auxiliary:1"
         },
         {
           "id": "c0003:t26",
@@ -649,7 +649,7 @@ module.exports = {
           "id": "c0003:t27",
           "surface": "go",
           "kind": "word",
-          "vocabKey": "go:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0003:t28",
@@ -661,7 +661,7 @@ module.exports = {
           "id": "c0003:t29",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0003:t30",
@@ -673,7 +673,7 @@ module.exports = {
           "id": "c0003:t31",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0003:t32",
@@ -685,7 +685,7 @@ module.exports = {
           "id": "c0003:t33",
           "surface": "fields",
           "kind": "word",
-          "vocabKey": "fields:pending:1"
+          "vocabKey": "field:noun:1"
         },
         {
           "id": "c0003:t34",
@@ -697,7 +697,7 @@ module.exports = {
           "id": "c0003:t35",
           "surface": "or",
           "kind": "word",
-          "vocabKey": "or:pending:1"
+          "vocabKey": "or:conjunction:1"
         },
         {
           "id": "c0003:t36",
@@ -709,7 +709,7 @@ module.exports = {
           "id": "c0003:t37",
           "surface": "down",
           "kind": "word",
-          "vocabKey": "down:pending:1"
+          "vocabKey": "down:preposition:1"
         },
         {
           "id": "c0003:t38",
@@ -721,7 +721,7 @@ module.exports = {
           "id": "c0003:t39",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0003:t40",
@@ -733,7 +733,7 @@ module.exports = {
           "id": "c0003:t41",
           "surface": "lane",
           "kind": "word",
-          "vocabKey": "lane:pending:1"
+          "vocabKey": "lane:noun:1"
         },
         {
           "id": "c0003:t42",
@@ -751,7 +751,7 @@ module.exports = {
           "id": "c0003:t44",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0003:t45",
@@ -763,7 +763,7 @@ module.exports = {
           "id": "c0003:t46",
           "surface": "don't",
           "kind": "word",
-          "vocabKey": "don't:pending:1"
+          "vocabKey": "don't:auxiliary:1"
         },
         {
           "id": "c0003:t47",
@@ -775,7 +775,7 @@ module.exports = {
           "id": "c0003:t48",
           "surface": "go",
           "kind": "word",
-          "vocabKey": "go:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0003:t49",
@@ -787,7 +787,7 @@ module.exports = {
           "id": "c0003:t50",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0003:t51",
@@ -799,7 +799,7 @@ module.exports = {
           "id": "c0003:t52",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0003:t53",
@@ -817,7 +817,7 @@ module.exports = {
           "id": "c0003:t55",
           "surface": "McGregor's",
           "kind": "word",
-          "vocabKey": "mcgregor's:pending:1"
+          "vocabKey": null
         },
         {
           "id": "c0003:t56",
@@ -829,7 +829,7 @@ module.exports = {
           "id": "c0003:t57",
           "surface": "garden",
           "kind": "word",
-          "vocabKey": "garden:pending:1"
+          "vocabKey": "garden:noun:1"
         },
         {
           "id": "c0003:t58",
@@ -847,7 +847,7 @@ module.exports = {
           "id": "c0003:t60",
           "surface": "your",
           "kind": "word",
-          "vocabKey": "your:pending:1"
+          "vocabKey": "your:determiner:1"
         },
         {
           "id": "c0003:t61",
@@ -859,7 +859,7 @@ module.exports = {
           "id": "c0003:t62",
           "surface": "Father",
           "kind": "word",
-          "vocabKey": "father:pending:1"
+          "vocabKey": "father:noun:1"
         },
         {
           "id": "c0003:t63",
@@ -871,7 +871,7 @@ module.exports = {
           "id": "c0003:t64",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0003:t65",
@@ -883,7 +883,7 @@ module.exports = {
           "id": "c0003:t66",
           "surface": "an",
           "kind": "word",
-          "vocabKey": "an:pending:1"
+          "vocabKey": "an:determiner:1"
         },
         {
           "id": "c0003:t67",
@@ -895,7 +895,7 @@ module.exports = {
           "id": "c0003:t68",
           "surface": "accident",
           "kind": "word",
-          "vocabKey": "accident:pending:1"
+          "vocabKey": "accident:noun:1"
         },
         {
           "id": "c0003:t69",
@@ -907,7 +907,7 @@ module.exports = {
           "id": "c0003:t70",
           "surface": "there",
           "kind": "word",
-          "vocabKey": "there:pending:1"
+          "vocabKey": "there:adverb:2"
         },
         {
           "id": "c0003:t71",
@@ -925,7 +925,7 @@ module.exports = {
           "id": "c0003:t73",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0003:t74",
@@ -937,7 +937,7 @@ module.exports = {
           "id": "c0003:t75",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0003:t76",
@@ -949,7 +949,7 @@ module.exports = {
           "id": "c0003:t77",
           "surface": "put",
           "kind": "word",
-          "vocabKey": "put:pending:1"
+          "vocabKey": "put:verb:1"
         },
         {
           "id": "c0003:t78",
@@ -961,7 +961,7 @@ module.exports = {
           "id": "c0003:t79",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0003:t80",
@@ -973,7 +973,7 @@ module.exports = {
           "id": "c0003:t81",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0003:t82",
@@ -985,7 +985,7 @@ module.exports = {
           "id": "c0003:t83",
           "surface": "pie",
           "kind": "word",
-          "vocabKey": "pie:pending:1"
+          "vocabKey": "pie:noun:1"
         },
         {
           "id": "c0003:t84",
@@ -997,7 +997,7 @@ module.exports = {
           "id": "c0003:t85",
           "surface": "by",
           "kind": "word",
-          "vocabKey": "by:pending:1"
+          "vocabKey": "by:preposition:1"
         },
         {
           "id": "c0003:t86",
@@ -1009,7 +1009,7 @@ module.exports = {
           "id": "c0003:t87",
           "surface": "Mrs",
           "kind": "word",
-          "vocabKey": "mrs:pending:1"
+          "vocabKey": "mrs:noun:1"
         },
         {
           "id": "c0003:t88",
@@ -1055,7 +1055,7 @@ module.exports = {
           "id": "c0004:t01",
           "surface": "Now",
           "kind": "word",
-          "vocabKey": "now:pending:1"
+          "vocabKey": "now:adverb:1"
         },
         {
           "id": "c0004:t02",
@@ -1067,7 +1067,7 @@ module.exports = {
           "id": "c0004:t03",
           "surface": "run",
           "kind": "word",
-          "vocabKey": "run:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0004:t04",
@@ -1079,7 +1079,7 @@ module.exports = {
           "id": "c0004:t05",
           "surface": "along",
           "kind": "word",
-          "vocabKey": "along:pending:1"
+          "vocabKey": "along:adverb:1"
         },
         {
           "id": "c0004:t06",
@@ -1097,7 +1097,7 @@ module.exports = {
           "id": "c0004:t08",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0004:t09",
@@ -1109,7 +1109,7 @@ module.exports = {
           "id": "c0004:t10",
           "surface": "don't",
           "kind": "word",
-          "vocabKey": "don't:pending:1"
+          "vocabKey": "don't:auxiliary:1"
         },
         {
           "id": "c0004:t11",
@@ -1121,7 +1121,7 @@ module.exports = {
           "id": "c0004:t12",
           "surface": "get",
           "kind": "word",
-          "vocabKey": "get:pending:1"
+          "vocabKey": "get:verb:1"
         },
         {
           "id": "c0004:t13",
@@ -1133,7 +1133,7 @@ module.exports = {
           "id": "c0004:t14",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0004:t15",
@@ -1145,7 +1145,7 @@ module.exports = {
           "id": "c0004:t16",
           "surface": "mischief",
           "kind": "word",
-          "vocabKey": "mischief:pending:1"
+          "vocabKey": "mischief:noun:1"
         },
         {
           "id": "c0004:t17",
@@ -1167,7 +1167,7 @@ module.exports = {
           "id": "c0005:t00",
           "surface": "I",
           "kind": "word",
-          "vocabKey": "i:pending:1"
+          "vocabKey": "i:pronoun:1"
         },
         {
           "id": "c0005:t01",
@@ -1179,7 +1179,7 @@ module.exports = {
           "id": "c0005:t02",
           "surface": "am",
           "kind": "word",
-          "vocabKey": "am:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0005:t03",
@@ -1191,7 +1191,7 @@ module.exports = {
           "id": "c0005:t04",
           "surface": "going",
           "kind": "word",
-          "vocabKey": "going:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0005:t05",
@@ -1203,7 +1203,7 @@ module.exports = {
           "id": "c0005:t06",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0005:t07",
@@ -1225,7 +1225,7 @@ module.exports = {
           "id": "c0006:t00",
           "surface": "Then",
           "kind": "word",
-          "vocabKey": "then:pending:1"
+          "vocabKey": "then:adverb:1"
         },
         {
           "id": "c0006:t01",
@@ -1237,7 +1237,7 @@ module.exports = {
           "id": "c0006:t02",
           "surface": "old",
           "kind": "word",
-          "vocabKey": "old:pending:1"
+          "vocabKey": "old:adjective:1"
         },
         {
           "id": "c0006:t03",
@@ -1249,7 +1249,7 @@ module.exports = {
           "id": "c0006:t04",
           "surface": "Mrs",
           "kind": "word",
-          "vocabKey": "mrs:pending:1"
+          "vocabKey": "mrs:noun:1"
         },
         {
           "id": "c0006:t05",
@@ -1267,7 +1267,7 @@ module.exports = {
           "id": "c0006:t07",
           "surface": "Rabbit",
           "kind": "word",
-          "vocabKey": "rabbit:pending:1"
+          "vocabKey": "rabbit:noun:1"
         },
         {
           "id": "c0006:t08",
@@ -1279,7 +1279,7 @@ module.exports = {
           "id": "c0006:t09",
           "surface": "took",
           "kind": "word",
-          "vocabKey": "took:pending:1"
+          "vocabKey": "take:verb:1"
         },
         {
           "id": "c0006:t10",
@@ -1291,7 +1291,7 @@ module.exports = {
           "id": "c0006:t11",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0006:t12",
@@ -1303,7 +1303,7 @@ module.exports = {
           "id": "c0006:t13",
           "surface": "basket",
           "kind": "word",
-          "vocabKey": "basket:pending:1"
+          "vocabKey": "basket:noun:1"
         },
         {
           "id": "c0006:t14",
@@ -1315,7 +1315,7 @@ module.exports = {
           "id": "c0006:t15",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0006:t16",
@@ -1327,7 +1327,7 @@ module.exports = {
           "id": "c0006:t17",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:determiner:1"
         },
         {
           "id": "c0006:t18",
@@ -1339,7 +1339,7 @@ module.exports = {
           "id": "c0006:t19",
           "surface": "umbrella",
           "kind": "word",
-          "vocabKey": "umbrella:pending:1"
+          "vocabKey": "umbrella:noun:1"
         },
         {
           "id": "c0006:t20",
@@ -1357,7 +1357,7 @@ module.exports = {
           "id": "c0006:t22",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0006:t23",
@@ -1369,7 +1369,7 @@ module.exports = {
           "id": "c0006:t24",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0006:t25",
@@ -1381,7 +1381,7 @@ module.exports = {
           "id": "c0006:t26",
           "surface": "through",
           "kind": "word",
-          "vocabKey": "through:pending:1"
+          "vocabKey": "through:preposition:1"
         },
         {
           "id": "c0006:t27",
@@ -1393,7 +1393,7 @@ module.exports = {
           "id": "c0006:t28",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0006:t29",
@@ -1405,7 +1405,7 @@ module.exports = {
           "id": "c0006:t30",
           "surface": "wood",
           "kind": "word",
-          "vocabKey": "wood:pending:1"
+          "vocabKey": "wood:noun:1"
         },
         {
           "id": "c0006:t31",
@@ -1417,7 +1417,7 @@ module.exports = {
           "id": "c0006:t32",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0006:t33",
@@ -1429,7 +1429,7 @@ module.exports = {
           "id": "c0006:t34",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0006:t35",
@@ -1441,7 +1441,7 @@ module.exports = {
           "id": "c0006:t36",
           "surface": "baker's",
           "kind": "word",
-          "vocabKey": "baker's:pending:1"
+          "vocabKey": "baker:noun:1"
         },
         {
           "id": "c0006:t37",
@@ -1463,7 +1463,7 @@ module.exports = {
           "id": "c0007:t00",
           "surface": "She",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0007:t01",
@@ -1475,7 +1475,7 @@ module.exports = {
           "id": "c0007:t02",
           "surface": "bought",
           "kind": "word",
-          "vocabKey": "bought:pending:1"
+          "vocabKey": "buy:verb:1"
         },
         {
           "id": "c0007:t03",
@@ -1487,7 +1487,7 @@ module.exports = {
           "id": "c0007:t04",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0007:t05",
@@ -1499,7 +1499,7 @@ module.exports = {
           "id": "c0007:t06",
           "surface": "loaf",
           "kind": "word",
-          "vocabKey": "loaf:pending:1"
+          "vocabKey": "loaf:noun:1"
         },
         {
           "id": "c0007:t07",
@@ -1511,7 +1511,7 @@ module.exports = {
           "id": "c0007:t08",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0007:t09",
@@ -1523,7 +1523,7 @@ module.exports = {
           "id": "c0007:t10",
           "surface": "brown",
           "kind": "word",
-          "vocabKey": "brown:pending:1"
+          "vocabKey": "brown:adjective:1"
         },
         {
           "id": "c0007:t11",
@@ -1535,7 +1535,7 @@ module.exports = {
           "id": "c0007:t12",
           "surface": "bread",
           "kind": "word",
-          "vocabKey": "bread:pending:1"
+          "vocabKey": "bread:noun:1"
         },
         {
           "id": "c0007:t13",
@@ -1547,7 +1547,7 @@ module.exports = {
           "id": "c0007:t14",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0007:t15",
@@ -1559,7 +1559,7 @@ module.exports = {
           "id": "c0007:t16",
           "surface": "five",
           "kind": "word",
-          "vocabKey": "five:pending:1"
+          "vocabKey": "five:numeral:1"
         },
         {
           "id": "c0007:t17",
@@ -1571,7 +1571,7 @@ module.exports = {
           "id": "c0007:t18",
           "surface": "currant",
           "kind": "word",
-          "vocabKey": "currant:pending:1"
+          "vocabKey": "currant:noun:1"
         },
         {
           "id": "c0007:t19",
@@ -1583,7 +1583,7 @@ module.exports = {
           "id": "c0007:t20",
           "surface": "buns",
           "kind": "word",
-          "vocabKey": "buns:pending:1"
+          "vocabKey": "bun:noun:1"
         },
         {
           "id": "c0007:t21",
@@ -1641,7 +1641,7 @@ module.exports = {
           "id": "c0008:t06",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0008:t07",
@@ -1671,7 +1671,7 @@ module.exports = {
           "id": "c0008:t11",
           "surface": "who",
           "kind": "word",
-          "vocabKey": "who:pending:1"
+          "vocabKey": "who:pronoun:1"
         },
         {
           "id": "c0008:t12",
@@ -1683,7 +1683,7 @@ module.exports = {
           "id": "c0008:t13",
           "surface": "were",
           "kind": "word",
-          "vocabKey": "were:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0008:t14",
@@ -1695,7 +1695,7 @@ module.exports = {
           "id": "c0008:t15",
           "surface": "good",
           "kind": "word",
-          "vocabKey": "good:pending:1"
+          "vocabKey": "good:adjective:1"
         },
         {
           "id": "c0008:t16",
@@ -1707,7 +1707,7 @@ module.exports = {
           "id": "c0008:t17",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0008:t18",
@@ -1719,7 +1719,7 @@ module.exports = {
           "id": "c0008:t19",
           "surface": "bunnies",
           "kind": "word",
-          "vocabKey": "bunnies:pending:1"
+          "vocabKey": "bunny:noun:1"
         },
         {
           "id": "c0008:t20",
@@ -1737,7 +1737,7 @@ module.exports = {
           "id": "c0008:t22",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0008:t23",
@@ -1749,7 +1749,7 @@ module.exports = {
           "id": "c0008:t24",
           "surface": "down",
           "kind": "word",
-          "vocabKey": "down:pending:1"
+          "vocabKey": "down:preposition:1"
         },
         {
           "id": "c0008:t25",
@@ -1761,7 +1761,7 @@ module.exports = {
           "id": "c0008:t26",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0008:t27",
@@ -1773,7 +1773,7 @@ module.exports = {
           "id": "c0008:t28",
           "surface": "lane",
           "kind": "word",
-          "vocabKey": "lane:pending:1"
+          "vocabKey": "lane:noun:1"
         },
         {
           "id": "c0008:t29",
@@ -1785,7 +1785,7 @@ module.exports = {
           "id": "c0008:t30",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0008:t31",
@@ -1797,7 +1797,7 @@ module.exports = {
           "id": "c0008:t32",
           "surface": "gather",
           "kind": "word",
-          "vocabKey": "gather:pending:1"
+          "vocabKey": "gather:verb:1"
         },
         {
           "id": "c0008:t33",
@@ -1809,7 +1809,7 @@ module.exports = {
           "id": "c0008:t34",
           "surface": "blackberries",
           "kind": "word",
-          "vocabKey": "blackberries:pending:1"
+          "vocabKey": "blackberry:noun:1"
         },
         {
           "id": "c0008:t35",
@@ -1831,7 +1831,7 @@ module.exports = {
           "id": "c0009:t00",
           "surface": "But",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0009:t01",
@@ -1861,7 +1861,7 @@ module.exports = {
           "id": "c0009:t05",
           "surface": "who",
           "kind": "word",
-          "vocabKey": "who:pending:1"
+          "vocabKey": "who:pronoun:1"
         },
         {
           "id": "c0009:t06",
@@ -1873,7 +1873,7 @@ module.exports = {
           "id": "c0009:t07",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0009:t08",
@@ -1885,7 +1885,7 @@ module.exports = {
           "id": "c0009:t09",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0009:t10",
@@ -1897,7 +1897,7 @@ module.exports = {
           "id": "c0009:t11",
           "surface": "naughty",
           "kind": "word",
-          "vocabKey": "naughty:pending:1"
+          "vocabKey": "naughty:adjective:1"
         },
         {
           "id": "c0009:t12",
@@ -1915,7 +1915,7 @@ module.exports = {
           "id": "c0009:t14",
           "surface": "ran",
           "kind": "word",
-          "vocabKey": "ran:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0009:t15",
@@ -1927,7 +1927,7 @@ module.exports = {
           "id": "c0009:t16",
           "surface": "straight",
           "kind": "word",
-          "vocabKey": "straight:pending:1"
+          "vocabKey": "straight:adverb:1"
         },
         {
           "id": "c0009:t17",
@@ -1939,7 +1939,7 @@ module.exports = {
           "id": "c0009:t18",
           "surface": "away",
           "kind": "word",
-          "vocabKey": "away:pending:1"
+          "vocabKey": "away:adverb:1"
         },
         {
           "id": "c0009:t19",
@@ -1951,7 +1951,7 @@ module.exports = {
           "id": "c0009:t20",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0009:t21",
@@ -1963,7 +1963,7 @@ module.exports = {
           "id": "c0009:t22",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0009:t23",
@@ -1981,7 +1981,7 @@ module.exports = {
           "id": "c0009:t25",
           "surface": "McGregor's",
           "kind": "word",
-          "vocabKey": "mcgregor's:pending:1"
+          "vocabKey": null
         },
         {
           "id": "c0009:t26",
@@ -1993,7 +1993,7 @@ module.exports = {
           "id": "c0009:t27",
           "surface": "garden",
           "kind": "word",
-          "vocabKey": "garden:pending:1"
+          "vocabKey": "garden:noun:1"
         },
         {
           "id": "c0009:t28",
@@ -2011,7 +2011,7 @@ module.exports = {
           "id": "c0009:t30",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0009:t31",
@@ -2023,7 +2023,7 @@ module.exports = {
           "id": "c0009:t32",
           "surface": "squeezed",
           "kind": "word",
-          "vocabKey": "squeezed:pending:1"
+          "vocabKey": "squeeze:verb:1"
         },
         {
           "id": "c0009:t33",
@@ -2035,7 +2035,7 @@ module.exports = {
           "id": "c0009:t34",
           "surface": "under",
           "kind": "word",
-          "vocabKey": "under:pending:1"
+          "vocabKey": "under:preposition:1"
         },
         {
           "id": "c0009:t35",
@@ -2047,7 +2047,7 @@ module.exports = {
           "id": "c0009:t36",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0009:t37",
@@ -2059,7 +2059,7 @@ module.exports = {
           "id": "c0009:t38",
           "surface": "gate",
           "kind": "word",
-          "vocabKey": "gate:pending:1"
+          "vocabKey": "gate:noun:1"
         },
         {
           "id": "c0009:t39",
@@ -2081,7 +2081,7 @@ module.exports = {
           "id": "c0010:t00",
           "surface": "First",
           "kind": "word",
-          "vocabKey": "first:pending:1"
+          "vocabKey": "first:adverb:1"
         },
         {
           "id": "c0010:t01",
@@ -2093,7 +2093,7 @@ module.exports = {
           "id": "c0010:t02",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0010:t03",
@@ -2105,7 +2105,7 @@ module.exports = {
           "id": "c0010:t04",
           "surface": "ate",
           "kind": "word",
-          "vocabKey": "ate:pending:1"
+          "vocabKey": "eat:verb:1"
         },
         {
           "id": "c0010:t05",
@@ -2117,7 +2117,7 @@ module.exports = {
           "id": "c0010:t06",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0010:t07",
@@ -2129,7 +2129,7 @@ module.exports = {
           "id": "c0010:t08",
           "surface": "lettuces",
           "kind": "word",
-          "vocabKey": "lettuces:pending:1"
+          "vocabKey": "lettuce:noun:1"
         },
         {
           "id": "c0010:t09",
@@ -2141,7 +2141,7 @@ module.exports = {
           "id": "c0010:t10",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0010:t11",
@@ -2153,7 +2153,7 @@ module.exports = {
           "id": "c0010:t12",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0010:t13",
@@ -2165,7 +2165,7 @@ module.exports = {
           "id": "c0010:t14",
           "surface": "French",
           "kind": "word",
-          "vocabKey": "french:pending:1"
+          "vocabKey": "french:adjective:1"
         },
         {
           "id": "c0010:t15",
@@ -2177,7 +2177,7 @@ module.exports = {
           "id": "c0010:t16",
           "surface": "beans",
           "kind": "word",
-          "vocabKey": "beans:pending:1"
+          "vocabKey": "bean:noun:1"
         },
         {
           "id": "c0010:t17",
@@ -2195,7 +2195,7 @@ module.exports = {
           "id": "c0010:t19",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0010:t20",
@@ -2207,7 +2207,7 @@ module.exports = {
           "id": "c0010:t21",
           "surface": "then",
           "kind": "word",
-          "vocabKey": "then:pending:1"
+          "vocabKey": "then:adverb:1"
         },
         {
           "id": "c0010:t22",
@@ -2219,7 +2219,7 @@ module.exports = {
           "id": "c0010:t23",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0010:t24",
@@ -2231,7 +2231,7 @@ module.exports = {
           "id": "c0010:t25",
           "surface": "ate",
           "kind": "word",
-          "vocabKey": "ate:pending:1"
+          "vocabKey": "eat:verb:1"
         },
         {
           "id": "c0010:t26",
@@ -2243,7 +2243,7 @@ module.exports = {
           "id": "c0010:t27",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0010:t28",
@@ -2255,7 +2255,7 @@ module.exports = {
           "id": "c0010:t29",
           "surface": "radishes",
           "kind": "word",
-          "vocabKey": "radishes:pending:1"
+          "vocabKey": "radish:noun:1"
         },
         {
           "id": "c0010:t30",
@@ -2277,7 +2277,7 @@ module.exports = {
           "id": "c0011:t00",
           "surface": "And",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0011:t01",
@@ -2289,7 +2289,7 @@ module.exports = {
           "id": "c0011:t02",
           "surface": "then",
           "kind": "word",
-          "vocabKey": "then:pending:1"
+          "vocabKey": "then:adverb:1"
         },
         {
           "id": "c0011:t03",
@@ -2307,7 +2307,7 @@ module.exports = {
           "id": "c0011:t05",
           "surface": "feeling",
           "kind": "word",
-          "vocabKey": "feeling:pending:1"
+          "vocabKey": "feel:verb:1"
         },
         {
           "id": "c0011:t06",
@@ -2319,7 +2319,7 @@ module.exports = {
           "id": "c0011:t07",
           "surface": "rather",
           "kind": "word",
-          "vocabKey": "rather:pending:1"
+          "vocabKey": "rather:adverb:1"
         },
         {
           "id": "c0011:t08",
@@ -2331,7 +2331,7 @@ module.exports = {
           "id": "c0011:t09",
           "surface": "sick",
           "kind": "word",
-          "vocabKey": "sick:pending:1"
+          "vocabKey": "sick:adjective:1"
         },
         {
           "id": "c0011:t10",
@@ -2349,7 +2349,7 @@ module.exports = {
           "id": "c0011:t12",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0011:t13",
@@ -2361,7 +2361,7 @@ module.exports = {
           "id": "c0011:t14",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0011:t15",
@@ -2373,7 +2373,7 @@ module.exports = {
           "id": "c0011:t16",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0011:t17",
@@ -2385,7 +2385,7 @@ module.exports = {
           "id": "c0011:t18",
           "surface": "look",
           "kind": "word",
-          "vocabKey": "look:pending:1"
+          "vocabKey": "look:verb:1"
         },
         {
           "id": "c0011:t19",
@@ -2397,7 +2397,7 @@ module.exports = {
           "id": "c0011:t20",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0011:t21",
@@ -2409,7 +2409,7 @@ module.exports = {
           "id": "c0011:t22",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0011:t23",
@@ -2421,7 +2421,7 @@ module.exports = {
           "id": "c0011:t24",
           "surface": "parsley",
           "kind": "word",
-          "vocabKey": "parsley:pending:1"
+          "vocabKey": "parsley:noun:1"
         },
         {
           "id": "c0011:t25",
@@ -2443,7 +2443,7 @@ module.exports = {
           "id": "c0012:t00",
           "surface": "But",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0012:t01",
@@ -2455,7 +2455,7 @@ module.exports = {
           "id": "c0012:t02",
           "surface": "round",
           "kind": "word",
-          "vocabKey": "round:pending:1"
+          "vocabKey": "round:preposition:1"
         },
         {
           "id": "c0012:t03",
@@ -2467,7 +2467,7 @@ module.exports = {
           "id": "c0012:t04",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0012:t05",
@@ -2479,7 +2479,7 @@ module.exports = {
           "id": "c0012:t06",
           "surface": "end",
           "kind": "word",
-          "vocabKey": "end:pending:1"
+          "vocabKey": "end:noun:1"
         },
         {
           "id": "c0012:t07",
@@ -2491,7 +2491,7 @@ module.exports = {
           "id": "c0012:t08",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0012:t09",
@@ -2503,7 +2503,7 @@ module.exports = {
           "id": "c0012:t10",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0012:t11",
@@ -2515,7 +2515,7 @@ module.exports = {
           "id": "c0012:t12",
           "surface": "cucumber",
           "kind": "word",
-          "vocabKey": "cucumber:pending:1"
+          "vocabKey": "cucumber:noun:1"
         },
         {
           "id": "c0012:t13",
@@ -2527,7 +2527,7 @@ module.exports = {
           "id": "c0012:t14",
           "surface": "frame",
           "kind": "word",
-          "vocabKey": "frame:pending:1"
+          "vocabKey": "frame:noun:1"
         },
         {
           "id": "c0012:t15",
@@ -2545,7 +2545,7 @@ module.exports = {
           "id": "c0012:t17",
           "surface": "whom",
           "kind": "word",
-          "vocabKey": "whom:pending:1"
+          "vocabKey": "whom:pronoun:1"
         },
         {
           "id": "c0012:t18",
@@ -2557,7 +2557,7 @@ module.exports = {
           "id": "c0012:t19",
           "surface": "should",
           "kind": "word",
-          "vocabKey": "should:pending:1"
+          "vocabKey": "should:auxiliary:1"
         },
         {
           "id": "c0012:t20",
@@ -2569,7 +2569,7 @@ module.exports = {
           "id": "c0012:t21",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0012:t22",
@@ -2581,7 +2581,7 @@ module.exports = {
           "id": "c0012:t23",
           "surface": "meet",
           "kind": "word",
-          "vocabKey": "meet:pending:1"
+          "vocabKey": "meet:verb:1"
         },
         {
           "id": "c0012:t24",
@@ -2593,7 +2593,7 @@ module.exports = {
           "id": "c0012:t25",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:preposition:2"
         },
         {
           "id": "c0012:t26",
@@ -2605,7 +2605,7 @@ module.exports = {
           "id": "c0012:t27",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0012:t28",
@@ -2645,7 +2645,7 @@ module.exports = {
           "id": "c0013:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0013:t01",
@@ -2675,7 +2675,7 @@ module.exports = {
           "id": "c0013:t05",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0013:t06",
@@ -2687,7 +2687,7 @@ module.exports = {
           "id": "c0013:t07",
           "surface": "on",
           "kind": "word",
-          "vocabKey": "on:pending:1"
+          "vocabKey": "on:preposition:1"
         },
         {
           "id": "c0013:t08",
@@ -2699,7 +2699,7 @@ module.exports = {
           "id": "c0013:t09",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0013:t10",
@@ -2711,7 +2711,7 @@ module.exports = {
           "id": "c0013:t11",
           "surface": "hands",
           "kind": "word",
-          "vocabKey": "hands:pending:1"
+          "vocabKey": "hand:noun:1"
         },
         {
           "id": "c0013:t12",
@@ -2723,7 +2723,7 @@ module.exports = {
           "id": "c0013:t13",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0013:t14",
@@ -2735,7 +2735,7 @@ module.exports = {
           "id": "c0013:t15",
           "surface": "knees",
           "kind": "word",
-          "vocabKey": "knees:pending:1"
+          "vocabKey": "knee:noun:1"
         },
         {
           "id": "c0013:t16",
@@ -2747,7 +2747,7 @@ module.exports = {
           "id": "c0013:t17",
           "surface": "planting",
           "kind": "word",
-          "vocabKey": "planting:pending:1"
+          "vocabKey": "plant:verb:1"
         },
         {
           "id": "c0013:t18",
@@ -2759,7 +2759,7 @@ module.exports = {
           "id": "c0013:t19",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0013:t20",
@@ -2771,7 +2771,7 @@ module.exports = {
           "id": "c0013:t21",
           "surface": "young",
           "kind": "word",
-          "vocabKey": "young:pending:1"
+          "vocabKey": "young:adjective:1"
         },
         {
           "id": "c0013:t22",
@@ -2783,7 +2783,7 @@ module.exports = {
           "id": "c0013:t23",
           "surface": "cabbages",
           "kind": "word",
-          "vocabKey": "cabbages:pending:1"
+          "vocabKey": "cabbage:noun:1"
         },
         {
           "id": "c0013:t24",
@@ -2801,7 +2801,7 @@ module.exports = {
           "id": "c0013:t26",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0013:t27",
@@ -2813,7 +2813,7 @@ module.exports = {
           "id": "c0013:t28",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0013:t29",
@@ -2825,7 +2825,7 @@ module.exports = {
           "id": "c0013:t30",
           "surface": "jumped",
           "kind": "word",
-          "vocabKey": "jumped:pending:1"
+          "vocabKey": "jump:verb:1"
         },
         {
           "id": "c0013:t31",
@@ -2837,7 +2837,7 @@ module.exports = {
           "id": "c0013:t32",
           "surface": "up",
           "kind": "word",
-          "vocabKey": "up:pending:1"
+          "vocabKey": "up:particle:1"
         },
         {
           "id": "c0013:t33",
@@ -2849,7 +2849,7 @@ module.exports = {
           "id": "c0013:t34",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0013:t35",
@@ -2861,7 +2861,7 @@ module.exports = {
           "id": "c0013:t36",
           "surface": "ran",
           "kind": "word",
-          "vocabKey": "ran:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0013:t37",
@@ -2873,7 +2873,7 @@ module.exports = {
           "id": "c0013:t38",
           "surface": "after",
           "kind": "word",
-          "vocabKey": "after:pending:1"
+          "vocabKey": "after:preposition:1"
         },
         {
           "id": "c0013:t39",
@@ -2903,7 +2903,7 @@ module.exports = {
           "id": "c0013:t43",
           "surface": "waving",
           "kind": "word",
-          "vocabKey": "waving:pending:1"
+          "vocabKey": "wave:verb:1"
         },
         {
           "id": "c0013:t44",
@@ -2915,7 +2915,7 @@ module.exports = {
           "id": "c0013:t45",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0013:t46",
@@ -2927,7 +2927,7 @@ module.exports = {
           "id": "c0013:t47",
           "surface": "rake",
           "kind": "word",
-          "vocabKey": "rake:pending:1"
+          "vocabKey": "rake:noun:1"
         },
         {
           "id": "c0013:t48",
@@ -2939,7 +2939,7 @@ module.exports = {
           "id": "c0013:t49",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0013:t50",
@@ -2951,7 +2951,7 @@ module.exports = {
           "id": "c0013:t51",
           "surface": "calling",
           "kind": "word",
-          "vocabKey": "calling:pending:1"
+          "vocabKey": "call:verb:1"
         },
         {
           "id": "c0013:t52",
@@ -2963,7 +2963,7 @@ module.exports = {
           "id": "c0013:t53",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0013:t54",
@@ -2987,7 +2987,7 @@ module.exports = {
           "id": "c0013:t57",
           "surface": "Stop",
           "kind": "word",
-          "vocabKey": "stop:pending:1"
+          "vocabKey": "stop:verb:1"
         },
         {
           "id": "c0013:t58",
@@ -2999,7 +2999,7 @@ module.exports = {
           "id": "c0013:t59",
           "surface": "thief",
           "kind": "word",
-          "vocabKey": "thief:pending:1"
+          "vocabKey": "thief:noun:1"
         },
         {
           "id": "c0013:t60",
@@ -3033,7 +3033,7 @@ module.exports = {
           "id": "c0014:t02",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0014:t03",
@@ -3045,7 +3045,7 @@ module.exports = {
           "id": "c0014:t04",
           "surface": "most",
           "kind": "word",
-          "vocabKey": "most:pending:1"
+          "vocabKey": "most:adverb:1"
         },
         {
           "id": "c0014:t05",
@@ -3057,7 +3057,7 @@ module.exports = {
           "id": "c0014:t06",
           "surface": "dreadfully",
           "kind": "word",
-          "vocabKey": "dreadfully:pending:1"
+          "vocabKey": "dreadfully:adverb:1"
         },
         {
           "id": "c0014:t07",
@@ -3069,7 +3069,7 @@ module.exports = {
           "id": "c0014:t08",
           "surface": "frightened",
           "kind": "word",
-          "vocabKey": "frightened:pending:1"
+          "vocabKey": "frightened:adjective:1"
         },
         {
           "id": "c0014:t09",
@@ -3087,7 +3087,7 @@ module.exports = {
           "id": "c0014:t11",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0014:t12",
@@ -3099,7 +3099,7 @@ module.exports = {
           "id": "c0014:t13",
           "surface": "rushed",
           "kind": "word",
-          "vocabKey": "rushed:pending:1"
+          "vocabKey": "rush:verb:1"
         },
         {
           "id": "c0014:t14",
@@ -3111,7 +3111,7 @@ module.exports = {
           "id": "c0014:t15",
           "surface": "all",
           "kind": "word",
-          "vocabKey": "all:pending:1"
+          "vocabKey": "all:adverb:1"
         },
         {
           "id": "c0014:t16",
@@ -3123,7 +3123,7 @@ module.exports = {
           "id": "c0014:t17",
           "surface": "over",
           "kind": "word",
-          "vocabKey": "over:pending:1"
+          "vocabKey": "over:preposition:1"
         },
         {
           "id": "c0014:t18",
@@ -3135,7 +3135,7 @@ module.exports = {
           "id": "c0014:t19",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0014:t20",
@@ -3147,7 +3147,7 @@ module.exports = {
           "id": "c0014:t21",
           "surface": "garden",
           "kind": "word",
-          "vocabKey": "garden:pending:1"
+          "vocabKey": "garden:noun:1"
         },
         {
           "id": "c0014:t22",
@@ -3165,7 +3165,7 @@ module.exports = {
           "id": "c0014:t24",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:conjunction:2"
         },
         {
           "id": "c0014:t25",
@@ -3177,7 +3177,7 @@ module.exports = {
           "id": "c0014:t26",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0014:t27",
@@ -3189,7 +3189,7 @@ module.exports = {
           "id": "c0014:t28",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0014:t29",
@@ -3201,7 +3201,7 @@ module.exports = {
           "id": "c0014:t30",
           "surface": "forgotten",
           "kind": "word",
-          "vocabKey": "forgotten:pending:1"
+          "vocabKey": "forget:verb:1"
         },
         {
           "id": "c0014:t31",
@@ -3213,7 +3213,7 @@ module.exports = {
           "id": "c0014:t32",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0014:t33",
@@ -3225,7 +3225,7 @@ module.exports = {
           "id": "c0014:t34",
           "surface": "way",
           "kind": "word",
-          "vocabKey": "way:pending:1"
+          "vocabKey": "way:noun:1"
         },
         {
           "id": "c0014:t35",
@@ -3237,7 +3237,7 @@ module.exports = {
           "id": "c0014:t36",
           "surface": "back",
           "kind": "word",
-          "vocabKey": "back:pending:1"
+          "vocabKey": "back:adverb:1"
         },
         {
           "id": "c0014:t37",
@@ -3249,7 +3249,7 @@ module.exports = {
           "id": "c0014:t38",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0014:t39",
@@ -3261,7 +3261,7 @@ module.exports = {
           "id": "c0014:t40",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0014:t41",
@@ -3273,7 +3273,7 @@ module.exports = {
           "id": "c0014:t42",
           "surface": "gate",
           "kind": "word",
-          "vocabKey": "gate:pending:1"
+          "vocabKey": "gate:noun:1"
         },
         {
           "id": "c0014:t43",
@@ -3295,7 +3295,7 @@ module.exports = {
           "id": "c0015:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0015:t01",
@@ -3307,7 +3307,7 @@ module.exports = {
           "id": "c0015:t02",
           "surface": "lost",
           "kind": "word",
-          "vocabKey": "lost:pending:1"
+          "vocabKey": "lost:adjective:1"
         },
         {
           "id": "c0015:t03",
@@ -3319,7 +3319,7 @@ module.exports = {
           "id": "c0015:t04",
           "surface": "one",
           "kind": "word",
-          "vocabKey": "one:pending:1"
+          "vocabKey": "one:numeral:1"
         },
         {
           "id": "c0015:t05",
@@ -3331,7 +3331,7 @@ module.exports = {
           "id": "c0015:t06",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0015:t07",
@@ -3343,7 +3343,7 @@ module.exports = {
           "id": "c0015:t08",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0015:t09",
@@ -3355,7 +3355,7 @@ module.exports = {
           "id": "c0015:t10",
           "surface": "shoes",
           "kind": "word",
-          "vocabKey": "shoes:pending:1"
+          "vocabKey": "shoe:noun:1"
         },
         {
           "id": "c0015:t11",
@@ -3367,7 +3367,7 @@ module.exports = {
           "id": "c0015:t12",
           "surface": "among",
           "kind": "word",
-          "vocabKey": "among:pending:1"
+          "vocabKey": "among:preposition:1"
         },
         {
           "id": "c0015:t13",
@@ -3379,7 +3379,7 @@ module.exports = {
           "id": "c0015:t14",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0015:t15",
@@ -3391,7 +3391,7 @@ module.exports = {
           "id": "c0015:t16",
           "surface": "cabbages",
           "kind": "word",
-          "vocabKey": "cabbages:pending:1"
+          "vocabKey": "cabbage:noun:1"
         },
         {
           "id": "c0015:t17",
@@ -3409,7 +3409,7 @@ module.exports = {
           "id": "c0015:t19",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0015:t20",
@@ -3421,7 +3421,7 @@ module.exports = {
           "id": "c0015:t21",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0015:t22",
@@ -3433,7 +3433,7 @@ module.exports = {
           "id": "c0015:t23",
           "surface": "other",
           "kind": "word",
-          "vocabKey": "other:pending:1"
+          "vocabKey": "other:adjective:1"
         },
         {
           "id": "c0015:t24",
@@ -3445,7 +3445,7 @@ module.exports = {
           "id": "c0015:t25",
           "surface": "shoe",
           "kind": "word",
-          "vocabKey": "shoe:pending:1"
+          "vocabKey": "shoe:noun:1"
         },
         {
           "id": "c0015:t26",
@@ -3457,7 +3457,7 @@ module.exports = {
           "id": "c0015:t27",
           "surface": "amongst",
           "kind": "word",
-          "vocabKey": "amongst:pending:1"
+          "vocabKey": "amongst:preposition:1"
         },
         {
           "id": "c0015:t28",
@@ -3469,7 +3469,7 @@ module.exports = {
           "id": "c0015:t29",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0015:t30",
@@ -3481,7 +3481,7 @@ module.exports = {
           "id": "c0015:t31",
           "surface": "potatoes",
           "kind": "word",
-          "vocabKey": "potatoes:pending:1"
+          "vocabKey": "potato:noun:1"
         },
         {
           "id": "c0015:t32",
@@ -3503,7 +3503,7 @@ module.exports = {
           "id": "c0016:t00",
           "surface": "After",
           "kind": "word",
-          "vocabKey": "after:pending:1"
+          "vocabKey": "after:preposition:1"
         },
         {
           "id": "c0016:t01",
@@ -3515,7 +3515,7 @@ module.exports = {
           "id": "c0016:t02",
           "surface": "losing",
           "kind": "word",
-          "vocabKey": "losing:pending:1"
+          "vocabKey": "lose:verb:1"
         },
         {
           "id": "c0016:t03",
@@ -3527,7 +3527,7 @@ module.exports = {
           "id": "c0016:t04",
           "surface": "them",
           "kind": "word",
-          "vocabKey": "them:pending:1"
+          "vocabKey": "them:pronoun:1"
         },
         {
           "id": "c0016:t05",
@@ -3545,7 +3545,7 @@ module.exports = {
           "id": "c0016:t07",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0016:t08",
@@ -3557,7 +3557,7 @@ module.exports = {
           "id": "c0016:t09",
           "surface": "ran",
           "kind": "word",
-          "vocabKey": "ran:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0016:t10",
@@ -3569,7 +3569,7 @@ module.exports = {
           "id": "c0016:t11",
           "surface": "on",
           "kind": "word",
-          "vocabKey": "on:pending:1"
+          "vocabKey": "on:preposition:1"
         },
         {
           "id": "c0016:t12",
@@ -3581,7 +3581,7 @@ module.exports = {
           "id": "c0016:t13",
           "surface": "four",
           "kind": "word",
-          "vocabKey": "four:pending:1"
+          "vocabKey": "four:numeral:1"
         },
         {
           "id": "c0016:t14",
@@ -3593,7 +3593,7 @@ module.exports = {
           "id": "c0016:t15",
           "surface": "legs",
           "kind": "word",
-          "vocabKey": "legs:pending:1"
+          "vocabKey": "leg:noun:1"
         },
         {
           "id": "c0016:t16",
@@ -3605,7 +3605,7 @@ module.exports = {
           "id": "c0016:t17",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0016:t18",
@@ -3617,7 +3617,7 @@ module.exports = {
           "id": "c0016:t19",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0016:t20",
@@ -3629,7 +3629,7 @@ module.exports = {
           "id": "c0016:t21",
           "surface": "faster",
           "kind": "word",
-          "vocabKey": "faster:pending:1"
+          "vocabKey": "faster:adverb:1"
         },
         {
           "id": "c0016:t22",
@@ -3647,7 +3647,7 @@ module.exports = {
           "id": "c0016:t24",
           "surface": "so",
           "kind": "word",
-          "vocabKey": "so:pending:1"
+          "vocabKey": "so:conjunction:1"
         },
         {
           "id": "c0016:t25",
@@ -3659,7 +3659,7 @@ module.exports = {
           "id": "c0016:t26",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:conjunction:1"
         },
         {
           "id": "c0016:t27",
@@ -3671,7 +3671,7 @@ module.exports = {
           "id": "c0016:t28",
           "surface": "I",
           "kind": "word",
-          "vocabKey": "i:pending:1"
+          "vocabKey": "i:pronoun:1"
         },
         {
           "id": "c0016:t29",
@@ -3683,7 +3683,7 @@ module.exports = {
           "id": "c0016:t30",
           "surface": "think",
           "kind": "word",
-          "vocabKey": "think:pending:1"
+          "vocabKey": "think:verb:1"
         },
         {
           "id": "c0016:t31",
@@ -3695,7 +3695,7 @@ module.exports = {
           "id": "c0016:t32",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0016:t33",
@@ -3707,7 +3707,7 @@ module.exports = {
           "id": "c0016:t34",
           "surface": "might",
           "kind": "word",
-          "vocabKey": "might:pending:1"
+          "vocabKey": "might:auxiliary:1"
         },
         {
           "id": "c0016:t35",
@@ -3719,7 +3719,7 @@ module.exports = {
           "id": "c0016:t36",
           "surface": "have",
           "kind": "word",
-          "vocabKey": "have:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0016:t37",
@@ -3731,7 +3731,7 @@ module.exports = {
           "id": "c0016:t38",
           "surface": "got",
           "kind": "word",
-          "vocabKey": "got:pending:1"
+          "vocabKey": "get:verb:1"
         },
         {
           "id": "c0016:t39",
@@ -3743,7 +3743,7 @@ module.exports = {
           "id": "c0016:t40",
           "surface": "away",
           "kind": "word",
-          "vocabKey": "away:pending:1"
+          "vocabKey": "away:adverb:1"
         },
         {
           "id": "c0016:t41",
@@ -3755,7 +3755,7 @@ module.exports = {
           "id": "c0016:t42",
           "surface": "altogether",
           "kind": "word",
-          "vocabKey": "altogether:pending:1"
+          "vocabKey": "altogether:adverb:1"
         },
         {
           "id": "c0016:t43",
@@ -3767,7 +3767,7 @@ module.exports = {
           "id": "c0016:t44",
           "surface": "if",
           "kind": "word",
-          "vocabKey": "if:pending:1"
+          "vocabKey": "if:conjunction:1"
         },
         {
           "id": "c0016:t45",
@@ -3779,7 +3779,7 @@ module.exports = {
           "id": "c0016:t46",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0016:t47",
@@ -3791,7 +3791,7 @@ module.exports = {
           "id": "c0016:t48",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0016:t49",
@@ -3803,7 +3803,7 @@ module.exports = {
           "id": "c0016:t50",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0016:t51",
@@ -3815,7 +3815,7 @@ module.exports = {
           "id": "c0016:t52",
           "surface": "unfortunately",
           "kind": "word",
-          "vocabKey": "unfortunately:pending:1"
+          "vocabKey": "unfortunately:adverb:1"
         },
         {
           "id": "c0016:t53",
@@ -3827,7 +3827,7 @@ module.exports = {
           "id": "c0016:t54",
           "surface": "run",
           "kind": "word",
-          "vocabKey": "run:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0016:t55",
@@ -3839,7 +3839,7 @@ module.exports = {
           "id": "c0016:t56",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0016:t57",
@@ -3851,7 +3851,7 @@ module.exports = {
           "id": "c0016:t58",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0016:t59",
@@ -3863,7 +3863,7 @@ module.exports = {
           "id": "c0016:t60",
           "surface": "gooseberry",
           "kind": "word",
-          "vocabKey": "gooseberry:pending:1"
+          "vocabKey": "gooseberry:noun:1"
         },
         {
           "id": "c0016:t61",
@@ -3875,7 +3875,7 @@ module.exports = {
           "id": "c0016:t62",
           "surface": "net",
           "kind": "word",
-          "vocabKey": "net:pending:1"
+          "vocabKey": "net:noun:1"
         },
         {
           "id": "c0016:t63",
@@ -3893,7 +3893,7 @@ module.exports = {
           "id": "c0016:t65",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0016:t66",
@@ -3905,7 +3905,7 @@ module.exports = {
           "id": "c0016:t67",
           "surface": "got",
           "kind": "word",
-          "vocabKey": "got:pending:1"
+          "vocabKey": "get:verb:1"
         },
         {
           "id": "c0016:t68",
@@ -3917,7 +3917,7 @@ module.exports = {
           "id": "c0016:t69",
           "surface": "caught",
           "kind": "word",
-          "vocabKey": "caught:pending:1"
+          "vocabKey": "catch:verb:1"
         },
         {
           "id": "c0016:t70",
@@ -3929,7 +3929,7 @@ module.exports = {
           "id": "c0016:t71",
           "surface": "by",
           "kind": "word",
-          "vocabKey": "by:pending:1"
+          "vocabKey": "by:preposition:1"
         },
         {
           "id": "c0016:t72",
@@ -3941,7 +3941,7 @@ module.exports = {
           "id": "c0016:t73",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0016:t74",
@@ -3953,7 +3953,7 @@ module.exports = {
           "id": "c0016:t75",
           "surface": "large",
           "kind": "word",
-          "vocabKey": "large:pending:1"
+          "vocabKey": "large:adjective:1"
         },
         {
           "id": "c0016:t76",
@@ -3965,7 +3965,7 @@ module.exports = {
           "id": "c0016:t77",
           "surface": "buttons",
           "kind": "word",
-          "vocabKey": "buttons:pending:1"
+          "vocabKey": "button:noun:1"
         },
         {
           "id": "c0016:t78",
@@ -3977,7 +3977,7 @@ module.exports = {
           "id": "c0016:t79",
           "surface": "on",
           "kind": "word",
-          "vocabKey": "on:pending:1"
+          "vocabKey": "on:preposition:1"
         },
         {
           "id": "c0016:t80",
@@ -3989,7 +3989,7 @@ module.exports = {
           "id": "c0016:t81",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0016:t82",
@@ -4001,7 +4001,7 @@ module.exports = {
           "id": "c0016:t83",
           "surface": "jacket",
           "kind": "word",
-          "vocabKey": "jacket:pending:1"
+          "vocabKey": "jacket:noun:1"
         },
         {
           "id": "c0016:t84",
@@ -4023,7 +4023,7 @@ module.exports = {
           "id": "c0017:t00",
           "surface": "It",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0017:t01",
@@ -4035,7 +4035,7 @@ module.exports = {
           "id": "c0017:t02",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0017:t03",
@@ -4047,7 +4047,7 @@ module.exports = {
           "id": "c0017:t04",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0017:t05",
@@ -4059,7 +4059,7 @@ module.exports = {
           "id": "c0017:t06",
           "surface": "blue",
           "kind": "word",
-          "vocabKey": "blue:pending:1"
+          "vocabKey": "blue:adjective:1"
         },
         {
           "id": "c0017:t07",
@@ -4071,7 +4071,7 @@ module.exports = {
           "id": "c0017:t08",
           "surface": "jacket",
           "kind": "word",
-          "vocabKey": "jacket:pending:1"
+          "vocabKey": "jacket:noun:1"
         },
         {
           "id": "c0017:t09",
@@ -4083,7 +4083,7 @@ module.exports = {
           "id": "c0017:t10",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0017:t11",
@@ -4095,7 +4095,7 @@ module.exports = {
           "id": "c0017:t12",
           "surface": "brass",
           "kind": "word",
-          "vocabKey": "brass:pending:1"
+          "vocabKey": "brass:noun:1"
         },
         {
           "id": "c0017:t13",
@@ -4107,7 +4107,7 @@ module.exports = {
           "id": "c0017:t14",
           "surface": "buttons",
           "kind": "word",
-          "vocabKey": "buttons:pending:1"
+          "vocabKey": "button:noun:1"
         },
         {
           "id": "c0017:t15",
@@ -4125,7 +4125,7 @@ module.exports = {
           "id": "c0017:t17",
           "surface": "quite",
           "kind": "word",
-          "vocabKey": "quite:pending:1"
+          "vocabKey": "quite:adverb:1"
         },
         {
           "id": "c0017:t18",
@@ -4137,7 +4137,7 @@ module.exports = {
           "id": "c0017:t19",
           "surface": "new",
           "kind": "word",
-          "vocabKey": "new:pending:1"
+          "vocabKey": "new:adjective:1"
         },
         {
           "id": "c0017:t20",
@@ -4171,7 +4171,7 @@ module.exports = {
           "id": "c0018:t02",
           "surface": "gave",
           "kind": "word",
-          "vocabKey": "gave:pending:1"
+          "vocabKey": "give:verb:1"
         },
         {
           "id": "c0018:t03",
@@ -4183,7 +4183,7 @@ module.exports = {
           "id": "c0018:t04",
           "surface": "himself",
           "kind": "word",
-          "vocabKey": "himself:pending:1"
+          "vocabKey": "himself:pronoun:1"
         },
         {
           "id": "c0018:t05",
@@ -4195,7 +4195,7 @@ module.exports = {
           "id": "c0018:t06",
           "surface": "up",
           "kind": "word",
-          "vocabKey": "up:pending:1"
+          "vocabKey": "up:particle:1"
         },
         {
           "id": "c0018:t07",
@@ -4207,7 +4207,7 @@ module.exports = {
           "id": "c0018:t08",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0018:t09",
@@ -4219,7 +4219,7 @@ module.exports = {
           "id": "c0018:t10",
           "surface": "lost",
           "kind": "word",
-          "vocabKey": "lost:pending:1"
+          "vocabKey": "lost:adjective:1"
         },
         {
           "id": "c0018:t11",
@@ -4237,7 +4237,7 @@ module.exports = {
           "id": "c0018:t13",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0018:t14",
@@ -4249,7 +4249,7 @@ module.exports = {
           "id": "c0018:t15",
           "surface": "shed",
           "kind": "word",
-          "vocabKey": "shed:pending:1"
+          "vocabKey": "shed:verb:1"
         },
         {
           "id": "c0018:t16",
@@ -4261,7 +4261,7 @@ module.exports = {
           "id": "c0018:t17",
           "surface": "big",
           "kind": "word",
-          "vocabKey": "big:pending:1"
+          "vocabKey": "big:adjective:1"
         },
         {
           "id": "c0018:t18",
@@ -4273,7 +4273,7 @@ module.exports = {
           "id": "c0018:t19",
           "surface": "tears",
           "kind": "word",
-          "vocabKey": "tears:pending:1"
+          "vocabKey": "tear:noun:1"
         },
         {
           "id": "c0018:t20",
@@ -4291,7 +4291,7 @@ module.exports = {
           "id": "c0018:t22",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0018:t23",
@@ -4303,7 +4303,7 @@ module.exports = {
           "id": "c0018:t24",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0018:t25",
@@ -4315,7 +4315,7 @@ module.exports = {
           "id": "c0018:t26",
           "surface": "sobs",
           "kind": "word",
-          "vocabKey": "sobs:pending:1"
+          "vocabKey": "sob:noun:1"
         },
         {
           "id": "c0018:t27",
@@ -4327,7 +4327,7 @@ module.exports = {
           "id": "c0018:t28",
           "surface": "were",
           "kind": "word",
-          "vocabKey": "were:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0018:t29",
@@ -4339,7 +4339,7 @@ module.exports = {
           "id": "c0018:t30",
           "surface": "overheard",
           "kind": "word",
-          "vocabKey": "overheard:pending:1"
+          "vocabKey": "overhear:verb:1"
         },
         {
           "id": "c0018:t31",
@@ -4351,7 +4351,7 @@ module.exports = {
           "id": "c0018:t32",
           "surface": "by",
           "kind": "word",
-          "vocabKey": "by:pending:1"
+          "vocabKey": "by:preposition:1"
         },
         {
           "id": "c0018:t33",
@@ -4363,7 +4363,7 @@ module.exports = {
           "id": "c0018:t34",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0018:t35",
@@ -4375,7 +4375,7 @@ module.exports = {
           "id": "c0018:t36",
           "surface": "friendly",
           "kind": "word",
-          "vocabKey": "friendly:pending:1"
+          "vocabKey": "friendly:adjective:1"
         },
         {
           "id": "c0018:t37",
@@ -4387,7 +4387,7 @@ module.exports = {
           "id": "c0018:t38",
           "surface": "sparrows",
           "kind": "word",
-          "vocabKey": "sparrows:pending:1"
+          "vocabKey": "sparrow:noun:1"
         },
         {
           "id": "c0018:t39",
@@ -4405,7 +4405,7 @@ module.exports = {
           "id": "c0018:t41",
           "surface": "who",
           "kind": "word",
-          "vocabKey": "who:pending:1"
+          "vocabKey": "who:pronoun:1"
         },
         {
           "id": "c0018:t42",
@@ -4417,7 +4417,7 @@ module.exports = {
           "id": "c0018:t43",
           "surface": "flew",
           "kind": "word",
-          "vocabKey": "flew:pending:1"
+          "vocabKey": "fly:verb:1"
         },
         {
           "id": "c0018:t44",
@@ -4429,7 +4429,7 @@ module.exports = {
           "id": "c0018:t45",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0018:t46",
@@ -4441,7 +4441,7 @@ module.exports = {
           "id": "c0018:t47",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0018:t48",
@@ -4453,7 +4453,7 @@ module.exports = {
           "id": "c0018:t49",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0018:t50",
@@ -4465,7 +4465,7 @@ module.exports = {
           "id": "c0018:t51",
           "surface": "great",
           "kind": "word",
-          "vocabKey": "great:pending:1"
+          "vocabKey": "great:adjective:1"
         },
         {
           "id": "c0018:t52",
@@ -4477,7 +4477,7 @@ module.exports = {
           "id": "c0018:t53",
           "surface": "excitement",
           "kind": "word",
-          "vocabKey": "excitement:pending:1"
+          "vocabKey": "excitement:noun:1"
         },
         {
           "id": "c0018:t54",
@@ -4495,7 +4495,7 @@ module.exports = {
           "id": "c0018:t56",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0018:t57",
@@ -4507,7 +4507,7 @@ module.exports = {
           "id": "c0018:t58",
           "surface": "implored",
           "kind": "word",
-          "vocabKey": "implored:pending:1"
+          "vocabKey": "implore:verb:1"
         },
         {
           "id": "c0018:t59",
@@ -4519,7 +4519,7 @@ module.exports = {
           "id": "c0018:t60",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0018:t61",
@@ -4531,7 +4531,7 @@ module.exports = {
           "id": "c0018:t62",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0018:t63",
@@ -4543,7 +4543,7 @@ module.exports = {
           "id": "c0018:t64",
           "surface": "exert",
           "kind": "word",
-          "vocabKey": "exert:pending:1"
+          "vocabKey": "exert:verb:1"
         },
         {
           "id": "c0018:t65",
@@ -4555,7 +4555,7 @@ module.exports = {
           "id": "c0018:t66",
           "surface": "himself",
           "kind": "word",
-          "vocabKey": "himself:pending:1"
+          "vocabKey": "himself:pronoun:1"
         },
         {
           "id": "c0018:t67",
@@ -4577,7 +4577,7 @@ module.exports = {
           "id": "c0019:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0019:t01",
@@ -4607,7 +4607,7 @@ module.exports = {
           "id": "c0019:t05",
           "surface": "came",
           "kind": "word",
-          "vocabKey": "came:pending:1"
+          "vocabKey": "come:verb:1"
         },
         {
           "id": "c0019:t06",
@@ -4619,7 +4619,7 @@ module.exports = {
           "id": "c0019:t07",
           "surface": "up",
           "kind": "word",
-          "vocabKey": "up:pending:1"
+          "vocabKey": "up:particle:1"
         },
         {
           "id": "c0019:t08",
@@ -4631,7 +4631,7 @@ module.exports = {
           "id": "c0019:t09",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0019:t10",
@@ -4643,7 +4643,7 @@ module.exports = {
           "id": "c0019:t11",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0019:t12",
@@ -4655,7 +4655,7 @@ module.exports = {
           "id": "c0019:t13",
           "surface": "sieve",
           "kind": "word",
-          "vocabKey": "sieve:pending:1"
+          "vocabKey": "sieve:noun:1"
         },
         {
           "id": "c0019:t14",
@@ -4673,7 +4673,7 @@ module.exports = {
           "id": "c0019:t16",
           "surface": "which",
           "kind": "word",
-          "vocabKey": "which:pending:1"
+          "vocabKey": "which:pronoun:1"
         },
         {
           "id": "c0019:t17",
@@ -4685,7 +4685,7 @@ module.exports = {
           "id": "c0019:t18",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0019:t19",
@@ -4697,7 +4697,7 @@ module.exports = {
           "id": "c0019:t20",
           "surface": "intended",
           "kind": "word",
-          "vocabKey": "intended:pending:1"
+          "vocabKey": "intend:verb:1"
         },
         {
           "id": "c0019:t21",
@@ -4709,7 +4709,7 @@ module.exports = {
           "id": "c0019:t22",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0019:t23",
@@ -4721,7 +4721,7 @@ module.exports = {
           "id": "c0019:t24",
           "surface": "pop",
           "kind": "word",
-          "vocabKey": "pop:pending:1"
+          "vocabKey": "pop:verb:1"
         },
         {
           "id": "c0019:t25",
@@ -4733,7 +4733,7 @@ module.exports = {
           "id": "c0019:t26",
           "surface": "upon",
           "kind": "word",
-          "vocabKey": "upon:pending:1"
+          "vocabKey": "upon:preposition:1"
         },
         {
           "id": "c0019:t27",
@@ -4745,7 +4745,7 @@ module.exports = {
           "id": "c0019:t28",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0019:t29",
@@ -4757,7 +4757,7 @@ module.exports = {
           "id": "c0019:t30",
           "surface": "top",
           "kind": "word",
-          "vocabKey": "top:pending:1"
+          "vocabKey": "top:noun:1"
         },
         {
           "id": "c0019:t31",
@@ -4769,7 +4769,7 @@ module.exports = {
           "id": "c0019:t32",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0019:t33",
@@ -4799,7 +4799,7 @@ module.exports = {
           "id": "c0019:t37",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0019:t38",
@@ -4823,7 +4823,7 @@ module.exports = {
           "id": "c0019:t41",
           "surface": "wriggled",
           "kind": "word",
-          "vocabKey": "wriggled:pending:1"
+          "vocabKey": "wriggle:verb:1"
         },
         {
           "id": "c0019:t42",
@@ -4835,7 +4835,7 @@ module.exports = {
           "id": "c0019:t43",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0019:t44",
@@ -4847,7 +4847,7 @@ module.exports = {
           "id": "c0019:t45",
           "surface": "just",
           "kind": "word",
-          "vocabKey": "just:pending:1"
+          "vocabKey": "just:adverb:1"
         },
         {
           "id": "c0019:t46",
@@ -4859,7 +4859,7 @@ module.exports = {
           "id": "c0019:t47",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0019:t48",
@@ -4871,7 +4871,7 @@ module.exports = {
           "id": "c0019:t49",
           "surface": "time",
           "kind": "word",
-          "vocabKey": "time:pending:1"
+          "vocabKey": "time:noun:1"
         },
         {
           "id": "c0019:t50",
@@ -4889,7 +4889,7 @@ module.exports = {
           "id": "c0019:t52",
           "surface": "leaving",
           "kind": "word",
-          "vocabKey": "leaving:pending:1"
+          "vocabKey": "leave:verb:1"
         },
         {
           "id": "c0019:t53",
@@ -4901,7 +4901,7 @@ module.exports = {
           "id": "c0019:t54",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0019:t55",
@@ -4913,7 +4913,7 @@ module.exports = {
           "id": "c0019:t56",
           "surface": "jacket",
           "kind": "word",
-          "vocabKey": "jacket:pending:1"
+          "vocabKey": "jacket:noun:1"
         },
         {
           "id": "c0019:t57",
@@ -4925,7 +4925,7 @@ module.exports = {
           "id": "c0019:t58",
           "surface": "behind",
           "kind": "word",
-          "vocabKey": "behind:pending:1"
+          "vocabKey": "behind:preposition:1"
         },
         {
           "id": "c0019:t59",
@@ -4937,7 +4937,7 @@ module.exports = {
           "id": "c0019:t60",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0019:t61",
@@ -4959,7 +4959,7 @@ module.exports = {
           "id": "c0020:t00",
           "surface": "And",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0020:t01",
@@ -4971,7 +4971,7 @@ module.exports = {
           "id": "c0020:t02",
           "surface": "rushed",
           "kind": "word",
-          "vocabKey": "rushed:pending:1"
+          "vocabKey": "rush:verb:1"
         },
         {
           "id": "c0020:t03",
@@ -4983,7 +4983,7 @@ module.exports = {
           "id": "c0020:t04",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0020:t05",
@@ -4995,7 +4995,7 @@ module.exports = {
           "id": "c0020:t06",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0020:t07",
@@ -5007,7 +5007,7 @@ module.exports = {
           "id": "c0020:t08",
           "surface": "tool-shed",
           "kind": "word",
-          "vocabKey": "tool-shed:pending:1"
+          "vocabKey": "tool_shed:noun:1"
         },
         {
           "id": "c0020:t09",
@@ -5025,7 +5025,7 @@ module.exports = {
           "id": "c0020:t11",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0020:t12",
@@ -5037,7 +5037,7 @@ module.exports = {
           "id": "c0020:t13",
           "surface": "jumped",
           "kind": "word",
-          "vocabKey": "jumped:pending:1"
+          "vocabKey": "jump:verb:1"
         },
         {
           "id": "c0020:t14",
@@ -5049,7 +5049,7 @@ module.exports = {
           "id": "c0020:t15",
           "surface": "into",
           "kind": "word",
-          "vocabKey": "into:pending:1"
+          "vocabKey": "into:preposition:1"
         },
         {
           "id": "c0020:t16",
@@ -5061,7 +5061,7 @@ module.exports = {
           "id": "c0020:t17",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0020:t18",
@@ -5073,7 +5073,7 @@ module.exports = {
           "id": "c0020:t19",
           "surface": "can",
           "kind": "word",
-          "vocabKey": "can:pending:1"
+          "vocabKey": "can:noun:1"
         },
         {
           "id": "c0020:t20",
@@ -5095,7 +5095,7 @@ module.exports = {
           "id": "c0021:t00",
           "surface": "It",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0021:t01",
@@ -5107,7 +5107,7 @@ module.exports = {
           "id": "c0021:t02",
           "surface": "would",
           "kind": "word",
-          "vocabKey": "would:pending:1"
+          "vocabKey": "would:auxiliary:1"
         },
         {
           "id": "c0021:t03",
@@ -5119,7 +5119,7 @@ module.exports = {
           "id": "c0021:t04",
           "surface": "have",
           "kind": "word",
-          "vocabKey": "have:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0021:t05",
@@ -5131,7 +5131,7 @@ module.exports = {
           "id": "c0021:t06",
           "surface": "been",
           "kind": "word",
-          "vocabKey": "been:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0021:t07",
@@ -5143,7 +5143,7 @@ module.exports = {
           "id": "c0021:t08",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0021:t09",
@@ -5155,7 +5155,7 @@ module.exports = {
           "id": "c0021:t10",
           "surface": "beautiful",
           "kind": "word",
-          "vocabKey": "beautiful:pending:1"
+          "vocabKey": "beautiful:adjective:1"
         },
         {
           "id": "c0021:t11",
@@ -5167,7 +5167,7 @@ module.exports = {
           "id": "c0021:t12",
           "surface": "thing",
           "kind": "word",
-          "vocabKey": "thing:pending:1"
+          "vocabKey": "thing:noun:1"
         },
         {
           "id": "c0021:t13",
@@ -5179,7 +5179,7 @@ module.exports = {
           "id": "c0021:t14",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0021:t15",
@@ -5191,7 +5191,7 @@ module.exports = {
           "id": "c0021:t16",
           "surface": "hide",
           "kind": "word",
-          "vocabKey": "hide:pending:1"
+          "vocabKey": "hide:verb:1"
         },
         {
           "id": "c0021:t17",
@@ -5203,7 +5203,7 @@ module.exports = {
           "id": "c0021:t18",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0021:t19",
@@ -5221,7 +5221,7 @@ module.exports = {
           "id": "c0021:t21",
           "surface": "if",
           "kind": "word",
-          "vocabKey": "if:pending:1"
+          "vocabKey": "if:conjunction:1"
         },
         {
           "id": "c0021:t22",
@@ -5233,7 +5233,7 @@ module.exports = {
           "id": "c0021:t23",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0021:t24",
@@ -5245,7 +5245,7 @@ module.exports = {
           "id": "c0021:t25",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0021:t26",
@@ -5257,7 +5257,7 @@ module.exports = {
           "id": "c0021:t27",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0021:t28",
@@ -5269,7 +5269,7 @@ module.exports = {
           "id": "c0021:t29",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0021:t30",
@@ -5281,7 +5281,7 @@ module.exports = {
           "id": "c0021:t31",
           "surface": "so",
           "kind": "word",
-          "vocabKey": "so:pending:1"
+          "vocabKey": "so:conjunction:1"
         },
         {
           "id": "c0021:t32",
@@ -5293,7 +5293,7 @@ module.exports = {
           "id": "c0021:t33",
           "surface": "much",
           "kind": "word",
-          "vocabKey": "much:pending:1"
+          "vocabKey": "much:adjective:1"
         },
         {
           "id": "c0021:t34",
@@ -5305,7 +5305,7 @@ module.exports = {
           "id": "c0021:t35",
           "surface": "water",
           "kind": "word",
-          "vocabKey": "water:pending:1"
+          "vocabKey": "water:noun:1"
         },
         {
           "id": "c0021:t36",
@@ -5317,7 +5317,7 @@ module.exports = {
           "id": "c0021:t37",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0021:t38",
@@ -5329,7 +5329,7 @@ module.exports = {
           "id": "c0021:t39",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0021:t40",
@@ -5351,7 +5351,7 @@ module.exports = {
           "id": "c0022:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0022:t01",
@@ -5381,7 +5381,7 @@ module.exports = {
           "id": "c0022:t05",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0022:t06",
@@ -5393,7 +5393,7 @@ module.exports = {
           "id": "c0022:t07",
           "surface": "quite",
           "kind": "word",
-          "vocabKey": "quite:pending:1"
+          "vocabKey": "quite:adverb:1"
         },
         {
           "id": "c0022:t08",
@@ -5405,7 +5405,7 @@ module.exports = {
           "id": "c0022:t09",
           "surface": "sure",
           "kind": "word",
-          "vocabKey": "sure:pending:1"
+          "vocabKey": "sure:adjective:1"
         },
         {
           "id": "c0022:t10",
@@ -5417,7 +5417,7 @@ module.exports = {
           "id": "c0022:t11",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:conjunction:1"
         },
         {
           "id": "c0022:t12",
@@ -5441,7 +5441,7 @@ module.exports = {
           "id": "c0022:t15",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0022:t16",
@@ -5453,7 +5453,7 @@ module.exports = {
           "id": "c0022:t17",
           "surface": "somewhere",
           "kind": "word",
-          "vocabKey": "somewhere:pending:1"
+          "vocabKey": "somewhere:adverb:1"
         },
         {
           "id": "c0022:t18",
@@ -5465,7 +5465,7 @@ module.exports = {
           "id": "c0022:t19",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0022:t20",
@@ -5477,7 +5477,7 @@ module.exports = {
           "id": "c0022:t21",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0022:t22",
@@ -5489,7 +5489,7 @@ module.exports = {
           "id": "c0022:t23",
           "surface": "tool-shed",
           "kind": "word",
-          "vocabKey": "tool-shed:pending:1"
+          "vocabKey": "tool_shed:noun:1"
         },
         {
           "id": "c0022:t24",
@@ -5507,7 +5507,7 @@ module.exports = {
           "id": "c0022:t26",
           "surface": "perhaps",
           "kind": "word",
-          "vocabKey": "perhaps:pending:1"
+          "vocabKey": "perhaps:adverb:1"
         },
         {
           "id": "c0022:t27",
@@ -5519,7 +5519,7 @@ module.exports = {
           "id": "c0022:t28",
           "surface": "hidden",
           "kind": "word",
-          "vocabKey": "hidden:pending:1"
+          "vocabKey": "hide:adjective:1"
         },
         {
           "id": "c0022:t29",
@@ -5531,7 +5531,7 @@ module.exports = {
           "id": "c0022:t30",
           "surface": "underneath",
           "kind": "word",
-          "vocabKey": "underneath:pending:1"
+          "vocabKey": "underneath:adverb:1"
         },
         {
           "id": "c0022:t31",
@@ -5543,7 +5543,7 @@ module.exports = {
           "id": "c0022:t32",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0022:t33",
@@ -5555,7 +5555,7 @@ module.exports = {
           "id": "c0022:t34",
           "surface": "flower-pot",
           "kind": "word",
-          "vocabKey": "flower-pot:pending:1"
+          "vocabKey": "flowerpot:noun:1"
         },
         {
           "id": "c0022:t35",
@@ -5577,7 +5577,7 @@ module.exports = {
           "id": "c0023:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0023:t01",
@@ -5589,7 +5589,7 @@ module.exports = {
           "id": "c0023:t02",
           "surface": "began",
           "kind": "word",
-          "vocabKey": "began:pending:1"
+          "vocabKey": "begin:verb:1"
         },
         {
           "id": "c0023:t03",
@@ -5601,7 +5601,7 @@ module.exports = {
           "id": "c0023:t04",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0023:t05",
@@ -5613,7 +5613,7 @@ module.exports = {
           "id": "c0023:t06",
           "surface": "turn",
           "kind": "word",
-          "vocabKey": "turn:pending:1"
+          "vocabKey": "turn:verb:1"
         },
         {
           "id": "c0023:t07",
@@ -5625,7 +5625,7 @@ module.exports = {
           "id": "c0023:t08",
           "surface": "them",
           "kind": "word",
-          "vocabKey": "them:pending:1"
+          "vocabKey": "them:pronoun:1"
         },
         {
           "id": "c0023:t09",
@@ -5637,7 +5637,7 @@ module.exports = {
           "id": "c0023:t10",
           "surface": "over",
           "kind": "word",
-          "vocabKey": "over:pending:1"
+          "vocabKey": "over:adverb:2"
         },
         {
           "id": "c0023:t11",
@@ -5649,7 +5649,7 @@ module.exports = {
           "id": "c0023:t12",
           "surface": "carefully",
           "kind": "word",
-          "vocabKey": "carefully:pending:1"
+          "vocabKey": "carefully:adverb:1"
         },
         {
           "id": "c0023:t13",
@@ -5667,7 +5667,7 @@ module.exports = {
           "id": "c0023:t15",
           "surface": "looking",
           "kind": "word",
-          "vocabKey": "looking:pending:1"
+          "vocabKey": "look:verb:1"
         },
         {
           "id": "c0023:t16",
@@ -5679,7 +5679,7 @@ module.exports = {
           "id": "c0023:t17",
           "surface": "under",
           "kind": "word",
-          "vocabKey": "under:pending:1"
+          "vocabKey": "under:preposition:1"
         },
         {
           "id": "c0023:t18",
@@ -5691,7 +5691,7 @@ module.exports = {
           "id": "c0023:t19",
           "surface": "each",
           "kind": "word",
-          "vocabKey": "each:pending:1"
+          "vocabKey": "each:pronoun:1"
         },
         {
           "id": "c0023:t20",
@@ -5713,7 +5713,7 @@ module.exports = {
           "id": "c0024:t00",
           "surface": "Presently",
           "kind": "word",
-          "vocabKey": "presently:pending:1"
+          "vocabKey": "presently:adverb:1"
         },
         {
           "id": "c0024:t01",
@@ -5737,7 +5737,7 @@ module.exports = {
           "id": "c0024:t04",
           "surface": "sneezed",
           "kind": "word",
-          "vocabKey": "sneezed:pending:1"
+          "vocabKey": "sneeze:verb:1"
         },
         {
           "id": "c0024:t05",
@@ -5749,7 +5749,7 @@ module.exports = {
           "id": "c0024:t06",
           "surface": "Kertyschoo",
           "kind": "word",
-          "vocabKey": "kertyschoo:pending:1"
+          "vocabKey": "kertyschoo:interjection:1"
         },
         {
           "id": "c0024:t07",
@@ -5771,7 +5771,7 @@ module.exports = {
           "id": "c0025:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0025:t01",
@@ -5801,7 +5801,7 @@ module.exports = {
           "id": "c0025:t05",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0025:t06",
@@ -5813,7 +5813,7 @@ module.exports = {
           "id": "c0025:t07",
           "surface": "after",
           "kind": "word",
-          "vocabKey": "after:pending:1"
+          "vocabKey": "after:preposition:1"
         },
         {
           "id": "c0025:t08",
@@ -5825,7 +5825,7 @@ module.exports = {
           "id": "c0025:t09",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0025:t10",
@@ -5837,7 +5837,7 @@ module.exports = {
           "id": "c0025:t11",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0025:t12",
@@ -5849,7 +5849,7 @@ module.exports = {
           "id": "c0025:t13",
           "surface": "no",
           "kind": "word",
-          "vocabKey": "no:pending:1"
+          "vocabKey": "no:determiner:1"
         },
         {
           "id": "c0025:t14",
@@ -5861,7 +5861,7 @@ module.exports = {
           "id": "c0025:t15",
           "surface": "time",
           "kind": "word",
-          "vocabKey": "time:pending:1"
+          "vocabKey": "time:noun:1"
         },
         {
           "id": "c0025:t16",
@@ -5883,7 +5883,7 @@ module.exports = {
           "id": "c0026:t00",
           "surface": "And",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0026:t01",
@@ -5895,7 +5895,7 @@ module.exports = {
           "id": "c0026:t02",
           "surface": "tried",
           "kind": "word",
-          "vocabKey": "tried:pending:1"
+          "vocabKey": "try:verb:1"
         },
         {
           "id": "c0026:t03",
@@ -5907,7 +5907,7 @@ module.exports = {
           "id": "c0026:t04",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0026:t05",
@@ -5919,7 +5919,7 @@ module.exports = {
           "id": "c0026:t06",
           "surface": "put",
           "kind": "word",
-          "vocabKey": "put:pending:1"
+          "vocabKey": "put:verb:1"
         },
         {
           "id": "c0026:t07",
@@ -5931,7 +5931,7 @@ module.exports = {
           "id": "c0026:t08",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0026:t09",
@@ -5943,7 +5943,7 @@ module.exports = {
           "id": "c0026:t10",
           "surface": "foot",
           "kind": "word",
-          "vocabKey": "foot:pending:1"
+          "vocabKey": "foot:noun:1"
         },
         {
           "id": "c0026:t11",
@@ -5955,7 +5955,7 @@ module.exports = {
           "id": "c0026:t12",
           "surface": "upon",
           "kind": "word",
-          "vocabKey": "upon:pending:1"
+          "vocabKey": "upon:preposition:1"
         },
         {
           "id": "c0026:t13",
@@ -5985,7 +5985,7 @@ module.exports = {
           "id": "c0026:t17",
           "surface": "who",
           "kind": "word",
-          "vocabKey": "who:pending:1"
+          "vocabKey": "who:pronoun:1"
         },
         {
           "id": "c0026:t18",
@@ -5997,7 +5997,7 @@ module.exports = {
           "id": "c0026:t19",
           "surface": "jumped",
           "kind": "word",
-          "vocabKey": "jumped:pending:1"
+          "vocabKey": "jump:verb:1"
         },
         {
           "id": "c0026:t20",
@@ -6009,7 +6009,7 @@ module.exports = {
           "id": "c0026:t21",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0026:t22",
@@ -6021,7 +6021,7 @@ module.exports = {
           "id": "c0026:t23",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0026:t24",
@@ -6033,7 +6033,7 @@ module.exports = {
           "id": "c0026:t25",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0026:t26",
@@ -6045,7 +6045,7 @@ module.exports = {
           "id": "c0026:t27",
           "surface": "window",
           "kind": "word",
-          "vocabKey": "window:pending:1"
+          "vocabKey": "window:noun:1"
         },
         {
           "id": "c0026:t28",
@@ -6063,7 +6063,7 @@ module.exports = {
           "id": "c0026:t30",
           "surface": "upsetting",
           "kind": "word",
-          "vocabKey": "upsetting:pending:1"
+          "vocabKey": "upset:verb:1"
         },
         {
           "id": "c0026:t31",
@@ -6075,7 +6075,7 @@ module.exports = {
           "id": "c0026:t32",
           "surface": "three",
           "kind": "word",
-          "vocabKey": "three:pending:1"
+          "vocabKey": "three:numeral:1"
         },
         {
           "id": "c0026:t33",
@@ -6087,7 +6087,7 @@ module.exports = {
           "id": "c0026:t34",
           "surface": "plants",
           "kind": "word",
-          "vocabKey": "plants:pending:1"
+          "vocabKey": "plant:noun:1"
         },
         {
           "id": "c0026:t35",
@@ -6109,7 +6109,7 @@ module.exports = {
           "id": "c0027:t00",
           "surface": "The",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0027:t01",
@@ -6121,7 +6121,7 @@ module.exports = {
           "id": "c0027:t02",
           "surface": "window",
           "kind": "word",
-          "vocabKey": "window:pending:1"
+          "vocabKey": "window:noun:1"
         },
         {
           "id": "c0027:t03",
@@ -6133,7 +6133,7 @@ module.exports = {
           "id": "c0027:t04",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0027:t05",
@@ -6145,7 +6145,7 @@ module.exports = {
           "id": "c0027:t06",
           "surface": "too",
           "kind": "word",
-          "vocabKey": "too:pending:1"
+          "vocabKey": "too:adverb:1"
         },
         {
           "id": "c0027:t07",
@@ -6157,7 +6157,7 @@ module.exports = {
           "id": "c0027:t08",
           "surface": "small",
           "kind": "word",
-          "vocabKey": "small:pending:1"
+          "vocabKey": "small:adjective:1"
         },
         {
           "id": "c0027:t09",
@@ -6169,7 +6169,7 @@ module.exports = {
           "id": "c0027:t10",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0027:t11",
@@ -6181,7 +6181,7 @@ module.exports = {
           "id": "c0027:t12",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0027:t13",
@@ -6217,7 +6217,7 @@ module.exports = {
           "id": "c0027:t18",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0027:t19",
@@ -6229,7 +6229,7 @@ module.exports = {
           "id": "c0027:t20",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0027:t21",
@@ -6241,7 +6241,7 @@ module.exports = {
           "id": "c0027:t22",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0027:t23",
@@ -6253,7 +6253,7 @@ module.exports = {
           "id": "c0027:t24",
           "surface": "tired",
           "kind": "word",
-          "vocabKey": "tired:pending:1"
+          "vocabKey": "tired:adjective:1"
         },
         {
           "id": "c0027:t25",
@@ -6265,7 +6265,7 @@ module.exports = {
           "id": "c0027:t26",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0027:t27",
@@ -6277,7 +6277,7 @@ module.exports = {
           "id": "c0027:t28",
           "surface": "running",
           "kind": "word",
-          "vocabKey": "running:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0027:t29",
@@ -6289,7 +6289,7 @@ module.exports = {
           "id": "c0027:t30",
           "surface": "after",
           "kind": "word",
-          "vocabKey": "after:pending:1"
+          "vocabKey": "after:preposition:1"
         },
         {
           "id": "c0027:t31",
@@ -6323,7 +6323,7 @@ module.exports = {
           "id": "c0028:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0028:t01",
@@ -6335,7 +6335,7 @@ module.exports = {
           "id": "c0028:t02",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0028:t03",
@@ -6347,7 +6347,7 @@ module.exports = {
           "id": "c0028:t04",
           "surface": "back",
           "kind": "word",
-          "vocabKey": "back:pending:1"
+          "vocabKey": "back:adverb:1"
         },
         {
           "id": "c0028:t05",
@@ -6359,7 +6359,7 @@ module.exports = {
           "id": "c0028:t06",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0028:t07",
@@ -6371,7 +6371,7 @@ module.exports = {
           "id": "c0028:t08",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0028:t09",
@@ -6383,7 +6383,7 @@ module.exports = {
           "id": "c0028:t10",
           "surface": "work",
           "kind": "word",
-          "vocabKey": "work:pending:1"
+          "vocabKey": "work:noun:1"
         },
         {
           "id": "c0028:t11",
@@ -6417,7 +6417,7 @@ module.exports = {
           "id": "c0029:t02",
           "surface": "sat",
           "kind": "word",
-          "vocabKey": "sat:pending:1"
+          "vocabKey": "sit:verb:1"
         },
         {
           "id": "c0029:t03",
@@ -6429,7 +6429,7 @@ module.exports = {
           "id": "c0029:t04",
           "surface": "down",
           "kind": "word",
-          "vocabKey": "down:pending:1"
+          "vocabKey": "down:adverb:2"
         },
         {
           "id": "c0029:t05",
@@ -6441,7 +6441,7 @@ module.exports = {
           "id": "c0029:t06",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0029:t07",
@@ -6453,7 +6453,7 @@ module.exports = {
           "id": "c0029:t08",
           "surface": "rest",
           "kind": "word",
-          "vocabKey": "rest:pending:1"
+          "vocabKey": "rest:noun:1"
         },
         {
           "id": "c0029:t09",
@@ -6471,7 +6471,7 @@ module.exports = {
           "id": "c0029:t11",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0029:t12",
@@ -6483,7 +6483,7 @@ module.exports = {
           "id": "c0029:t13",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0029:t14",
@@ -6495,7 +6495,7 @@ module.exports = {
           "id": "c0029:t15",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0029:t16",
@@ -6507,7 +6507,7 @@ module.exports = {
           "id": "c0029:t17",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0029:t18",
@@ -6519,7 +6519,7 @@ module.exports = {
           "id": "c0029:t19",
           "surface": "breath",
           "kind": "word",
-          "vocabKey": "breath:pending:1"
+          "vocabKey": "breath:noun:1"
         },
         {
           "id": "c0029:t20",
@@ -6531,7 +6531,7 @@ module.exports = {
           "id": "c0029:t21",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0029:t22",
@@ -6543,7 +6543,7 @@ module.exports = {
           "id": "c0029:t23",
           "surface": "trembling",
           "kind": "word",
-          "vocabKey": "trembling:pending:1"
+          "vocabKey": "tremble:verb:1"
         },
         {
           "id": "c0029:t24",
@@ -6555,7 +6555,7 @@ module.exports = {
           "id": "c0029:t25",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0029:t26",
@@ -6567,7 +6567,7 @@ module.exports = {
           "id": "c0029:t27",
           "surface": "fright",
           "kind": "word",
-          "vocabKey": "fright:pending:1"
+          "vocabKey": "fright:noun:1"
         },
         {
           "id": "c0029:t28",
@@ -6585,7 +6585,7 @@ module.exports = {
           "id": "c0029:t30",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0029:t31",
@@ -6597,7 +6597,7 @@ module.exports = {
           "id": "c0029:t32",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0029:t33",
@@ -6609,7 +6609,7 @@ module.exports = {
           "id": "c0029:t34",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0029:t35",
@@ -6621,7 +6621,7 @@ module.exports = {
           "id": "c0029:t36",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0029:t37",
@@ -6633,7 +6633,7 @@ module.exports = {
           "id": "c0029:t38",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0029:t39",
@@ -6645,7 +6645,7 @@ module.exports = {
           "id": "c0029:t40",
           "surface": "least",
           "kind": "word",
-          "vocabKey": "least:pending:1"
+          "vocabKey": "least:adjective:1"
         },
         {
           "id": "c0029:t41",
@@ -6657,7 +6657,7 @@ module.exports = {
           "id": "c0029:t42",
           "surface": "idea",
           "kind": "word",
-          "vocabKey": "idea:pending:1"
+          "vocabKey": "idea:noun:1"
         },
         {
           "id": "c0029:t43",
@@ -6669,7 +6669,7 @@ module.exports = {
           "id": "c0029:t44",
           "surface": "which",
           "kind": "word",
-          "vocabKey": "which:pending:1"
+          "vocabKey": "which:determiner:2"
         },
         {
           "id": "c0029:t45",
@@ -6681,7 +6681,7 @@ module.exports = {
           "id": "c0029:t46",
           "surface": "way",
           "kind": "word",
-          "vocabKey": "way:pending:1"
+          "vocabKey": "way:noun:1"
         },
         {
           "id": "c0029:t47",
@@ -6693,7 +6693,7 @@ module.exports = {
           "id": "c0029:t48",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0029:t49",
@@ -6705,7 +6705,7 @@ module.exports = {
           "id": "c0029:t50",
           "surface": "go",
           "kind": "word",
-          "vocabKey": "go:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0029:t51",
@@ -6727,7 +6727,7 @@ module.exports = {
           "id": "c0030:t00",
           "surface": "Also",
           "kind": "word",
-          "vocabKey": "also:pending:1"
+          "vocabKey": "also:adverb:1"
         },
         {
           "id": "c0030:t01",
@@ -6739,7 +6739,7 @@ module.exports = {
           "id": "c0030:t02",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0030:t03",
@@ -6751,7 +6751,7 @@ module.exports = {
           "id": "c0030:t04",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0030:t05",
@@ -6763,7 +6763,7 @@ module.exports = {
           "id": "c0030:t06",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0030:t07",
@@ -6775,7 +6775,7 @@ module.exports = {
           "id": "c0030:t08",
           "surface": "damp",
           "kind": "word",
-          "vocabKey": "damp:pending:1"
+          "vocabKey": "damp:adjective:1"
         },
         {
           "id": "c0030:t09",
@@ -6787,7 +6787,7 @@ module.exports = {
           "id": "c0030:t10",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0030:t11",
@@ -6799,7 +6799,7 @@ module.exports = {
           "id": "c0030:t12",
           "surface": "sitting",
           "kind": "word",
-          "vocabKey": "sitting:pending:1"
+          "vocabKey": "sit:verb:1"
         },
         {
           "id": "c0030:t13",
@@ -6811,7 +6811,7 @@ module.exports = {
           "id": "c0030:t14",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0030:t15",
@@ -6823,7 +6823,7 @@ module.exports = {
           "id": "c0030:t16",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:determiner:2"
         },
         {
           "id": "c0030:t17",
@@ -6835,7 +6835,7 @@ module.exports = {
           "id": "c0030:t18",
           "surface": "can",
           "kind": "word",
-          "vocabKey": "can:pending:1"
+          "vocabKey": "can:noun:1"
         },
         {
           "id": "c0030:t19",
@@ -6857,7 +6857,7 @@ module.exports = {
           "id": "c0031:t00",
           "surface": "After",
           "kind": "word",
-          "vocabKey": "after:pending:1"
+          "vocabKey": "after:preposition:1"
         },
         {
           "id": "c0031:t01",
@@ -6869,7 +6869,7 @@ module.exports = {
           "id": "c0031:t02",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0031:t03",
@@ -6881,7 +6881,7 @@ module.exports = {
           "id": "c0031:t04",
           "surface": "time",
           "kind": "word",
-          "vocabKey": "time:pending:1"
+          "vocabKey": "time:noun:1"
         },
         {
           "id": "c0031:t05",
@@ -6893,7 +6893,7 @@ module.exports = {
           "id": "c0031:t06",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0031:t07",
@@ -6905,7 +6905,7 @@ module.exports = {
           "id": "c0031:t08",
           "surface": "began",
           "kind": "word",
-          "vocabKey": "began:pending:1"
+          "vocabKey": "begin:verb:1"
         },
         {
           "id": "c0031:t09",
@@ -6917,7 +6917,7 @@ module.exports = {
           "id": "c0031:t10",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0031:t11",
@@ -6929,7 +6929,7 @@ module.exports = {
           "id": "c0031:t12",
           "surface": "wander",
           "kind": "word",
-          "vocabKey": "wander:pending:1"
+          "vocabKey": "wander:verb:1"
         },
         {
           "id": "c0031:t13",
@@ -6941,7 +6941,7 @@ module.exports = {
           "id": "c0031:t14",
           "surface": "about",
           "kind": "word",
-          "vocabKey": "about:pending:1"
+          "vocabKey": "about:adverb:1"
         },
         {
           "id": "c0031:t15",
@@ -6959,7 +6959,7 @@ module.exports = {
           "id": "c0031:t17",
           "surface": "going",
           "kind": "word",
-          "vocabKey": "going:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0031:t18",
@@ -6971,7 +6971,7 @@ module.exports = {
           "id": "c0031:t19",
           "surface": "lippity",
           "kind": "word",
-          "vocabKey": "lippity:pending:1"
+          "vocabKey": "lippity:adverb:1"
         },
         {
           "id": "c0031:t20",
@@ -6983,7 +6983,7 @@ module.exports = {
           "id": "c0031:t21",
           "surface": "lippity",
           "kind": "word",
-          "vocabKey": "lippity:pending:1"
+          "vocabKey": "lippity:adverb:1"
         },
         {
           "id": "c0031:t22",
@@ -6995,7 +6995,7 @@ module.exports = {
           "id": "c0031:t23",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0031:t24",
@@ -7007,7 +7007,7 @@ module.exports = {
           "id": "c0031:t25",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0031:t26",
@@ -7019,7 +7019,7 @@ module.exports = {
           "id": "c0031:t27",
           "surface": "fast",
           "kind": "word",
-          "vocabKey": "fast:pending:1"
+          "vocabKey": "fast:adverb:1"
         },
         {
           "id": "c0031:t28",
@@ -7037,7 +7037,7 @@ module.exports = {
           "id": "c0031:t30",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0031:t31",
@@ -7049,7 +7049,7 @@ module.exports = {
           "id": "c0031:t32",
           "surface": "looking",
           "kind": "word",
-          "vocabKey": "looking:pending:1"
+          "vocabKey": "look:verb:1"
         },
         {
           "id": "c0031:t33",
@@ -7061,7 +7061,7 @@ module.exports = {
           "id": "c0031:t34",
           "surface": "all",
           "kind": "word",
-          "vocabKey": "all:pending:1"
+          "vocabKey": "all:adverb:1"
         },
         {
           "id": "c0031:t35",
@@ -7073,7 +7073,7 @@ module.exports = {
           "id": "c0031:t36",
           "surface": "round",
           "kind": "word",
-          "vocabKey": "round:pending:1"
+          "vocabKey": "round:adverb:2"
         },
         {
           "id": "c0031:t37",
@@ -7095,7 +7095,7 @@ module.exports = {
           "id": "c0032:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0032:t01",
@@ -7107,7 +7107,7 @@ module.exports = {
           "id": "c0032:t02",
           "surface": "found",
           "kind": "word",
-          "vocabKey": "found:pending:1"
+          "vocabKey": "find:verb:1"
         },
         {
           "id": "c0032:t03",
@@ -7119,7 +7119,7 @@ module.exports = {
           "id": "c0032:t04",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0032:t05",
@@ -7131,7 +7131,7 @@ module.exports = {
           "id": "c0032:t06",
           "surface": "door",
           "kind": "word",
-          "vocabKey": "door:pending:1"
+          "vocabKey": "door:noun:1"
         },
         {
           "id": "c0032:t07",
@@ -7143,7 +7143,7 @@ module.exports = {
           "id": "c0032:t08",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0032:t09",
@@ -7155,7 +7155,7 @@ module.exports = {
           "id": "c0032:t10",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0032:t11",
@@ -7167,7 +7167,7 @@ module.exports = {
           "id": "c0032:t12",
           "surface": "wall",
           "kind": "word",
-          "vocabKey": "wall:pending:1"
+          "vocabKey": "wall:noun:1"
         },
         {
           "id": "c0032:t13",
@@ -7185,7 +7185,7 @@ module.exports = {
           "id": "c0032:t15",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0032:t16",
@@ -7197,7 +7197,7 @@ module.exports = {
           "id": "c0032:t17",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0032:t18",
@@ -7209,7 +7209,7 @@ module.exports = {
           "id": "c0032:t19",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0032:t20",
@@ -7221,7 +7221,7 @@ module.exports = {
           "id": "c0032:t21",
           "surface": "locked",
           "kind": "word",
-          "vocabKey": "locked:pending:1"
+          "vocabKey": "lock:adjective:1"
         },
         {
           "id": "c0032:t22",
@@ -7239,7 +7239,7 @@ module.exports = {
           "id": "c0032:t24",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0032:t25",
@@ -7251,7 +7251,7 @@ module.exports = {
           "id": "c0032:t26",
           "surface": "there",
           "kind": "word",
-          "vocabKey": "there:pending:1"
+          "vocabKey": "there:adverb:1"
         },
         {
           "id": "c0032:t27",
@@ -7263,7 +7263,7 @@ module.exports = {
           "id": "c0032:t28",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0032:t29",
@@ -7275,7 +7275,7 @@ module.exports = {
           "id": "c0032:t30",
           "surface": "no",
           "kind": "word",
-          "vocabKey": "no:pending:1"
+          "vocabKey": "no:determiner:1"
         },
         {
           "id": "c0032:t31",
@@ -7287,7 +7287,7 @@ module.exports = {
           "id": "c0032:t32",
           "surface": "room",
           "kind": "word",
-          "vocabKey": "room:pending:1"
+          "vocabKey": "room:noun:1"
         },
         {
           "id": "c0032:t33",
@@ -7299,7 +7299,7 @@ module.exports = {
           "id": "c0032:t34",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0032:t35",
@@ -7311,7 +7311,7 @@ module.exports = {
           "id": "c0032:t36",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0032:t37",
@@ -7323,7 +7323,7 @@ module.exports = {
           "id": "c0032:t38",
           "surface": "fat",
           "kind": "word",
-          "vocabKey": "fat:pending:1"
+          "vocabKey": "fat:adjective:1"
         },
         {
           "id": "c0032:t39",
@@ -7335,7 +7335,7 @@ module.exports = {
           "id": "c0032:t40",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0032:t41",
@@ -7347,7 +7347,7 @@ module.exports = {
           "id": "c0032:t42",
           "surface": "rabbit",
           "kind": "word",
-          "vocabKey": "rabbit:pending:1"
+          "vocabKey": "rabbit:noun:1"
         },
         {
           "id": "c0032:t43",
@@ -7359,7 +7359,7 @@ module.exports = {
           "id": "c0032:t44",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0032:t45",
@@ -7371,7 +7371,7 @@ module.exports = {
           "id": "c0032:t46",
           "surface": "squeeze",
           "kind": "word",
-          "vocabKey": "squeeze:pending:1"
+          "vocabKey": "squeeze:verb:1"
         },
         {
           "id": "c0032:t47",
@@ -7383,7 +7383,7 @@ module.exports = {
           "id": "c0032:t48",
           "surface": "underneath",
           "kind": "word",
-          "vocabKey": "underneath:pending:1"
+          "vocabKey": "underneath:adverb:1"
         },
         {
           "id": "c0032:t49",
@@ -7405,7 +7405,7 @@ module.exports = {
           "id": "c0033:t00",
           "surface": "An",
           "kind": "word",
-          "vocabKey": "an:pending:1"
+          "vocabKey": "an:determiner:1"
         },
         {
           "id": "c0033:t01",
@@ -7417,7 +7417,7 @@ module.exports = {
           "id": "c0033:t02",
           "surface": "old",
           "kind": "word",
-          "vocabKey": "old:pending:1"
+          "vocabKey": "old:adjective:1"
         },
         {
           "id": "c0033:t03",
@@ -7429,7 +7429,7 @@ module.exports = {
           "id": "c0033:t04",
           "surface": "mouse",
           "kind": "word",
-          "vocabKey": "mouse:pending:1"
+          "vocabKey": "mouse:noun:1"
         },
         {
           "id": "c0033:t05",
@@ -7441,7 +7441,7 @@ module.exports = {
           "id": "c0033:t06",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0033:t07",
@@ -7453,7 +7453,7 @@ module.exports = {
           "id": "c0033:t08",
           "surface": "running",
           "kind": "word",
-          "vocabKey": "running:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0033:t09",
@@ -7465,7 +7465,7 @@ module.exports = {
           "id": "c0033:t10",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0033:t11",
@@ -7477,7 +7477,7 @@ module.exports = {
           "id": "c0033:t12",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0033:t13",
@@ -7489,7 +7489,7 @@ module.exports = {
           "id": "c0033:t14",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0033:t15",
@@ -7501,7 +7501,7 @@ module.exports = {
           "id": "c0033:t16",
           "surface": "over",
           "kind": "word",
-          "vocabKey": "over:pending:1"
+          "vocabKey": "over:preposition:1"
         },
         {
           "id": "c0033:t17",
@@ -7513,7 +7513,7 @@ module.exports = {
           "id": "c0033:t18",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0033:t19",
@@ -7525,7 +7525,7 @@ module.exports = {
           "id": "c0033:t20",
           "surface": "stone",
           "kind": "word",
-          "vocabKey": "stone:pending:1"
+          "vocabKey": "stone:noun:1"
         },
         {
           "id": "c0033:t21",
@@ -7537,7 +7537,7 @@ module.exports = {
           "id": "c0033:t22",
           "surface": "doorstep",
           "kind": "word",
-          "vocabKey": "doorstep:pending:1"
+          "vocabKey": "doorstep:noun:1"
         },
         {
           "id": "c0033:t23",
@@ -7555,7 +7555,7 @@ module.exports = {
           "id": "c0033:t25",
           "surface": "carrying",
           "kind": "word",
-          "vocabKey": "carrying:pending:1"
+          "vocabKey": "carry:verb:1"
         },
         {
           "id": "c0033:t26",
@@ -7567,7 +7567,7 @@ module.exports = {
           "id": "c0033:t27",
           "surface": "peas",
           "kind": "word",
-          "vocabKey": "peas:pending:1"
+          "vocabKey": "pea:noun:1"
         },
         {
           "id": "c0033:t28",
@@ -7579,7 +7579,7 @@ module.exports = {
           "id": "c0033:t29",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0033:t30",
@@ -7591,7 +7591,7 @@ module.exports = {
           "id": "c0033:t31",
           "surface": "beans",
           "kind": "word",
-          "vocabKey": "beans:pending:1"
+          "vocabKey": "bean:noun:1"
         },
         {
           "id": "c0033:t32",
@@ -7603,7 +7603,7 @@ module.exports = {
           "id": "c0033:t33",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0033:t34",
@@ -7615,7 +7615,7 @@ module.exports = {
           "id": "c0033:t35",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:determiner:1"
         },
         {
           "id": "c0033:t36",
@@ -7627,7 +7627,7 @@ module.exports = {
           "id": "c0033:t37",
           "surface": "family",
           "kind": "word",
-          "vocabKey": "family:pending:1"
+          "vocabKey": "family:noun:1"
         },
         {
           "id": "c0033:t38",
@@ -7639,7 +7639,7 @@ module.exports = {
           "id": "c0033:t39",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0033:t40",
@@ -7651,7 +7651,7 @@ module.exports = {
           "id": "c0033:t41",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0033:t42",
@@ -7663,7 +7663,7 @@ module.exports = {
           "id": "c0033:t43",
           "surface": "wood",
           "kind": "word",
-          "vocabKey": "wood:pending:1"
+          "vocabKey": "wood:noun:1"
         },
         {
           "id": "c0033:t44",
@@ -7697,7 +7697,7 @@ module.exports = {
           "id": "c0034:t02",
           "surface": "asked",
           "kind": "word",
-          "vocabKey": "asked:pending:1"
+          "vocabKey": "ask:verb:1"
         },
         {
           "id": "c0034:t03",
@@ -7709,7 +7709,7 @@ module.exports = {
           "id": "c0034:t04",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:pronoun:2"
         },
         {
           "id": "c0034:t05",
@@ -7721,7 +7721,7 @@ module.exports = {
           "id": "c0034:t06",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0034:t07",
@@ -7733,7 +7733,7 @@ module.exports = {
           "id": "c0034:t08",
           "surface": "way",
           "kind": "word",
-          "vocabKey": "way:pending:1"
+          "vocabKey": "way:noun:1"
         },
         {
           "id": "c0034:t09",
@@ -7745,7 +7745,7 @@ module.exports = {
           "id": "c0034:t10",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0034:t11",
@@ -7757,7 +7757,7 @@ module.exports = {
           "id": "c0034:t12",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0034:t13",
@@ -7769,7 +7769,7 @@ module.exports = {
           "id": "c0034:t14",
           "surface": "gate",
           "kind": "word",
-          "vocabKey": "gate:pending:1"
+          "vocabKey": "gate:noun:1"
         },
         {
           "id": "c0034:t15",
@@ -7787,7 +7787,7 @@ module.exports = {
           "id": "c0034:t17",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0034:t18",
@@ -7799,7 +7799,7 @@ module.exports = {
           "id": "c0034:t19",
           "surface": "she",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0034:t20",
@@ -7811,7 +7811,7 @@ module.exports = {
           "id": "c0034:t21",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0034:t22",
@@ -7823,7 +7823,7 @@ module.exports = {
           "id": "c0034:t23",
           "surface": "such",
           "kind": "word",
-          "vocabKey": "such:pending:1"
+          "vocabKey": "such:determiner:1"
         },
         {
           "id": "c0034:t24",
@@ -7835,7 +7835,7 @@ module.exports = {
           "id": "c0034:t25",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0034:t26",
@@ -7847,7 +7847,7 @@ module.exports = {
           "id": "c0034:t27",
           "surface": "large",
           "kind": "word",
-          "vocabKey": "large:pending:1"
+          "vocabKey": "large:adjective:1"
         },
         {
           "id": "c0034:t28",
@@ -7859,7 +7859,7 @@ module.exports = {
           "id": "c0034:t29",
           "surface": "pea",
           "kind": "word",
-          "vocabKey": "pea:pending:1"
+          "vocabKey": "pea:noun:1"
         },
         {
           "id": "c0034:t30",
@@ -7871,7 +7871,7 @@ module.exports = {
           "id": "c0034:t31",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0034:t32",
@@ -7883,7 +7883,7 @@ module.exports = {
           "id": "c0034:t33",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:determiner:1"
         },
         {
           "id": "c0034:t34",
@@ -7895,7 +7895,7 @@ module.exports = {
           "id": "c0034:t35",
           "surface": "mouth",
           "kind": "word",
-          "vocabKey": "mouth:pending:1"
+          "vocabKey": "mouth:noun:1"
         },
         {
           "id": "c0034:t36",
@@ -7907,7 +7907,7 @@ module.exports = {
           "id": "c0034:t37",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:conjunction:1"
         },
         {
           "id": "c0034:t38",
@@ -7919,7 +7919,7 @@ module.exports = {
           "id": "c0034:t39",
           "surface": "she",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0034:t40",
@@ -7931,7 +7931,7 @@ module.exports = {
           "id": "c0034:t41",
           "surface": "could",
           "kind": "word",
-          "vocabKey": "could:pending:1"
+          "vocabKey": "could:auxiliary:1"
         },
         {
           "id": "c0034:t42",
@@ -7943,7 +7943,7 @@ module.exports = {
           "id": "c0034:t43",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0034:t44",
@@ -7955,7 +7955,7 @@ module.exports = {
           "id": "c0034:t45",
           "surface": "answer",
           "kind": "word",
-          "vocabKey": "answer:pending:1"
+          "vocabKey": "answer:verb:1"
         },
         {
           "id": "c0034:t46",
@@ -7977,7 +7977,7 @@ module.exports = {
           "id": "c0035:t00",
           "surface": "She",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0035:t01",
@@ -7989,7 +7989,7 @@ module.exports = {
           "id": "c0035:t02",
           "surface": "only",
           "kind": "word",
-          "vocabKey": "only:pending:1"
+          "vocabKey": "only:adverb:1"
         },
         {
           "id": "c0035:t03",
@@ -8001,7 +8001,7 @@ module.exports = {
           "id": "c0035:t04",
           "surface": "shook",
           "kind": "word",
-          "vocabKey": "shook:pending:1"
+          "vocabKey": "shake:verb:1"
         },
         {
           "id": "c0035:t05",
@@ -8013,7 +8013,7 @@ module.exports = {
           "id": "c0035:t06",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:determiner:1"
         },
         {
           "id": "c0035:t07",
@@ -8025,7 +8025,7 @@ module.exports = {
           "id": "c0035:t08",
           "surface": "head",
           "kind": "word",
-          "vocabKey": "head:pending:1"
+          "vocabKey": "head:noun:1"
         },
         {
           "id": "c0035:t09",
@@ -8037,7 +8037,7 @@ module.exports = {
           "id": "c0035:t10",
           "surface": "at",
           "kind": "word",
-          "vocabKey": "at:pending:1"
+          "vocabKey": "at:preposition:1"
         },
         {
           "id": "c0035:t11",
@@ -8049,7 +8049,7 @@ module.exports = {
           "id": "c0035:t12",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0035:t13",
@@ -8083,7 +8083,7 @@ module.exports = {
           "id": "c0036:t02",
           "surface": "began",
           "kind": "word",
-          "vocabKey": "began:pending:1"
+          "vocabKey": "begin:verb:1"
         },
         {
           "id": "c0036:t03",
@@ -8095,7 +8095,7 @@ module.exports = {
           "id": "c0036:t04",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0036:t05",
@@ -8107,7 +8107,7 @@ module.exports = {
           "id": "c0036:t06",
           "surface": "cry",
           "kind": "word",
-          "vocabKey": "cry:pending:1"
+          "vocabKey": "cry:verb:1"
         },
         {
           "id": "c0036:t07",
@@ -8129,7 +8129,7 @@ module.exports = {
           "id": "c0037:t00",
           "surface": "Then",
           "kind": "word",
-          "vocabKey": "then:pending:1"
+          "vocabKey": "then:adverb:1"
         },
         {
           "id": "c0037:t01",
@@ -8141,7 +8141,7 @@ module.exports = {
           "id": "c0037:t02",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0037:t03",
@@ -8153,7 +8153,7 @@ module.exports = {
           "id": "c0037:t04",
           "surface": "tried",
           "kind": "word",
-          "vocabKey": "tried:pending:1"
+          "vocabKey": "try:verb:1"
         },
         {
           "id": "c0037:t05",
@@ -8165,7 +8165,7 @@ module.exports = {
           "id": "c0037:t06",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0037:t07",
@@ -8177,7 +8177,7 @@ module.exports = {
           "id": "c0037:t08",
           "surface": "find",
           "kind": "word",
-          "vocabKey": "find:pending:1"
+          "vocabKey": "find:verb:1"
         },
         {
           "id": "c0037:t09",
@@ -8189,7 +8189,7 @@ module.exports = {
           "id": "c0037:t10",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0037:t11",
@@ -8201,7 +8201,7 @@ module.exports = {
           "id": "c0037:t12",
           "surface": "way",
           "kind": "word",
-          "vocabKey": "way:pending:1"
+          "vocabKey": "way:noun:1"
         },
         {
           "id": "c0037:t13",
@@ -8213,7 +8213,7 @@ module.exports = {
           "id": "c0037:t14",
           "surface": "straight",
           "kind": "word",
-          "vocabKey": "straight:pending:1"
+          "vocabKey": "straight:adverb:1"
         },
         {
           "id": "c0037:t15",
@@ -8225,7 +8225,7 @@ module.exports = {
           "id": "c0037:t16",
           "surface": "across",
           "kind": "word",
-          "vocabKey": "across:pending:1"
+          "vocabKey": "across:adverb:1"
         },
         {
           "id": "c0037:t17",
@@ -8237,7 +8237,7 @@ module.exports = {
           "id": "c0037:t18",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0037:t19",
@@ -8249,7 +8249,7 @@ module.exports = {
           "id": "c0037:t20",
           "surface": "garden",
           "kind": "word",
-          "vocabKey": "garden:pending:1"
+          "vocabKey": "garden:noun:1"
         },
         {
           "id": "c0037:t21",
@@ -8267,7 +8267,7 @@ module.exports = {
           "id": "c0037:t23",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0037:t24",
@@ -8279,7 +8279,7 @@ module.exports = {
           "id": "c0037:t25",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0037:t26",
@@ -8291,7 +8291,7 @@ module.exports = {
           "id": "c0037:t27",
           "surface": "became",
           "kind": "word",
-          "vocabKey": "became:pending:1"
+          "vocabKey": "become:verb:1"
         },
         {
           "id": "c0037:t28",
@@ -8303,7 +8303,7 @@ module.exports = {
           "id": "c0037:t29",
           "surface": "more",
           "kind": "word",
-          "vocabKey": "more:pending:1"
+          "vocabKey": "more:adverb:1"
         },
         {
           "id": "c0037:t30",
@@ -8315,7 +8315,7 @@ module.exports = {
           "id": "c0037:t31",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0037:t32",
@@ -8327,7 +8327,7 @@ module.exports = {
           "id": "c0037:t33",
           "surface": "more",
           "kind": "word",
-          "vocabKey": "more:pending:1"
+          "vocabKey": "more:adverb:1"
         },
         {
           "id": "c0037:t34",
@@ -8339,7 +8339,7 @@ module.exports = {
           "id": "c0037:t35",
           "surface": "puzzled",
           "kind": "word",
-          "vocabKey": "puzzled:pending:1"
+          "vocabKey": "puzzled:adjective:1"
         },
         {
           "id": "c0037:t36",
@@ -8361,7 +8361,7 @@ module.exports = {
           "id": "c0038:t00",
           "surface": "Presently",
           "kind": "word",
-          "vocabKey": "presently:pending:1"
+          "vocabKey": "presently:adverb:1"
         },
         {
           "id": "c0038:t01",
@@ -8379,7 +8379,7 @@ module.exports = {
           "id": "c0038:t03",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0038:t04",
@@ -8391,7 +8391,7 @@ module.exports = {
           "id": "c0038:t05",
           "surface": "came",
           "kind": "word",
-          "vocabKey": "came:pending:1"
+          "vocabKey": "come:verb:1"
         },
         {
           "id": "c0038:t06",
@@ -8403,7 +8403,7 @@ module.exports = {
           "id": "c0038:t07",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0038:t08",
@@ -8415,7 +8415,7 @@ module.exports = {
           "id": "c0038:t09",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0038:t10",
@@ -8427,7 +8427,7 @@ module.exports = {
           "id": "c0038:t11",
           "surface": "pond",
           "kind": "word",
-          "vocabKey": "pond:pending:1"
+          "vocabKey": "pond:noun:1"
         },
         {
           "id": "c0038:t12",
@@ -8439,7 +8439,7 @@ module.exports = {
           "id": "c0038:t13",
           "surface": "where",
           "kind": "word",
-          "vocabKey": "where:pending:1"
+          "vocabKey": "where:adverb:1"
         },
         {
           "id": "c0038:t14",
@@ -8451,7 +8451,7 @@ module.exports = {
           "id": "c0038:t15",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0038:t16",
@@ -8481,7 +8481,7 @@ module.exports = {
           "id": "c0038:t20",
           "surface": "filled",
           "kind": "word",
-          "vocabKey": "filled:pending:1"
+          "vocabKey": "fill:verb:1"
         },
         {
           "id": "c0038:t21",
@@ -8493,7 +8493,7 @@ module.exports = {
           "id": "c0038:t22",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0038:t23",
@@ -8505,7 +8505,7 @@ module.exports = {
           "id": "c0038:t24",
           "surface": "water-cans",
           "kind": "word",
-          "vocabKey": "water-cans:pending:1"
+          "vocabKey": "watering_can:noun:1"
         },
         {
           "id": "c0038:t25",
@@ -8527,7 +8527,7 @@ module.exports = {
           "id": "c0039:t00",
           "surface": "A",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0039:t01",
@@ -8539,7 +8539,7 @@ module.exports = {
           "id": "c0039:t02",
           "surface": "white",
           "kind": "word",
-          "vocabKey": "white:pending:1"
+          "vocabKey": "white:adjective:1"
         },
         {
           "id": "c0039:t03",
@@ -8551,7 +8551,7 @@ module.exports = {
           "id": "c0039:t04",
           "surface": "cat",
           "kind": "word",
-          "vocabKey": "cat:pending:1"
+          "vocabKey": "cat:noun:1"
         },
         {
           "id": "c0039:t05",
@@ -8563,7 +8563,7 @@ module.exports = {
           "id": "c0039:t06",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0039:t07",
@@ -8575,7 +8575,7 @@ module.exports = {
           "id": "c0039:t08",
           "surface": "staring",
           "kind": "word",
-          "vocabKey": "staring:pending:1"
+          "vocabKey": "stare:verb:1"
         },
         {
           "id": "c0039:t09",
@@ -8587,7 +8587,7 @@ module.exports = {
           "id": "c0039:t10",
           "surface": "at",
           "kind": "word",
-          "vocabKey": "at:pending:1"
+          "vocabKey": "at:preposition:1"
         },
         {
           "id": "c0039:t11",
@@ -8599,7 +8599,7 @@ module.exports = {
           "id": "c0039:t12",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0039:t13",
@@ -8611,7 +8611,7 @@ module.exports = {
           "id": "c0039:t14",
           "surface": "gold-fish",
           "kind": "word",
-          "vocabKey": "gold-fish:pending:1"
+          "vocabKey": "goldfish:noun:1"
         },
         {
           "id": "c0039:t15",
@@ -8629,7 +8629,7 @@ module.exports = {
           "id": "c0039:t17",
           "surface": "she",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0039:t18",
@@ -8641,7 +8641,7 @@ module.exports = {
           "id": "c0039:t19",
           "surface": "sat",
           "kind": "word",
-          "vocabKey": "sat:pending:1"
+          "vocabKey": "sit:verb:1"
         },
         {
           "id": "c0039:t20",
@@ -8653,7 +8653,7 @@ module.exports = {
           "id": "c0039:t21",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0039:t22",
@@ -8671,7 +8671,7 @@ module.exports = {
           "id": "c0039:t24",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0039:t25",
@@ -8683,7 +8683,7 @@ module.exports = {
           "id": "c0039:t26",
           "surface": "still",
           "kind": "word",
-          "vocabKey": "still:pending:1"
+          "vocabKey": "still:adverb:1"
         },
         {
           "id": "c0039:t27",
@@ -8701,7 +8701,7 @@ module.exports = {
           "id": "c0039:t29",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0039:t30",
@@ -8713,7 +8713,7 @@ module.exports = {
           "id": "c0039:t31",
           "surface": "now",
           "kind": "word",
-          "vocabKey": "now:pending:1"
+          "vocabKey": "now:adverb:1"
         },
         {
           "id": "c0039:t32",
@@ -8725,7 +8725,7 @@ module.exports = {
           "id": "c0039:t33",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0039:t34",
@@ -8737,7 +8737,7 @@ module.exports = {
           "id": "c0039:t35",
           "surface": "then",
           "kind": "word",
-          "vocabKey": "then:pending:1"
+          "vocabKey": "then:adverb:1"
         },
         {
           "id": "c0039:t36",
@@ -8749,7 +8749,7 @@ module.exports = {
           "id": "c0039:t37",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0039:t38",
@@ -8761,7 +8761,7 @@ module.exports = {
           "id": "c0039:t39",
           "surface": "tip",
           "kind": "word",
-          "vocabKey": "tip:pending:1"
+          "vocabKey": "tip:noun:1"
         },
         {
           "id": "c0039:t40",
@@ -8773,7 +8773,7 @@ module.exports = {
           "id": "c0039:t41",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0039:t42",
@@ -8785,7 +8785,7 @@ module.exports = {
           "id": "c0039:t43",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:determiner:1"
         },
         {
           "id": "c0039:t44",
@@ -8797,7 +8797,7 @@ module.exports = {
           "id": "c0039:t45",
           "surface": "tail",
           "kind": "word",
-          "vocabKey": "tail:pending:1"
+          "vocabKey": "tail:noun:1"
         },
         {
           "id": "c0039:t46",
@@ -8809,7 +8809,7 @@ module.exports = {
           "id": "c0039:t47",
           "surface": "twitched",
           "kind": "word",
-          "vocabKey": "twitched:pending:1"
+          "vocabKey": "twitch:verb:1"
         },
         {
           "id": "c0039:t48",
@@ -8821,7 +8821,7 @@ module.exports = {
           "id": "c0039:t49",
           "surface": "as",
           "kind": "word",
-          "vocabKey": "as:pending:1"
+          "vocabKey": "as:conjunction:1"
         },
         {
           "id": "c0039:t50",
@@ -8833,7 +8833,7 @@ module.exports = {
           "id": "c0039:t51",
           "surface": "if",
           "kind": "word",
-          "vocabKey": "if:pending:1"
+          "vocabKey": "if:conjunction:1"
         },
         {
           "id": "c0039:t52",
@@ -8845,7 +8845,7 @@ module.exports = {
           "id": "c0039:t53",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0039:t54",
@@ -8857,7 +8857,7 @@ module.exports = {
           "id": "c0039:t55",
           "surface": "were",
           "kind": "word",
-          "vocabKey": "were:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0039:t56",
@@ -8869,7 +8869,7 @@ module.exports = {
           "id": "c0039:t57",
           "surface": "alive",
           "kind": "word",
-          "vocabKey": "alive:pending:1"
+          "vocabKey": "alive:adjective:1"
         },
         {
           "id": "c0039:t58",
@@ -8903,7 +8903,7 @@ module.exports = {
           "id": "c0040:t02",
           "surface": "thought",
           "kind": "word",
-          "vocabKey": "thought:pending:1"
+          "vocabKey": "think:verb:1"
         },
         {
           "id": "c0040:t03",
@@ -8915,7 +8915,7 @@ module.exports = {
           "id": "c0040:t04",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0040:t05",
@@ -8927,7 +8927,7 @@ module.exports = {
           "id": "c0040:t06",
           "surface": "best",
           "kind": "word",
-          "vocabKey": "best:pending:1"
+          "vocabKey": "best:adjective:1"
         },
         {
           "id": "c0040:t07",
@@ -8939,7 +8939,7 @@ module.exports = {
           "id": "c0040:t08",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0040:t09",
@@ -8951,7 +8951,7 @@ module.exports = {
           "id": "c0040:t10",
           "surface": "go",
           "kind": "word",
-          "vocabKey": "go:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0040:t11",
@@ -8963,7 +8963,7 @@ module.exports = {
           "id": "c0040:t12",
           "surface": "away",
           "kind": "word",
-          "vocabKey": "away:pending:1"
+          "vocabKey": "away:adverb:1"
         },
         {
           "id": "c0040:t13",
@@ -8975,7 +8975,7 @@ module.exports = {
           "id": "c0040:t14",
           "surface": "without",
           "kind": "word",
-          "vocabKey": "without:pending:1"
+          "vocabKey": "without:preposition:1"
         },
         {
           "id": "c0040:t15",
@@ -8987,7 +8987,7 @@ module.exports = {
           "id": "c0040:t16",
           "surface": "speaking",
           "kind": "word",
-          "vocabKey": "speaking:pending:1"
+          "vocabKey": "speak:verb:1"
         },
         {
           "id": "c0040:t17",
@@ -8999,7 +8999,7 @@ module.exports = {
           "id": "c0040:t18",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0040:t19",
@@ -9011,7 +9011,7 @@ module.exports = {
           "id": "c0040:t20",
           "surface": "her",
           "kind": "word",
-          "vocabKey": "her:pending:1"
+          "vocabKey": "her:pronoun:2"
         },
         {
           "id": "c0040:t21",
@@ -9029,7 +9029,7 @@ module.exports = {
           "id": "c0040:t23",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0040:t24",
@@ -9041,7 +9041,7 @@ module.exports = {
           "id": "c0040:t25",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0040:t26",
@@ -9053,7 +9053,7 @@ module.exports = {
           "id": "c0040:t27",
           "surface": "heard",
           "kind": "word",
-          "vocabKey": "heard:pending:1"
+          "vocabKey": "hear:verb:1"
         },
         {
           "id": "c0040:t28",
@@ -9065,7 +9065,7 @@ module.exports = {
           "id": "c0040:t29",
           "surface": "about",
           "kind": "word",
-          "vocabKey": "about:pending:1"
+          "vocabKey": "about:preposition:2"
         },
         {
           "id": "c0040:t30",
@@ -9077,7 +9077,7 @@ module.exports = {
           "id": "c0040:t31",
           "surface": "cats",
           "kind": "word",
-          "vocabKey": "cats:pending:1"
+          "vocabKey": "cat:noun:1"
         },
         {
           "id": "c0040:t32",
@@ -9089,7 +9089,7 @@ module.exports = {
           "id": "c0040:t33",
           "surface": "from",
           "kind": "word",
-          "vocabKey": "from:pending:1"
+          "vocabKey": "from:preposition:1"
         },
         {
           "id": "c0040:t34",
@@ -9101,7 +9101,7 @@ module.exports = {
           "id": "c0040:t35",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0040:t36",
@@ -9113,7 +9113,7 @@ module.exports = {
           "id": "c0040:t37",
           "surface": "cousin",
           "kind": "word",
-          "vocabKey": "cousin:pending:1"
+          "vocabKey": "cousin:noun:1"
         },
         {
           "id": "c0040:t38",
@@ -9131,7 +9131,7 @@ module.exports = {
           "id": "c0040:t40",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0040:t41",
@@ -9143,7 +9143,7 @@ module.exports = {
           "id": "c0040:t42",
           "surface": "Benjamin",
           "kind": "word",
-          "vocabKey": "benjamin:pending:1"
+          "vocabKey": null
         },
         {
           "id": "c0040:t43",
@@ -9155,7 +9155,7 @@ module.exports = {
           "id": "c0040:t44",
           "surface": "Bunny",
           "kind": "word",
-          "vocabKey": "bunny:pending:1"
+          "vocabKey": "bunny:noun:1"
         },
         {
           "id": "c0040:t45",
@@ -9177,7 +9177,7 @@ module.exports = {
           "id": "c0041:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0041:t01",
@@ -9189,7 +9189,7 @@ module.exports = {
           "id": "c0041:t02",
           "surface": "went",
           "kind": "word",
-          "vocabKey": "went:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0041:t03",
@@ -9201,7 +9201,7 @@ module.exports = {
           "id": "c0041:t04",
           "surface": "back",
           "kind": "word",
-          "vocabKey": "back:pending:1"
+          "vocabKey": "back:adverb:1"
         },
         {
           "id": "c0041:t05",
@@ -9213,7 +9213,7 @@ module.exports = {
           "id": "c0041:t06",
           "surface": "towards",
           "kind": "word",
-          "vocabKey": "towards:pending:1"
+          "vocabKey": "towards:preposition:1"
         },
         {
           "id": "c0041:t07",
@@ -9225,7 +9225,7 @@ module.exports = {
           "id": "c0041:t08",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0041:t09",
@@ -9237,7 +9237,7 @@ module.exports = {
           "id": "c0041:t10",
           "surface": "tool-shed",
           "kind": "word",
-          "vocabKey": "tool-shed:pending:1"
+          "vocabKey": "tool_shed:noun:1"
         },
         {
           "id": "c0041:t11",
@@ -9255,7 +9255,7 @@ module.exports = {
           "id": "c0041:t13",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0041:t14",
@@ -9267,7 +9267,7 @@ module.exports = {
           "id": "c0041:t15",
           "surface": "suddenly",
           "kind": "word",
-          "vocabKey": "suddenly:pending:1"
+          "vocabKey": "suddenly:adverb:1"
         },
         {
           "id": "c0041:t16",
@@ -9285,7 +9285,7 @@ module.exports = {
           "id": "c0041:t18",
           "surface": "quite",
           "kind": "word",
-          "vocabKey": "quite:pending:1"
+          "vocabKey": "quite:adverb:1"
         },
         {
           "id": "c0041:t19",
@@ -9297,7 +9297,7 @@ module.exports = {
           "id": "c0041:t20",
           "surface": "close",
           "kind": "word",
-          "vocabKey": "close:pending:1"
+          "vocabKey": "close:adjective:1"
         },
         {
           "id": "c0041:t21",
@@ -9309,7 +9309,7 @@ module.exports = {
           "id": "c0041:t22",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0041:t23",
@@ -9321,7 +9321,7 @@ module.exports = {
           "id": "c0041:t24",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0041:t25",
@@ -9339,7 +9339,7 @@ module.exports = {
           "id": "c0041:t27",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0041:t28",
@@ -9351,7 +9351,7 @@ module.exports = {
           "id": "c0041:t29",
           "surface": "heard",
           "kind": "word",
-          "vocabKey": "heard:pending:1"
+          "vocabKey": "hear:verb:1"
         },
         {
           "id": "c0041:t30",
@@ -9363,7 +9363,7 @@ module.exports = {
           "id": "c0041:t31",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0041:t32",
@@ -9375,7 +9375,7 @@ module.exports = {
           "id": "c0041:t33",
           "surface": "noise",
           "kind": "word",
-          "vocabKey": "noise:pending:1"
+          "vocabKey": "noise:noun:1"
         },
         {
           "id": "c0041:t34",
@@ -9387,7 +9387,7 @@ module.exports = {
           "id": "c0041:t35",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0041:t36",
@@ -9399,7 +9399,7 @@ module.exports = {
           "id": "c0041:t37",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0041:t38",
@@ -9411,7 +9411,7 @@ module.exports = {
           "id": "c0041:t39",
           "surface": "hoe",
           "kind": "word",
-          "vocabKey": "hoe:pending:1"
+          "vocabKey": "hoe:noun:1"
         },
         {
           "id": "c0041:t40",
@@ -9423,7 +9423,7 @@ module.exports = {
           "id": "c0041:t41",
           "surface": "scr-r-ritch",
           "kind": "word",
-          "vocabKey": "scr-r-ritch:pending:1"
+          "vocabKey": "scr-r-ritch:interjection:1"
         },
         {
           "id": "c0041:t42",
@@ -9441,7 +9441,7 @@ module.exports = {
           "id": "c0041:t44",
           "surface": "scratch",
           "kind": "word",
-          "vocabKey": "scratch:pending:1"
+          "vocabKey": "scratch:interjection:1"
         },
         {
           "id": "c0041:t45",
@@ -9459,7 +9459,7 @@ module.exports = {
           "id": "c0041:t47",
           "surface": "scratch",
           "kind": "word",
-          "vocabKey": "scratch:pending:1"
+          "vocabKey": "scratch:interjection:1"
         },
         {
           "id": "c0041:t48",
@@ -9477,7 +9477,7 @@ module.exports = {
           "id": "c0041:t50",
           "surface": "scritch",
           "kind": "word",
-          "vocabKey": "scritch:pending:1"
+          "vocabKey": "scritch:interjection:1"
         },
         {
           "id": "c0041:t51",
@@ -9511,7 +9511,7 @@ module.exports = {
           "id": "c0042:t02",
           "surface": "scuttered",
           "kind": "word",
-          "vocabKey": "scuttered:pending:1"
+          "vocabKey": "scutter:verb:1"
         },
         {
           "id": "c0042:t03",
@@ -9523,7 +9523,7 @@ module.exports = {
           "id": "c0042:t04",
           "surface": "underneath",
           "kind": "word",
-          "vocabKey": "underneath:pending:1"
+          "vocabKey": "underneath:adverb:1"
         },
         {
           "id": "c0042:t05",
@@ -9535,7 +9535,7 @@ module.exports = {
           "id": "c0042:t06",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0042:t07",
@@ -9547,7 +9547,7 @@ module.exports = {
           "id": "c0042:t08",
           "surface": "bushes",
           "kind": "word",
-          "vocabKey": "bushes:pending:1"
+          "vocabKey": "bush:noun:1"
         },
         {
           "id": "c0042:t09",
@@ -9569,7 +9569,7 @@ module.exports = {
           "id": "c0043:t00",
           "surface": "But",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0043:t01",
@@ -9581,7 +9581,7 @@ module.exports = {
           "id": "c0043:t02",
           "surface": "presently",
           "kind": "word",
-          "vocabKey": "presently:pending:1"
+          "vocabKey": "presently:adverb:1"
         },
         {
           "id": "c0043:t03",
@@ -9599,7 +9599,7 @@ module.exports = {
           "id": "c0043:t05",
           "surface": "as",
           "kind": "word",
-          "vocabKey": "as:pending:1"
+          "vocabKey": "as:conjunction:1"
         },
         {
           "id": "c0043:t06",
@@ -9611,7 +9611,7 @@ module.exports = {
           "id": "c0043:t07",
           "surface": "nothing",
           "kind": "word",
-          "vocabKey": "nothing:pending:1"
+          "vocabKey": "nothing:pronoun:1"
         },
         {
           "id": "c0043:t08",
@@ -9623,7 +9623,7 @@ module.exports = {
           "id": "c0043:t09",
           "surface": "happened",
           "kind": "word",
-          "vocabKey": "happened:pending:1"
+          "vocabKey": "happen:verb:1"
         },
         {
           "id": "c0043:t10",
@@ -9641,7 +9641,7 @@ module.exports = {
           "id": "c0043:t12",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0043:t13",
@@ -9653,7 +9653,7 @@ module.exports = {
           "id": "c0043:t14",
           "surface": "came",
           "kind": "word",
-          "vocabKey": "came:pending:1"
+          "vocabKey": "come:verb:1"
         },
         {
           "id": "c0043:t15",
@@ -9665,7 +9665,7 @@ module.exports = {
           "id": "c0043:t16",
           "surface": "out",
           "kind": "word",
-          "vocabKey": "out:pending:1"
+          "vocabKey": "out:adverb:1"
         },
         {
           "id": "c0043:t17",
@@ -9683,7 +9683,7 @@ module.exports = {
           "id": "c0043:t19",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0043:t20",
@@ -9695,7 +9695,7 @@ module.exports = {
           "id": "c0043:t21",
           "surface": "climbed",
           "kind": "word",
-          "vocabKey": "climbed:pending:1"
+          "vocabKey": "climb:verb:1"
         },
         {
           "id": "c0043:t22",
@@ -9707,7 +9707,7 @@ module.exports = {
           "id": "c0043:t23",
           "surface": "upon",
           "kind": "word",
-          "vocabKey": "upon:pending:1"
+          "vocabKey": "upon:preposition:1"
         },
         {
           "id": "c0043:t24",
@@ -9719,7 +9719,7 @@ module.exports = {
           "id": "c0043:t25",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0043:t26",
@@ -9731,7 +9731,7 @@ module.exports = {
           "id": "c0043:t27",
           "surface": "wheelbarrow",
           "kind": "word",
-          "vocabKey": "wheelbarrow:pending:1"
+          "vocabKey": "wheelbarrow:noun:1"
         },
         {
           "id": "c0043:t28",
@@ -9743,7 +9743,7 @@ module.exports = {
           "id": "c0043:t29",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0043:t30",
@@ -9755,7 +9755,7 @@ module.exports = {
           "id": "c0043:t31",
           "surface": "peeped",
           "kind": "word",
-          "vocabKey": "peeped:pending:1"
+          "vocabKey": "peep:verb:1"
         },
         {
           "id": "c0043:t32",
@@ -9767,7 +9767,7 @@ module.exports = {
           "id": "c0043:t33",
           "surface": "over",
           "kind": "word",
-          "vocabKey": "over:pending:1"
+          "vocabKey": "over:adverb:2"
         },
         {
           "id": "c0043:t34",
@@ -9789,7 +9789,7 @@ module.exports = {
           "id": "c0044:t00",
           "surface": "The",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0044:t01",
@@ -9801,7 +9801,7 @@ module.exports = {
           "id": "c0044:t02",
           "surface": "first",
           "kind": "word",
-          "vocabKey": "first:pending:1"
+          "vocabKey": "first:adverb:1"
         },
         {
           "id": "c0044:t03",
@@ -9813,7 +9813,7 @@ module.exports = {
           "id": "c0044:t04",
           "surface": "thing",
           "kind": "word",
-          "vocabKey": "thing:pending:1"
+          "vocabKey": "thing:noun:1"
         },
         {
           "id": "c0044:t05",
@@ -9825,7 +9825,7 @@ module.exports = {
           "id": "c0044:t06",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0044:t07",
@@ -9837,7 +9837,7 @@ module.exports = {
           "id": "c0044:t08",
           "surface": "saw",
           "kind": "word",
-          "vocabKey": "saw:pending:1"
+          "vocabKey": "see:verb:1"
         },
         {
           "id": "c0044:t09",
@@ -9849,7 +9849,7 @@ module.exports = {
           "id": "c0044:t10",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0044:t11",
@@ -9861,7 +9861,7 @@ module.exports = {
           "id": "c0044:t12",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0044:t13",
@@ -9891,7 +9891,7 @@ module.exports = {
           "id": "c0044:t17",
           "surface": "hoeing",
           "kind": "word",
-          "vocabKey": "hoeing:pending:1"
+          "vocabKey": "hoe:verb:1"
         },
         {
           "id": "c0044:t18",
@@ -9903,7 +9903,7 @@ module.exports = {
           "id": "c0044:t19",
           "surface": "onions",
           "kind": "word",
-          "vocabKey": "onions:pending:1"
+          "vocabKey": "onion:noun:1"
         },
         {
           "id": "c0044:t20",
@@ -9925,7 +9925,7 @@ module.exports = {
           "id": "c0045:t00",
           "surface": "His",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0045:t01",
@@ -9937,7 +9937,7 @@ module.exports = {
           "id": "c0045:t02",
           "surface": "back",
           "kind": "word",
-          "vocabKey": "back:pending:1"
+          "vocabKey": "back:noun:2"
         },
         {
           "id": "c0045:t03",
@@ -9949,7 +9949,7 @@ module.exports = {
           "id": "c0045:t04",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0045:t05",
@@ -9961,7 +9961,7 @@ module.exports = {
           "id": "c0045:t06",
           "surface": "turned",
           "kind": "word",
-          "vocabKey": "turned:pending:1"
+          "vocabKey": "turn:verb:1"
         },
         {
           "id": "c0045:t07",
@@ -9973,7 +9973,7 @@ module.exports = {
           "id": "c0045:t08",
           "surface": "towards",
           "kind": "word",
-          "vocabKey": "towards:pending:1"
+          "vocabKey": "towards:preposition:1"
         },
         {
           "id": "c0045:t09",
@@ -10003,7 +10003,7 @@ module.exports = {
           "id": "c0045:t13",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0045:t14",
@@ -10015,7 +10015,7 @@ module.exports = {
           "id": "c0045:t15",
           "surface": "beyond",
           "kind": "word",
-          "vocabKey": "beyond:pending:1"
+          "vocabKey": "beyond:adverb:1"
         },
         {
           "id": "c0045:t16",
@@ -10027,7 +10027,7 @@ module.exports = {
           "id": "c0045:t17",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0045:t18",
@@ -10039,7 +10039,7 @@ module.exports = {
           "id": "c0045:t19",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0045:t20",
@@ -10051,7 +10051,7 @@ module.exports = {
           "id": "c0045:t21",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0045:t22",
@@ -10063,7 +10063,7 @@ module.exports = {
           "id": "c0045:t23",
           "surface": "gate",
           "kind": "word",
-          "vocabKey": "gate:pending:1"
+          "vocabKey": "gate:noun:1"
         },
         {
           "id": "c0045:t24",
@@ -10097,7 +10097,7 @@ module.exports = {
           "id": "c0046:t02",
           "surface": "got",
           "kind": "word",
-          "vocabKey": "got:pending:1"
+          "vocabKey": "get:verb:1"
         },
         {
           "id": "c0046:t03",
@@ -10109,7 +10109,7 @@ module.exports = {
           "id": "c0046:t04",
           "surface": "down",
           "kind": "word",
-          "vocabKey": "down:pending:1"
+          "vocabKey": "down:adverb:2"
         },
         {
           "id": "c0046:t05",
@@ -10121,7 +10121,7 @@ module.exports = {
           "id": "c0046:t06",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0046:t07",
@@ -10133,7 +10133,7 @@ module.exports = {
           "id": "c0046:t08",
           "surface": "quietly",
           "kind": "word",
-          "vocabKey": "quietly:pending:1"
+          "vocabKey": "quietly:adverb:1"
         },
         {
           "id": "c0046:t09",
@@ -10145,7 +10145,7 @@ module.exports = {
           "id": "c0046:t10",
           "surface": "off",
           "kind": "word",
-          "vocabKey": "off:pending:1"
+          "vocabKey": "off:preposition:1"
         },
         {
           "id": "c0046:t11",
@@ -10157,7 +10157,7 @@ module.exports = {
           "id": "c0046:t12",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0046:t13",
@@ -10169,7 +10169,7 @@ module.exports = {
           "id": "c0046:t14",
           "surface": "wheelbarrow",
           "kind": "word",
-          "vocabKey": "wheelbarrow:pending:1"
+          "vocabKey": "wheelbarrow:noun:1"
         },
         {
           "id": "c0046:t15",
@@ -10187,7 +10187,7 @@ module.exports = {
           "id": "c0046:t17",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0046:t18",
@@ -10199,7 +10199,7 @@ module.exports = {
           "id": "c0046:t19",
           "surface": "started",
           "kind": "word",
-          "vocabKey": "started:pending:1"
+          "vocabKey": "start:verb:1"
         },
         {
           "id": "c0046:t20",
@@ -10211,7 +10211,7 @@ module.exports = {
           "id": "c0046:t21",
           "surface": "running",
           "kind": "word",
-          "vocabKey": "running:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0046:t22",
@@ -10223,7 +10223,7 @@ module.exports = {
           "id": "c0046:t23",
           "surface": "as",
           "kind": "word",
-          "vocabKey": "as:pending:1"
+          "vocabKey": "as:adverb:2"
         },
         {
           "id": "c0046:t24",
@@ -10235,7 +10235,7 @@ module.exports = {
           "id": "c0046:t25",
           "surface": "fast",
           "kind": "word",
-          "vocabKey": "fast:pending:1"
+          "vocabKey": "fast:adverb:1"
         },
         {
           "id": "c0046:t26",
@@ -10247,7 +10247,7 @@ module.exports = {
           "id": "c0046:t27",
           "surface": "as",
           "kind": "word",
-          "vocabKey": "as:pending:1"
+          "vocabKey": "as:conjunction:1"
         },
         {
           "id": "c0046:t28",
@@ -10259,7 +10259,7 @@ module.exports = {
           "id": "c0046:t29",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0046:t30",
@@ -10271,7 +10271,7 @@ module.exports = {
           "id": "c0046:t31",
           "surface": "could",
           "kind": "word",
-          "vocabKey": "could:pending:1"
+          "vocabKey": "could:auxiliary:1"
         },
         {
           "id": "c0046:t32",
@@ -10283,7 +10283,7 @@ module.exports = {
           "id": "c0046:t33",
           "surface": "go",
           "kind": "word",
-          "vocabKey": "go:pending:1"
+          "vocabKey": "go:verb:1"
         },
         {
           "id": "c0046:t34",
@@ -10301,7 +10301,7 @@ module.exports = {
           "id": "c0046:t36",
           "surface": "along",
           "kind": "word",
-          "vocabKey": "along:pending:1"
+          "vocabKey": "along:adverb:1"
         },
         {
           "id": "c0046:t37",
@@ -10313,7 +10313,7 @@ module.exports = {
           "id": "c0046:t38",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0046:t39",
@@ -10325,7 +10325,7 @@ module.exports = {
           "id": "c0046:t40",
           "surface": "straight",
           "kind": "word",
-          "vocabKey": "straight:pending:1"
+          "vocabKey": "straight:adverb:1"
         },
         {
           "id": "c0046:t41",
@@ -10337,7 +10337,7 @@ module.exports = {
           "id": "c0046:t42",
           "surface": "walk",
           "kind": "word",
-          "vocabKey": "walk:pending:1"
+          "vocabKey": "walk:noun:1"
         },
         {
           "id": "c0046:t43",
@@ -10349,7 +10349,7 @@ module.exports = {
           "id": "c0046:t44",
           "surface": "behind",
           "kind": "word",
-          "vocabKey": "behind:pending:1"
+          "vocabKey": "behind:preposition:1"
         },
         {
           "id": "c0046:t45",
@@ -10361,7 +10361,7 @@ module.exports = {
           "id": "c0046:t46",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0046:t47",
@@ -10373,7 +10373,7 @@ module.exports = {
           "id": "c0046:t48",
           "surface": "black-currant",
           "kind": "word",
-          "vocabKey": "black-currant:pending:1"
+          "vocabKey": "blackcurrant:noun:1"
         },
         {
           "id": "c0046:t49",
@@ -10385,7 +10385,7 @@ module.exports = {
           "id": "c0046:t50",
           "surface": "bushes",
           "kind": "word",
-          "vocabKey": "bushes:pending:1"
+          "vocabKey": "bush:noun:1"
         },
         {
           "id": "c0046:t51",
@@ -10407,7 +10407,7 @@ module.exports = {
           "id": "c0047:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0047:t01",
@@ -10437,7 +10437,7 @@ module.exports = {
           "id": "c0047:t05",
           "surface": "caught",
           "kind": "word",
-          "vocabKey": "caught:pending:1"
+          "vocabKey": "catch:verb:1"
         },
         {
           "id": "c0047:t06",
@@ -10449,7 +10449,7 @@ module.exports = {
           "id": "c0047:t07",
           "surface": "sight",
           "kind": "word",
-          "vocabKey": "sight:pending:1"
+          "vocabKey": "sight:noun:1"
         },
         {
           "id": "c0047:t08",
@@ -10461,7 +10461,7 @@ module.exports = {
           "id": "c0047:t09",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0047:t10",
@@ -10473,7 +10473,7 @@ module.exports = {
           "id": "c0047:t11",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0047:t12",
@@ -10485,7 +10485,7 @@ module.exports = {
           "id": "c0047:t13",
           "surface": "at",
           "kind": "word",
-          "vocabKey": "at:pending:1"
+          "vocabKey": "at:preposition:1"
         },
         {
           "id": "c0047:t14",
@@ -10497,7 +10497,7 @@ module.exports = {
           "id": "c0047:t15",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0047:t16",
@@ -10509,7 +10509,7 @@ module.exports = {
           "id": "c0047:t17",
           "surface": "corner",
           "kind": "word",
-          "vocabKey": "corner:pending:1"
+          "vocabKey": "corner:noun:1"
         },
         {
           "id": "c0047:t18",
@@ -10527,7 +10527,7 @@ module.exports = {
           "id": "c0047:t20",
           "surface": "but",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0047:t21",
@@ -10551,7 +10551,7 @@ module.exports = {
           "id": "c0047:t24",
           "surface": "did",
           "kind": "word",
-          "vocabKey": "did:pending:1"
+          "vocabKey": "do:auxiliary:1"
         },
         {
           "id": "c0047:t25",
@@ -10563,7 +10563,7 @@ module.exports = {
           "id": "c0047:t26",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0047:t27",
@@ -10575,7 +10575,7 @@ module.exports = {
           "id": "c0047:t28",
           "surface": "care",
           "kind": "word",
-          "vocabKey": "care:pending:1"
+          "vocabKey": "care:verb:1"
         },
         {
           "id": "c0047:t29",
@@ -10597,7 +10597,7 @@ module.exports = {
           "id": "c0048:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0048:t01",
@@ -10609,7 +10609,7 @@ module.exports = {
           "id": "c0048:t02",
           "surface": "slipped",
           "kind": "word",
-          "vocabKey": "slipped:pending:1"
+          "vocabKey": "slip:verb:1"
         },
         {
           "id": "c0048:t03",
@@ -10621,7 +10621,7 @@ module.exports = {
           "id": "c0048:t04",
           "surface": "underneath",
           "kind": "word",
-          "vocabKey": "underneath:pending:1"
+          "vocabKey": "underneath:adverb:1"
         },
         {
           "id": "c0048:t05",
@@ -10633,7 +10633,7 @@ module.exports = {
           "id": "c0048:t06",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0048:t07",
@@ -10645,7 +10645,7 @@ module.exports = {
           "id": "c0048:t08",
           "surface": "gate",
           "kind": "word",
-          "vocabKey": "gate:pending:1"
+          "vocabKey": "gate:noun:1"
         },
         {
           "id": "c0048:t09",
@@ -10663,7 +10663,7 @@ module.exports = {
           "id": "c0048:t11",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0048:t12",
@@ -10675,7 +10675,7 @@ module.exports = {
           "id": "c0048:t13",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0048:t14",
@@ -10687,7 +10687,7 @@ module.exports = {
           "id": "c0048:t15",
           "surface": "safe",
           "kind": "word",
-          "vocabKey": "safe:pending:1"
+          "vocabKey": "safe:adjective:1"
         },
         {
           "id": "c0048:t16",
@@ -10699,7 +10699,7 @@ module.exports = {
           "id": "c0048:t17",
           "surface": "at",
           "kind": "word",
-          "vocabKey": "at:pending:1"
+          "vocabKey": "at:preposition:1"
         },
         {
           "id": "c0048:t18",
@@ -10711,7 +10711,7 @@ module.exports = {
           "id": "c0048:t19",
           "surface": "last",
           "kind": "word",
-          "vocabKey": "last:pending:1"
+          "vocabKey": "last:adverb:1"
         },
         {
           "id": "c0048:t20",
@@ -10723,7 +10723,7 @@ module.exports = {
           "id": "c0048:t21",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0048:t22",
@@ -10735,7 +10735,7 @@ module.exports = {
           "id": "c0048:t23",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0048:t24",
@@ -10747,7 +10747,7 @@ module.exports = {
           "id": "c0048:t25",
           "surface": "wood",
           "kind": "word",
-          "vocabKey": "wood:pending:1"
+          "vocabKey": "wood:noun:1"
         },
         {
           "id": "c0048:t26",
@@ -10759,7 +10759,7 @@ module.exports = {
           "id": "c0048:t27",
           "surface": "outside",
           "kind": "word",
-          "vocabKey": "outside:pending:1"
+          "vocabKey": "outside:preposition:1"
         },
         {
           "id": "c0048:t28",
@@ -10771,7 +10771,7 @@ module.exports = {
           "id": "c0048:t29",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0048:t30",
@@ -10783,7 +10783,7 @@ module.exports = {
           "id": "c0048:t31",
           "surface": "garden",
           "kind": "word",
-          "vocabKey": "garden:pending:1"
+          "vocabKey": "garden:noun:1"
         },
         {
           "id": "c0048:t32",
@@ -10805,7 +10805,7 @@ module.exports = {
           "id": "c0049:t00",
           "surface": "Mr",
           "kind": "word",
-          "vocabKey": "mr:pending:1"
+          "vocabKey": "mr:noun:1"
         },
         {
           "id": "c0049:t01",
@@ -10835,7 +10835,7 @@ module.exports = {
           "id": "c0049:t05",
           "surface": "hung",
           "kind": "word",
-          "vocabKey": "hung:pending:1"
+          "vocabKey": "hang:verb:1"
         },
         {
           "id": "c0049:t06",
@@ -10847,7 +10847,7 @@ module.exports = {
           "id": "c0049:t07",
           "surface": "up",
           "kind": "word",
-          "vocabKey": "up:pending:1"
+          "vocabKey": "up:particle:1"
         },
         {
           "id": "c0049:t08",
@@ -10859,7 +10859,7 @@ module.exports = {
           "id": "c0049:t09",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0049:t10",
@@ -10871,7 +10871,7 @@ module.exports = {
           "id": "c0049:t11",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0049:t12",
@@ -10883,7 +10883,7 @@ module.exports = {
           "id": "c0049:t13",
           "surface": "jacket",
           "kind": "word",
-          "vocabKey": "jacket:pending:1"
+          "vocabKey": "jacket:noun:1"
         },
         {
           "id": "c0049:t14",
@@ -10895,7 +10895,7 @@ module.exports = {
           "id": "c0049:t15",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0049:t16",
@@ -10907,7 +10907,7 @@ module.exports = {
           "id": "c0049:t17",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0049:t18",
@@ -10919,7 +10919,7 @@ module.exports = {
           "id": "c0049:t19",
           "surface": "shoes",
           "kind": "word",
-          "vocabKey": "shoes:pending:1"
+          "vocabKey": "shoe:noun:1"
         },
         {
           "id": "c0049:t20",
@@ -10931,7 +10931,7 @@ module.exports = {
           "id": "c0049:t21",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0049:t22",
@@ -10943,7 +10943,7 @@ module.exports = {
           "id": "c0049:t23",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0049:t24",
@@ -10955,7 +10955,7 @@ module.exports = {
           "id": "c0049:t25",
           "surface": "scare-crow",
           "kind": "word",
-          "vocabKey": "scare-crow:pending:1"
+          "vocabKey": "scarecrow:noun:1"
         },
         {
           "id": "c0049:t26",
@@ -10967,7 +10967,7 @@ module.exports = {
           "id": "c0049:t27",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0049:t28",
@@ -10979,7 +10979,7 @@ module.exports = {
           "id": "c0049:t29",
           "surface": "frighten",
           "kind": "word",
-          "vocabKey": "frighten:pending:1"
+          "vocabKey": "frighten:verb:1"
         },
         {
           "id": "c0049:t30",
@@ -10991,7 +10991,7 @@ module.exports = {
           "id": "c0049:t31",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0049:t32",
@@ -11003,7 +11003,7 @@ module.exports = {
           "id": "c0049:t33",
           "surface": "blackbirds",
           "kind": "word",
-          "vocabKey": "blackbirds:pending:1"
+          "vocabKey": "blackbird:noun:1"
         },
         {
           "id": "c0049:t34",
@@ -11037,7 +11037,7 @@ module.exports = {
           "id": "c0050:t02",
           "surface": "never",
           "kind": "word",
-          "vocabKey": "never:pending:1"
+          "vocabKey": "never:adverb:1"
         },
         {
           "id": "c0050:t03",
@@ -11049,7 +11049,7 @@ module.exports = {
           "id": "c0050:t04",
           "surface": "stopped",
           "kind": "word",
-          "vocabKey": "stopped:pending:1"
+          "vocabKey": "stop:verb:1"
         },
         {
           "id": "c0050:t05",
@@ -11061,7 +11061,7 @@ module.exports = {
           "id": "c0050:t06",
           "surface": "running",
           "kind": "word",
-          "vocabKey": "running:pending:1"
+          "vocabKey": "run:verb:1"
         },
         {
           "id": "c0050:t07",
@@ -11073,7 +11073,7 @@ module.exports = {
           "id": "c0050:t08",
           "surface": "or",
           "kind": "word",
-          "vocabKey": "or:pending:1"
+          "vocabKey": "or:conjunction:1"
         },
         {
           "id": "c0050:t09",
@@ -11085,7 +11085,7 @@ module.exports = {
           "id": "c0050:t10",
           "surface": "looked",
           "kind": "word",
-          "vocabKey": "looked:pending:1"
+          "vocabKey": "look:verb:1"
         },
         {
           "id": "c0050:t11",
@@ -11097,7 +11097,7 @@ module.exports = {
           "id": "c0050:t12",
           "surface": "behind",
           "kind": "word",
-          "vocabKey": "behind:pending:1"
+          "vocabKey": "behind:preposition:1"
         },
         {
           "id": "c0050:t13",
@@ -11109,7 +11109,7 @@ module.exports = {
           "id": "c0050:t14",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0050:t15",
@@ -11121,7 +11121,7 @@ module.exports = {
           "id": "c0050:t16",
           "surface": "till",
           "kind": "word",
-          "vocabKey": "till:pending:1"
+          "vocabKey": "till:conjunction:1"
         },
         {
           "id": "c0050:t17",
@@ -11133,7 +11133,7 @@ module.exports = {
           "id": "c0050:t18",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0050:t19",
@@ -11145,7 +11145,7 @@ module.exports = {
           "id": "c0050:t20",
           "surface": "got",
           "kind": "word",
-          "vocabKey": "got:pending:1"
+          "vocabKey": "get:verb:1"
         },
         {
           "id": "c0050:t21",
@@ -11157,7 +11157,7 @@ module.exports = {
           "id": "c0050:t22",
           "surface": "home",
           "kind": "word",
-          "vocabKey": "home:pending:1"
+          "vocabKey": "home:adverb:1"
         },
         {
           "id": "c0050:t23",
@@ -11169,7 +11169,7 @@ module.exports = {
           "id": "c0050:t24",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0050:t25",
@@ -11181,7 +11181,7 @@ module.exports = {
           "id": "c0050:t26",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0050:t27",
@@ -11193,7 +11193,7 @@ module.exports = {
           "id": "c0050:t28",
           "surface": "big",
           "kind": "word",
-          "vocabKey": "big:pending:1"
+          "vocabKey": "big:adjective:1"
         },
         {
           "id": "c0050:t29",
@@ -11205,7 +11205,7 @@ module.exports = {
           "id": "c0050:t30",
           "surface": "fir-tree",
           "kind": "word",
-          "vocabKey": "fir-tree:pending:1"
+          "vocabKey": "fir_tree:noun:1"
         },
         {
           "id": "c0050:t31",
@@ -11227,7 +11227,7 @@ module.exports = {
           "id": "c0051:t00",
           "surface": "He",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0051:t01",
@@ -11239,7 +11239,7 @@ module.exports = {
           "id": "c0051:t02",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0051:t03",
@@ -11251,7 +11251,7 @@ module.exports = {
           "id": "c0051:t04",
           "surface": "so",
           "kind": "word",
-          "vocabKey": "so:pending:1"
+          "vocabKey": "so:conjunction:1"
         },
         {
           "id": "c0051:t05",
@@ -11263,7 +11263,7 @@ module.exports = {
           "id": "c0051:t06",
           "surface": "tired",
           "kind": "word",
-          "vocabKey": "tired:pending:1"
+          "vocabKey": "tired:adjective:1"
         },
         {
           "id": "c0051:t07",
@@ -11275,7 +11275,7 @@ module.exports = {
           "id": "c0051:t08",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:conjunction:1"
         },
         {
           "id": "c0051:t09",
@@ -11287,7 +11287,7 @@ module.exports = {
           "id": "c0051:t10",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0051:t11",
@@ -11299,7 +11299,7 @@ module.exports = {
           "id": "c0051:t12",
           "surface": "flopped",
           "kind": "word",
-          "vocabKey": "flopped:pending:1"
+          "vocabKey": "flop:verb:1"
         },
         {
           "id": "c0051:t13",
@@ -11311,7 +11311,7 @@ module.exports = {
           "id": "c0051:t14",
           "surface": "down",
           "kind": "word",
-          "vocabKey": "down:pending:1"
+          "vocabKey": "down:adverb:2"
         },
         {
           "id": "c0051:t15",
@@ -11323,7 +11323,7 @@ module.exports = {
           "id": "c0051:t16",
           "surface": "upon",
           "kind": "word",
-          "vocabKey": "upon:pending:1"
+          "vocabKey": "upon:preposition:1"
         },
         {
           "id": "c0051:t17",
@@ -11335,7 +11335,7 @@ module.exports = {
           "id": "c0051:t18",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0051:t19",
@@ -11347,7 +11347,7 @@ module.exports = {
           "id": "c0051:t20",
           "surface": "nice",
           "kind": "word",
-          "vocabKey": "nice:pending:1"
+          "vocabKey": "nice:adjective:1"
         },
         {
           "id": "c0051:t21",
@@ -11359,7 +11359,7 @@ module.exports = {
           "id": "c0051:t22",
           "surface": "soft",
           "kind": "word",
-          "vocabKey": "soft:pending:1"
+          "vocabKey": "soft:adjective:1"
         },
         {
           "id": "c0051:t23",
@@ -11371,7 +11371,7 @@ module.exports = {
           "id": "c0051:t24",
           "surface": "sand",
           "kind": "word",
-          "vocabKey": "sand:pending:1"
+          "vocabKey": "sand:noun:1"
         },
         {
           "id": "c0051:t25",
@@ -11383,7 +11383,7 @@ module.exports = {
           "id": "c0051:t26",
           "surface": "on",
           "kind": "word",
-          "vocabKey": "on:pending:1"
+          "vocabKey": "on:preposition:1"
         },
         {
           "id": "c0051:t27",
@@ -11395,7 +11395,7 @@ module.exports = {
           "id": "c0051:t28",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0051:t29",
@@ -11407,7 +11407,7 @@ module.exports = {
           "id": "c0051:t30",
           "surface": "floor",
           "kind": "word",
-          "vocabKey": "floor:pending:1"
+          "vocabKey": "floor:noun:1"
         },
         {
           "id": "c0051:t31",
@@ -11419,7 +11419,7 @@ module.exports = {
           "id": "c0051:t32",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0051:t33",
@@ -11431,7 +11431,7 @@ module.exports = {
           "id": "c0051:t34",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0051:t35",
@@ -11443,7 +11443,7 @@ module.exports = {
           "id": "c0051:t36",
           "surface": "rabbit-hole",
           "kind": "word",
-          "vocabKey": "rabbit-hole:pending:1"
+          "vocabKey": "rabbit_hole:noun:1"
         },
         {
           "id": "c0051:t37",
@@ -11455,7 +11455,7 @@ module.exports = {
           "id": "c0051:t38",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0051:t39",
@@ -11467,7 +11467,7 @@ module.exports = {
           "id": "c0051:t40",
           "surface": "shut",
           "kind": "word",
-          "vocabKey": "shut:pending:1"
+          "vocabKey": "shut:verb:1"
         },
         {
           "id": "c0051:t41",
@@ -11479,7 +11479,7 @@ module.exports = {
           "id": "c0051:t42",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0051:t43",
@@ -11491,7 +11491,7 @@ module.exports = {
           "id": "c0051:t44",
           "surface": "eyes",
           "kind": "word",
-          "vocabKey": "eyes:pending:1"
+          "vocabKey": "eye:noun:1"
         },
         {
           "id": "c0051:t45",
@@ -11513,7 +11513,7 @@ module.exports = {
           "id": "c0052:t00",
           "surface": "His",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0052:t01",
@@ -11525,7 +11525,7 @@ module.exports = {
           "id": "c0052:t02",
           "surface": "mother",
           "kind": "word",
-          "vocabKey": "mother:pending:1"
+          "vocabKey": "mother:noun:1"
         },
         {
           "id": "c0052:t03",
@@ -11537,7 +11537,7 @@ module.exports = {
           "id": "c0052:t04",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0052:t05",
@@ -11549,7 +11549,7 @@ module.exports = {
           "id": "c0052:t06",
           "surface": "busy",
           "kind": "word",
-          "vocabKey": "busy:pending:1"
+          "vocabKey": "busy:adjective:1"
         },
         {
           "id": "c0052:t07",
@@ -11561,7 +11561,7 @@ module.exports = {
           "id": "c0052:t08",
           "surface": "cooking",
           "kind": "word",
-          "vocabKey": "cooking:pending:1"
+          "vocabKey": "cook:verb:1"
         },
         {
           "id": "c0052:t09",
@@ -11579,7 +11579,7 @@ module.exports = {
           "id": "c0052:t11",
           "surface": "she",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0052:t12",
@@ -11591,7 +11591,7 @@ module.exports = {
           "id": "c0052:t13",
           "surface": "wondered",
           "kind": "word",
-          "vocabKey": "wondered:pending:1"
+          "vocabKey": "wonder:verb:1"
         },
         {
           "id": "c0052:t14",
@@ -11603,7 +11603,7 @@ module.exports = {
           "id": "c0052:t15",
           "surface": "what",
           "kind": "word",
-          "vocabKey": "what:pending:1"
+          "vocabKey": "what:pronoun:1"
         },
         {
           "id": "c0052:t16",
@@ -11615,7 +11615,7 @@ module.exports = {
           "id": "c0052:t17",
           "surface": "he",
           "kind": "word",
-          "vocabKey": "he:pending:1"
+          "vocabKey": "he:pronoun:1"
         },
         {
           "id": "c0052:t18",
@@ -11627,7 +11627,7 @@ module.exports = {
           "id": "c0052:t19",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0052:t20",
@@ -11639,7 +11639,7 @@ module.exports = {
           "id": "c0052:t21",
           "surface": "done",
           "kind": "word",
-          "vocabKey": "done:pending:1"
+          "vocabKey": "do:verb:1"
         },
         {
           "id": "c0052:t22",
@@ -11651,7 +11651,7 @@ module.exports = {
           "id": "c0052:t23",
           "surface": "with",
           "kind": "word",
-          "vocabKey": "with:pending:1"
+          "vocabKey": "with:preposition:1"
         },
         {
           "id": "c0052:t24",
@@ -11663,7 +11663,7 @@ module.exports = {
           "id": "c0052:t25",
           "surface": "his",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0052:t26",
@@ -11675,7 +11675,7 @@ module.exports = {
           "id": "c0052:t27",
           "surface": "clothes",
           "kind": "word",
-          "vocabKey": "clothes:pending:1"
+          "vocabKey": "clothes:noun:1"
         },
         {
           "id": "c0052:t28",
@@ -11697,7 +11697,7 @@ module.exports = {
           "id": "c0053:t00",
           "surface": "It",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0053:t01",
@@ -11709,7 +11709,7 @@ module.exports = {
           "id": "c0053:t02",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0053:t03",
@@ -11721,7 +11721,7 @@ module.exports = {
           "id": "c0053:t04",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0053:t05",
@@ -11733,7 +11733,7 @@ module.exports = {
           "id": "c0053:t06",
           "surface": "second",
           "kind": "word",
-          "vocabKey": "second:pending:1"
+          "vocabKey": "second:numeral:1"
         },
         {
           "id": "c0053:t07",
@@ -11745,7 +11745,7 @@ module.exports = {
           "id": "c0053:t08",
           "surface": "little",
           "kind": "word",
-          "vocabKey": "little:pending:1"
+          "vocabKey": "little:adjective:1"
         },
         {
           "id": "c0053:t09",
@@ -11757,7 +11757,7 @@ module.exports = {
           "id": "c0053:t10",
           "surface": "jacket",
           "kind": "word",
-          "vocabKey": "jacket:pending:1"
+          "vocabKey": "jacket:noun:1"
         },
         {
           "id": "c0053:t11",
@@ -11769,7 +11769,7 @@ module.exports = {
           "id": "c0053:t12",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0053:t13",
@@ -11781,7 +11781,7 @@ module.exports = {
           "id": "c0053:t14",
           "surface": "pair",
           "kind": "word",
-          "vocabKey": "pair:pending:1"
+          "vocabKey": "pair:noun:1"
         },
         {
           "id": "c0053:t15",
@@ -11793,7 +11793,7 @@ module.exports = {
           "id": "c0053:t16",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0053:t17",
@@ -11805,7 +11805,7 @@ module.exports = {
           "id": "c0053:t18",
           "surface": "shoes",
           "kind": "word",
-          "vocabKey": "shoes:pending:1"
+          "vocabKey": "shoe:noun:1"
         },
         {
           "id": "c0053:t19",
@@ -11817,7 +11817,7 @@ module.exports = {
           "id": "c0053:t20",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:pronoun:3"
         },
         {
           "id": "c0053:t21",
@@ -11841,7 +11841,7 @@ module.exports = {
           "id": "c0053:t24",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0053:t25",
@@ -11853,7 +11853,7 @@ module.exports = {
           "id": "c0053:t26",
           "surface": "lost",
           "kind": "word",
-          "vocabKey": "lost:pending:1"
+          "vocabKey": "lost:adjective:1"
         },
         {
           "id": "c0053:t27",
@@ -11865,7 +11865,7 @@ module.exports = {
           "id": "c0053:t28",
           "surface": "in",
           "kind": "word",
-          "vocabKey": "in:pending:1"
+          "vocabKey": "in:preposition:1"
         },
         {
           "id": "c0053:t29",
@@ -11877,7 +11877,7 @@ module.exports = {
           "id": "c0053:t30",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0053:t31",
@@ -11889,7 +11889,7 @@ module.exports = {
           "id": "c0053:t32",
           "surface": "fortnight",
           "kind": "word",
-          "vocabKey": "fortnight:pending:1"
+          "vocabKey": "fortnight:noun:1"
         },
         {
           "id": "c0053:t33",
@@ -11911,7 +11911,7 @@ module.exports = {
           "id": "c0054:t00",
           "surface": "I",
           "kind": "word",
-          "vocabKey": "i:pending:1"
+          "vocabKey": "i:pronoun:1"
         },
         {
           "id": "c0054:t01",
@@ -11923,7 +11923,7 @@ module.exports = {
           "id": "c0054:t02",
           "surface": "am",
           "kind": "word",
-          "vocabKey": "am:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0054:t03",
@@ -11935,7 +11935,7 @@ module.exports = {
           "id": "c0054:t04",
           "surface": "sorry",
           "kind": "word",
-          "vocabKey": "sorry:pending:1"
+          "vocabKey": "sorry:adjective:1"
         },
         {
           "id": "c0054:t05",
@@ -11947,7 +11947,7 @@ module.exports = {
           "id": "c0054:t06",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0054:t07",
@@ -11959,7 +11959,7 @@ module.exports = {
           "id": "c0054:t08",
           "surface": "say",
           "kind": "word",
-          "vocabKey": "say:pending:1"
+          "vocabKey": "say:verb:1"
         },
         {
           "id": "c0054:t09",
@@ -11971,7 +11971,7 @@ module.exports = {
           "id": "c0054:t10",
           "surface": "that",
           "kind": "word",
-          "vocabKey": "that:pending:1"
+          "vocabKey": "that:conjunction:1"
         },
         {
           "id": "c0054:t11",
@@ -11995,7 +11995,7 @@ module.exports = {
           "id": "c0054:t14",
           "surface": "was",
           "kind": "word",
-          "vocabKey": "was:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0054:t15",
@@ -12007,7 +12007,7 @@ module.exports = {
           "id": "c0054:t16",
           "surface": "not",
           "kind": "word",
-          "vocabKey": "not:pending:1"
+          "vocabKey": "not:particle:1"
         },
         {
           "id": "c0054:t17",
@@ -12019,7 +12019,7 @@ module.exports = {
           "id": "c0054:t18",
           "surface": "very",
           "kind": "word",
-          "vocabKey": "very:pending:1"
+          "vocabKey": "very:adverb:1"
         },
         {
           "id": "c0054:t19",
@@ -12031,7 +12031,7 @@ module.exports = {
           "id": "c0054:t20",
           "surface": "well",
           "kind": "word",
-          "vocabKey": "well:pending:1"
+          "vocabKey": "well:adjective:1"
         },
         {
           "id": "c0054:t21",
@@ -12043,7 +12043,7 @@ module.exports = {
           "id": "c0054:t22",
           "surface": "during",
           "kind": "word",
-          "vocabKey": "during:pending:1"
+          "vocabKey": "during:preposition:1"
         },
         {
           "id": "c0054:t23",
@@ -12055,7 +12055,7 @@ module.exports = {
           "id": "c0054:t24",
           "surface": "the",
           "kind": "word",
-          "vocabKey": "the:pending:1"
+          "vocabKey": "the:determiner:1"
         },
         {
           "id": "c0054:t25",
@@ -12067,7 +12067,7 @@ module.exports = {
           "id": "c0054:t26",
           "surface": "evening",
           "kind": "word",
-          "vocabKey": "evening:pending:1"
+          "vocabKey": "evening:noun:1"
         },
         {
           "id": "c0054:t27",
@@ -12089,7 +12089,7 @@ module.exports = {
           "id": "c0055:t00",
           "surface": "His",
           "kind": "word",
-          "vocabKey": "his:pending:1"
+          "vocabKey": "his:determiner:1"
         },
         {
           "id": "c0055:t01",
@@ -12101,7 +12101,7 @@ module.exports = {
           "id": "c0055:t02",
           "surface": "mother",
           "kind": "word",
-          "vocabKey": "mother:pending:1"
+          "vocabKey": "mother:noun:1"
         },
         {
           "id": "c0055:t03",
@@ -12113,7 +12113,7 @@ module.exports = {
           "id": "c0055:t04",
           "surface": "put",
           "kind": "word",
-          "vocabKey": "put:pending:1"
+          "vocabKey": "put:verb:1"
         },
         {
           "id": "c0055:t05",
@@ -12125,7 +12125,7 @@ module.exports = {
           "id": "c0055:t06",
           "surface": "him",
           "kind": "word",
-          "vocabKey": "him:pending:1"
+          "vocabKey": "him:pronoun:1"
         },
         {
           "id": "c0055:t07",
@@ -12137,7 +12137,7 @@ module.exports = {
           "id": "c0055:t08",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0055:t09",
@@ -12149,7 +12149,7 @@ module.exports = {
           "id": "c0055:t10",
           "surface": "bed",
           "kind": "word",
-          "vocabKey": "bed:pending:1"
+          "vocabKey": "bed:noun:1"
         },
         {
           "id": "c0055:t11",
@@ -12167,7 +12167,7 @@ module.exports = {
           "id": "c0055:t13",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0055:t14",
@@ -12179,7 +12179,7 @@ module.exports = {
           "id": "c0055:t15",
           "surface": "made",
           "kind": "word",
-          "vocabKey": "made:pending:1"
+          "vocabKey": "make:verb:1"
         },
         {
           "id": "c0055:t16",
@@ -12191,7 +12191,7 @@ module.exports = {
           "id": "c0055:t17",
           "surface": "some",
           "kind": "word",
-          "vocabKey": "some:pending:1"
+          "vocabKey": "some:determiner:1"
         },
         {
           "id": "c0055:t18",
@@ -12203,7 +12203,7 @@ module.exports = {
           "id": "c0055:t19",
           "surface": "camomile",
           "kind": "word",
-          "vocabKey": "camomile:pending:1"
+          "vocabKey": "camomile:noun:1"
         },
         {
           "id": "c0055:t20",
@@ -12215,7 +12215,7 @@ module.exports = {
           "id": "c0055:t21",
           "surface": "tea",
           "kind": "word",
-          "vocabKey": "tea:pending:1"
+          "vocabKey": "tea:noun:1"
         },
         {
           "id": "c0055:t22",
@@ -12233,7 +12233,7 @@ module.exports = {
           "id": "c0055:t24",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0055:t25",
@@ -12245,7 +12245,7 @@ module.exports = {
           "id": "c0055:t26",
           "surface": "she",
           "kind": "word",
-          "vocabKey": "she:pending:1"
+          "vocabKey": "she:pronoun:1"
         },
         {
           "id": "c0055:t27",
@@ -12257,7 +12257,7 @@ module.exports = {
           "id": "c0055:t28",
           "surface": "gave",
           "kind": "word",
-          "vocabKey": "gave:pending:1"
+          "vocabKey": "give:verb:1"
         },
         {
           "id": "c0055:t29",
@@ -12269,7 +12269,7 @@ module.exports = {
           "id": "c0055:t30",
           "surface": "a",
           "kind": "word",
-          "vocabKey": "a:pending:1"
+          "vocabKey": "a:determiner:1"
         },
         {
           "id": "c0055:t31",
@@ -12281,7 +12281,7 @@ module.exports = {
           "id": "c0055:t32",
           "surface": "dose",
           "kind": "word",
-          "vocabKey": "dose:pending:1"
+          "vocabKey": "dose:noun:1"
         },
         {
           "id": "c0055:t33",
@@ -12293,7 +12293,7 @@ module.exports = {
           "id": "c0055:t34",
           "surface": "of",
           "kind": "word",
-          "vocabKey": "of:pending:1"
+          "vocabKey": "of:preposition:1"
         },
         {
           "id": "c0055:t35",
@@ -12305,7 +12305,7 @@ module.exports = {
           "id": "c0055:t36",
           "surface": "it",
           "kind": "word",
-          "vocabKey": "it:pending:1"
+          "vocabKey": "it:pronoun:1"
         },
         {
           "id": "c0055:t37",
@@ -12317,7 +12317,7 @@ module.exports = {
           "id": "c0055:t38",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:preposition:1"
         },
         {
           "id": "c0055:t39",
@@ -12357,7 +12357,7 @@ module.exports = {
           "id": "c0056:t01",
           "surface": "One",
           "kind": "word",
-          "vocabKey": "one:pending:1"
+          "vocabKey": "one:numeral:1"
         },
         {
           "id": "c0056:t02",
@@ -12369,7 +12369,7 @@ module.exports = {
           "id": "c0056:t03",
           "surface": "table-spoonful",
           "kind": "word",
-          "vocabKey": "table-spoonful:pending:1"
+          "vocabKey": "tablespoonful:noun:1"
         },
         {
           "id": "c0056:t04",
@@ -12381,7 +12381,7 @@ module.exports = {
           "id": "c0056:t05",
           "surface": "to",
           "kind": "word",
-          "vocabKey": "to:pending:1"
+          "vocabKey": "to:particle:2"
         },
         {
           "id": "c0056:t06",
@@ -12393,7 +12393,7 @@ module.exports = {
           "id": "c0056:t07",
           "surface": "be",
           "kind": "word",
-          "vocabKey": "be:pending:1"
+          "vocabKey": "be:auxiliary:1"
         },
         {
           "id": "c0056:t08",
@@ -12405,7 +12405,7 @@ module.exports = {
           "id": "c0056:t09",
           "surface": "taken",
           "kind": "word",
-          "vocabKey": "taken:pending:1"
+          "vocabKey": "take:verb:1"
         },
         {
           "id": "c0056:t10",
@@ -12417,7 +12417,7 @@ module.exports = {
           "id": "c0056:t11",
           "surface": "at",
           "kind": "word",
-          "vocabKey": "at:pending:1"
+          "vocabKey": "at:preposition:1"
         },
         {
           "id": "c0056:t12",
@@ -12429,7 +12429,7 @@ module.exports = {
           "id": "c0056:t13",
           "surface": "bed-time",
           "kind": "word",
-          "vocabKey": "bed-time:pending:1"
+          "vocabKey": "bedtime:noun:1"
         },
         {
           "id": "c0056:t14",
@@ -12451,7 +12451,7 @@ module.exports = {
           "id": "c0057:t00",
           "surface": "But",
           "kind": "word",
-          "vocabKey": "but:pending:1"
+          "vocabKey": "but:conjunction:1"
         },
         {
           "id": "c0057:t01",
@@ -12499,7 +12499,7 @@ module.exports = {
           "id": "c0057:t08",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0057:t09",
@@ -12523,7 +12523,7 @@ module.exports = {
           "id": "c0057:t12",
           "surface": "had",
           "kind": "word",
-          "vocabKey": "had:pending:1"
+          "vocabKey": "have:auxiliary:1"
         },
         {
           "id": "c0057:t13",
@@ -12535,7 +12535,7 @@ module.exports = {
           "id": "c0057:t14",
           "surface": "bread",
           "kind": "word",
-          "vocabKey": "bread:pending:1"
+          "vocabKey": "bread:noun:1"
         },
         {
           "id": "c0057:t15",
@@ -12547,7 +12547,7 @@ module.exports = {
           "id": "c0057:t16",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0057:t17",
@@ -12559,7 +12559,7 @@ module.exports = {
           "id": "c0057:t18",
           "surface": "milk",
           "kind": "word",
-          "vocabKey": "milk:pending:1"
+          "vocabKey": "milk:noun:1"
         },
         {
           "id": "c0057:t19",
@@ -12571,7 +12571,7 @@ module.exports = {
           "id": "c0057:t20",
           "surface": "and",
           "kind": "word",
-          "vocabKey": "and:pending:1"
+          "vocabKey": "and:conjunction:1"
         },
         {
           "id": "c0057:t21",
@@ -12583,7 +12583,7 @@ module.exports = {
           "id": "c0057:t22",
           "surface": "blackberries",
           "kind": "word",
-          "vocabKey": "blackberries:pending:1"
+          "vocabKey": "blackberry:noun:1"
         },
         {
           "id": "c0057:t23",
@@ -12595,7 +12595,7 @@ module.exports = {
           "id": "c0057:t24",
           "surface": "for",
           "kind": "word",
-          "vocabKey": "for:pending:1"
+          "vocabKey": "for:preposition:1"
         },
         {
           "id": "c0057:t25",
@@ -12607,7 +12607,7 @@ module.exports = {
           "id": "c0057:t26",
           "surface": "supper",
           "kind": "word",
-          "vocabKey": "supper:pending:1"
+          "vocabKey": "supper:noun:1"
         },
         {
           "id": "c0057:t27",

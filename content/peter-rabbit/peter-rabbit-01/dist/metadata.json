@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "workId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "legacyClientId": "peter",
+  "contentVersion": 1,
+  "title": "The Tale of Peter Rabbit",
+  "titleZh": "彼得兔的故事",
+  "author": "Beatrix Potter",
+  "editionLabel": "Peter Rabbit Public-Domain Edition",
+  "editionLabelZh": "独立公版阅读版",
+  "category": "fiction",
+  "internalContentNumber": "10001",
+  "wordCount": {
+    "value": 952,
+    "scope": "57 canonical story-content cues; LibriVox intro/outro excluded; hyphenated forms counted by the content pipeline token rules",
+    "evidence": "dist/qa-report.json"
+  },
+  "durationMs": 322026,
+  "displayDuration": "5:22",
+  "narrator": "Julian Pratley",
+  "audioSource": "LibriVox",
+  "audioSourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
+  "level": null,
+  "pageCount": null,
+  "review": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false,
+    "notes": "Title and author are verified against the source package. Category and Chinese title are project editorial metadata. Unsupported level and page-count values were removed."
+  },
+  "source": "source/metadata.source.json"
+}

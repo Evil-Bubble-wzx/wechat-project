@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pieceId": "peter-rabbit-01",
   "status": "machine_draft",
-  "generatedAt": "2026-09-21T08:27:38.903Z",
+  "generatedAt": "2026-09-22T02:18:17.129Z",
   "sourceCueSha256": "5fb30d93295bfc0c9eab98f4bfa9254d0766de961f5c32bba5870179b0270e6a",
   "policy": {
     "machineSuggestionsAreApproval": false,

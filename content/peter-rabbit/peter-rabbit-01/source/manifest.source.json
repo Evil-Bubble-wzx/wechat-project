@@ -10,6 +10,9 @@
   "text": "source/text-original.txt",
   "rawText": "source/text-project-gutenberg-14838.txt",
   "rights": "source/rights.json",
+  "rightsEvidence": "source/rights-evidence.json",
+  "editorialProvenance": "source/editorial-provenance.json",
+  "coverSource": "source/cover/peter-rabbit-independent.svg",
   "properNouns": [
     "Peter",
     "Flopsy",
@@ -28,6 +31,7 @@
     "narrator": "Julian Pratley",
     "sourceName": "LibriVox",
     "sourceUrl": "https://librivox.org/the-tale-of-peter-rabbit-and-others-by-beatrix-potter/",
+    "downloadUrl": "https://archive.org/download/thetaleofpeterrabbitandothers_2008_librivox/peterrabbitandothertales_01_potter_64kb.mp3",
     "durationMs": 322026,
     "mimeType": "audio/mpeg",
     "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36"

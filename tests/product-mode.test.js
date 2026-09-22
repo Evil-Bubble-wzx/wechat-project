@@ -26,15 +26,21 @@ test('production mode is the default and isolates demo state', () => {
     const home = createPage('home')
     home.setData = patch => Object.assign(home.data, patch)
     home.onLoad({})
-    assert.deepEqual(home.data.books.map(book => book.id), ['peter'])
+    assert.deepEqual(home.data.books.map(book => book.id), ['peter-rabbit'])
     assert.equal(home.data.isDemo, false)
+
+    const notices = createPage('notices')
+    notices.setData = patch => Object.assign(notices.data, patch)
+    notices.onLoad({})
+    assert.equal(notices.data.route, 'notices')
+    assert.ok(notices.data.contentNotices.length >= 5)
 
     const detail = createPage('detail')
     detail.setData = patch => Object.assign(detail.data, patch)
     detail.onLoad({ id:'little-seed' })
-    assert.equal(detail.data.book.id, 'peter')
+    assert.equal(detail.data.book.id, 'peter-rabbit')
     detail.toggleFavorite()
-    assert.deepEqual(stores[productMode.PRODUCT_STORAGE_KEY].favorites, ['peter'])
+    assert.deepEqual(stores[productMode.PRODUCT_STORAGE_KEY].favorites, ['peter-rabbit'])
     assert.equal(stores[productMode.PRODUCT_STORAGE_KEY].user, undefined)
     assert.equal(stores[productMode.PRODUCT_STORAGE_KEY].demoCoupons, undefined)
     detail.openPurchase()
@@ -90,5 +96,35 @@ test('native Demo override only works in the WeChat develop environment', () => 
     assert.equal(productMode.resolveMode(),'production')
     envVersion='develop'
     assert.equal(productMode.resolveMode(),'demo')
+  } finally { global.wx = previousWx }
+})
+
+test('legacy Peter client state migrates once to canonical work and piece IDs', () => {
+  const previousWx = global.wx
+  const stores = {
+    [productMode.PRODUCT_STORAGE_KEY]: {
+      favorites:['peter'],
+      recent:['peter'],
+      progress:{ peter:{ seconds:88,completed:true } },
+      listenDaily:{ '2026-09-22:peter':12 },
+      results:[{ id:1,title:'The Tale of Peter Rabbit',score:90 }]
+    }
+  }
+  global.wx = {
+    isBrowserPreview:true,
+    __tingyueMode:'production',
+    getStorageSync:key => stores[key],
+    setStorageSync:(key,value) => { stores[key] = value }
+  }
+  try {
+    const host = require('../miniprogram/services/host')
+    const state = host.read()
+    assert.deepEqual(state.favorites, ['peter-rabbit'])
+    assert.deepEqual(state.recent, ['peter-rabbit'])
+    assert.deepEqual(state.progress['peter-rabbit-01'], { seconds:88,completed:true })
+    assert.equal(state.progress.peter, undefined)
+    assert.equal(state.listenDaily['2026-09-22:peter-rabbit-01'], 12)
+    assert.equal(state.results[0].pieceId, 'peter-rabbit-01')
+    assert.equal(state.idMigrationVersion, 1)
   } finally { global.wx = previousWx }
 })

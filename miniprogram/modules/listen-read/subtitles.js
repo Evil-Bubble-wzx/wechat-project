@@ -26,13 +26,40 @@ function lineTokens(text) {
   })
 }
 
+function cueTokensInRange(cue, start, end, lineIndex) {
+  if (!Array.isArray(cue.tokens)) return lineTokens(cue.text.slice(start, end))
+  const result = []
+  let offset = 0
+  for (const token of cue.tokens) {
+    const tokenStart = offset
+    const tokenEnd = offset + token.surface.length
+    offset = tokenEnd
+    const overlapStart = Math.max(start, tokenStart)
+    const overlapEnd = Math.min(end, tokenEnd)
+    if (overlapStart >= overlapEnd) continue
+    result.push({
+      id: token.id + ':l' + lineIndex,
+      surface: token.surface.slice(overlapStart - tokenStart, overlapEnd - tokenStart),
+      vocabKey: token.vocabKey || null
+    })
+  }
+  return result
+}
+
 function prepare(cues) {
   const lines = [], starts = [], counts = []
   for (const [cueIndex, cue] of cues.entries()) {
     starts.push(lines.length)
     const parts = splitText(cue.text)
     counts.push(parts.length)
-    for (const text of parts) lines.push({ text, cueIndex, tokens: lineTokens(text) })
+    let cursor = 0
+    for (const [lineIndex, text] of parts.entries()) {
+      const start = cue.text.indexOf(text, cursor)
+      const safeStart = start >= 0 ? start : cursor
+      const end = safeStart + text.length
+      cursor = end
+      lines.push({ text, cueIndex, tokens: cueTokensInRange(cue, safeStart, end, lineIndex) })
+    }
   }
   return { lines, starts, counts }
 }

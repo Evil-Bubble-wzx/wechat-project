@@ -8,7 +8,7 @@ let browser
  browser=await chromium.launch({headless:true,channel:'msedge'})
  const page=await browser.newPage({viewport:{width:390,height:844}})
  const errors=[];page.on('pageerror',e=>errors.push(e.message))
- await page.goto('http://127.0.0.1:4173/#player?id=peter');await page.locator('.play-button').click()
+ await page.goto('http://127.0.0.1:4173/#player?id=peter-rabbit');await page.locator('.play-button').click()
  await page.waitForFunction(()=>window.previewAudio && !previewAudio.paused && previewAudio.currentTime>1,{},{timeout:20000})
  await page.evaluate(async()=>{window.audioTestContext=new AudioContext();const source=audioTestContext.createMediaElementSource(previewAudio);window.audioTestAnalyser=audioTestContext.createAnalyser();source.connect(audioTestAnalyser);audioTestAnalyser.connect(audioTestContext.destination);await audioTestContext.resume()})
  await page.waitForFunction(()=>{const bins=new Float32Array(audioTestAnalyser.fftSize);audioTestAnalyser.getFloatTimeDomainData(bins);return bins.some(x=>Math.abs(x)>.001)},{},{timeout:10000})
@@ -21,9 +21,9 @@ let browser
  await page.locator('[data-action="speed"]').click();assert.equal(await page.evaluate(()=>previewAudio.playbackRate),1.25)
  await page.screenshot({path:'artifacts/production/real-audio-playing.png'})
  await page.evaluate(()=>{previewAudio.currentTime=previewAudio.duration-.3});await page.waitForFunction(()=>previewAudio.ended)
- assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress.peter.completed),true)
+ assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress['peter-rabbit-01'].completed),true)
  // Production contains Peter Rabbit only, so next track must not escape to Demo books.
- await page.evaluate(()=>window.currentPage.nextTrack({currentTarget:{dataset:{step:1}}}));assert.equal(await page.evaluate(()=>window.currentPage.data.book.id),'peter')
+ await page.evaluate(()=>window.currentPage.nextTrack({currentTarget:{dataset:{step:1}}}));assert.equal(await page.evaluate(()=>window.currentPage.data.book.id),'peter-rabbit')
  assert.deepEqual(errors,[])
  const result={...metadata,bytes:2580786,range:'PASS',play:'PASS',pauseResume:'PASS',seek:'PASS',rate:'PASS',ended:'PASS',productionCatalogGuard:'PASS',errors}
  fs.writeFileSync('artifacts/production/audio-test.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result))

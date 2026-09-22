@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "pieceId": "peter-rabbit-01",
+  "createdOn": "2026-09-22",
+  "createdBy": "wzx with authorized AI assistance",
+  "operatingEntity": "PENDING_ENTITY",
+  "scope": {
+    "cover": {
+      "evidenceId": "PR-COVER-ORIGINAL-20260922",
+      "sourceFile": "source/cover/peter-rabbit-independent.svg",
+      "exportFile": "miniprogram/assets/peter.png",
+      "sourceSha256": "4ef92f75746657628a5b08e2bf0c1cd9254f991fd9d064e2728cc6ae7712ab5b",
+      "exportSha256": "9786d9bed6b9a6a592c1f919d312654f09ffa60076ef2598aeb5ef39d687cac7",
+      "method": "Original geometric SVG composed for this repository; generic rabbit and garden forms; no traced or copied Beatrix Potter illustration.",
+      "title": "The Tale of Peter Rabbit / 彼得兔的故事",
+      "subtitle": "Independent Public-Domain Reading Edition / 独立公版阅读版"
+    },
+    "chineseIntroduction": {
+      "evidenceId": "PR-ZH-INTRO-20260922",
+      "location": "miniprogram/modules/catalog/catalog.json",
+      "method": "New Chinese summary written from the approved English story cues; not copied from a published translation."
+    },
+    "quiz": {
+      "evidenceId": "PR-QUIZ-ORIGINAL-20260922",
+      "sourceFile": "source/quiz.source.json",
+      "generatedFiles": [
+        "dist/quiz.json",
+        "miniprogram/modules/listen-read/peter-quiz-data.js"
+      ],
+      "count": 10,
+      "method": "Ten new bilingual comprehension questions written from the approved story cues; each question records exact cue IDs and evidence fragments and was not copied from an external question bank.",
+      "contentReviewStatus": "DONE_AI_ASSISTED",
+      "reviewRecord": "review/c04-review.json"
+    }
+  },
+  "rightsNote": "This record documents creation provenance only. It is not a legal conclusion or a release approval."
+}

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "workId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 1,
+  "quizVersion": 1,
+  "mode": "fixed_order",
+  "masteryFeedbackPercent": 80,
+  "blocksContent": false,
+  "audioOptionsIncluded": false,
+  "review": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false
+  },
+  "questions": [
+    {
+      "id": "PRQ-001",
+      "sourceCueIds": ["c0003"],
+      "evidenceQuoteFragments": ["don't go into Mr. McGregor's garden"],
+      "difficulty": "basic_comprehension",
+      "q": "Where does Mrs. Rabbit tell the little rabbits not to go?",
+      "zh": "兔妈妈叮嘱小兔子们不要去哪里？",
+      "options": ["Mr. McGregor’s garden / 麦格先生的花园", "The baker’s shop / 面包店", "The fir-tree / 杉树下"],
+      "answer": 0,
+      "explanation": "Mrs. Rabbit warns them not to enter Mr. McGregor’s garden. / 兔妈妈警告他们不要进入麦格先生的花园。"
+    },
+    {
+      "id": "PRQ-002",
+      "sourceCueIds": ["c0008"],
+      "evidenceQuoteFragments": ["went down the lane to gather blackberries"],
+      "difficulty": "basic_comprehension",
+      "q": "What do Flopsy, Mopsy and Cotton-tail go to gather?",
+      "zh": "弗洛普西、莫普西和棉尾巴去采什么？",
+      "options": ["French beans / 四季豆", "Blackberries / 黑莓", "Parsley / 欧芹"],
+      "answer": 1,
+      "explanation": "The three good little bunnies go down the lane to gather blackberries. / 三只听话的小兔子沿着小路去采黑莓。"
+    },
+    {
+      "id": "PRQ-003",
+      "sourceCueIds": ["c0010"],
+      "evidenceQuoteFragments": ["First he ate some lettuces and some French beans"],
+      "difficulty": "basic_comprehension",
+      "q": "What does Peter eat first in the garden?",
+      "zh": "彼得进花园后先吃了什么？",
+      "options": ["Blackberries / 黑莓", "Lettuces and French beans / 生菜和四季豆", "Bread and milk / 面包和牛奶"],
+      "answer": 1,
+      "explanation": "Peter first eats lettuces and French beans, and then some radishes. / 彼得先吃了生菜和四季豆，后来又吃了小萝卜。"
+    },
+    {
+      "id": "PRQ-004",
+      "sourceCueIds": ["c0012"],
+      "evidenceQuoteFragments": ["round the end of a cucumber frame", "Mr. McGregor"],
+      "difficulty": "basic_comprehension",
+      "q": "Who does Peter meet near the cucumber frame?",
+      "zh": "彼得在黄瓜架附近遇到了谁？",
+      "options": ["Mrs. Rabbit / 兔妈妈", "A white cat / 一只白猫", "Mr. McGregor / 麦格先生"],
+      "answer": 2,
+      "explanation": "Peter meets Mr. McGregor at the end of a cucumber frame. / 彼得在黄瓜架尽头遇到了麦格先生。"
+    },
+    {
+      "id": "PRQ-005",
+      "sourceCueIds": ["c0015", "c0016", "c0019"],
+      "evidenceQuoteFragments": ["lost one of his shoes", "leaving his jacket behind him"],
+      "difficulty": "basic_comprehension",
+      "q": "Which things does Peter lose or leave behind while escaping?",
+      "zh": "彼得逃跑时丢失或留下了哪些穿戴物？",
+      "options": ["His hat and scarf / 帽子和围巾", "His two shoes and blue jacket / 两只鞋和蓝色外套", "His basket and umbrella / 篮子和雨伞"],
+      "answer": 1,
+      "explanation": "Peter loses both shoes and leaves his blue jacket behind in the net. / 彼得丢了两只鞋，并把蓝色外套留在网子里。"
+    },
+    {
+      "id": "PRQ-006",
+      "sourceCueIds": ["c0020", "c0021", "c0030"],
+      "evidenceQuoteFragments": ["jumped into a can", "so much water in it", "very damp"],
+      "difficulty": "basic_comprehension",
+      "q": "Where does Peter jump to hide, only to get wet?",
+      "zh": "彼得跳进哪里躲藏，结果把自己弄湿了？",
+      "options": ["A watering can / 洒水壶", "A flower-pot / 花盆", "A basket / 篮子"],
+      "answer": 0,
+      "explanation": "Peter jumps into a can, but it contains so much water that he becomes damp. / 彼得跳进一个水壶，可里面有很多水，他因此浑身湿透。"
+    },
+    {
+      "id": "PRQ-007",
+      "sourceCueIds": ["c0049"],
+      "evidenceQuoteFragments": ["for a scare-crow"],
+      "difficulty": "basic_comprehension",
+      "q": "What does Mr. McGregor use Peter’s jacket and shoes for?",
+      "zh": "麦格先生把彼得的外套和鞋子用来做什么？",
+      "options": ["To dress a scarecrow / 给稻草人穿戴", "To repair the gate / 修理大门", "To cover the wheelbarrow / 盖住独轮车"],
+      "answer": 0,
+      "explanation": "Mr. McGregor hangs them on a scarecrow to frighten the blackbirds. / 麦格先生把它们挂在稻草人上，用来吓走乌鸫。"
+    },
+    {
+      "id": "PRQ-008",
+      "sourceCueIds": ["c0043", "c0044", "c0045"],
+      "evidenceQuoteFragments": ["climbed upon a wheelbarrow", "beyond him was the gate"],
+      "difficulty": "basic_comprehension",
+      "q": "What does Peter climb onto before he spots the gate?",
+      "zh": "彼得看见大门前爬上了什么？",
+      "options": ["A wall / 一堵墙", "A wheelbarrow / 一辆独轮车", "A ladder / 一架梯子"],
+      "answer": 1,
+      "explanation": "Peter climbs onto a wheelbarrow and sees the gate beyond Mr. McGregor. / 彼得爬上独轮车，看见大门就在麦格先生身后。"
+    },
+    {
+      "id": "PRQ-009",
+      "sourceCueIds": ["c0050", "c0051"],
+      "evidenceQuoteFragments": ["till he got home to the big fir-tree", "flopped down upon the nice soft sand"],
+      "difficulty": "basic_comprehension",
+      "q": "Where does Peter finally stop and rest after escaping?",
+      "zh": "彼得逃出来后，最后在哪里停下休息？",
+      "options": ["At home by the big fir-tree / 大杉树下的家中", "Beside the garden pond / 花园池塘旁", "Inside the baker’s shop / 面包店里"],
+      "answer": 0,
+      "explanation": "Peter runs home to the big fir-tree and lies down on the soft sand in the rabbit-hole. / 彼得一路跑回大杉树下的家，躺在兔子洞的软沙地上。"
+    },
+    {
+      "id": "PRQ-010",
+      "sourceCueIds": ["c0055", "c0056"],
+      "evidenceQuoteFragments": ["made some camomile tea", "One table-spoonful"],
+      "difficulty": "basic_comprehension",
+      "q": "What does Mrs. Rabbit give Peter at bedtime?",
+      "zh": "睡觉前，兔妈妈给彼得喝了什么？",
+      "options": ["Milk / 牛奶", "Camomile tea / 洋甘菊茶", "Blackberry juice / 黑莓汁"],
+      "answer": 1,
+      "explanation": "Mrs. Rabbit gives Peter one tablespoonful of camomile tea. / 兔妈妈给彼得喝了一汤匙洋甘菊茶。"
+    }
+  ]
+}

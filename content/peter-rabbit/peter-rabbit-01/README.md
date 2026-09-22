@@ -27,14 +27,14 @@
 - 自动 QA 和发布拦截。
 - 离线人耳审核页、正式审核 schema、校验与修正应用器；
 - 审核人 `wzx` 已完成全文试听和 28/28 个裁决，O1/O2 已按录音恢复，`subtitleReviewComplete:true`。
-- 词汇审核 schema、开放来源证据、离线工作台、校验与应用器；371 个动态审核单元覆盖 909 个非专名 token。
+- 词汇审核 schema、开放来源证据、离线工作台、校验与应用器；371 个动态审核单元已完成经 `wzx` 授权的 AI 辅助全量审核，形成 358 个正式义项并覆盖 906 个可点击 token。
 
 尚未完成：
 
-- 371 个动态词汇审核单元的词性、英式 IPA、中英文释义和上下文义项人工签署；
-- 词条、元数据、Quiz 和权利人工复核。
+- 整体人工完成门槛；
+- 元数据、Quiz、词卡和权利人工复核。
 
-所有未完成项均记录在 `dist/qa-report.json`，`dist/manifest.json` 的 `publishable` 保持为 `false`。字幕子门槛已经关闭，但不会越过词汇与权利门槛。
+所有未完成项均记录在 `dist/qa-report.json`，`dist/manifest.json` 的 `publishable` 保持为 `false`。字幕和词汇子门槛已经关闭，但不会越过整体人工、权利、元数据与 Quiz 门槛。
 
 ## 字幕人耳审核
 
@@ -50,15 +50,22 @@
 
 ## 词汇编辑审核
 
-词汇审核以已经通过字幕审核的 `dist/cues.json` 59 条字幕为唯一输入，不重新运行字幕对齐流程。当前 371 个审核单元覆盖 909 个非专名 token；352 个单元有 Britfone 3.0.1 或 Open English WordNet 2025 证据，19 个特殊词无自动匹配。开放来源只提供候选证据，不等于人工批准。
+词汇审核以已经通过字幕审核的 `dist/cues.json` 59 条字幕为唯一输入，不重新运行字幕对齐流程。371 个原始审核单元覆盖 909 个候选 token；审核后 Benjamin 与 McGregor’s 被排除为专名，最终 358 个义项覆盖 906 个可点击 token。13 组多义或多词性项目按上下文拆分，所有面向学习者的中英文释义均已重写。审核方式为 `ai_assisted_full_review`，由 `wzx` 明确授权；该记录不声称 `wzx` 本人逐项人工检查。
 
-1. 执行 `npm run content:peter:vocab` 重建候选、修复 pending token 引用并生成 `review/vocab-index.html`。
-2. 打开 `review/vocab-index.html`，逐项核对 lemma、词性、英式 IPA、当前语境的儿童化英文释义和中文释义；必要时拆分义项并重新分配出现位置。
-3. 全部确认后填写审核标识 `wzx`，下载 `vocab-decisions.completed.json` 到 `review/`。
+1. 执行 `npm run content:peter:vocab` 重建候选并生成 `review/vocab-index.html`；若有效 completed 归档存在，命令会保留已应用状态并展示完成结果。
+2. 打开 `review/vocab-index.html`，逐项核对已预填的 lemma、词性、英式 IPA、当前语境的儿童化英文释义、中文释义和出现位置；必要时修改或拆分义项。不要直接把开放词典原文当作最终项目释义。
+3. 本轮完成文件保存在 `review/vocab-decisions.completed.json`；重做授权的 AI 辅助审核可执行 `npm run content:peter:vocab:audit`。
 4. 执行 `npm run content:peter:vocab:check`；通过后再执行 `npm run content:peter:vocab:apply`。
-5. 应用器生成 `review/vocab-corrections.json` 和 `dist/vocab.json`，将 token 改写为正式 `lemma:partOfSpeech:senseNo` 引用，并只关闭词汇子门槛。权利、元数据和 Quiz 等门槛仍保持关闭。
+5. 应用器生成 `review/vocab-corrections.json` 和 `dist/vocab.json`，将 token 改写为正式 `lemma:partOfSpeech:senseNo` 引用。
+6. 执行 `npm run content:peter:vocab:export`，校验 358 个审核义项与 906 个可点击 token 的完整映射，并生成正式播放器词卡模块。该步骤只关闭 X-03 客户端接线项，权利和整体发布门槛仍保持关闭。
 
 第三方数据版本、SHA-256、许可证和修改说明见 `source/lexicon/THIRD_PARTY_NOTICES.md`。审核归档不保存逐项停留时长等行为遥测。
+
+## C-04 元数据与 Quiz
+
+正式权威 ID 为 `workId: peter-rabbit`、`pieceId: peter-rabbit-01`；旧客户端 ID `peter` 仅用于一次性本机状态迁移。`source/metadata.source.json` 移除了无来源的 Level 与 Pages，并将项目版本标签与外部 Series 概念分开。
+
+`source/quiz.source.json` 包含固定顺序的 10 道双语基础理解题。每题均有稳定题号、正文 cue 引用、证据片段、三项双语选项和双语解释。80 分只用于掌握反馈，不限制内容访问；本轮不生成选项语音。执行 `npm run content:peter:c04` 会校验 cue 证据并生成 `dist/metadata.json`、`dist/quiz.json`、`review/c04-review.json` 和小程序题目模块，同时更新 `contentVersion:1` 资产哈希。审核方式为 `ai_assisted_full_review`，未声称人工终审。
 
 ## 重建
 
@@ -74,9 +81,13 @@ npm run content:peter:review:apply
 npm run content:peter:export
 # 字幕审核通过后，进入词汇审核：
 npm run content:peter:vocab
-# 完成人工词汇审核并下载 review/vocab-decisions.completed.json 后：
+# 完成词汇审核并生成 review/vocab-decisions.completed.json 后：
 npm run content:peter:vocab:check
 npm run content:peter:vocab:apply
+# 生成并校验 C-04 元数据、Quiz 与 contentVersion:1 候选包：
+npm run content:peter:c04
+# C-04 候选包确认后再导出正式词卡，关闭 X-03 接线项：
+npm run content:peter:vocab:export
 ```
 
 构建脚本不会自动覆盖 `source/text-original.txt`。如果下载原文的清洗结果发生变化，构建会直接报错，要求人工核对源文件。

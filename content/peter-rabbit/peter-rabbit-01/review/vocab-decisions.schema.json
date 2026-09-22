@@ -58,7 +58,9 @@
       "required": ["reviewer", "reviewedAt"],
       "properties": {
         "reviewer": { "type": ["string", "null"] },
-        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+        "reviewMethod": { "enum": ["human_manual_review", "ai_assisted_full_review"] },
+        "authorizedBy": { "type": ["string", "null"] }
       }
     }
   }

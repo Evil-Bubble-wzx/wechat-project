@@ -24,7 +24,9 @@ async function run() {
     downloadEnabled: await page.locator('#download').isEnabled()
   }
   if (initial.title !== 'Peter Rabbit 词汇编辑审核') throw new Error(`Unexpected title: ${initial.title}`)
-  if (initial.stats !== '0/371 已确认' || initial.units !== 371 || initial.downloadEnabled) {
+  const completed = await page.evaluate(() => initial.status === 'completed')
+  const expectedStats = completed ? '371/371 已确认' : '0/371 已确认'
+  if (initial.stats !== expectedStats || initial.units !== 371 || initial.downloadEnabled !== completed) {
     throw new Error(`Unexpected initial state: ${JSON.stringify(initial)}`)
   }
 
@@ -56,7 +58,7 @@ async function run() {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
   if (overflow) throw new Error('The vocabulary workbench overflows horizontally at 390px.')
   if (errors.length) throw new Error(`Browser errors:\n${errors.join('\n')}`)
-  console.log(JSON.stringify({ initial, candidate, splitSense: 'PASS', completionGate: 'PASS', mobile390: 'PASS', errors }, null, 2))
+  console.log(JSON.stringify({ initial, completed, candidate, splitSense: 'PASS', completionGate: 'PASS', mobile390: 'PASS', errors }, null, 2))
   await browser.close()
   browser = null
 }

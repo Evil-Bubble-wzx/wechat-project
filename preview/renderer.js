@@ -1,5 +1,5 @@
 // Browser-only WXML preview bridge. Native pages use the exact same template and controller.
-const names={home:'首页',library:'书库',loans:'实体借阅',me:'我的',detail:'图书详情',player:'听读播放器',recent:'最近听读',report:'阅读报告',ranking:'阅读榜单',login:'登录 / 注册',coupons:'我的优惠券',invite:'邀请奖励',quiz:'阅读测验'}
+const names={home:'首页',library:'书库',loans:'实体借阅',me:'我的',detail:'图书详情',player:'听读播放器',recent:'最近听读',report:'阅读报告',ranking:'阅读榜单',login:'登录 / 注册',coupons:'我的优惠券',invite:'邀请奖励',quiz:'阅读测验',notices:'内容来源与许可'}
 const app=document.getElementById('app'),device=document.getElementById('device')
 let source,current,pageName
 const policy=window.Tingyue.getProductPolicy()

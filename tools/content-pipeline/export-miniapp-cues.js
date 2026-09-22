@@ -23,7 +23,7 @@ const compactCues = cues.map(cue => ({
 const body = [
   '// Generated from content/peter-rabbit/peter-rabbit-01/dist/cues.json.',
   '// Run the Peter Rabbit alignment/export pipeline instead of editing this file.',
-  `module.exports = ${JSON.stringify({ peter: compactCues }, null, 2)}`,
+  `module.exports = ${JSON.stringify({ 'peter-rabbit-01': compactCues }, null, 2)}`,
   ''
 ].join('\n')
 

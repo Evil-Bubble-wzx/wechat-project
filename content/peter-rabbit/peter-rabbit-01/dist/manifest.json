@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "pieceId": "peter-rabbit-01",
-  "contentVersion": 0,
+  "contentVersion": 1,
   "status": "needs_review",
   "publishable": false,
   "language": "en",
@@ -18,19 +18,22 @@
     "corrections": "review/corrections.json",
     "vocabCandidates": "work/vocab.candidates.json",
     "vocabReviewDecisions": "review/vocab-decisions.json",
-    "vocabReviewWorkbench": "review/vocab-index.html"
+    "vocabReviewWorkbench": "review/vocab-index.html",
+    "vocab": "dist/vocab.json",
+    "metadata": "dist/metadata.json",
+    "quiz": "dist/quiz.json",
+    "c04Review": "review/c04-review.json"
   },
   "counts": {
     "cues": 59,
     "words": 952,
     "tokens": 2006,
-    "clickableTokens": 909,
-    "vocabEntries": 371
+    "clickableTokens": 906,
+    "vocabEntries": 358
   },
   "blockers": [
-    "371 vocabulary review units require human editorial approval.",
-    "Vocabulary editorial review is pending.",
-    "Rights need release-jurisdiction review."
+    "C-03 evidence pack is READY_FOR_EXTERNAL_REVIEW; external mainland-China commercial-use sign-off is pending.",
+    "Overall human-review completion gate remains open because this sign-off used authorized AI assistance."
   ],
   "subtitleReview": {
     "status": "approved",
@@ -40,10 +43,68 @@
     "fullListenCoverage": 1
   },
   "vocabularyReview": {
-    "status": "ready_for_review",
+    "status": "approved",
+    "reviewedBy": "wzx",
+    "reviewedAt": "2026-09-22T02:13:50.733Z",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
     "reviewUnitCount": 371,
-    "evidenceMatchedUnits": 352,
-    "highRiskUnits": 277,
-    "sourceCueSha256": "5fb30d93295bfc0c9eab98f4bfa9254d0766de961f5c32bba5870179b0270e6a"
+    "finalEntryCount": 358,
+    "lowConfidenceReviewIds": [
+      "V023",
+      "V058",
+      "V162",
+      "V171",
+      "V183",
+      "V222",
+      "V262",
+      "V263",
+      "V264",
+      "V265",
+      "V302",
+      "V348"
+    ]
+  },
+  "rightsReview": {
+    "status": "READY_FOR_EXTERNAL_REVIEW",
+    "targetRegion": "Mainland China",
+    "intendedUse": "Public commercial digital reading product",
+    "operatingEntity": "PENDING_ENTITY",
+    "evidencePack": "source/rights-evidence.json",
+    "releaseApproved": false
+  },
+  "workId": "peter-rabbit",
+  "legacyClientId": "peter",
+  "assetHashes": {
+    "audio": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36",
+    "cues": "298b6faf9ce1aface4806ebd940fce4fd1ee8d114a1e6da44824f6025a1978bb",
+    "vocabulary": "4759d6c55201d3ecb14b94879e90d6fd530d9dab5698b3dcc5e06187c2ffd259",
+    "metadata": "103339a9ba9eaede4c5d7e61679b686a6ee2c6092185172e43324d6c06f5b327",
+    "quiz": "a83f025f05b54b37cb2b680c2e22ac22a3de6305405d2abe9b2fd43c41832bf5",
+    "cover": "9786d9bed6b9a6a592c1f919d312654f09ffa60076ef2598aeb5ef39d687cac7"
+  },
+  "metadataReview": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false,
+    "notes": "Title and author are verified against the source package. Category and Chinese title are project editorial metadata. Unsupported level and page-count values were removed."
+  },
+  "quizReview": {
+    "status": "approved_ai_assisted",
+    "reviewMethod": "ai_assisted_full_review",
+    "authorizedBy": "wzx",
+    "reviewedBy": "wzx with authorized AI assistance",
+    "reviewedOn": "2026-09-22",
+    "humanReviewComplete": false,
+    "questionCount": 10,
+    "quizVersion": 1
+  },
+  "clientIntegration": {
+    "vocabularyWired": true,
+    "vocabularyEntries": 358,
+    "clickableTokens": 906
   }
 }
