@@ -40,6 +40,7 @@ module.exports = {
   policy() { return productMode.current() },
   read() { try { const policy=productMode.current();const state=migrateState(wx.getStorageSync(policy.storageKey)||{});wx.setStorageSync(policy.storageKey,policy.isDemo?state:productState(state));return policy.isDemo?state:productState(state) } catch (_) { return {} } },
   write(state) { const policy=productMode.current();const migrated=migrateState(state);wx.setStorageSync(policy.storageKey,policy.isDemo?migrated:productState(migrated)) },
+  mutate(mutator) { const current=this.read();const next=mutator(current)||current;this.write(next);return next },
   toast(title) { wx.showToast({ title, icon:'none', duration:2200 }) },
   go(page, id) {
     const policy=productMode.current()

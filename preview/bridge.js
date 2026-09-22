@@ -4,23 +4,28 @@ function createAudioManager() {
   const audio = new Audio()
   audio.preload = 'metadata'
   let source = ''
-  const listeners = { time:new Set(), end:new Set(), error:new Set() }
+  const listeners = { time:new Set(), end:new Set(), error:new Set(), play:new Set(), pause:new Set(), stop:new Set() }
   const emit = type => listeners[type].forEach(fn=>fn())
   const play = () => { audio.play().catch(()=>emit('error')) }
   audio.addEventListener('timeupdate',()=>emit('time'))
   audio.addEventListener('loadedmetadata',()=>emit('time'))
   audio.addEventListener('ended',()=>emit('end'))
   audio.addEventListener('error',()=>emit('error'))
+  audio.addEventListener('play',()=>emit('play'))
+  audio.addEventListener('pause',()=>{if(!audio.ended)emit('pause')})
   // Exposed only in the development preview for reproducible playback tests.
   window.previewAudio = audio
   return {
     get src(){ return source }, set src(value){source=value; audio.src=value; play()},
     get currentTime(){return audio.currentTime},get duration(){return audio.duration},
     get playbackRate(){return audio.playbackRate},set playbackRate(value){audio.playbackRate=value},
-    play,pause(){audio.pause()},stop(){audio.pause();audio.currentTime=0},destroy(){audio.pause();audio.src=''},seek(seconds){if(audio.readyState>0)audio.currentTime=seconds},
+    play,pause(){audio.pause()},stop(){audio.pause();audio.currentTime=0;emit('stop')},destroy(){audio.pause();audio.src=''},seek(seconds){if(audio.readyState>0)audio.currentTime=seconds},
     onTimeUpdate(fn){listeners.time.add(fn)},offTimeUpdate(fn){listeners.time.delete(fn)},
     onEnded(fn){listeners.end.add(fn)},offEnded(fn){listeners.end.delete(fn)},
-    onError(fn){listeners.error.add(fn)},offError(fn){listeners.error.delete(fn)}
+    onError(fn){listeners.error.add(fn)},offError(fn){listeners.error.delete(fn)},
+    onPlay(fn){listeners.play.add(fn)},offPlay(fn){listeners.play.delete(fn)},
+    onPause(fn){listeners.pause.add(fn)},offPause(fn){listeners.pause.delete(fn)},
+    onStop(fn){listeners.stop.add(fn)},offStop(fn){listeners.stop.delete(fn)}
   }
 }
 window.wx = {

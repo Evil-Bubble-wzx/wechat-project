@@ -41,8 +41,9 @@ function render(){
   if(action){const field=app.querySelector('input[data-action="'+action+'"]');if(field){field.focus({preventScroll:true});if(typeof selection==='number'&&field.type!=='range')field.setSelectionRange(selection,selection)}}
 }
 function mount(){
+  if(current){current.onHide?.();current.onUnload?.()}
   const [route,search]=(location.hash.slice(1)||'home').split('?');pageName=visibleNames[route]?route:'home';const options=Object.fromEntries(new URLSearchParams(search||''));current=window.Tingyue.createPage(pageName);window.currentPage=current
-  current.data=structuredClone(current.data);current.setData=function(updates){Object.assign(this.data,updates);render()};current.onLoad(options);render();device.scrollTop=0
+  current.data=structuredClone(current.data);current.setData=function(updates){Object.assign(this.data,updates);render()};current.onLoad(options);current.onShow?.();render();device.scrollTop=0
   document.querySelectorAll('#screens a').forEach(a=>a.classList.toggle('active',a.dataset.page===pageName));document.getElementById('screen-label').textContent=String(Object.keys(visibleNames).indexOf(pageName)+1).padStart(2,'0')+' — '+visibleNames[pageName];document.title=visibleNames[pageName]+' · 听阅 Tingyue'
 }
 document.getElementById('screens').innerHTML=Object.entries(visibleNames).map(([id,name],i)=>'<a href="#'+id+'" data-page="'+id+'"><span>'+String(i+1).padStart(2,'0')+'</span>'+name+'</a>').join('')
