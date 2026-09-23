@@ -10,6 +10,7 @@ coverage/
 # Local-only WeChat/Codex settings
 project.private.config.json
 .codex/
+.idea/
 
 # OS and editor files
 .DS_Store
