@@ -21,6 +21,11 @@
     "test": "node --test tests/*.test.js",
     "test:browser": "node tools/browser-check.js",
     "check": "node tools/check.js",
+    "build:production": "node tools/build-miniapp.js production",
+    "build:demo": "node tools/build-miniapp.js demo",
+    "build:verify": "node tools/verify-builds.js",
+    "release:audit": "node tools/release-audit.js",
+    "check:builds": "node tools/check.js --root=build/production-miniprogram && node tools/check.js --root=build/demo-miniprogram",
     "content:peter:c04": "node tools/content-pipeline/build-c04-package.js content/peter-rabbit/peter-rabbit-01",
     "content:peter:vocab:export": "node tools/content-pipeline/export-miniapp-vocab.js content/peter-rabbit/peter-rabbit-01 miniprogram/modules/listen-read/peter-vocab-data.js"
   },

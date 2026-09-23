@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "production": {
+    "fileCount": 104,
+    "totalBytes": 556066,
+    "treeSha256": "8712edeeceb7cbbedb3d58e4451bab31aa656d67d8e29746d1684b9848b757bc"
+  },
+  "demo": {
+    "fileCount": 191,
+    "totalBytes": 2475218,
+    "treeSha256": "ed0c45aebd473f8d9ebe73528b665827047c8df0ddaa668335dd6b136c6c11e4"
+  },
+  "checks": {
+    "productionForbiddenPaths": true,
+    "productionForbiddenText": true,
+    "productionDependencyClosure": true,
+    "productionPeterOnly": true,
+    "demoFeaturesPreserved": true
+  }
+}

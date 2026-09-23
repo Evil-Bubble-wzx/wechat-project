@@ -17,8 +17,8 @@ function run(script) {
   if(result.status!==0)throw new Error(script+' failed with exit code '+result.status)
 }
 
-async function withPreview(mode,scripts) {
-  const args=['tools/preview-server.js']
+async function withPreview(mode,miniRoot,scripts) {
+  const args=['tools/preview-server.js','--mini-root='+miniRoot]
   if(mode==='demo')args.push('--demo')
   const child=spawn(process.execPath,args,{cwd:root,stdio:['ignore','inherit','inherit']})
   try { await waitForServer(child);for(const script of scripts)run(script) }
@@ -28,7 +28,8 @@ async function withPreview(mode,scripts) {
 ;(async()=>{
   const build=spawnSync(process.execPath,['tools/content-check.js','--build'],{cwd:root,stdio:'inherit'})
   if(build.status!==0)throw new Error('Content build failed')
-  await withPreview('production',['tools/product-mode-check.js','tools/visual-check.js','tools/audio-check.js'])
-  await withPreview('demo',['tools/interaction-check.js'])
+  run('tools/release-audit.js')
+  await withPreview('production','build/production-miniprogram',['tools/product-mode-check.js','tools/visual-check.js','tools/audio-check.js'])
+  await withPreview('demo','build/demo-miniprogram',['tools/interaction-check.js'])
   console.log('PASS: production and explicit Demo browser suites completed.')
 })().catch(error=>{console.error(error);process.exitCode=1})

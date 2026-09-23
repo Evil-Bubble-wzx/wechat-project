@@ -6,6 +6,7 @@
 node_modules/
 coverage/
 .cache/
+/build/
 
 # Local-only WeChat/Codex settings
 project.private.config.json

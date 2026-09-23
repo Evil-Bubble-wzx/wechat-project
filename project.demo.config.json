@@ -1,9 +1,9 @@
 {
-  "description": "听阅 · 正式隔离构建（先运行 npm run build:production）",
-  "miniprogramRoot": "build/production-miniprogram/",
+  "description": "听阅 · 仅开发使用的 Demo 构建（先运行 npm run build:demo）",
+  "miniprogramRoot": "build/demo-miniprogram/",
   "compileType": "miniprogram",
   "appid": "wxcfd1db942d1d02e9",
-  "projectname": "听阅",
+  "projectname": "听阅-Demo-DEV-ONLY",
   "setting": {
     "es6": true,
     "enhance": true,
@@ -21,17 +21,10 @@
     "disableUseStrict": false,
     "useCompilerPlugins": false,
     "condition": false,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    }
+    "babelSetting": { "ignore": [], "disablePlugins": [], "outputPath": "" }
   },
   "libVersion": "trial",
   "simulatorPluginLibVersion": {},
-  "packOptions": {
-    "ignore": [],
-    "include": []
-  },
+  "packOptions": { "ignore": [], "include": [] },
   "editorSetting": {}
 }
