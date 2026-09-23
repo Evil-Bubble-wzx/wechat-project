@@ -14,7 +14,7 @@ npm run preview
 
 打开 http://127.0.0.1:4173 。该命令默认是正式预发布模式；如需验收旧功能，显式运行 `npm run preview:demo`。
 
-微信开发者工具：导入本目录，选择 `project.config.json`。源代码目录为 `miniprogram/`。原生小程序默认正式预发布模式；只有开发版可在调试控制台执行 `wx.setStorageSync('tingyue.dev.mode', 'demo')` 后重启进入 Demo。执行 `wx.removeStorageSync('tingyue.dev.mode')` 可恢复正式模式；体验版和正式版始终强制正式模式。
+微信开发者工具正式构建：先执行 `npm run build:production`，再导入本目录并选择默认的 `project.config.json`；该配置只加载 `build/production-miniprogram/`。如需本地验收 Demo，执行 `npm run build:demo` 并改用 `project.demo.config.json`，它只加载 `build/demo-miniprogram/`。两个生成目录均不提交 Git，正式上传不得选用 Demo 配置。正式产物在物理文件层只保留 Peter Rabbit，且不包含实体借阅、优惠券、邀请、固定验证码、Demo 缓存键或旧书内容。
 
 ## 本次交付边界
 
@@ -57,12 +57,14 @@ npm run content:build
 
 ```sh
 npm test
-npm run check
+npm run release:audit
+npm run build:verify
+npm run check:builds
 node tools/content-check.js
 npm run test:browser
 ```
 
-`npm run test:browser` 会依次启动正式预览与 Demo 预览，完成产品模式隔离、真实音频、视觉和完整演示交互验收。需要本机 Edge；Playwright 已作为开发依赖声明。正式产物位于 `artifacts/production/`，Demo 产物位于 `artifacts/demo/`，历史基线位于 `artifacts/legacy/`。已覆盖浏览器 320/390/430px 的页面宽度与主交互；尚未使用微信开发者工具编译或 iOS/Android 真机验收。
+`npm run release:audit` 会重建并审计正式/Demo 两套小程序产物；`npm run build:verify` 会再次独立构建并比较 SHA-256，防止构建不可复现；`npm run check:builds` 会分别检查两套生成产物。`npm run test:browser` 也基于生成产物依次启动正式预览与 Demo 预览，完成产品模式隔离、真实音频、视觉和完整演示交互验收。需要本机 Edge；Playwright 已作为开发依赖声明。浏览器截图与结果位于 `artifacts/production/`、`artifacts/demo/`，历史基线位于 `artifacts/legacy/`；构建审计记录位于 `artifacts/build/X-05-release-audit.json`。已覆盖浏览器 320/390/430px 的页面宽度与主交互；尚未完成体验版/正式版 Android 与 iPhone 真机验收。
 
 原始需求文档保留。当前正式首版不包含实体借阅；相关页面和规则只保留在显式 Demo 模式中。
 
