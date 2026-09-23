@@ -64,7 +64,7 @@ writeJson('review/c04-review.json', {
 const questionModule = [
   '// Generated from content/peter-rabbit/peter-rabbit-01/dist/quiz.json.',
   '// Run the C-04 builder instead of editing this file.',
-  `module.exports = ${JSON.stringify(quiz.questions, null, 2)}`,
+  `module.exports = ${JSON.stringify({schemaVersion:quiz.schemaVersion,workId:quiz.workId,pieceId:quiz.pieceId,contentVersion:quiz.contentVersion,quizVersion:quiz.quizVersion,mode:quiz.mode,masteryFeedbackPercent:quiz.masteryFeedbackPercent,blocksContent:quiz.blocksContent,questions:quiz.questions}, null, 2)}`,
   ''
 ].join('\n')
 const modulePath = path.join(root, 'miniprogram/modules/listen-read/peter-quiz-data.js')
@@ -83,7 +83,6 @@ manifest.assetHashes = hashes
 manifest.metadataReview = metadata.review
 manifest.quizReview = Object.assign({}, quiz.review, { questionCount:quiz.questions.length, quizVersion:quiz.quizVersion })
 manifest.blockers = manifest.blockers.filter(item => !item.includes('Formal metadata, Quiz') && !item.includes('approved vocabulary is not yet wired'))
-manifest.blockers.push('Peter Rabbit approved vocabulary is not yet wired into the production player (X-03).')
 manifest.publishable = false
 manifest.status = 'needs_review'
 writeJson('dist/manifest.json', manifest)
@@ -95,7 +94,6 @@ qa.checks.rightsReleaseApproved = false
 qa.metadataReview = metadata.review
 qa.quizReview = Object.assign({}, quiz.review, { questionCount:quiz.questions.length, quizVersion:quiz.quizVersion })
 qa.blockers = qa.blockers.filter(item => !item.includes('Formal metadata, Quiz') && !item.includes('approved vocabulary is not yet wired'))
-qa.blockers.push('Peter Rabbit approved vocabulary is not yet wired into the production player (X-03).')
 qa.publishable = false
 qa.status = 'needs_review'
 writeJson('dist/qa-report.json', qa)
