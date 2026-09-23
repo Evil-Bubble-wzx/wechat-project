@@ -42,7 +42,7 @@ test('all story audio, including bundled chapters, uses background audio', () =>
 test('playback session survives page subscriptions and system media controls', () => {
   const previousWx = global.wx
   const listeners = {}
-  let stored = {}
+  let stored = {}, clock = 0
   const manager = {
     _src:'', currentTime:0, duration:322, playbackRate:1,
     get src() { return this._src },
@@ -63,17 +63,21 @@ test('playback session survives page subscriptions and system media controls', (
     delete require.cache[require.resolve('../miniprogram/modules/listen-read/player')]
     const player = require('../miniprogram/modules/listen-read/player')
     player._resetForTests()
-    const first = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-01', title:'Peter Rabbit', audioUrl:'https://example.test/peter.mp3', duration:322 }
-    const second = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-02', title:'Peter Rabbit 2', audioUrl:'https://example.test/peter-2.mp3', duration:200 }
+    player._setNowForTests(() => clock)
+    const first = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-01', contentVersion:1, title:'Peter Rabbit', audioUrl:'https://example.test/peter.mp3', duration:322 }
+    const second = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-02', contentVersion:1, title:'Peter Rabbit 2', audioUrl:'https://example.test/peter-2.mp3', duration:200 }
     const oldSnapshots = []
     const currentSnapshots = []
     const unsubscribe = player.subscribe(value => oldSnapshots.push(value))
     assert.equal(player.playTrack(first), true)
     player.setRate(1.25)
-    manager.currentTime=10;listeners.time()
-    manager.currentTime=11;listeners.time()
-    assert.equal(stored.progress['peter-rabbit-01'].seconds, 11)
-    assert.equal(stored.listeningSec, 1)
+    clock=8000;manager.currentTime=10;listeners.time()
+    clock=8800;manager.currentTime=11;listeners.time()
+    assert.equal(stored.progress['peter-rabbit-01'].seconds, 10)
+    assert.equal(stored.progress['peter-rabbit-01'].checkpointSeconds, 10)
+    assert.equal(stored.listeningSec, 8)
+    assert.equal(player.snapshot().position, 11)
+    assert.equal(player.snapshot().checkpointPosition, 11)
 
     unsubscribe()
     const oldCount = oldSnapshots.length
@@ -81,6 +85,8 @@ test('playback session survives page subscriptions and system media controls', (
     listeners.pause()
     assert.equal(player.snapshot().status, 'paused')
     assert.equal(player.snapshot().pauseReason, 'system')
+    assert.equal(stored.progress['peter-rabbit-01'].seconds, 11)
+    assert.equal(stored.listeningSec, 8.8)
     listeners.play()
     assert.equal(player.snapshot().status, 'playing')
     assert.equal(oldSnapshots.length, oldCount)

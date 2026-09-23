@@ -121,11 +121,12 @@ test('legacy Peter client state migrates once to canonical work and piece IDs', 
     const state = host.read()
     assert.deepEqual(state.favorites, ['peter-rabbit'])
     assert.deepEqual(state.recent, ['peter-rabbit'])
-    assert.deepEqual(state.progress['peter-rabbit-01'], { seconds:88,completed:true })
+    assert.deepEqual(state.progress['peter-rabbit-01'], { seconds:0,checkpointSeconds:0,completed:false,listenedRanges:[],listenedSeconds:0,coverage:0,completionReason:null,schemaVersion:2 })
     assert.equal(state.progress.peter, undefined)
     assert.equal(state.listenDaily['2026-09-22:peter-rabbit-01'], 12)
     assert.equal(state.results[0].pieceId, 'peter-rabbit-01')
     assert.equal(state.idMigrationVersion, 1)
+    assert.equal(state.progressSchemaVersion, 2)
   } finally { global.wx = previousWx }
 })
 

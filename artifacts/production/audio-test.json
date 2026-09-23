@@ -11,7 +11,8 @@
   "crossPageSession": "PASS",
   "userPauseGuard": "PASS",
   "lifecycleCleanup": "PASS",
-  "ended": "PASS",
+  "tailSeekCompletionGuard": "PASS",
+  "restartCheckpoint": "PASS",
   "productionCatalogGuard": "PASS",
   "errors": []
 }

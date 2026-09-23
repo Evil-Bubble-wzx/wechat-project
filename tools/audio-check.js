@@ -19,6 +19,12 @@ let browser
  await page.locator('input[type=range]').evaluate(el=>{el.value='120';el.dispatchEvent(new Event('change',{bubbles:true}))})
  await page.waitForFunction(()=>previewAudio.currentTime>=120 && previewAudio.currentTime<124)
  await page.locator('[data-action="speed"]').click();assert.equal(await page.evaluate(()=>previewAudio.playbackRate),1.25)
+ const trustStart=await page.evaluate(()=>previewAudio.currentTime)
+ await page.waitForFunction(start=>previewAudio.currentTime>start+6.5,trustStart)
+ await page.locator('.play-button').click()
+ const trustedCheckpoint=await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress['peter-rabbit-01'].checkpointSeconds)
+ assert.ok(trustedCheckpoint>trustStart+5)
+ await page.locator('.play-button').click();await page.waitForFunction(checkpoint=>previewAudio.currentTime>checkpoint+.2,trustedCheckpoint)
  // Leaving the player keeps the global session alive; the hidden page must stop receiving updates.
  const beforeLeave=await page.evaluate(()=>{window.detachedPlayerPage=window.currentPage;return {audio:previewAudio.currentTime,page:currentPage.data.position}})
  await page.evaluate(()=>{location.hash='home'})
@@ -41,12 +47,19 @@ let browser
  assert.ok(Math.abs(await page.evaluate(()=>currentPage.data.position)-userPaused)<1)
  await page.locator('.play-button').click();await page.waitForFunction(t=>previewAudio.currentTime>t+.2,userPaused)
  await page.screenshot({path:'artifacts/production/real-audio-playing.png'})
+ const checkpointBeforeTail=await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress['peter-rabbit-01'].checkpointSeconds)
  await page.evaluate(()=>{previewAudio.currentTime=previewAudio.duration-.3});await page.waitForFunction(()=>previewAudio.ended)
- assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress['peter-rabbit-01'].completed),true)
+ const tailProgress=await page.evaluate(()=>JSON.parse(localStorage.getItem('tingyue.product.v1')).progress['peter-rabbit-01'])
+ assert.equal(tailProgress.completed,false);assert.equal(tailProgress.checkpointSeconds,checkpointBeforeTail)
+ // A full browser reload represents a new JS process: restore paused at the trusted checkpoint.
+ await page.reload();await page.waitForFunction(()=>window.currentPage&&currentPage.data.route==='player')
+ const restart=await page.evaluate(()=>({position:currentPage.data.position,playing:currentPage.data.playing,hasAudio:!!window.previewAudio}))
+ assert.equal(restart.playing,false);assert.ok(Math.abs(restart.position-checkpointBeforeTail)<1,JSON.stringify({restart,checkpointBeforeTail,tailProgress}));assert.equal(restart.hasAudio,false)
+ await page.locator('.play-button').click();await page.waitForFunction(checkpoint=>window.previewAudio&&previewAudio.currentTime>checkpoint+.2,checkpointBeforeTail,{timeout:20000})
  // Production contains Peter Rabbit only, so next track must not escape to Demo books.
  await page.evaluate(()=>window.currentPage.nextTrack({currentTarget:{dataset:{step:1}}}));assert.equal(await page.evaluate(()=>window.currentPage.data.book.id),'peter-rabbit')
  assert.deepEqual(errors,[])
- const result={...metadata,bytes:2580786,range:'PASS',play:'PASS',pauseResume:'PASS',seek:'PASS',rate:'PASS',crossPageSession:'PASS',userPauseGuard:'PASS',lifecycleCleanup:'PASS',ended:'PASS',productionCatalogGuard:'PASS',errors}
+ const result={...metadata,bytes:2580786,range:'PASS',play:'PASS',pauseResume:'PASS',seek:'PASS',rate:'PASS',crossPageSession:'PASS',userPauseGuard:'PASS',lifecycleCleanup:'PASS',tailSeekCompletionGuard:'PASS',restartCheckpoint:'PASS',productionCatalogGuard:'PASS',errors}
  fs.writeFileSync('artifacts/production/audio-test.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result))
  await browser.close()
 })().catch(async e=>{console.error(e);if(browser)await browser.close();process.exitCode=1})
