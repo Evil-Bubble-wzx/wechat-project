@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "appid": "wxcfd1db942d1d02e9",
+  "version": "0.1.1",
+  "uploadedAt": "2026-09-23T15:41:00+08:00",
+  "gitCommit": "218bff7ff4295ce38a00caea9c935b12d3dc3904",
+  "description": "X-02/X-05正式构建真机验收；仅Peter Rabbit，无Demo内容",
+  "productionTreeSha256": "8712edeeceb7cbbedb3d58e4451bab31aa656d67d8e29746d1684b9848b757bc",
+  "uploadPackage": {
+    "totalBytes": 387521,
+    "mainBytes": 387366,
+    "quizSubpackageBytes": 155
+  },
+  "status": "uploaded_development_version",
+  "experienceVersionSelected": false,
+  "submittedForReview": false,
+  "released": false
+}

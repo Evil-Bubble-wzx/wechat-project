@@ -7,6 +7,9 @@ node_modules/
 coverage/
 .cache/
 /build/
+/artifacts/device/x-production-preview.png
+/artifacts/device/x-production-preview.json
+/artifacts/device/x-production-upload.json
 
 # Local-only WeChat/Codex settings
 project.private.config.json
