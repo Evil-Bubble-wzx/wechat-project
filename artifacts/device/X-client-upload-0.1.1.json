@@ -12,6 +12,8 @@
     "quizSubpackageBytes": 155
   },
   "status": "uploaded_development_version",
+  "profileInitializationComplete": false,
+  "blockingCondition": "wechat_miniprogram_profile_initialization_incomplete",
   "experienceVersionSelected": false,
   "submittedForReview": false,
   "released": false
