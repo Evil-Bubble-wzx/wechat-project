@@ -120,7 +120,17 @@ function onEnded(){
   clearAnchor();state=Object.assign({},state,{position:duration,duration,completed,status:state.loop?'playing':'ended',pauseReason:null});persist(true);notify()
   if(state.loop&&context){pendingSeek=0;applyPendingSeek();context.play()}
 }
-function onError(error){if(context&&state.pieceId)sample(context.currentTime,true);clearAnchor();update({status:'error',error:error&&(error.errMsg||error.message)||'audio_error'})}
+function audioErrorMessage(error){
+  if(!error)return 'audio_error'
+  if(typeof error==='string')return error
+  const code=error.errCode!==undefined?error.errCode:error.code
+  const message=error.errMsg||error.message
+  if(code!==undefined&&message)return String(code)+': '+message
+  if(message)return String(message)
+  if(code!==undefined)return 'audio_error '+String(code)
+  try{const serialized=JSON.stringify(error);return serialized&&serialized!=='{}'?serialized:'audio_error'}catch(_){return 'audio_error'}
+}
+function onError(error){if(context&&state.pieceId)sample(context.currentTime,true);clearAnchor();update({status:'error',error:audioErrorMessage(error)})}
 function onSeeking(){if(context&&state.pieceId)sample(context.currentTime,true);clearAnchor()}
 function onSeeked(){if(!context||!state.pieceId)return;const position=Number(context.currentTime)||0;pendingSeek=null;state=Object.assign({},state,{position});persist(true);if(state.status==='playing')beginAnchor(position);notify()}
 function onWaiting(){waitingWasPlaying=state.status==='playing';if(context&&state.pieceId)sample(context.currentTime,true);clearAnchor();if(waitingWasPlaying)update({status:'loading'})}
@@ -156,7 +166,13 @@ function playTrack(book){
   else if(state.position>0)pendingSeek=state.position
   if('startTime' in ctx&&pendingSeek!==null)ctx.startTime=pendingSeek
   if(ctx.src===source){if(pendingSeek!==null)applyPendingSeek();ctx.play();update({status:'playing',pauseReason:null})}
-  else{update({status:'loading',pauseReason:null});ctx.src=source}
+  else{
+    update({status:'loading',pauseReason:null})
+    ctx.src=source
+    // BackgroundAudioManager does not consistently autoplay a newly assigned
+    // source on iOS. Always express the user's play intent explicitly.
+    ctx.play()
+  }
   return true
 }
 function pause(reason='user'){if(!state.pieceId)return;if(context)sample(context.currentTime,true);requestedPauseReason=reason;clearAnchor();state=Object.assign({},state,{status:'paused',pauseReason:reason});if(context)context.pause();notify()}
