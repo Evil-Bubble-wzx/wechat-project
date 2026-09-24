@@ -91,21 +91,23 @@ B 分支是以下产物的权威来源：
 | X-03 正式点词 | `DONE` | 358 个审核义项覆盖 Peter Rabbit 全文 906 个可点击 token；上下文拆义和播放意图已测试 | 无代码缺口 |
 | X-04 Quiz/报告/排行边界 | `DONE` | 版本化 attempt、本机未验证标签、旧记录隔离、6 篇趋势门槛和真实空排行已实现 | 服务端判题和真实排行属于后端阶段 |
 | X-05 正式/Demo 隔离 | `PARTIAL` | production/Demo 可复现双构建；正式包物理排除 Demo 能力且只含 Peter Rabbit；开发版本 `0.1.1` 已上传 | 微信基本资料初始化、体验版设置、Android/iPhone 体验版与正式版证据 |
+| X-06 客户端网络基础层 | `DONE` | 默认关闭的 API client、微信 transport、内存 access token、刷新并发锁、退出竞态清理、超时/取消、GET 重试和稳定错误模型已实现，16 项专项测试通过 | 真实 `wx.login`、refresh token 策略、业务 API 与 UI 行为等待固定契约版本和 B SHA |
 
-当前自动基线为 `npm test` 57/57 通过。自动检查不能代替真机、账号、权利、隐私和上线资格。
+当前自动基线为 `npm test` 73/73 通过。自动检查不能代替真机、账号、权利、隐私、真实后端联调和上线资格。
 
 ### 4.1 当前不存在的客户端能力
 
-仓库目前没有正式网络层：
+仓库目前已有客户端网络基础层，但尚未接入正式后端：
 
-- 没有 `wx.request` API 适配器；
-- 没有 `wx.login` 正式登录流程；
-- 没有 API base URL、access token、refresh token 或 token 刷新实现；
-- 没有服务端错误码映射和网络重试策略；
+- `miniprogram/services/network/` 已有注入式 API client 和 `wx.request` transport；
+- 网络功能默认关闭，仓库中没有真实 API base URL；
+- access token 仅保存在内存；refresh callback 有并发锁，但尚未定义或持久化 refresh token；
+- 已有客户端稳定错误分类、GET 限次重试和 `requestId`/服务端错误码透传；
+- 没有 `wx.login` 正式登录流程，也没有具体 session、content 或 Quiz API 适配器；
 - 没有跨设备同步队列和冲突合并；
 - 没有真实订单、支付、权益或生产内容 API。
 
-`miniprogram/services/host.js` 当前是微信本地存储与页面导航适配器，不是 HTTP 客户端。
+`miniprogram/services/host.js` 仍只是微信本地存储与页面导航适配器；HTTP 基础设施位于 `miniprogram/services/network/`，不得混用两者。
 
 ## 5. 已冻结的身份、版本与内容边界
 
@@ -418,8 +420,9 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 
 客户端负责人收到 B 交付后：
 
+- [x] 建立默认关闭的通用网络基础层和 mock 测试，不预填真实契约；
 - [ ] 核对固定契约版本和 SHA；
-- [ ] 在 `peter` 新增正式 API 适配器，不修改 Demo 模块冒充正式实现；
+- [ ] 在 `peter` 基于已核对契约新增具体业务 API 适配器，不修改 Demo 模块冒充正式实现；
 - [ ] 接入 `wx.login`、会话刷新与退出；
 - [ ] 接入内容列表、详情和 manifest；
 - [ ] 接入 Quiz 服务端验证并保留 `local_unverified` 降级状态；
