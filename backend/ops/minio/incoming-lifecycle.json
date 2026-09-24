@@ -1,0 +1,10 @@
+{
+  "Rules": [
+    {
+      "ID": "expire-incoming-assets",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "" },
+      "Expiration": { "Days": 30 }
+    }
+  ]
+}

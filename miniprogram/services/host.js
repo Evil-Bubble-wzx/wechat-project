@@ -55,7 +55,8 @@ module.exports = {
   go(page, id) {
     const policy=productMode.current()
     const bookId=String(id||'').split(':')[0]
-    if(!policy.allowsRoute(page)||bookId&&!policy.allowsBook(bookId)){this.toast('该内容尚未在正式模式开放');page='home';id=''}
+    const bookRoute=['detail','player','quiz'].includes(page)
+    if(!policy.allowsRoute(page)||bookRoute&&bookId&&!policy.allowsBook(bookId)){this.toast('该内容尚未在正式模式开放');page='home';id=''}
     const route = page === 'quiz' && !wx.isBrowserPreview ? '/quiz/pages/index' : '/pages/' + page + '/index'
     const url = route + (id ? '?id=' + encodeURIComponent(id) : '')
     if (['home','recent','me'].includes(page)) wx.switchTab({ url })

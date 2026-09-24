@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "attemptId": "attempt-example-001",
+  "workId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 1,
+  "quizVersion": 1,
+  "questionIds": ["PRQ-001"],
+  "selectedOptions": [0],
+  "startedAt": "2026-09-24T03:00:00.000Z",
+  "submittedAt": "2026-09-24T03:01:00.000Z"
+}

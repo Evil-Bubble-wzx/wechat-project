@@ -72,7 +72,7 @@
     <view class="member-card" wx:if="{{isDemo}}"><view class="member-top"><view class="avatar">{{user ? '阅' : 'Hi'}}</view><view><text class="member-name">{{user ? user.name : '你好，小小阅读家'}}</text><text class="soft-white">{{user ? 'A new discovery, every day' : '登录后，收藏你的成长故事'}}</text></view><image data-sheet="settings" bindtap="showSheet" src="/assets/icon-settings-white.png" class="icon" /></view><view class="member-type">TINGYUE READER<text>Reader Card</text></view><view class="member-bottom"><text>{{user ? '演示账户 · 无正式借阅资格' : '你的阅读旅程，从这里开始'}}</text><button wx:if="{{!user}}" class="login-mini" data-page="login" bindtap="nav">Log in / Sign up →</button><text wx:if="{{user}}">DEMO</text></view></view>
     <!-- @demo-end -->
     <!-- @production-start -->
-    <view class="member-card" wx:if="{{isProduction}}"><view class="member-top"><view class="avatar">Hi</view><view><text class="member-name">你好，小小阅读家</text><text class="soft-white">游客学习记录保存在本机</text></view><image data-sheet="settings" bindtap="showSheet" src="/assets/icon-settings-white.png" class="icon" /></view><view class="member-type">TINGYUE READER<text>Reader Card</text></view><view class="member-bottom"><text>真实账户与云同步接入中</text><button class="login-mini" data-page="login" bindtap="nav">Account status →</button></view></view>
+    <view class="member-card" wx:if="{{isProduction}}"><view class="member-top"><view class="avatar">{{user ? '阅' : 'Hi'}}</view><view><text class="member-name">{{user ? '已登录读者' : '你好，小小阅读家'}}</text><text class="soft-white">{{user ? ((user.profile.grade || '—') + '年级 · Lv ' + (user.profile.readingLevel || '—')) : '游客学习记录保存在本机'}}</text></view><image data-sheet="settings" bindtap="showSheet" src="/assets/icon-settings-white.png" class="icon" /></view><view class="member-type">TINGYUE READER<text>Reader Card</text></view><view class="member-bottom"><text>{{user ? '服务端账户已连接' : '登录后提交可信 Quiz 并查看排行榜'}}</text><button wx:if="{{!user}}" class="login-mini" data-page="login" bindtap="nav">WeChat login →</button><text wx:if="{{user}}">CONNECTED</text></view></view>
     <!-- @production-end -->
     <view class="metrics profile-metrics"><view><text>{{stats.pieces}}</text><text>BOOKS</text></view><view><text>{{stats.words}}</text><text>WORDS</text></view><view><text>{{stats.listening}}</text><text>LISTENING</text></view></view>
     <view class="section-head"><text class="section-title">My Reading</text><text class="section-en">MY READING</text></view>
@@ -140,8 +140,9 @@
     <!-- @demo-end -->
     <!-- @production-start -->
     <block wx:if="{{isProduction}}">
-      <view class="info-note"><image src="/assets/icon-clock.png" class="icon" /><text>真实微信登录与云同步服务接入中。当前可作为游客试读，学习记录仅保存在本机。</text></view>
-      <button class="primary full login-button" disabled="{{true}}">Account service coming soon</button>
+      <view class="info-note"><image src="/assets/icon-wechat.png" class="icon" /><text>登录后，Quiz 由服务端判分并进入可信统计；小程序内不保存 AppSecret。</text></view>
+      <button class="primary full login-button" bindtap="login" loading="{{accountBusy}}" disabled="{{accountBusy}}"><image src="/assets/icon-wechat-white.png" class="icon" />WeChat Login</button>
+      <view class="agreement"><view class="checkbox {{agreed ? 'checked' : ''}}" bindtap="agreement">{{agreed ? '✓' : ''}}</view><text bindtap="agreement">I agree to</text><text class="green" data-sheet="terms" bindtap="showSheet">Terms</text><text class="green" data-sheet="privacy" bindtap="showSheet">Privacy</text></view>
     </block>
     <!-- @production-end -->
     <view class="guest-link" data-page="home" bindtap="nav">Browse as a guest →</view>
@@ -152,9 +153,36 @@
   <view class="content ranking-content" wx:if="{{route === 'ranking'}}">
     <view class="rank-toolbar">
       <view class="rank-back-button" bindtap="back" aria-label="Back"><image src="/assets/icon-back.png" /></view>
-      <view class="rank-control {{rankingType === item.id ? 'selected' : ''}}" wx:for="{{rankingTypes}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankingType"><image src="/assets/icon-trophy.png" /><text>{{item.label}}</text></view>
+      <view class="rank-control" data-sheet="campus" bindtap="showSheet"><image src="/assets/icon-pin.png" /><text>{{campusLabel}}</text><text class="control-arrow">⌄</text></view>
+      <view class="rank-control" data-sheet="rankingType" bindtap="showSheet"><image src="/assets/icon-trophy.png" /><text>{{rankingTypeLabel}}</text><text class="control-arrow">⌄</text></view>
+      <view class="rank-control period-control" wx:if="{{rankingType === 'week' || rankingType === 'month'}}" data-sheet="rankingPeriod" bindtap="showSheet"><image src="/assets/icon-clock.png" /><text>{{rankingType === 'week' ? selectedWeekLabel : selectedMonthLabel}}</text><text class="control-arrow">⌄</text></view>
+      <view class="rank-control rank-filter-control" data-sheet="rankFilter" bindtap="showSheet"><image src="/assets/icon-settings.png" /><text>Filter</text><view class="filter-dot" wx:if="{{rankGrade !== 'all' || rankLevel !== 'all'}}"></view></view>
     </view>
     <view class="empty" wx:if="{{rankingStatus !== 'ready'}}"><text>{{rankingStatusTitle}}</text><text class="muted">{{rankingStatusDescription}}</text><button class="primary" data-page="library" bindtap="nav">开始今天的阅读</button></view>
+    <block wx:if="{{rankingStatus === 'ready'}}">
+      <view class="ranking-heading"><view><text class="eyebrow">{{rankingTypeLabel}} · {{campusLabel}}</text><text class="ranking-title">{{rankingMetricLabel}} Ranking</text><text class="muted" wx:if="{{rankingRangeLabel}}">{{rankingRangeLabel}}</text></view><text class="ranking-unit">算法得分</text></view>
+      <view class="rank-entry {{item.isCurrentUser ? 'is-current' : ''}}" wx:for="{{rankingEntries}}" wx:key="participantId" data-id="{{item.participantId}}" bindtap="openRankingDetail">
+        <text class="rank-position">{{item.rankBadge}}</text>
+        <view class="rank-person"><text class="row-title">{{item.displayName}}</text><text class="muted">{{item.gradeLabel}}{{item.gradeLabel && item.readingLevelLabel ? ' · ' : ''}}{{item.readingLevelLabel}}</text></view>
+        <view class="rank-metric"><text>{{item.metricValue}}</text><text>分</text></view><text class="rank-chevron">›</text>
+      </view>
+      <view class="small-empty" wx:if="{{!rankingEntries.length}}">当前筛选范围没有符合条件的服务端验证记录。</view>
+      <text class="ranking-trust-note">综合得分由完成书本、阅读词量、正确率、挑战度、进步幅度与题材广度计算；同一本书只取周期内第一次服务端验证 Quiz。</text>
+    </block>
+  </view>
+
+  <view class="content ranking-detail-content" wx:if="{{route === 'ranking-detail'}}">
+    <view class="quiz-detail-hero"><text class="eyebrow">{{rankingDetail.periodLabel}}</text><text class="quiz-detail-name">{{rankingDetail.displayName}} · Quizzes</text><text class="quiz-detail-range">{{rankingDetail.rangeLabel || '周期以服务端榜单为准'}}</text></view>
+    <view class="empty" wx:if="{{rankingDetail.status !== 'ready'}}"><text>Quiz 明细暂不可用</text><text class="muted">榜单条目可以进入本页；接入排名明细接口后展示服务端验证数据。</text><button class="secondary" bindtap="back">返回排行榜</button></view>
+    <block wx:if="{{rankingDetail.status === 'ready'}}">
+      <view class="ranking-score-card"><view><text class="eyebrow">ALGORITHM SCORE</text><text class="ranking-score-total">{{rankingDetail.rankingScoreLabel}}</text><text class="muted">{{rankingDetail.ruleVersion}}</text></view><view class="score-breakdown" wx:if="{{rankingDetail.scoreBreakdown.length}}"><view wx:for="{{rankingDetail.scoreBreakdown}}" wx:key="key"><text>{{item.label}}</text><text>{{item.pointsLabel}}</text></view></view></view>
+      <view class="quiz-stats-card"><view class="quiz-stats-head"><text>STATS</text><text>COMPLETED / ALL</text></view><view class="quiz-stat-row" wx:for="{{rankingDetail.statsRows}}" wx:key="key"><text>{{item.label}}</text><text>{{item.completed}}</text><text>/</text><text>{{item.all}}</text></view></view>
+      <view class="quiz-profile-strip"><view><text>当前年级</text><text>{{rankingDetail.gradeLabel}}</text></view><view><text>阅读级别</text><text>{{rankingDetail.readingLevelLabel}}</text></view></view>
+      <view class="ranking-quiz-tools"><view class="ranking-quiz-search"><image src="/assets/icon-search.png" /><input placeholder="Title / Series / Author" value="{{rankingQuizQuery}}" bindinput="inputRankingQuizSearch" /></view><view class="rank-control ranking-sort" data-sheet="rankingQuizSort" bindtap="showSheet"><text>{{rankingQuizSortLabel}}</text><text class="control-arrow">⌄</text></view></view>
+      <view class="ranking-quiz-count"><text>{{rankingQuizRows.length}} QUIZZES</text><text>{{rankingDetail.rangeLabel}}</text></view>
+      <view class="ranking-quiz-row" wx:for="{{rankingQuizRows}}" wx:key="attemptId"><view class="ranking-quiz-main"><text class="quiz-series" wx:if="{{item.series}}">{{item.series}}</text><text class="row-title">{{item.title}}</text><text class="muted" wx:if="{{item.author}}">{{item.author}}</text><text class="quiz-date">{{item.takenAtLabel}}</text></view><view class="quiz-facts"><text>Correct <text class="quiz-fact-value">{{item.correctLabel}}</text></text><text>Level <text class="quiz-fact-value">{{item.levelLabel}}</text></text><text>{{item.categoryLabel}}</text><text>{{item.wordCountLabel}} words</text></view></view>
+      <view class="small-empty" wx:if="{{!rankingQuizRows.length}}">没有找到符合条件的 Quiz 书目。</view>
+    </block>
   </view>
 
   <include src="./quiz.wxml" />
@@ -170,6 +198,11 @@
     <view wx:if="{{sheet === 'word'}}"><text class="eyebrow">A NEW WORD</text><view class="sheet-title word-title">{{selectedWord.surface}}</view><text class="muted">{{selectedWord.phonetic}} · {{selectedWord.partOfSpeech}}</text><view class="word-definition">{{selectedWord.definitionZh}}</view><text class="description">{{selectedWord.definitionEn}}</text><view class="info-note">{{selectedWord.example}}</view><button class="primary full" bindtap="saveWord">＋ Save Word</button></view>
     <view wx:if="{{sheet === 'queue'}}"><view class="sheet-title">Playlist</view><view class="queue-row" wx:for="{{books}}" wx:key="id" data-page="player" data-id="{{item.id}}" bindtap="nav"><image class="mini-cover" src="{{item.cover}}" /><text>{{item.title}}</text><text class="muted">{{item.time}}</text></view></view>
     <view wx:if="{{sheet === 'favorites'}}"><view class="sheet-title">Favorite Books</view><view class="queue-row" wx:for="{{favoriteBooks}}" wx:key="id" data-id="{{item.id}}" bindtap="openBook"><image class="mini-cover" src="{{item.cover}}" /><text>{{item.title}}</text></view><text class="description" wx:if="{{!favorites.length}}">遇见喜欢的书，点击详情页的爱心收藏。</text></view>
+    <view wx:if="{{sheet === 'campus'}}"><text class="eyebrow">RANKING CAMPUS</text><view class="sheet-title">Choose Campus</view><view class="sheet-option {{campus === item.id ? 'selected' : ''}}" wx:for="{{campusOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseCampus"><text>{{item.label}}</text><text>{{campus === item.id ? '✓' : ''}}</text></view></view>
+    <view wx:if="{{sheet === 'rankingType'}}"><text class="eyebrow">LEADERBOARD PERIOD</text><view class="sheet-title">Choose Ranking</view><view class="sheet-option {{rankingType === item.id ? 'selected' : ''}}" wx:for="{{rankingTypes}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankingType"><view><text>{{item.label}}</text><text class="option-description">{{item.description}}</text></view><text>{{rankingType === item.id ? '✓' : ''}}</text></view></view>
+    <view wx:if="{{sheet === 'rankingPeriod'}}"><text class="eyebrow">{{rankingType === 'week' ? 'CALENDAR WEEK' : 'CALENDAR MONTH'}}</text><view class="sheet-title">Choose {{rankingType === 'week' ? 'Week' : 'Month'}}</view><block wx:if="{{rankingType === 'week'}}"><view class="sheet-option {{selectedWeek === item.id ? 'selected' : ''}}" wx:for="{{weekOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankingPeriod"><view><text>{{item.label}}</text><text class="option-description">{{item.description}}</text></view><text>{{selectedWeek === item.id ? '✓' : ''}}</text></view></block><block wx:if="{{rankingType === 'month'}}"><view class="sheet-option {{selectedMonth === item.id ? 'selected' : ''}}" wx:for="{{monthOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankingPeriod"><view><text>{{item.label}}</text><text class="option-description">{{item.description}}</text></view><text>{{selectedMonth === item.id ? '✓' : ''}}</text></view></block></view>
+    <view wx:if="{{sheet === 'rankFilter'}}"><text class="eyebrow">RANKING FILTER</text><view class="sheet-title">Grade &amp; Level</view><text class="filter-section-label">Grade</text><view class="filter-grid"><view class="filter-choice {{rankGrade === item.id ? 'selected' : ''}}" wx:for="{{gradeOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankGrade">{{item.label}}</view></view><text class="filter-section-label">Reading Level</text><view class="filter-grid level-grid"><view class="filter-choice {{rankLevel === item.id ? 'selected' : ''}}" wx:for="{{levelOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankLevel">{{item.label}}</view></view><button class="primary full filter-apply" bindtap="applyRankFilter">Apply Filter</button></view>
+    <view wx:if="{{sheet === 'rankingQuizSort'}}"><text class="eyebrow">QUIZ ORDER</text><view class="sheet-title">Sort Quizzes</view><view class="sheet-option {{rankingQuizSort === item.id ? 'selected' : ''}}" wx:for="{{rankingQuizSortOptions}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseRankingQuizSort"><text>{{item.label}}</text><text>{{rankingQuizSort === item.id ? '✓' : ''}}</text></view></view>
     <view wx:if="{{sheet === 'words'}}"><view class="sheet-title">Vocabulary</view><text class="description">{{savedWordsText}}</text></view>
     <!-- @demo-start -->
     <view wx:if="{{isDemo && sheet === 'branch'}}"><view class="sheet-title">听阅 · 示例阅读馆</view><text class="description">营业时间：09:30–18:30{{'\n'}}At the library、到馆归还。{{'\n'}}此馆点用于界面演示，地址和联系方式待运营配置。</text></view>
@@ -177,7 +210,7 @@
     <view wx:if="{{isDemo && (sheet === 'privacy' || sheet === 'terms')}}"><view class="sheet-title">{{sheet === 'privacy' ? '隐私政策 · 预览说明' : '用户协议 · 预览说明'}}</view><text class="description">这是本地交互原型，不提供真实登录或借阅服务。演示记录保存在当前设备。</text></view>
     <!-- @demo-end -->
     <!-- @production-start -->
-    <view wx:if="{{isProduction && sheet === 'settings'}}"><view class="sheet-title">Account & Settings</view><text class="description">真实账户与云同步接入中；当前游客学习记录只保存在本机。</text><button class="primary full" data-page="login" bindtap="nav">View account status</button></view>
+    <view wx:if="{{isProduction && sheet === 'settings'}}"><view class="sheet-title">Account & Settings</view><text class="description">{{user ? '当前已连接服务端账户；Quiz 与排行榜使用服务端验证数据。' : '当前为游客；学习记录只保存在本机。'}}</text><button class="secondary full" wx:if="{{user}}" bindtap="logout">Log out</button><button class="primary full" wx:if="{{!user}}" data-page="login" bindtap="nav">WeChat login</button></view>
     <view wx:if="{{isProduction && (sheet === 'privacy' || sheet === 'terms')}}"><view class="sheet-title">{{sheet === 'privacy' ? '隐私政策 · 预览说明' : '用户协议 · 预览说明'}}</view><text class="description">当前为内测试读版本，不提供真实登录、交易或借阅。游客学习记录保存在当前设备，可通过清除应用数据移除。正式上线前将补全运营主体、联系方式与正式协议。</text></view>
     <!-- @production-end -->
   </view></view>

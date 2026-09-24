@@ -1,4 +1,5 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict')
+const baseUrl=process.env.TINGYUE_PREVIEW_URL||'http://127.0.0.1:4173'
 let browser
 ;(async()=>{
   browser=await chromium.launch({headless:true,channel:'msedge'})
@@ -6,7 +7,7 @@ let browser
   const errors=[]
   page.on('pageerror',error=>errors.push(error.message))
   page.on('console',message=>{if(message.type()==='error')errors.push(message.text())})
-  await page.goto('http://127.0.0.1:4173/#home')
+  await page.goto(baseUrl+'/#home')
   await page.waitForSelector('.home-book')
   assert.equal(await page.locator('.home-book').count(),1)
   assert.ok((await page.locator('.home-book').textContent()).includes('Peter Rabbit'))
@@ -15,8 +16,11 @@ let browser
   assert.equal(await page.getByText('Invite Friends',{exact:true}).count(),0)
   assert.equal(await page.locator('#screens [data-page="coupons"]').count(),0)
 
-  await page.evaluate(()=>localStorage.setItem('tingyue.demo.v1',JSON.stringify({user:{id:'demo'},demoCoupons:[{id:'coupon'}],demoPurchases:['little-seed']})))
-  await page.goto('http://127.0.0.1:4173/#detail?id=little-seed')
+  await page.evaluate(()=>{
+    localStorage.setItem('tingyue.demo.v1',JSON.stringify({user:{id:'demo'},demoCoupons:[{id:'coupon'}],demoPurchases:['little-seed']}))
+    localStorage.setItem('tingyue.session.v1',JSON.stringify({accessToken:'browser-access',refreshToken:'browser-refresh',user:{id:'production-reader'}}))
+  })
+  await page.goto(baseUrl+'/#detail?id=little-seed')
   await page.waitForSelector('.detail-cover')
   assert.ok((await page.locator('.detail-title').textContent()).includes('Peter Rabbit'))
   assert.ok((await page.locator('.info-note').textContent()).includes('内测试读内容'))
@@ -30,13 +34,13 @@ let browser
   assert.equal(productState.demoCoupons,undefined)
   assert.equal(demoState.user.id,'demo')
 
-  await page.goto('http://127.0.0.1:4173/#login')
+  await page.goto(baseUrl+'/#login')
   await page.waitForSelector('.login-button')
-  assert.ok((await page.locator('.login-button').textContent()).includes('coming soon'))
+  assert.ok((await page.locator('.login-button').textContent()).includes('WeChat Login'))
   assert.equal(await page.getByText(/123456/).count(),0)
   assert.equal(await page.locator('input').count(),0)
 
-  await page.goto('http://127.0.0.1:4173/#coupons')
+  await page.goto(baseUrl+'/#coupons')
   await page.waitForSelector('.home-book')
   assert.equal(await page.evaluate(()=>window.currentPage.data.route),'home')
   assert.deepEqual(errors,[])

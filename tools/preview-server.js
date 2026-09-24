@@ -5,7 +5,7 @@ const root = path.resolve(__dirname,'..')
 const previewMode = process.argv.includes('--demo') ? 'demo' : 'production'
 const miniArg=process.argv.find(value=>value.startsWith('--mini-root='))
 const miniRoot=miniArg?path.resolve(root,miniArg.slice('--mini-root='.length)):path.join(root,'miniprogram')
-const moduleCandidates = ['config/product-mode','modules/catalog/catalog-data','modules/catalog/books','modules/content-notices','modules/account/session','modules/physical-loan/rules','modules/promotion/demo','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/peter-quiz-data','modules/listen-read/peter-vocab-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','modules/listen-read/legacy-quiz-data','modules/listen-read/subtitles','modules/quiz/attempts','modules/report/aggregate','modules/ranking/state','services/host','ui/controller']
+const moduleCandidates = ['config/product-mode','config/api','modules/catalog/catalog-data','modules/catalog/books','modules/content-notices','modules/account/session','modules/physical-loan/rules','modules/promotion/demo','modules/listen-read/player','modules/listen-read/cues-data','modules/listen-read/peter-quiz-data','modules/listen-read/peter-vocab-data','modules/listen-read/legacy-cues-data','modules/listen-read/legacy-vocab-data','modules/listen-read/legacy-quiz-data','modules/listen-read/subtitles','modules/quiz/attempts','modules/report/aggregate','modules/ranking/state','modules/ranking/model','services/host','services/api','ui/controller']
 const modules=moduleCandidates.filter(id=>fs.existsSync(path.join(miniRoot,id+'.js')))
 const server = http.createServer((req,res) => {
   const url = new URL(req.url,'http://localhost')

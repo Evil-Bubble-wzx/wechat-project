@@ -1,0 +1,43 @@
+{
+  "requestId": "req-01K5TESTRANKOPT001",
+  "timezone": "Asia/Shanghai",
+  "minimumCohortSize": 10,
+  "ruleVersion": "quiz-score-v1",
+  "campuses": [
+    { "value": "A", "label": "A校区" },
+    { "value": "B", "label": "B校区" }
+  ],
+  "periodTypes": [
+    { "value": "rolling7", "label": "最近七天", "requiresPeriodSelection": false },
+    { "value": "week", "label": "周榜", "requiresPeriodSelection": true },
+    { "value": "month", "label": "月榜", "requiresPeriodSelection": true },
+    { "value": "year", "label": "年榜", "requiresPeriodSelection": false }
+  ],
+  "periods": {
+    "week": [
+      { "key": "2026-W39", "label": "2026年第39周", "startsAt": "2026-09-21T00:00:00.000Z", "endsAt": "2026-09-28T00:00:00.000Z" }
+    ],
+    "month": [
+      { "key": "2026-09", "label": "2026年9月", "startsAt": "2026-09-01T00:00:00.000Z", "endsAt": "2026-10-01T00:00:00.000Z" }
+    ]
+  },
+  "grades": [
+    { "value": "K", "label": "幼儿园" },
+    { "value": "1", "label": "一年级" },
+    { "value": "2", "label": "二年级" },
+    { "value": "3", "label": "三年级" },
+    { "value": "4", "label": "四年级" },
+    { "value": "5", "label": "五年级" },
+    { "value": "6", "label": "六年级" },
+    { "value": "7", "label": "七年级" },
+    { "value": "8", "label": "八年级" },
+    { "value": "9", "label": "九年级" }
+  ],
+  "levels": [
+    { "value": "1", "label": "Lv 1.x" },
+    { "value": "2", "label": "Lv 2.x" },
+    { "value": "3", "label": "Lv 3.x" },
+    { "value": "4", "label": "Lv 4.x" },
+    { "value": "5", "label": "Lv 5.x" }
+  ]
+}

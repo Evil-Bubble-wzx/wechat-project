@@ -1,0 +1,642 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.tingyue.invalid/api-v1.schema.json",
+  "title": "Tingyue API v1 schemas",
+  "$defs": {
+    "RequestId": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "Uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "Sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "Rfc3339": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ErrorCode": {
+      "type": "string",
+      "enum": [
+        "INVALID_REQUEST",
+        "AUTH_CODE_INVALID",
+        "UNAUTHENTICATED",
+        "ACCESS_TOKEN_EXPIRED",
+        "REFRESH_TOKEN_REUSED",
+        "FORBIDDEN",
+        "RESOURCE_NOT_FOUND",
+        "ROUTE_NOT_FOUND",
+        "CONFLICT",
+        "IDEMPOTENCY_KEY_REUSED",
+        "CONTENT_VERSION_UNAVAILABLE",
+        "CONTENT_ACCESS_DENIED",
+        "QUIZ_PACKAGE_MISMATCH",
+        "QUIZ_ATTEMPT_REJECTED",
+        "RANKING_UNAVAILABLE",
+        "RANKING_PERIOD_INVALID",
+        "RANKING_FILTER_INVALID",
+        "UPLOAD_SESSION_EXPIRED",
+        "ASSET_CHECKSUM_MISMATCH",
+        "INGESTION_BATCH_CONFLICT",
+        "INGESTION_JOB_FAILED",
+        "SUBTITLE_VALIDATION_FAILED",
+        "PUBLISH_GATE_NOT_SATISFIED",
+        "RATE_LIMITED",
+        "DEPENDENCY_UNAVAILABLE",
+        "INTERNAL_ERROR"
+      ]
+    },
+    "Error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "retryable", "details"],
+      "properties": {
+        "code": { "$ref": "#/$defs/ErrorCode" },
+        "message": { "type": "string", "minLength": 1 },
+        "retryable": { "type": "boolean" },
+        "details": {}
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "error"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "error": { "$ref": "#/$defs/Error" }
+      }
+    },
+    "LiveResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "service", "timestamp"],
+      "properties": {
+        "status": { "const": "ok" },
+        "service": { "const": "tingyue-api" },
+        "timestamp": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "DependencyStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["ok", "error"] }
+      }
+    },
+    "ReadyResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "dependencies"],
+      "properties": {
+        "status": { "const": "ready" },
+        "dependencies": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DependencyStatus" }
+        }
+      }
+    },
+    "NotReadyResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "status", "error", "dependencies"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "status": { "const": "not-ready" },
+        "error": { "$ref": "#/$defs/Error" },
+        "dependencies": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DependencyStatus" }
+        }
+      }
+    },
+    "SessionWechatRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "deviceId": { "type": "string", "minLength": 8, "maxLength": 128 }
+      }
+    },
+    "SessionRefreshRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["refreshToken"],
+      "properties": {
+        "refreshToken": { "type": "string", "minLength": 32, "maxLength": 4096 }
+      }
+    },
+    "SessionResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "userId", "sessionId", "accessToken", "accessTokenExpiresAt", "refreshToken", "refreshTokenExpiresAt"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "userId": { "$ref": "#/$defs/Uuid" },
+        "sessionId": { "$ref": "#/$defs/Uuid" },
+        "accessToken": { "type": "string", "minLength": 32 },
+        "accessTokenExpiresAt": { "$ref": "#/$defs/Rfc3339" },
+        "refreshToken": { "type": "string", "minLength": 32 },
+        "refreshTokenExpiresAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "SessionRevokedResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "status"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "status": { "const": "revoked" }
+      }
+    },
+    "MeResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "userId", "status", "profile"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "userId": { "$ref": "#/$defs/Uuid" },
+        "status": { "enum": ["active", "disabled"] },
+        "profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["campusId", "grade", "readingLevel"],
+          "properties": {
+            "campusId": { "type": ["string", "null"] },
+            "grade": { "type": ["string", "null"] },
+            "readingLevel": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "WorkSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workId", "title", "coverUrl", "pieceCount", "access"],
+      "properties": {
+        "workId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1 },
+        "coverUrl": { "type": ["string", "null"], "format": "uri" },
+        "pieceCount": { "type": "integer", "minimum": 0 },
+        "access": { "enum": ["free", "restricted"] }
+      }
+    },
+    "WorksResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "items", "nextCursor"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/WorkSummary" } },
+        "nextCursor": { "type": ["string", "null"] }
+      }
+    },
+    "PieceSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pieceId", "title", "currentContentVersion", "quizVersion", "access"],
+      "properties": {
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1 },
+        "currentContentVersion": { "type": "integer", "minimum": 1 },
+        "quizVersion": { "type": ["integer", "null"], "minimum": 1 },
+        "access": { "enum": ["free", "restricted"] }
+      }
+    },
+    "WorkResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "work", "pieces"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "work": { "$ref": "#/$defs/WorkSummary" },
+        "pieces": { "type": "array", "items": { "$ref": "#/$defs/PieceSummary" } }
+      }
+    },
+    "ManifestAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetId", "type", "url", "expiresAt", "sha256", "sizeBytes", "mimeType"],
+      "properties": {
+        "assetId": { "$ref": "#/$defs/Uuid" },
+        "type": { "enum": ["audio", "text", "subtitles", "vocabulary", "quiz", "cover", "metadata"] },
+        "url": { "type": "string", "format": "uri" },
+        "expiresAt": { "$ref": "#/$defs/Rfc3339" },
+        "sha256": { "$ref": "#/$defs/Sha256" },
+        "sizeBytes": { "type": "integer", "minimum": 0 },
+        "mimeType": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ManifestResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "workId", "pieceId", "contentVersion", "quizVersion", "manifestSha256", "assets"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "workId": { "type": "string", "minLength": 1 },
+        "pieceId": { "type": "string", "minLength": 1 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "quizVersion": { "type": ["integer", "null"], "minimum": 1 },
+        "manifestSha256": { "$ref": "#/$defs/Sha256" },
+        "assets": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ManifestAsset" } }
+      }
+    },
+    "QuizAttemptRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "attemptId", "workId", "pieceId", "contentVersion", "quizVersion", "questionIds", "selectedOptions", "startedAt", "submittedAt"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "attemptId": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "workId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "quizVersion": { "type": "integer", "minimum": 1 },
+        "questionIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 128 }
+        },
+        "selectedOptions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "startedAt": { "$ref": "#/$defs/Rfc3339" },
+        "submittedAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "QuizAttemptVerifiedResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "attemptId", "status", "score", "mastery", "verifiedAt"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "attemptId": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "status": { "const": "server_verified" },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "mastery": { "type": "boolean" },
+        "verifiedAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "QuizAttemptRejectedResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "attemptId", "status", "error"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "attemptId": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "status": { "const": "rejected" },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message", "retryable", "details"],
+          "properties": {
+            "code": { "enum": ["CONTENT_VERSION_UNAVAILABLE", "QUIZ_PACKAGE_MISMATCH", "QUIZ_ATTEMPT_REJECTED"] },
+            "message": { "type": "string", "minLength": 1 },
+            "retryable": { "type": "boolean" },
+            "details": {}
+          }
+        }
+      }
+    },
+    "QuizAttemptResponse": {
+      "oneOf": [
+        { "$ref": "#/$defs/QuizAttemptVerifiedResponse" },
+        { "$ref": "#/$defs/QuizAttemptRejectedResponse" }
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "label"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PeriodTypeOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "label", "requiresPeriodSelection"],
+      "properties": {
+        "value": { "enum": ["rolling7", "week", "month", "year"] },
+        "label": { "type": "string", "minLength": 1 },
+        "requiresPeriodSelection": { "type": "boolean" }
+      }
+    },
+    "RankingPeriodOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "startsAt", "endsAt"],
+      "properties": {
+        "key": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "startsAt": { "$ref": "#/$defs/Rfc3339" },
+        "endsAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "RankingOptionsResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "timezone", "minimumCohortSize", "ruleVersion", "campuses", "periodTypes", "periods", "grades", "levels"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "timezone": { "const": "Asia/Shanghai" },
+        "minimumCohortSize": { "type": "integer", "minimum": 1 },
+        "ruleVersion": { "type": "string", "minLength": 1 },
+        "campuses": { "type": "array", "items": { "$ref": "#/$defs/Option" } },
+        "periodTypes": { "type": "array", "items": { "$ref": "#/$defs/PeriodTypeOption" } },
+        "periods": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["week", "month"],
+          "properties": {
+            "week": { "type": "array", "items": { "$ref": "#/$defs/RankingPeriodOption" } },
+            "month": { "type": "array", "items": { "$ref": "#/$defs/RankingPeriodOption" } }
+          }
+        },
+        "grades": { "type": "array", "items": { "$ref": "#/$defs/Option" } },
+        "levels": { "type": "array", "items": { "$ref": "#/$defs/Option" } }
+      }
+    },
+    "RankingMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Server-computed 0-1000 Quiz ranking score. The rule version identifies the feature weights and cohort normalization. Clients cannot submit or calculate this value authoritatively.",
+      "required": ["key", "label", "value", "unit"],
+      "properties": {
+        "key": { "const": "rankingScore" },
+        "label": { "const": "Quiz Score" },
+        "value": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "unit": { "const": "points" }
+      }
+    },
+    "RankingEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rank", "participantId", "displayName", "metric"],
+      "properties": {
+        "rank": { "type": "integer", "minimum": 1 },
+        "participantId": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "gradeLabel": { "type": ["string", "null"], "maxLength": 64 },
+        "readingLevelLabel": { "type": ["string", "null"], "maxLength": 64 },
+        "metric": { "$ref": "#/$defs/RankingMetric" }
+      }
+    },
+    "RankingFilters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["campusId", "periodType", "periodKey", "grade", "level"],
+      "properties": {
+        "campusId": { "type": "string", "minLength": 1 },
+        "periodType": { "enum": ["rolling7", "week", "month", "year"] },
+        "periodKey": { "type": "string", "minLength": 1 },
+        "grade": { "type": ["string", "null"] },
+        "level": { "type": ["string", "null"] }
+      }
+    },
+    "RankingsResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "status", "timezone", "filters", "ruleVersion", "periodType", "periodKey", "startsAt", "endsAt", "generatedAt", "minimumCohortSize", "cohortSize", "items", "currentUser", "nextCursor"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "status": { "enum": ["ready", "unavailable", "cohort_too_small"] },
+        "timezone": { "const": "Asia/Shanghai" },
+        "filters": { "$ref": "#/$defs/RankingFilters" },
+        "ruleVersion": { "type": "string", "minLength": 1 },
+        "periodType": { "enum": ["rolling7", "week", "month", "year"] },
+        "periodKey": { "type": "string", "minLength": 1 },
+        "startsAt": { "$ref": "#/$defs/Rfc3339" },
+        "endsAt": { "$ref": "#/$defs/Rfc3339" },
+        "generatedAt": { "oneOf": [{ "$ref": "#/$defs/Rfc3339" }, { "type": "null" }] },
+        "minimumCohortSize": { "type": "integer", "minimum": 1 },
+        "cohortSize": { "type": "integer", "minimum": 0 },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/RankingEntry" } },
+        "currentUser": { "oneOf": [{ "$ref": "#/$defs/RankingEntry" }, { "type": "null" }] },
+        "nextCursor": { "type": ["string", "null"] }
+      }
+    },
+    "RankingScoreComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "weight", "percentile", "points", "maxPoints"],
+      "properties": {
+        "key": { "enum": ["completion", "words", "accuracy", "challenge", "growth", "breadth"] },
+        "label": { "type": "string", "minLength": 1 },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+        "percentile": { "type": "number", "minimum": 0, "maximum": 1 },
+        "points": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "maxPoints": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "RankingParticipant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["participantId", "displayName", "gradeLabel", "readingLevelLabel"],
+      "properties": {
+        "participantId": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "gradeLabel": { "type": ["string", "null"], "maxLength": 64 },
+        "readingLevelLabel": { "type": ["string", "null"], "maxLength": 64 }
+      }
+    },
+    "RankingQuizStats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completedBooks", "allBooks", "completedWords", "allWords", "completedAverageCorrect", "allAverageCorrect", "completedAverageLevel", "allAverageLevel", "completedFictionPercent", "allFictionPercent"],
+      "properties": {
+        "completedBooks": { "type": "integer", "minimum": 0 },
+        "allBooks": { "type": "integer", "minimum": 0 },
+        "completedWords": { "type": "integer", "minimum": 0 },
+        "allWords": { "type": "integer", "minimum": 0 },
+        "completedAverageCorrect": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "allAverageCorrect": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "completedAverageLevel": { "type": ["number", "null"], "minimum": 0 },
+        "allAverageLevel": { "type": ["number", "null"], "minimum": 0 },
+        "completedFictionPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "allFictionPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+      }
+    },
+    "RankingQuizRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attemptId", "workId", "pieceId", "title", "series", "author", "takenAt", "correctPercent", "level", "category", "wordCount", "completed"],
+      "properties": {
+        "attemptId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "workId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "series": { "type": ["string", "null"], "maxLength": 512 },
+        "author": { "type": ["string", "null"], "maxLength": 512 },
+        "takenAt": { "$ref": "#/$defs/Rfc3339" },
+        "correctPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "level": { "type": ["number", "null"], "minimum": 0 },
+        "category": { "enum": ["fiction", "nonfiction", null] },
+        "wordCount": { "type": "integer", "minimum": 0 },
+        "completed": { "const": true }
+      }
+    },
+    "RankingQuizDetailResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "ruleVersion", "participant", "periodType", "periodKey", "startsAt", "endsAt", "rankingScore", "scoreBreakdown", "stats", "quizzes", "nextCursor"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "ruleVersion": { "type": "string", "minLength": 1 },
+        "participant": { "$ref": "#/$defs/RankingParticipant" },
+        "periodType": { "enum": ["rolling7", "week", "month", "year"] },
+        "periodKey": { "type": "string", "minLength": 1 },
+        "startsAt": { "$ref": "#/$defs/Rfc3339" },
+        "endsAt": { "$ref": "#/$defs/Rfc3339" },
+        "rankingScore": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "scoreBreakdown": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "$ref": "#/$defs/RankingScoreComponent" } },
+        "stats": { "$ref": "#/$defs/RankingQuizStats" },
+        "quizzes": { "type": "array", "items": { "$ref": "#/$defs/RankingQuizRecord" } },
+        "nextCursor": { "type": ["string", "null"] }
+      }
+    },
+    "IngestionItemDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clientFileId", "assetType", "fileName", "sizeBytes", "mimeType", "sha256"],
+      "properties": {
+        "clientFileId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "assetType": { "enum": ["audio", "subtitles", "text", "vocabulary", "quiz", "cover", "metadata"] },
+        "fileName": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "sizeBytes": { "type": "integer", "minimum": 1 },
+        "mimeType": { "type": "string", "minLength": 1, "maxLength": 255 },
+        "sha256": { "$ref": "#/$defs/Sha256" }
+      }
+    },
+    "IngestionBatchCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "sourceCommitSha", "toolVersion", "workId", "pieceId", "contentVersion", "items"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "sourceCommitSha": { "type": "string", "minLength": 7, "maxLength": 64 },
+        "toolVersion": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "workId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "items": { "type": "array", "minItems": 1, "maxItems": 1000, "items": { "$ref": "#/$defs/IngestionItemDeclaration" } }
+      }
+    },
+    "IngestionItemStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itemId", "clientFileId", "status", "errorCode"],
+      "properties": {
+        "itemId": { "$ref": "#/$defs/Uuid" },
+        "clientFileId": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["declared", "uploading", "uploaded", "queued", "processing", "ready", "failed", "cancelled"] },
+        "errorCode": { "oneOf": [{ "$ref": "#/$defs/ErrorCode" }, { "type": "null" }] }
+      }
+    },
+    "IngestionBatchResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "batchId", "workId", "pieceId", "contentVersion", "status", "items", "createdAt", "updatedAt"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "batchId": { "$ref": "#/$defs/Uuid" },
+        "workId": { "type": "string", "minLength": 1 },
+        "pieceId": { "type": "string", "minLength": 1 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "status": { "enum": ["draft", "uploading", "queued", "processing", "partial_failed", "ready_for_review", "cancelled", "published"] },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/IngestionItemStatus" } },
+        "createdAt": { "$ref": "#/$defs/Rfc3339" },
+        "updatedAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "UploadSessionCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["batchId", "clientFileId"],
+      "properties": {
+        "batchId": { "$ref": "#/$defs/Uuid" },
+        "clientFileId": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "UploadPart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["partNumber", "uploadUrl"],
+      "properties": {
+        "partNumber": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "uploadUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "UploadSessionResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "uploadSessionId", "objectKey", "partSizeBytes", "expiresAt", "parts"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "uploadSessionId": { "$ref": "#/$defs/Uuid" },
+        "objectKey": { "type": "string", "minLength": 1 },
+        "partSizeBytes": { "type": "integer", "minimum": 5242880 },
+        "expiresAt": { "$ref": "#/$defs/Rfc3339" },
+        "parts": { "type": "array", "minItems": 1, "maxItems": 10000, "items": { "$ref": "#/$defs/UploadPart" } }
+      }
+    },
+    "CompletedUploadPart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["partNumber", "etag"],
+      "properties": {
+        "partNumber": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "etag": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+    "UploadSessionCompleteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parts"],
+      "properties": {
+        "parts": { "type": "array", "minItems": 1, "maxItems": 10000, "items": { "$ref": "#/$defs/CompletedUploadPart" } }
+      }
+    },
+    "AdminActionResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "status", "resourceId"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "status": { "enum": ["accepted", "completed", "cancelled", "published", "rolled_back"] },
+        "resourceId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PublishContentVersionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewId", "expectedCurrentContentVersion"],
+      "properties": {
+        "reviewId": { "$ref": "#/$defs/Uuid" },
+        "expectedCurrentContentVersion": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "RollbackContentVersionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetContentVersion", "reason"],
+      "properties": {
+        "targetContentVersion": { "type": "integer", "minimum": 1 },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    }
+  }
+}

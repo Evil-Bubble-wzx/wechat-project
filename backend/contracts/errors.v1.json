@@ -1,0 +1,31 @@
+{
+  "contractVersion": "api-contract-v1.0.0",
+  "errors": [
+    { "code": "INVALID_REQUEST", "httpStatus": 400, "retryable": false, "description": "请求字段、格式或约束无效。" },
+    { "code": "AUTH_CODE_INVALID", "httpStatus": 401, "retryable": false, "description": "微信一次性登录 code 无效、过期或已使用。" },
+    { "code": "UNAUTHENTICATED", "httpStatus": 401, "retryable": false, "description": "未提供有效身份凭据。" },
+    { "code": "ACCESS_TOKEN_EXPIRED", "httpStatus": 401, "retryable": false, "description": "Access token 已过期，客户端应走刷新流程。" },
+    { "code": "REFRESH_TOKEN_REUSED", "httpStatus": 401, "retryable": false, "description": "已轮换的 refresh token 被再次使用，对应会话链应撤销。" },
+    { "code": "FORBIDDEN", "httpStatus": 403, "retryable": false, "description": "当前身份无权执行该操作。" },
+    { "code": "RESOURCE_NOT_FOUND", "httpStatus": 404, "retryable": false, "description": "请求的业务资源不存在或不可见。" },
+    { "code": "ROUTE_NOT_FOUND", "httpStatus": 404, "retryable": false, "description": "API 路由不存在。" },
+    { "code": "CONFLICT", "httpStatus": 409, "retryable": false, "description": "资源当前状态与请求冲突。" },
+    { "code": "IDEMPOTENCY_KEY_REUSED", "httpStatus": 409, "retryable": false, "description": "幂等键已用于不同请求体。" },
+    { "code": "CONTENT_VERSION_UNAVAILABLE", "httpStatus": 409, "retryable": false, "description": "指定内容版本不存在、已失效或不可访问。" },
+    { "code": "CONTENT_ACCESS_DENIED", "httpStatus": 403, "retryable": false, "description": "用户没有访问受限内容资产的权限。" },
+    { "code": "QUIZ_PACKAGE_MISMATCH", "httpStatus": 409, "retryable": false, "description": "题包版本或题目集合与服务端版本不一致。" },
+    { "code": "QUIZ_ATTEMPT_REJECTED", "httpStatus": 422, "retryable": false, "description": "答题记录未通过服务端验证。" },
+    { "code": "RANKING_UNAVAILABLE", "httpStatus": 503, "retryable": true, "description": "排行快照尚未生成或暂时不可用。" },
+    { "code": "RANKING_PERIOD_INVALID", "httpStatus": 400, "retryable": false, "description": "排行周期类型或具体周期无效。" },
+    { "code": "RANKING_FILTER_INVALID", "httpStatus": 400, "retryable": false, "description": "校区、年级或级别筛选值无效。" },
+    { "code": "UPLOAD_SESSION_EXPIRED", "httpStatus": 410, "retryable": false, "description": "预签名分片上传会话已过期。" },
+    { "code": "ASSET_CHECKSUM_MISMATCH", "httpStatus": 422, "retryable": false, "description": "上传资产的 SHA-256 与声明不一致。" },
+    { "code": "INGESTION_BATCH_CONFLICT", "httpStatus": 409, "retryable": false, "description": "同一 piece 和版本已有活动导入或发布事务。" },
+    { "code": "INGESTION_JOB_FAILED", "httpStatus": 422, "retryable": true, "description": "内容处理任务失败，可按任务状态决定是否重试。" },
+    { "code": "SUBTITLE_VALIDATION_FAILED", "httpStatus": 422, "retryable": false, "description": "字幕编码、时间轴或内部 cue 约束校验失败。" },
+    { "code": "PUBLISH_GATE_NOT_SATISFIED", "httpStatus": 409, "retryable": false, "description": "内容审核或发布门槛尚未满足。" },
+    { "code": "RATE_LIMITED", "httpStatus": 429, "retryable": true, "description": "请求超过速率限制。" },
+    { "code": "DEPENDENCY_UNAVAILABLE", "httpStatus": 503, "retryable": true, "description": "必要的后端依赖暂时不可用。" },
+    { "code": "INTERNAL_ERROR", "httpStatus": 500, "retryable": true, "description": "未公开内部细节的服务端错误。" }
+  ]
+}

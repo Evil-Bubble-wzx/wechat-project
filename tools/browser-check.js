@@ -1,12 +1,19 @@
 const { spawn, spawnSync } = require('node:child_process')
+const net = require('node:net')
 
 const root = require('node:path').resolve(__dirname,'..')
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve,milliseconds))
 
-async function waitForServer(child) {
+const freePort = () => new Promise((resolve,reject) => {
+  const server=net.createServer()
+  server.once('error',reject)
+  server.listen(0,'127.0.0.1',()=>{const address=server.address();server.close(error=>error?reject(error):resolve(address.port))})
+})
+
+async function waitForServer(child,baseUrl) {
   for (let attempt=0;attempt<60;attempt++) {
     if (child.exitCode !== null) throw new Error('Preview server exited before becoming ready')
-    try { const response=await fetch('http://127.0.0.1:4173/');if(response.ok)return } catch (_) {}
+    try { const response=await fetch(baseUrl+'/');if(response.ok)return } catch (_) {}
     await wait(100)
   }
   throw new Error('Timed out waiting for preview server')
@@ -18,10 +25,12 @@ function run(script) {
 }
 
 async function withPreview(mode,miniRoot,scripts) {
+  const port=await freePort(),baseUrl='http://127.0.0.1:'+port
   const args=['tools/preview-server.js','--mini-root='+miniRoot]
   if(mode==='demo')args.push('--demo')
-  const child=spawn(process.execPath,args,{cwd:root,stdio:['ignore','inherit','inherit']})
-  try { await waitForServer(child);for(const script of scripts)run(script) }
+  const env={...process.env,PORT:String(port),TINGYUE_PREVIEW_URL:baseUrl}
+  const child=spawn(process.execPath,args,{cwd:root,env,stdio:['ignore','inherit','inherit']})
+  try { await waitForServer(child,baseUrl);for(const script of scripts){const result=spawnSync(process.execPath,[script],{cwd:root,env,stdio:'inherit'});if(result.status!==0)throw new Error(script+' failed with exit code '+result.status)} }
   finally { child.kill();await Promise.race([new Promise(resolve=>child.once('exit',resolve)),wait(2000)]) }
 }
 

@@ -1,14 +1,15 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs')
+const baseUrl=process.env.TINGYUE_PREVIEW_URL||'http://127.0.0.1:4173'
 let browser
 ;(async()=>{
  fs.mkdirSync('artifacts/production',{recursive:true})
- const response=await fetch('http://127.0.0.1:4173/audio/peter-rabbit-librivox.mp3',{headers:{Range:'bytes=0-1023'}})
+ const response=await fetch(baseUrl+'/audio/peter-rabbit-librivox.mp3',{headers:{Range:'bytes=0-1023'}})
  assert.equal(response.status,206);assert.equal((await response.arrayBuffer()).byteLength,1024)
  assert.equal(response.headers.get('content-type'),'audio/mpeg')
  browser=await chromium.launch({headless:true,channel:'msedge'})
  const page=await browser.newPage({viewport:{width:390,height:844}})
  const errors=[];page.on('pageerror',e=>errors.push(e.message))
- await page.goto('http://127.0.0.1:4173/#player?id=peter-rabbit');await page.locator('.play-button').click()
+ await page.goto(baseUrl+'/#player?id=peter-rabbit');await page.locator('.play-button').click()
  await page.waitForFunction(()=>window.previewAudio && !previewAudio.paused && previewAudio.currentTime>1,{},{timeout:20000})
  await page.evaluate(async()=>{window.audioTestContext=new AudioContext();const source=audioTestContext.createMediaElementSource(previewAudio);window.audioTestAnalyser=audioTestContext.createAnalyser();source.connect(audioTestAnalyser);audioTestAnalyser.connect(audioTestContext.destination);await audioTestContext.resume()})
  await page.waitForFunction(()=>{const bins=new Float32Array(audioTestAnalyser.fftSize);audioTestAnalyser.getFloatTimeDomainData(bins);return bins.some(x=>Math.abs(x)>.001)},{},{timeout:10000})

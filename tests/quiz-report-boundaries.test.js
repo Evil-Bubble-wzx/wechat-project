@@ -5,6 +5,7 @@ const path = require('node:path')
 const attempts = require('../miniprogram/modules/quiz/attempts')
 const report = require('../miniprogram/modules/report/aggregate')
 const ranking = require('../miniprogram/modules/ranking/state')
+const rankingModel = require('../miniprogram/modules/ranking/model')
 const quizPackage = require('../miniprogram/modules/listen-read/peter-quiz-data')
 
 const book = { id:'peter-rabbit', workId:'peter-rabbit', pieceId:'peter-rabbit-01', contentVersion:1, title:'The Tale of Peter Rabbit' }
@@ -95,16 +96,89 @@ test('trend requires six pieces and compares earliest and latest thirds', () => 
   assert.deepEqual(six.trend,{ready:true,remaining:0,early:55,recent:95,delta:40,pieceCount:6})
 })
 
-test('ranking UI exposes only honest unavailable state and supported periods', () => {
+test('ranking UI keeps the honest unauthenticated state while exposing requested filters', () => {
   const source=fs.readFileSync(path.join(__dirname,'..','miniprogram','ui','screen.wxml'),'utf8')
   const controller=fs.readFileSync(path.join(__dirname,'..','miniprogram','ui','controller.js'),'utf8')
   assert.match(source,/排行榜服务尚未开放|rankingStatusTitle/)
-  assert.doesNotMatch(source,/A Campus|rank-self|rankFilter|rankingPeriod/)
-  assert.doesNotMatch(controller,/campusOptions|weekOptions|monthOptions|gradeOptions|levelOptions/)
+  assert.match(source,/data-sheet="campus"/)
+  assert.match(source,/data-sheet="rankingPeriod"/)
+  assert.match(source,/data-sheet="rankFilter"/)
+  assert.doesNotMatch(source,/rank-self/)
+  assert.match(controller,/campusOptions/)
+  assert.match(controller,/Kindergarten/)
+  assert.match(controller,/Grade '/)
+  assert.match(controller,/weekOptionsFrom/)
+  assert.match(controller,/monthOptionsFrom/)
   assert.match(controller,/id:'seven'/)
-  assert.match(controller,/id:'all'/)
+  assert.match(controller,/id:'week'/)
+  assert.match(controller,/id:'month'/)
+  assert.match(controller,/id:'year'/)
   assert.deepEqual(ranking.states,['unauthenticated','unavailable','cohort_too_small','ready'])
   assert.equal(ranking.view('made_up').status,'unavailable')
+
+  const { createPage }=require('../miniprogram/ui/controller')
+  const page=createPage('ranking')
+  page.setData=patch=>Object.assign(page.data,patch)
+  page.chooseCampus({currentTarget:{dataset:{id:'b'}}})
+  page.chooseRankingType({currentTarget:{dataset:{id:'week'}}})
+  const previousWeek=page.data.weekOptions[1]
+  page.chooseRankingPeriod({currentTarget:{dataset:{id:previousWeek.id}}})
+  page.chooseRankGrade({currentTarget:{dataset:{id:'9'}}})
+  page.chooseRankLevel({currentTarget:{dataset:{id:'5'}}})
+  assert.equal(page.data.campusLabel,'B Campus')
+  assert.equal(page.data.rankingType,'week')
+  assert.equal(page.data.selectedWeek,previousWeek.id)
+  assert.equal(page.data.rankGradeLabel,'Grade 9')
+  assert.equal(page.data.rankLevelLabel,'Lv 5.x')
+  assert.equal(page.data.rankingStatus,'unauthenticated')
+})
+
+test('ranking uses the server algorithm score and exposes a drill-down page without production fixtures', () => {
+  const board=rankingModel.normalizeLeaderboard({
+    status:'ready',
+    ruleVersion:'quiz-score-v1',
+    startsAt:'2026-09-18T00:00:00.000+08:00',
+    endsAt:'2026-09-25T00:00:00.000+08:00',
+    items:[{rank:1,participantId:'participant-001',displayName:'Reader 01',metric:{key:'rankingScore',label:'Quiz Score',value:782,unit:'points'}}]
+  })
+  assert.equal(rankingModel.METRIC_KEY,'rankingScore')
+  assert.equal(board.status,'ready')
+  assert.equal(board.items[0].metricValue,782)
+  assert.equal(board.items[0].metricValueLabel,'782 分')
+  const rawBookCount=rankingModel.normalizeLeaderboard({status:'ready',items:[{rank:1,participantId:'participant-002',displayName:'Reader 02',metric:{key:'completedQuizBooks',label:'Quiz Books',value:99,unit:'books'}}]})
+  assert.equal(rawBookCount.items.length,0,'raw book counts must not be rendered as the algorithm score')
+
+  const source=fs.readFileSync(path.join(__dirname,'..','miniprogram','ui','screen.wxml'),'utf8')
+  const app=JSON.parse(fs.readFileSync(path.join(__dirname,'..','miniprogram','app.json'),'utf8'))
+  assert.match(source,/bindtap="openRankingDetail"/)
+  assert.match(source,/route === 'ranking-detail'/)
+  assert.match(source,/COMPLETED \/ ALL/)
+  assert.match(source,/完成书本、阅读词量、正确率、挑战度、进步幅度与题材广度/)
+  assert.ok(app.pages.includes('pages/ranking-detail/index'))
+})
+
+test('ranking Quiz detail normalizes server facts then filters and sorts books', () => {
+  const detail=rankingModel.normalizeDetail({
+    status:'ready',
+    rankingScore:782,
+    ruleVersion:'quiz-score-v1',
+    scoreBreakdown:[{key:'completion',label:'Quiz Completion',points:240,maxPoints:300}],
+    participant:{participantId:'participant-001',displayName:'Reader 01',gradeLabel:'Grade 3',readingLevelLabel:'Lv 4.x'},
+    startsAt:'2026-09-18T00:00:00.000+08:00',
+    endsAt:'2026-09-25T00:00:00.000+08:00',
+    stats:{completedBooks:1,allBooks:2,completedWords:1200,allWords:2000,completedAverageCorrect:90,allAverageCorrect:75,completedAverageLevel:4.2,allAverageLevel:3.8,completedFictionPercent:100,allFictionPercent:50},
+    quizzes:[
+      {attemptId:'a1',title:'Alpha Story',author:'A',takenAt:'2026-09-20T08:00:00Z',correctPercent:90,level:4.2,category:'fiction',wordCount:1200,completed:true},
+      {attemptId:'a2',title:'Beta Facts',author:'B',takenAt:'2026-09-21T08:00:00Z',correctPercent:60,level:3.4,category:'nonfiction',wordCount:800,completed:true}
+    ]
+  })
+  assert.equal(detail.statsRows[0].completed,'1')
+  assert.equal(detail.statsRows[0].all,'2')
+  assert.equal(detail.rankingScoreLabel,'782 分')
+  assert.equal(detail.scoreBreakdown[0].pointsLabel,'240 / 300')
+  assert.equal(detail.quizzes[0].correctLabel,'90%')
+  assert.deepEqual(rankingModel.visibleQuizzes(detail.quizzes,'facts','title').map(item=>item.attemptId),['a2'])
+  assert.deepEqual(rankingModel.visibleQuizzes(detail.quizzes,'','correct').map(item=>item.attemptId),['a1','a2'])
 })
 
 test('completing the Peter quiz writes one versioned local attempt', () => {

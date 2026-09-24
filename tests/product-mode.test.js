@@ -5,7 +5,8 @@ const productMode = require('../miniprogram/config/product-mode')
 test('production mode is the default and isolates demo state', () => {
   const previousWx = global.wx
   const stores = {
-    [productMode.DEMO_STORAGE_KEY]: { user:{ id:'demo-reader' }, demoCoupons:[{ id:'coupon' }], demoPurchases:['little-seed'] }
+    [productMode.DEMO_STORAGE_KEY]: { user:{ id:'demo-reader' }, demoCoupons:[{ id:'coupon' }], demoPurchases:['little-seed'] },
+    'tingyue.session.v1': { accessToken:'access-token', refreshToken:'refresh-token', user:{ id:'production-reader' } }
   }
   const navigation = []
   const toasts = []

@@ -4,7 +4,7 @@ const DEV_MODE_KEY = 'tingyue.dev.mode'
 const PRODUCT_STORAGE_KEY = 'tingyue.product.v1'
 const DEMO_STORAGE_KEY = 'tingyue.demo.v1'
 
-const productionRoutes = ['home','library','me','detail','player','recent','report','ranking','login','quiz','notices']
+const productionRoutes = ['home','library','me','detail','player','recent','report','ranking','ranking-detail','login','quiz','notices']
 const demoRoutes = [...productionRoutes,'loans','coupons','invite']
 const productionBookIds = ['peter-rabbit']
 

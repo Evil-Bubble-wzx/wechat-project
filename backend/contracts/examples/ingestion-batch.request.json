@@ -1,0 +1,26 @@
+{
+  "source": "controlled-import-cli",
+  "sourceCommitSha": "7b882b22bfcf535cf2677616cfa82b6bb3d8a70e",
+  "toolVersion": "tingyue-import-cli/1.0.0",
+  "workId": "peter-rabbit",
+  "pieceId": "peter-rabbit-01",
+  "contentVersion": 2,
+  "items": [
+    {
+      "clientFileId": "audio-main",
+      "assetType": "audio",
+      "fileName": "peter-rabbit.mp3",
+      "sizeBytes": 10485760,
+      "mimeType": "audio/mpeg",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "clientFileId": "subtitles-main",
+      "assetType": "subtitles",
+      "fileName": "peter-rabbit.vtt",
+      "sizeBytes": 32768,
+      "mimeType": "text/vtt",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}

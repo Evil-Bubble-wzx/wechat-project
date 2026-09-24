@@ -31,7 +31,7 @@ function stripBlocks(text,mode,file){
   return text
 }
 
-function productionPolicy(){return `const PRODUCTION='production'\nconst PRODUCT_STORAGE_KEY='tingyue.product.v1'\nconst productionRoutes=['home','library','me','detail','player','recent','report','ranking','login','quiz','notices']\nconst productionBookIds=['peter-rabbit']\nfunction resolveMode(){return PRODUCTION}\nfunction current(){return {mode:PRODUCTION,isDemo:false,storageKey:PRODUCT_STORAGE_KEY,allowedRoutes:productionRoutes,allowedBookIds:productionBookIds,allowsRoute:route=>productionRoutes.includes(route),allowsBook:bookId=>productionBookIds.includes(bookId)}}\nmodule.exports={PRODUCTION,PRODUCT_STORAGE_KEY,productionRoutes,productionBookIds,resolveMode,current}\n`}
+function productionPolicy(){return `const PRODUCTION='production'\nconst PRODUCT_STORAGE_KEY='tingyue.product.v1'\nconst productionRoutes=['home','library','me','detail','player','recent','report','ranking','ranking-detail','login','quiz','notices']\nconst productionBookIds=['peter-rabbit']\nfunction resolveMode(){return PRODUCTION}\nfunction current(){return {mode:PRODUCTION,isDemo:false,storageKey:PRODUCT_STORAGE_KEY,allowedRoutes:productionRoutes,allowedBookIds:productionBookIds,allowsRoute:route=>productionRoutes.includes(route),allowsBook:bookId=>productionBookIds.includes(bookId)}}\nmodule.exports={PRODUCTION,PRODUCT_STORAGE_KEY,productionRoutes,productionBookIds,resolveMode,current}\n`}
 
 function manifest(target,mode){
   const files=walk(target).filter(file=>normalize(file,target)!=='build-manifest.json').sort((a,b)=>normalize(a,target).localeCompare(normalize(b,target)))

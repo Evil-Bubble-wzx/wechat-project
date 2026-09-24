@@ -1,0 +1,11 @@
+{
+  "requestId": "req-01K5TESTERROR0001",
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "请求字段无效。",
+    "retryable": false,
+    "details": {
+      "field": "contentVersion"
+    }
+  }
+}

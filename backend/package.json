@@ -1,0 +1,51 @@
+{
+  "name": "@tingyue/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev:api": "node --watch --experimental-strip-types src/api/main.ts",
+    "dev:worker": "node --watch --experimental-strip-types src/worker/main.ts",
+    "start:api": "node --experimental-strip-types src/api/main.ts",
+    "start:worker": "node --experimental-strip-types src/worker/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "contract:check": "node --experimental-strip-types --test test/contracts.test.ts",
+    "db:migrate": "node --experimental-strip-types src/database/cli.ts up",
+    "db:rollback": "node --experimental-strip-types src/database/cli.ts down",
+    "db:status": "node --experimental-strip-types src/database/cli.ts status",
+    "test:integration:db": "node --experimental-strip-types scripts/migration-smoke.ts",
+    "test:integration:session": "node --experimental-strip-types scripts/session-smoke.ts",
+    "test:integration:ingestion": "node --experimental-strip-types scripts/ingestion-smoke.ts",
+    "test:integration:content": "node --experimental-strip-types scripts/content-smoke.ts",
+    "test:integration:quiz": "node --experimental-strip-types scripts/quiz-smoke.ts",
+    "test:integration:ranking": "node --experimental-strip-types scripts/ranking-smoke.ts",
+    "test:integration:observability": "node --experimental-strip-types scripts/observability-smoke.ts",
+    "test:integration:queue": "node --experimental-strip-types scripts/queue-smoke.ts",
+    "recovery:requeue": "node --experimental-strip-types scripts/requeue-unfinished.ts",
+    "security:secrets": "node --experimental-strip-types scripts/secret-scan.ts",
+    "test:integration:security": "node --experimental-strip-types scripts/security-smoke.ts",
+    "test:integration:xb": "node --experimental-strip-types scripts/xb-integration-smoke.ts",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1139.0",
+    "@aws-sdk/s3-request-presigner": "^3.1139.0",
+    "bullmq": "^5.58.5",
+    "fastify": "^5.6.1",
+    "ioredis": "^5.8.1",
+    "jose": "^6.2.12",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^13.1.0",
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.15.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.9.3"
+  }
+}

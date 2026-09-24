@@ -1,0 +1,52 @@
+{
+  "requestId": "req-01K5TESTRANKDETAIL1",
+  "ruleVersion": "quiz-score-v1",
+  "participant": {
+    "participantId": "participant-001",
+    "displayName": "Reader 01",
+    "gradeLabel": "Grade 3",
+    "readingLevelLabel": "Lv 4.x"
+  },
+  "periodType": "rolling7",
+  "periodKey": "2026-09-18/2026-09-25",
+  "startsAt": "2026-09-18T00:00:00.000Z",
+  "endsAt": "2026-09-25T00:00:00.000Z",
+  "rankingScore": 782,
+  "scoreBreakdown": [
+    { "key": "completion", "label": "Quiz Completion", "weight": 0.30, "percentile": 0.80, "points": 240, "maxPoints": 300 },
+    { "key": "words", "label": "Reading Volume", "weight": 0.15, "percentile": 0.733333, "points": 110, "maxPoints": 150 },
+    { "key": "accuracy", "label": "Accuracy", "weight": 0.25, "percentile": 0.82, "points": 205, "maxPoints": 250 },
+    { "key": "challenge", "label": "Challenge", "weight": 0.15, "percentile": 0.70, "points": 105, "maxPoints": 150 },
+    { "key": "growth", "label": "Growth", "weight": 0.10, "percentile": 0.82, "points": 82, "maxPoints": 100 },
+    { "key": "breadth", "label": "Breadth", "weight": 0.05, "percentile": 0.80, "points": 40, "maxPoints": 50 }
+  ],
+  "stats": {
+    "completedBooks": 2,
+    "allBooks": 2,
+    "completedWords": 2000,
+    "allWords": 2000,
+    "completedAverageCorrect": 80,
+    "allAverageCorrect": 80,
+    "completedAverageLevel": 4.1,
+    "allAverageLevel": 4.1,
+    "completedFictionPercent": 50,
+    "allFictionPercent": 50
+  },
+  "quizzes": [
+    {
+      "attemptId": "attempt-a1",
+      "workId": "alpha-story",
+      "pieceId": "alpha-story-01",
+      "title": "Alpha Story",
+      "series": null,
+      "author": "A",
+      "takenAt": "2026-09-20T08:00:00.000Z",
+      "correctPercent": 90,
+      "level": 4.2,
+      "category": "fiction",
+      "wordCount": 1200,
+      "completed": true
+    }
+  ],
+  "nextCursor": null
+}
