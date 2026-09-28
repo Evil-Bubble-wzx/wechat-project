@@ -23,6 +23,7 @@ test('network layer is fail-closed until explicitly enabled', async () => {
 test('configuration accepts HTTPS and local HTTP only', async () => {
   assert.equal(normalizeBaseUrl('https://example.test/api/v1/'), 'https://example.test/api/v1')
   assert.equal(normalizeBaseUrl('http://localhost:3000'), 'http://localhost:3000')
+  assert.equal(normalizeBaseUrl('http://127.0.0.1:3100/api/v1'), 'http://127.0.0.1:3100/api/v1')
   assert.equal(normalizeBaseUrl('http://api.example.test'), null)
   await assert.rejects(client({ baseUrl: 'http://api.example.test' }).request({ path: '/works' }), error => error.kind === ERROR_KINDS.INVALID_CONFIG)
   await assert.rejects(client().request({ path: 'works' }), error => error.kind === ERROR_KINDS.INVALID_CONFIG)

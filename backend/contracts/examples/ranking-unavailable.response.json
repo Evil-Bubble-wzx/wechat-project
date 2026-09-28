@@ -1,0 +1,9 @@
+{
+  "requestId": "req-01K5TESTRANKERR001",
+  "error": {
+    "code": "RANKING_UNAVAILABLE",
+    "message": "排行快照正在生成，请稍后重试。",
+    "retryable": true,
+    "details": null
+  }
+}

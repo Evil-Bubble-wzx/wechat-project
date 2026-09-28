@@ -148,6 +148,23 @@ text { line-height:1.5; white-space:pre-line; }
 .rank-back-button { width:72rpx; padding:0; justify-content:center; color:#2d6a51; font-weight:650; }
 .rank-back-button image,.rank-control image { width:30rpx; height:30rpx; opacity:.82; }
 .rank-control.selected { border-color:#2d6a51; background:#e6efe6; color:#2d6a51; font-weight:650; }
+.rank-filters { display:flex; flex-wrap:wrap; gap:12rpx; margin-bottom:24rpx; }
+.rank-picker { border:1rpx solid #dde5d7; border-radius:14rpx; padding:17rpx 20rpx; background:#fff; color:#355542; font-size:23rpx; }
+.rank-note { color:#718172; font-size:22rpx; margin:8rpx 0 18rpx; }
+.rank-self { border-radius:15rpx; background:#e8f1e7; padding:19rpx 22rpx; color:#2d6a51; font-size:24rpx; font-weight:650; }
+.rank-row { display:flex; align-items:center; gap:18rpx; padding:23rpx 12rpx; border-bottom:1rpx solid #e1e8dd; }
+.rank-position { width:48rpx; color:#2d6a51; font-size:31rpx; font-weight:700; text-align:center; }
+.rank-person { flex:1; min-width:0; display:flex; flex-direction:column; gap:5rpx; font-size:27rpx; }
+.rank-person .muted { font-size:20rpx; }
+.rank-score { color:#2d6a51; font-size:24rpx; font-weight:650; }
+.rank-detail-scroll { max-height:70vh; }
+.rank-detail-name { color:#294c39; font-size:30rpx; font-weight:650; margin:16rpx 0 7rpx; }
+.rank-detail-line { display:flex; justify-content:space-between; gap:18rpx; padding:14rpx 0; border-bottom:1rpx solid #e1e8dd; font-size:23rpx; }
+.rank-quiz { display:flex; flex-direction:column; gap:7rpx; padding:17rpx 0; border-bottom:1rpx solid #e1e8dd; font-size:25rpx; }
+.rank-quiz .muted { font-size:20rpx; }
+.sync-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:12rpx; margin:22rpx 0; }
+.sync-summary>view { display:flex; flex-direction:column; align-items:center; gap:4rpx; border-radius:15rpx; background:#edf3e7; padding:17rpx 8rpx; color:#52705a; font-size:20rpx; }
+.sync-summary>view>text:first-child { color:#2d6a51; font-size:31rpx; font-weight:650; }
 .purchase-panel { border:1rpx solid #d8e3cf; padding:26rpx; border-radius:24rpx; background:#f7f1df; margin-bottom:24rpx; }
 .purchase-price { display:flex; justify-content:space-between; gap:30rpx; margin-top:24rpx; }
 .purchase-price>view { display:flex; flex-direction:column; gap:5rpx; }

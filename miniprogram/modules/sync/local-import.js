@@ -196,6 +196,7 @@ function sanitizeQuizAttempt(entry) {
   return {
     valid: true,
     value: {
+      schemaVersion: 1,
       attemptId,
       workId: WORK_ID,
       pieceId: PIECE_ID,

@@ -95,15 +95,17 @@ test('trend requires six pieces and compares earliest and latest thirds', () => 
   assert.deepEqual(six.trend,{ready:true,remaining:0,early:55,recent:95,delta:40,pieceCount:6})
 })
 
-test('ranking UI exposes only honest unavailable state and supported periods', () => {
+test('ranking UI uses backend options and distinguishes honest states', () => {
   const source=fs.readFileSync(path.join(__dirname,'..','miniprogram','ui','screen.wxml'),'utf8')
   const controller=fs.readFileSync(path.join(__dirname,'..','miniprogram','ui','controller.js'),'utf8')
   assert.match(source,/排行榜服务尚未开放|rankingStatusTitle/)
-  assert.doesNotMatch(source,/A Campus|rank-self|rankFilter|rankingPeriod/)
-  assert.doesNotMatch(controller,/campusOptions|weekOptions|monthOptions|gradeOptions|levelOptions/)
-  assert.match(controller,/id:'seven'/)
-  assert.match(controller,/id:'all'/)
-  assert.deepEqual(ranking.states,['unauthenticated','unavailable','cohort_too_small','ready'])
+  assert.doesNotMatch(source,/A Campus/)
+  assert.match(source,/bindchange="chooseRankingCampus"/)
+  assert.match(source,/bindtap="openRankingDetail"/)
+  assert.match(controller,/api\.rankingOptions\(\)/)
+  assert.match(controller,/api\.rankings\(filters\)/)
+  assert.match(controller,/api\.rankingDetail\(id,/)
+  assert.deepEqual(ranking.states,['unauthenticated','unavailable','loading','choose_campus','cohort_too_small','error','ready'])
   assert.equal(ranking.view('made_up').status,'unavailable')
 })
 

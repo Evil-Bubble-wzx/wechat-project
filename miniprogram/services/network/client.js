@@ -97,7 +97,7 @@ function normalizeBaseUrl(value) {
   if (typeof value !== 'string' || !value.trim()) return null
   const url = value.trim().replace(/\/+$/, '')
   if (/^https:\/\//i.test(url)) return url
-  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(url)) return url
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?:\/api\/v1)?$/i.test(url)) return url
   return null
 }
 

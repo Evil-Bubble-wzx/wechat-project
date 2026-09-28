@@ -1,0 +1,13 @@
+{
+  "Rules": [
+    {
+      "ID": "retain-recent-published-versions",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "" },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 90,
+        "NewerNoncurrentVersions": 5
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "title": "Tingyue Backend",
+  "uid": "tingyue-backend",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "API 5xx rate",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(tingyue_http_requests_total{status=~\"5..\"}[5m])) / clamp_min(sum(rate(tingyue_http_requests_total[5m])), 0.001)" }]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "API P95 by route",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "targets": [{ "refId": "A", "expr": "histogram_quantile(0.95, sum by (le,route) (rate(tingyue_http_request_duration_seconds_bucket[5m])))" }]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Login / Quiz outcomes",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        { "refId": "A", "expr": "sum by (outcome) (rate(tingyue_login_attempts_total[10m]))" },
+        { "refId": "B", "expr": "sum by (outcome) (rate(tingyue_quiz_submissions_total[10m]))" }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Ingestion queue / dead letters",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "targets": [
+        { "refId": "A", "expr": "tingyue_ingestion_queue_depth" },
+        { "refId": "B", "expr": "tingyue_ingestion_dead_letter" },
+        { "refId": "C", "expr": "tingyue_ingestion_oldest_wait_seconds" }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Ranking freshness / failures",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "targets": [
+        { "refId": "A", "expr": "tingyue_ranking_rebuild_oldest_wait_seconds" },
+        { "refId": "B", "expr": "tingyue_ranking_rebuild_failures" },
+        { "refId": "C", "expr": "tingyue_ranking_source_lag_seconds" }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Review backlog",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "targets": [{ "refId": "A", "expr": "tingyue_ingestion_review_backlog" }]
+    }
+  ]
+}
