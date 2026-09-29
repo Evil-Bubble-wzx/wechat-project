@@ -2,6 +2,7 @@
 // playback. Progress has two independent meanings: the visible cursor and a
 // trusted checkpoint backed by continuous playback plus merged listened ranges.
 const host = require('../../services/host')
+const progressSync = require('../sync/progress-sync')
 
 const PROGRESS_SCHEMA_VERSION = 2
 const COMPLETION_COVERAGE = .9
@@ -20,6 +21,7 @@ let pendingListenSeconds = 0
 let lastPersistAt = 0
 let requestedPauseReason = null
 let waitingWasPlaying = false
+let suppressNextPause = false
 let now = () => Date.now()
 const subscribers = new Set()
 const initialState = () => ({ sessionId:0, workId:null, pieceId:null, source:'', book:null, contentVersion:null, position:0, checkpointPosition:0, duration:0, rate:1, status:'idle', pauseReason:null, loop:false, completed:false, listenedRanges:[], coverage:0, error:null })
@@ -73,8 +75,10 @@ function persist(force=false){
       if(accepted>0){current.listeningSec=(Number(current.listeningSec)||0)+accepted;current.listenDaily[key]=used+accepted}
     }
     current.progressSchemaVersion=PROGRESS_SCHEMA_VERSION
+    progressSync.capture(current,state.pieceId,entry,{immediate:force})
     return current
   })
+  progressSync.kick()
 }
 function clearAnchor(){anchor=null}
 function beginAnchor(position){if(state.status==='playing')anchor={sessionId:state.sessionId,pieceId:state.pieceId,source:state.source,position:Number(position)||0,at:now(),rate:state.rate,continuous:0}}
@@ -110,7 +114,7 @@ function onTimeUpdate(){
   sample(Number(context.currentTime)||0,false)
 }
 function onPlay(){requestedPauseReason=null;if(state.pieceId){state=Object.assign({},state,{status:'playing',pauseReason:null,error:null});if(pendingSeek===null)beginAnchor(context&&context.currentTime);notify()}}
-function onPause(){if(state.pieceId&&state.status!=='ended'&&state.status!=='error'){if(context)sample(context.currentTime,true);const pauseReason=requestedPauseReason||'system';requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason})}}
+function onPause(){if(suppressNextPause){suppressNextPause=false;requestedPauseReason=null;clearAnchor();return}if(state.pieceId&&state.status!=='ended'&&state.status!=='error'){if(context)sample(context.currentTime,true);const pauseReason=requestedPauseReason||'system';requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason})}}
 function onStop(){if(state.pieceId){if(context)sample(context.currentTime,true);requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason:'system_stop'})}}
 function onEnded(){
   if(!state.pieceId)return
@@ -187,8 +191,10 @@ function seek(seconds){
 }
 function setRate(value){const rate=Number(value)||1;if(context&&state.pieceId)sample(context.currentTime,true);state=Object.assign({},state,{rate});if(context)context.playbackRate=rate;if(state.status==='playing')beginAnchor(context&&context.currentTime);notify()}
 function setLoop(loop){update({loop:!!loop})}
+function saveNow(){if(!state.pieceId)return;if(context)sample(context.currentTime,true);else persist(true)}
+function reloadScope(){if(!state.book)return snapshot();if(context&&state.pieceId&&state.status==='playing'){suppressNextPause=true;context.pause()}return newSession(state.book,'paused')}
 function subscribe(subscriber){subscribers.add(subscriber);subscriber(snapshot());return()=>subscribers.delete(subscriber)}
-function resetForTests(){context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;now=()=>Date.now();subscribers.clear();state=initialState()}
+function resetForTests(){context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;suppressNextPause=false;now=()=>Date.now();subscribers.clear();state=initialState()}
 function setNowForTests(fn){now=fn}
 
-module.exports={snapshot,subscribe,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}
+module.exports={snapshot,subscribe,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,saveNow,reloadScope,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}

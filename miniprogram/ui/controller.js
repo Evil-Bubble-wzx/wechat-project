@@ -22,6 +22,7 @@ const contentNotices = require('../modules/content-notices')
 const quizAttempts = require('../modules/quiz/attempts')
 const reportAggregate = require('../modules/report/aggregate')
 const localImport = require('../modules/sync/local-import')
+const progressSync = require('../modules/sync/progress-sync')
 const rankingState = require('../modules/ranking/state')
 const defaults = () => ({ favorites:[], recent:[], progress:{}, results:[], user:null, listeningSec:0, listenDaily:{} })
 /* @demo-start */
@@ -66,7 +67,7 @@ function createPage(requestedRoute) {
   const visibleBooks=isDemo?books:books.filter(book=>policy.allowsBook(book.id))
   const firstBook=visibleBooks[0]
   const ranking=rankingState.view('unavailable')
-  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
+  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', syncStatus:'synced',syncStatusLabel:'学习进度已同步',syncPending:0,syncFailed:0, sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
   /* @demo-end */
@@ -107,8 +108,8 @@ function createPage(requestedRoute) {
     },
     attachPlayer() {if(route==='player'&&!this.playerUnsubscribe)this.playerUnsubscribe=player.subscribe(session=>this.syncPlayer(session,false))},
     detachPlayer() {if(this.playerUnsubscribe){this.playerUnsubscribe();this.playerUnsubscribe=null}this.wordResume=null},
-    onShow() {this.refresh();if(route==='player'){this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(this.remoteLoadedOnce)this.loadRemote()},
-    onHide() {this.detachPlayer()},
+    onShow() {this.refresh();if(route==='player'){this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(this.remoteLoadedOnce)this.loadRemote();if(!isDemo&&api.isAuthenticated())void progressSync.activate()},
+    onHide() {if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
     refresh() {
       this.state = Object.assign(defaults(),host.read())
       /* @demo-start */
@@ -127,7 +128,8 @@ function createPage(requestedRoute) {
         for(const chapter of book.chapters||[])compatiblePieces[chapter.id]={contentVersion:book.contentVersion??null,quizVersion:1}
       }
       const report=reportAggregate.summarize(s.results,compatiblePieces)
-      const update={user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?(s.words||[]).join(' · '):'在听读字幕中点击单词，把新认识的词收进来。',recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
+      const sync=progressSync.view(s)
+      const update={user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?(s.words||[]).join(' · '):'在听读字幕中点击单词，把新认识的词收进来。',recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),syncStatus:sync.status,syncStatusLabel:sync.label,syncPending:sync.pending,syncFailed:sync.failed,stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
       /* @demo-start */
       if(isDemo){
         const loanList=s.loans.map(l=>Object.assign({},l,{book:books.find(b=>b.id===l.bookId)})).filter(l=>l.book && (this.data.loanFilter==='all'||l.status===this.data.loanFilter))
@@ -172,8 +174,9 @@ function createPage(requestedRoute) {
     openLocalImport() {
       if(isDemo)return
       if(!api.isAuthenticated()){host.toast('请先登录微信账户');host.go('login');return}
-      const plan=localImport.prepareLocalImport({progress:this.state.progress,words:this.state.words,results:this.state.results})
-      this.localImportPlan=plan;this.localImportSession=localImport.createImportSession(plan)
+      const guest=host.readGuest()
+      const plan=localImport.prepareLocalImport({progress:guest.progress,words:guest.words,results:guest.results})
+      this.localImportGuest=guest;this.localImportPlan=plan;this.localImportSession=localImport.createImportSession(plan)
       this.setData({sheet:'localImport',localImportReady:plan.ready,localImportConsented:false,localImportBusy:false,localImportSummary:plan.summary,localImportErrors:plan.errors,localImportErrorText:plan.errors.join('；'),localImportReceipt:null})
     },
     toggleLocalImportConsent() {if(!this.localImportSession||!this.data.localImportReady)return;if(this.data.localImportConsented)this.localImportSession.decline();else this.localImportSession.consent();this.setData({localImportConsented:!this.data.localImportConsented})},
@@ -183,9 +186,12 @@ function createPage(requestedRoute) {
       try{
         const receipt=await this.localImportSession.submit(request=>api.localImport(request))
         const results=new Map((receipt.items?.quizAttempts||[]).map(item=>[item.attemptId,item]))
-        this.state.results=(this.state.results||[]).map(item=>{const result=results.get(item.attemptId);return result?Object.assign({},item,result):item})
+        const imported=(this.localImportGuest?.results||[]).map(item=>{const result=results.get(item.attemptId);return result?Object.assign({},item,result):item})
+        const accountResults=new Map((this.state.results||[]).map(item=>[item.attemptId,item]))
+        for(const item of imported)accountResults.set(item.attemptId,item)
+        this.state.results=[...accountResults.values()]
         this.state.localImportReceipts=[{snapshotId:receipt.snapshotId,acknowledgedAt:receipt.acknowledgedAt,summary:receipt.summary},...(this.state.localImportReceipts||[]).filter(item=>item.snapshotId!==receipt.snapshotId)].slice(0,10)
-        this.save();this.setData({localImportReceipt:receipt});this.refresh();host.toast(receipt.duplicate?'该批数据已导入':'本机学习数据已确认')
+        this.save();await progressSync.pullAll();this.setData({localImportReceipt:receipt});this.refresh();host.toast(receipt.duplicate?'该批数据已导入':'本机学习数据已确认')
       }catch(_){host.toast('导入失败，本机数据未丢失')}
       finally{this.setData({localImportBusy:false})}
     },
@@ -205,14 +211,15 @@ function createPage(requestedRoute) {
       if(!this.data.agreed){host.toast('请先阅读并同意用户协议和隐私政策');return}
       if(!api.available()){host.toast('账户服务暂不可用，请检查 API 地址');return}
       this.setData({accountBusy:true})
-      try{await api.loginWechat();this.refresh();host.toast('微信登录成功');host.back()}catch(_){host.toast('微信登录失败，请稍后重试')}finally{this.setData({accountBusy:false})}
+      try{await api.loginWechat();player.reloadScope();await progressSync.activate();this.refresh();host.toast('微信登录成功');host.back()}catch(_){host.toast('微信登录失败，请稍后重试')}finally{this.setData({accountBusy:false})}
     },
     async logout() {
       /* @demo-start */
       if(isDemo){this.state.user=null;this.save();this.setData({sheet:''});host.toast('已退出演示账户');return}
       /* @demo-end */
-      try{await api.logout()}catch(_){}this.refresh();this.setData({sheet:''});host.toast('已退出账户')
+      progressSync.deactivate();try{await api.logout()}catch(_){}player.reloadScope();this.refresh();this.setData({sheet:''});host.toast('已退出账户')
     },
+    async retryProgressSync(){if(this.data.accountBusy)return;this.setData({accountBusy:true});try{await progressSync.retry();this.refresh();if(this.data.syncStatus==='synced')host.toast('学习进度已同步')}catch(_){host.toast('同步仍未完成，请稍后重试')}finally{this.setData({accountBusy:false})}},
     startPlayer() {this.state.recent=[this.data.book.id,...this.state.recent.filter(id=>id!==this.data.book.id)].slice(0,30);this.save();player.selectTrack(playableBook(this.data.book));host.go('player',this.data.book.id)},
     startChapter(e) {const book=playableBook(this.data.book,e.currentTarget.dataset.id);this.state.recent=[this.data.book.id,...this.state.recent.filter(id=>id!==this.data.book.id)].slice(0,30);this.save();player.selectTrack(book);host.go('player',this.data.book.id+':'+e.currentTarget.dataset.id)},
     togglePlay() {
@@ -246,11 +253,12 @@ function createPage(requestedRoute) {
         const response=await api.getWork(this.data.book.workId||this.data.book.id)
         const wanted=cueKey(this.data.book),piece=(response.pieces||[]).find(item=>item.pieceId===wanted)||(response.pieces||[])[0]
         if(!piece)return
+        await progressSync.pullPiece(piece.pieceId)
         const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion)
         const audio=(manifest.assets||[]).find(asset=>asset.type==='audio'),cover=(manifest.assets||[]).find(asset=>asset.type==='cover')
         const book=Object.assign({},this.data.book,{workId:manifest.workId,pieceId:manifest.pieceId,contentVersion:manifest.contentVersion,quizVersion:manifest.quizVersion,localAudio:audio?.url||this.data.book.localAudio,cover:cover?.url||this.data.book.cover,remoteManifest:manifest})
         this.setData({book,remoteContentStatus:'ready'})
-        if(route==='player'&&audio?.url){player.selectTrack(book);this.syncPlayer(player.snapshot(),true)}
+        if(route==='player'&&audio?.url){player.selectTrack(book);player.reloadScope();this.syncPlayer(player.snapshot(),true)}
       }catch(_){this.setData({remoteContentStatus:'unavailable'})}
     },
     chooseRecentMode(e) {const recentMode=e.currentTarget.dataset.id;this.setData({recentMode,readingList:recentMode==='favorites'?this.data.favoriteBooks:this.data.recent})},

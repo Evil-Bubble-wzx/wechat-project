@@ -26,10 +26,11 @@ function harness(duration=20) {
   }
   delete require.cache[require.resolve('../miniprogram/modules/listen-read/player')]
   const player=require('../miniprogram/modules/listen-read/player')
+  const host=require('../miniprogram/services/host')
   player._resetForTests();player._setNowForTests(()=>clock)
   const book={id:'peter-rabbit',workId:'peter-rabbit',pieceId:'peter-rabbit-01',contentVersion:1,title:'Peter Rabbit',audioUrl:'https://example.test/peter.mp3',duration}
   return {
-    player,book,
+    player,host,book,
     tick(position,wallSeconds=1){clock+=wallSeconds*1000;manager.currentTime=position;listeners.time()},
     seek(position){player.seek(position)},
     end(){listeners.ended()},
@@ -136,4 +137,16 @@ test('X-02 invalidates checkpoints when the content version changes', () => {
     h.player.pause('user')
     assert.equal(h.state().progress['peter-rabbit-01'].completed,false)
   }finally{h.restore()}
+})
+
+test('S-02 account scope switching never persists guest playback into the account', () => {
+  const h=harness()
+  try{
+    h.player.playTrack(h.book)
+    for(let second=1;second<=6;second++)h.tick(second)
+    h.host.setAccountScope('user-a')
+    h.player.reloadScope()
+    assert.equal(h.state().accountLearning['user-a'],undefined)
+    assert.equal(h.player.snapshot().checkpointPosition,0)
+  }finally{h.host.setAccountScope(null);h.restore()}
 })

@@ -2,6 +2,7 @@ const apiConfig = require('../config/api')
 const { createApiClient } = require('./network/client')
 const { createMemoryTokenStore } = require('./network/token-store')
 const { createWxTransport } = require('./network/wx-transport')
+const host = require('./host')
 
 function createBackendApi(options = {}) {
   const runtime = options.runtime || (typeof wx === 'undefined' ? null : wx)
@@ -11,6 +12,7 @@ function createBackendApi(options = {}) {
   const makeId = options.makeId || randomId
   let session = null
   let user = null
+  let serverContractVersion = null
 
   const publicClient = createApiClient({
     enabled:configuration.enabled,
@@ -56,11 +58,13 @@ function createBackendApi(options = {}) {
     session = normalizeSession(result.data)
     tokenStore.setAccessToken(session.accessToken)
     user = await getMe()
+    host.setAccountScope(user.userId)
     return user
   }
 
   async function getMe() {
     const result = await client.request({ path:'/me' })
+    serverContractVersion = result.contractVersion
     user = result.data
     return user
   }
@@ -71,6 +75,8 @@ function createBackendApi(options = {}) {
     } finally {
       session = null
       user = null
+      serverContractVersion = null
+      host.setAccountScope(null)
       client.logout()
       publicClient.logout()
     }
@@ -78,6 +84,7 @@ function createBackendApi(options = {}) {
 
   const get = async (path, query) => (await client.request({ path:path + queryString(query) })).data
   const post = async (path, body, idempotencyKey) => (await client.request({ method:'POST', path, headers:mutationHeaders(idempotencyKey || makeId('mutation')), body })).data
+  const put = async (path, body, idempotencyKey) => (await client.request({ method:'PUT', path, headers:mutationHeaders(idempotencyKey || makeId('mutation')), body })).data
 
   return {
     contractVersion:configuration.contractVersion,
@@ -85,6 +92,7 @@ function createBackendApi(options = {}) {
     isAuthenticated:() => !!(session && tokenStore.getAccessToken()),
     currentUser:() => user,
     currentSession:() => session ? Object.assign({}, session, { accessToken:undefined, refreshToken:undefined }) : null,
+    progressSyncAvailable:() => supportsContract(serverContractVersion, 1, 2),
     loginWechat,
     getMe,
     logout,
@@ -93,6 +101,9 @@ function createBackendApi(options = {}) {
     getManifest:(pieceId, contentVersion) => get('/pieces/' + encodeURIComponent(pieceId) + '/manifest', { contentVersion }),
     submitQuiz:attempt => post('/me/quiz-attempts', quizPayload(attempt), attempt.attemptId),
     localImport:request => post('/me/local-import', request, request.snapshotId),
+    putProgress:(pieceId, request) => put('/me/progress/' + encodeURIComponent(pieceId), request, request.mutationId),
+    getProgress:pieceId => get('/me/progress/' + encodeURIComponent(pieceId)),
+    listProgress:(cursor, limit = 50) => get('/me/progress', { cursor, limit }),
     rankingOptions:() => get('/ranking-options'),
     rankings:filters => get('/rankings', rankingQuery(filters)),
     rankingDetail:(participantId, filters) => get('/rankings/' + encodeURIComponent(participantId) + '/quizzes', rankingQuery(filters)),
@@ -104,6 +115,7 @@ function normalizeSession(value, existingUser = null) {
   if (!value || !value.accessToken || !value.refreshToken) throw new Error('Invalid session response')
   return Object.assign({}, value, { user:existingUser || null })
 }
+function supportsContract(value, major, minor) { const match=/^api-contract-v(\d+)\.(\d+)\.(\d+)$/.exec(String(value||''));return !!(match&&Number(match[1])===major&&Number(match[2])>=minor) }
 function mutationHeaders(key) { return { 'Content-Type':'application/json', 'Idempotency-Key':key } }
 function queryString(values = {}) {
   const entries = Object.entries(values).filter(([, value]) => value !== undefined && value !== null && value !== '')
@@ -159,6 +171,7 @@ module.exports = {
   isAuthenticated:() => active().isAuthenticated(),
   currentUser:() => active().currentUser(),
   currentSession:() => active().currentSession(),
+  progressSyncAvailable:() => active().progressSyncAvailable(),
   loginWechat:() => active().loginWechat(),
   getMe:() => active().getMe(),
   logout:() => active().logout(),
@@ -167,6 +180,9 @@ module.exports = {
   getManifest:(pieceId, version) => active().getManifest(pieceId, version),
   submitQuiz:attempt => active().submitQuiz(attempt),
   localImport:request => active().localImport(request),
+  putProgress:(pieceId, request) => active().putProgress(pieceId, request),
+  getProgress:pieceId => active().getProgress(pieceId),
+  listProgress:(cursor, limit) => active().listProgress(cursor, limit),
   rankingOptions:() => active().rankingOptions(),
   rankings:filters => active().rankings(filters),
   rankingDetail:(participantId, filters) => active().rankingDetail(participantId, filters)

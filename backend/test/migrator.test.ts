@@ -16,6 +16,7 @@ test("migration files are paired, ordered and have stable checksums", async () =
       "0005_ranking_aggregation",
       "0006_ranking_refresh",
       "0007_local_learning_import",
+      "0008_daily_progress_sync",
     ],
   );
   for (const migration of migrations) {

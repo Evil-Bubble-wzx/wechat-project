@@ -1,6 +1,6 @@
 // Replace this adapter when embedding in another mini program.
 const productMode = require('../config/product-mode')
-const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','localImportReceipts','idMigrationVersion','progressSchemaVersion']
+const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','localImportReceipts','idMigrationVersion','progressSchemaVersion','progressSyncOutbox','progressSyncBaselines','progressSyncFailures']
 const LEGACY_WORK_ID = 'peter'
 const WORK_ID = 'peter-rabbit'
 const PIECE_ID = 'peter-rabbit-01'
@@ -46,10 +46,20 @@ function productState(state) {
     return out
   }, {})
 }
+let activeUserId = null
+function rawState() {
+  const policy=productMode.current()
+  const raw=migrateState(wx.getStorageSync(policy.storageKey)||{},policy.isDemo)
+  raw.accountLearning=Object.assign({},raw.accountLearning||{})
+  return {policy,raw}
+}
 module.exports = {
   policy() { return productMode.current() },
-  read() { try { const policy=productMode.current();const state=migrateState(wx.getStorageSync(policy.storageKey)||{},policy.isDemo);wx.setStorageSync(policy.storageKey,policy.isDemo?state:productState(state));return policy.isDemo?state:productState(state) } catch (_) { return {} } },
-  write(state) { const policy=productMode.current();const migrated=migrateState(state,policy.isDemo);wx.setStorageSync(policy.storageKey,policy.isDemo?migrated:productState(migrated)) },
+  setAccountScope(userId) { activeUserId=typeof userId==='string'&&userId?userId:null },
+  accountScope() { return activeUserId },
+  readGuest() { try { const {policy,raw}=rawState();return policy.isDemo?raw:productState(raw) } catch (_) { return {} } },
+  read() { try { const {policy,raw}=rawState();if(activeUserId&&!policy.isDemo)return productState(migrateState(raw.accountLearning[activeUserId]||{},false));wx.setStorageSync(policy.storageKey,policy.isDemo?raw:Object.assign(productState(raw),{accountLearning:raw.accountLearning}));return policy.isDemo?raw:productState(raw) } catch (_) { return {} } },
+  write(state) { const {policy,raw}=rawState();const migrated=migrateState(state,policy.isDemo);if(activeUserId&&!policy.isDemo){raw.accountLearning[activeUserId]=productState(migrated);wx.setStorageSync(policy.storageKey,Object.assign(productState(raw),{accountLearning:raw.accountLearning}));return}wx.setStorageSync(policy.storageKey,policy.isDemo?Object.assign(migrated,{accountLearning:raw.accountLearning}):Object.assign(productState(migrated),{accountLearning:raw.accountLearning})) },
   mutate(mutator) { const current=this.read();const next=mutator(current)||current;this.write(next);return next },
   toast(title) { wx.showToast({ title, icon:'none', duration:2200 }) },
   go(page, id) {

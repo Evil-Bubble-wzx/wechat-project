@@ -6,6 +6,7 @@ import { ApiError } from "./errors.ts";
 import { registerContentRoutes } from "./content-routes.ts";
 import { registerQuizRoutes } from "./quiz-routes.ts";
 import { registerLocalImportRoutes } from "./local-import-routes.ts";
+import { registerProgressRoutes, type ProgressSyncServicePort } from "./progress-routes.ts";
 import { registerRankingRoutes, type RankingServicePort } from "./ranking-routes.ts";
 import { registerIngestionRoutes } from "./ingestion-routes.ts";
 import { registerSessionRoutes, type SessionServicePort } from "./session-routes.ts";
@@ -30,6 +31,7 @@ export type CreateAppOptions = {
   contentService?: ContentService;
   quizService?: QuizService;
   localImportService?: LocalImportServicePort;
+  progressSyncService?: ProgressSyncServicePort;
   rankingService?: RankingServicePort;
   auditService?: AuditService;
   metrics?: MetricsRegistry;
@@ -67,6 +69,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
 
   app.addHook("onSend", async (request, reply, payload) => {
     reply.header("X-Request-Id", request.id);
+    reply.header("X-API-Contract-Version", "api-contract-v1.2.0");
     return payload;
   });
 
@@ -222,6 +225,10 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
   if (options.localImportService) {
     if (!options.sessionService) throw new Error("Local import routes require a session service");
     registerLocalImportRoutes(app, options.localImportService, options.sessionService, options.auditService, options.rateLimiter);
+  }
+  if (options.progressSyncService) {
+    if (!options.sessionService) throw new Error("Progress sync routes require a session service");
+    registerProgressRoutes(app, options.progressSyncService, options.sessionService, options.auditService, options.metrics, options.rateLimiter);
   }
   if (options.rankingService) {
     if (!options.sessionService) throw new Error("Ranking routes require a session service");

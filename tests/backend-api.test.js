@@ -12,8 +12,8 @@ function fixture(responder) {
   }
   const api=createBackendApi({
     runtime,
-    configuration:{enabled:true,apiRoot:'https://api.test.invalid/api/v1',development:true,stubLoginCode:'test:miniapp-develop',contractVersion:'api-contract-v1.1.0'},
-    transport:async request=>{calls.push(request);return responder(request,calls)},
+    configuration:{enabled:true,apiRoot:'https://api.test.invalid/api/v1',development:true,stubLoginCode:'test:miniapp-develop',contractVersion:'api-contract-v1.2.0'},
+    transport:async request=>{calls.push(request);const response=await responder(request,calls);response.header=Object.assign({'X-API-Contract-Version':'api-contract-v1.2.0'},response.header||{});return response},
     makeId:prefix=>prefix+'-fixed',
     sleep:async()=>{},
     random:()=>0
@@ -38,6 +38,7 @@ test('backend adapter reuses X-06 and keeps credentials out of persistent storag
   assert.equal(calls[0].body.AppSecret,undefined)
   assert.equal(calls[0].headers['Idempotency-Key'],'login-fixed')
   assert.equal(api.isAuthenticated(),true)
+  assert.equal(api.progressSyncAvailable(),true)
   assert.equal(api.currentSession().accessToken,undefined)
   assert.equal(api.currentSession().refreshToken,undefined)
   assert.deepEqual([...stored.keys()],['tingyue.device.v1'])
@@ -79,9 +80,10 @@ test('logout sends no JSON content type when the request body is empty', async (
   assert.equal(logoutCall.headers['Content-Type'],undefined)
   assert.equal(logoutCall.headers['Idempotency-Key'],'logout-fixed')
   assert.equal(api.isAuthenticated(),false)
+  assert.equal(api.progressSyncAvailable(),false)
 })
 
-test('Quiz, local import and ranking calls use the frozen backend contract fields', async () => {
+test('Quiz, local import, progress and ranking calls use the frozen backend contract fields', async () => {
   const {api,calls}=fixture(request => {
     if(request.url.endsWith('/session/wechat'))return {statusCode:201,data:session()}
     if(request.url.endsWith('/me'))return {statusCode:200,data:{userId:'user-1',status:'active',profile:{}}}
@@ -92,6 +94,10 @@ test('Quiz, local import and ranking calls use the frozen backend contract field
   await api.submitQuiz(attempt)
   const importRequest={snapshotId:'s01-v1:'+'a'.repeat(64),payload:{schemaVersion:1,progress:[],words:[{surface:'Once'}],quizAttempts:[]},limitations:{words:'surface_only'}}
   await api.localImport(importRequest)
+  const progressRequest={schemaVersion:1,mutationId:'progress-mutation-1',baseRevision:'0',contentVersion:1,checkpointMs:5000,listenedRangesMs:[[0,5000]]}
+  await api.putProgress('peter-rabbit-01',progressRequest)
+  await api.getProgress('peter-rabbit-01')
+  await api.listProgress(null,50)
   await api.rankings({campusId:'b',periodType:'week',periodKey:'2026-W39',grade:'k',level:'5',limit:25})
   const quizCall=calls.find(call=>call.url.endsWith('/me/quiz-attempts'))
   assert.equal(quizCall.headers['Idempotency-Key'],'attempt-1')
@@ -100,6 +106,9 @@ test('Quiz, local import and ranking calls use the frozen backend contract field
   const importCall=calls.find(call=>call.url.endsWith('/me/local-import'))
   assert.equal(importCall.headers['Idempotency-Key'],importRequest.snapshotId)
   assert.deepEqual(importCall.body,importRequest)
+  const progressCall=calls.find(call=>call.method==='PUT'&&call.url.endsWith('/me/progress/peter-rabbit-01'))
+  assert.equal(progressCall.headers['Idempotency-Key'],progressRequest.mutationId)
+  assert.deepEqual(progressCall.body,progressRequest)
   const rankingCall=calls.at(-1)
   assert.match(rankingCall.url,/campusId=b/)
   assert.match(rankingCall.url,/periodType=week/)

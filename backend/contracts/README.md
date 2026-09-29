@@ -1,6 +1,6 @@
 # API 契约
 
-当前权威版本：`api-contract-v1.1.0`
+当前权威版本：`api-contract-v1.2.0`
 
 - `openapi.json`：OpenAPI 3.1 路由、鉴权、状态码、分页和幂等语义。
 - `schemas/api-v1.schema.json`：JSON Schema 2020-12 请求与响应模型。

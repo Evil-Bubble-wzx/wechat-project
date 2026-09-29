@@ -193,7 +193,7 @@
     <view wx:if="{{isDemo && (sheet === 'privacy' || sheet === 'terms')}}"><view class="sheet-title">{{sheet === 'privacy' ? '隐私政策 · 预览说明' : '用户协议 · 预览说明'}}</view><text class="description">这是本地交互原型，不提供真实登录或借阅服务。演示记录保存在当前设备。</text></view>
     <!-- @demo-end -->
     <!-- @production-start -->
-    <view wx:if="{{isProduction && sheet === 'settings'}}"><view class="sheet-title">Account & Settings</view><text class="description">{{user ? '当前已连接服务端账户；Quiz 可提交服务端验证。' : '当前为游客；学习记录只保存在本机。'}}</text><button class="secondary full" wx:if="{{user}}" bindtap="logout">Log out</button><button class="primary full" wx:if="{{!user}}" data-page="login" bindtap="nav">WeChat login</button></view>
+    <view wx:if="{{isProduction && sheet === 'settings'}}"><view class="sheet-title">Account & Settings</view><text class="description">{{user ? '当前已连接服务端账户；学习进度会自动同步。' : '当前为游客；学习记录只保存在本机。'}}</text><view class="info-note" wx:if="{{user}}">{{syncStatusLabel}}<text wx:if="{{syncPending || syncFailed}}"> · 待处理 {{syncPending + syncFailed}} 项</text></view><button class="primary full" wx:if="{{user && syncStatus !== 'synced'}}" bindtap="retryProgressSync" loading="{{accountBusy}}" disabled="{{accountBusy}}">立即重试</button><button class="secondary full" wx:if="{{user}}" bindtap="logout">Log out</button><button class="primary full" wx:if="{{!user}}" data-page="login" bindtap="nav">WeChat login</button></view>
     <view wx:if="{{isProduction && (sheet === 'privacy' || sheet === 'terms')}}"><view class="sheet-title">{{sheet === 'privacy' ? '隐私政策 · 预览说明' : '用户协议 · 预览说明'}}</view><text class="description">当前为内测试读版本，不提供真实登录、交易或借阅。游客学习记录保存在当前设备，可通过清除应用数据移除。正式上线前将补全运营主体、联系方式与正式协议。</text></view>
     <!-- @production-end -->
   </view></view>

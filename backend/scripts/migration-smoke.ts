@@ -32,6 +32,8 @@ async function main(): Promise<void> {
       "0004_ingestion_control_plane",
       "0005_ranking_aggregation",
       "0006_ranking_refresh",
+      "0007_local_learning_import",
+      "0008_daily_progress_sync",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -56,6 +58,9 @@ async function main(): Promise<void> {
       "audit_events",
       "idempotency_records",
       "user_roles",
+      "local_import_snapshots",
+      "user_learning_progress",
+      "progress_sync_mutations",
     ]) {
       assert.ok(tableNames.includes(requiredTable), `missing table ${requiredTable}`);
     }
@@ -98,8 +103,10 @@ async function main(): Promise<void> {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
-    assert.equal(await rollbackOne(pool, { schema }), "0006_ranking_refresh");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0006_ranking_refresh"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0008_daily_progress_sync"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");
+    assert.equal(await rollbackOne(pool, { schema }), "0007_local_learning_import");
     assert.equal(await rollbackOne(pool, { schema }), "0006_ranking_refresh");
     assert.equal(await rollbackOne(pool, { schema }), "0005_ranking_aggregation");
     assert.equal(await rollbackOne(pool, { schema }), "0004_ingestion_control_plane");

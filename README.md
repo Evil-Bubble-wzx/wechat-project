@@ -1,5 +1,9 @@
 # 听阅 Tingyue
 
+> 文档整理日期：2026-09-29
+> 当前文档入口：[docs/README.md](docs/README.md)
+> 当前技术基线：[听阅小程序-技术架构与需求总览-v3.0.md](听阅小程序-技术架构与需求总览-v3.0.md)
+
 参考用户提供的 MegaWords 截图制作的原生微信小程序前端。当前默认运行正式预发布模式：仅开放 Peter Rabbit 数字听阅，隐藏实体借阅、优惠券、邀请、演示购买和固定验证码等演示入口。完整旧功能仍保留在显式 Demo 模式中，供开发验收。
 
 最新导航：仅 Home / Recent / Me 三个主界面；Find Books 与 Borrowed 为二级功能，保留 Home 和 Me 的入口。主要导航、按钮与栏目采用英文，中文说明与中英释义保留。正式 Peter Rabbit 只展示有证据的 By / Edition / Content ID / Words / F/NF 等字段，不再展示无来源的等级和页数；Demo 书目仍是待核验样例。
@@ -28,7 +32,7 @@ Peter Rabbit 的字幕人耳审核已完成；371 个词汇审核单元也已在
 
 阅读小测支持彼得兔固定 10 道项目原创双语理解题，每题绑定审核正文 cue，并提供双语解释；80 分只作本机掌握反馈，不限制内容访问。本机 attempt 保存题包版本与逐题选择，并明确标为“未经服务端验证”；旧记录保留展示但不进入新版统计，同一篇只采用最新兼容记录，至少 6 篇不同内容才显示趋势。三本原创故事保留各章节旧题和 54 段选项朗读；《The Wonderful Wizard of Oz》暂未导入小测。排行榜仅保留 7-Day / All-Time，真实服务未接入时显示不可用状态，不编造用户和排名；服务端判题契约见 `docs/Quiz-attempt-API-v1.md`。
 
-`backend/` 已从 `backend/v1@9efe8aac1d499fb14a81929ae3106fdea823cb25` 有机接入：包含 Fastify API/Worker、PostgreSQL migration、Redis/BullMQ、S3 兼容存储、微信会话、内容/Quiz/排行接口、可观测性、安全恢复，以及当前扩展后的 `api-contract-v1.1.0`。客户端已在 X-06 网络层上接入会话、自动刷新、内容 manifest、Quiz、排行和 S-01 一次性本机学习数据导入；服务端重算进度、复判 Quiz，并把只有词面的历史生词保留为待解析候选。access/refresh token 不持久化。正式环境仍需配置真实微信、合法域名、对象存储/CDN，完成规模压测和真机复验。归还、馆员核销、到期通知、账户合并、押金支付以及 S-02～S-04 日常跨设备同步仍未完成。
+`backend/` 当前已接收基线仍为 `backend/v1@9efe8aac`，本地契约仍为 `api-contract-v1.2.0`；S-01 与当前单篇 S-02 已通过隔离 PostgreSQL/HTTP 联调。远端 `backend/v1@533a64e` 已实现批量 S-02、S-03 稳定生词同步和 `api-contract-v1.3.0`，独立复验确认后端、契约、9 条 migration 与 S-01～S-03 smoke 通过，但客户端为 109/110，且来源分支 S-02 与当前 API/migration 0008 冲突，因此状态为 `DONE_ON_BACKEND_V1 / PENDING_INTEGRATION`，不能直接 cherry-pick。access/refresh token 不持久化。正式环境仍需真实微信、合法域名、对象存储/CDN、规模压测和真机复验。
 
 开发版可通过 `tingyue.dev.apiBaseUrl` 指向本机后端（默认 `http://127.0.0.1:3100`）；体验版和正式版只从 ext config 的 `apiBaseUrl` 读取 HTTPS 地址。所有模式都不得把 AppSecret 放入小程序。
 

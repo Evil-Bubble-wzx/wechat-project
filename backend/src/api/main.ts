@@ -13,6 +13,7 @@ import { IngestionService, type IngestionJobPayload } from "../ingestion/service
 import { parseRedisConnection } from "../queue.ts";
 import { QuizService } from "../quiz/service.ts";
 import { LocalImportService } from "../sync/local-import-service.ts";
+import { ProgressSyncService } from "../sync/progress-sync-service.ts";
 import { RankingQueryService } from "../ranking/query-service.ts";
 import { AuditService } from "../observability/audit-service.ts";
 import { MetricsRegistry, OperationalMetricsCollector } from "../observability/metrics.ts";
@@ -49,6 +50,7 @@ const contentService = new ContentService(
 );
 const quizService = new QuizService(infrastructure.postgres);
 const localImportService = new LocalImportService(infrastructure.postgres, quizService);
+const progressSyncService = new ProgressSyncService(infrastructure.postgres);
 const rankingService = new RankingQueryService(
   infrastructure.postgres,
   config.auth.identityHashKeyBase64,
@@ -65,6 +67,7 @@ const app = createApp({
   contentService,
   quizService,
   localImportService,
+  progressSyncService,
   rankingService,
   auditService,
   metrics,

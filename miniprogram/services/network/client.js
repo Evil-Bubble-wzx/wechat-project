@@ -1,7 +1,7 @@
 const { ERROR_KINDS, ApiClientError } = require('./errors')
 const { createMemoryTokenStore } = require('./token-store')
 
-const RETRYABLE_STATUS = new Set([502, 503, 504])
+const RETRYABLE_STATUS = new Set([429, 502, 503, 504])
 const IDEMPOTENT_METHODS = new Set(['GET', 'HEAD'])
 
 function createApiClient(options = {}) {
@@ -48,7 +48,7 @@ function createApiClient(options = {}) {
           throw responseError(parsed)
         }
         if (parsed.statusCode < 200 || parsed.statusCode >= 300) throw responseError(parsed)
-        return { data: parsed.data, requestId: parsed.requestId, statusCode: parsed.statusCode }
+        return { data: parsed.data, requestId: parsed.requestId, statusCode: parsed.statusCode, contractVersion:parsed.contractVersion }
       } catch (error) {
         const normalized = normalizeError(error)
         if (!canRetry || retries >= retryLimit || !normalized.retryable) throw normalized
@@ -144,7 +144,8 @@ function parseResponse(response) {
   const statusCode = Number(response.statusCode)
   const data = response.data
   const requestId = headerValue(response.header || response.headers, 'x-request-id') || (data && data.requestId) || null
-  return { statusCode, data, requestId }
+  const contractVersion = headerValue(response.header || response.headers, 'x-api-contract-version') || null
+  return { statusCode, data, requestId, contractVersion }
 }
 
 function responseError(response) {

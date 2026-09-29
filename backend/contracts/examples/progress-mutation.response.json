@@ -1,0 +1,21 @@
+{
+  "requestId": "018f7ee0-7c18-7d10-9fb8-21de203c1a11",
+  "mutationId": "progress-01K7Y7J3M8E6Y5P9S2A4",
+  "duplicate": false,
+  "mergeStatus": "applied",
+  "checkpointAccepted": true,
+  "historicalVersion": false,
+  "progress": {
+    "pieceId": "peter-rabbit-01",
+    "contentVersion": 1,
+    "revision": "4",
+    "checkpointMs": 80600,
+    "listenedRangesMs": [[0, 80600], [164080, 167460]],
+    "listenedMs": 83980,
+    "coverage": 0.260786,
+    "completed": false,
+    "historicalVersion": false,
+    "serverUpdatedAt": "2026-09-29T08:00:00.000Z"
+  },
+  "acknowledgedAt": "2026-09-29T08:00:00.000Z"
+}

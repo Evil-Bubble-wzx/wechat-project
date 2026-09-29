@@ -1,15 +1,15 @@
 # B 后端十五步执行状态
 
-> 更新：2026-09-28
+> 更新：2026-09-29
 > 原则：只有代码、自动测试和可复核证据满足完成定义才标记完成；`DONE_LOCAL_TEST`不等于生产上线。
 
 | 步骤 | 状态 | 当前证据 | 剩余动作 |
 | --- | --- | --- | --- |
 | 0 交接落点 | `DONE` | B 长期分支为`backend/v1`；`handoffBaseCommit=7b882b22bfcf535cf2677616cfa82b6bb3d8a70e`；保留用户原有未提交改动 | 无 |
 | 1 B-01 决策 | `PARTIAL` | Node.js 24、TypeScript、Fastify、PostgreSQL、Redis/BullMQ、S3兼容存储、FFmpeg及可选Python Worker已写入ADR 0001/0002 | 需人工确认生产云厂商、地域、预算、域名和运维负责人 |
-| 2 B-01 工程 | `DONE_LOCAL_TEST` | API/Worker、配置、Compose、健康检查、锁文件及CI已落地；Docker、PostgreSQL、Redis、对象存储和真实BullMQ消费已验证；当前后端 41 项测试通过 | 生产运行环境待步骤1决策 |
-| 3 B-01 契约 | `DONE` | 接收基线 `api-contract-v1.0.0` 已向后兼容扩展为当前 `api-contract-v1.1.0`；OpenAPI 3.1、JSON Schema 2020-12、稳定错误码、请求ID、幂等和示例校验通过 | 当前客户端按固定契约适配后复验 |
-| 4 B-02 数据库 | `DONE_LOCAL_TEST` | 7 条成对 migration；新增 S-01 导入快照、学习进度和待解析词面候选；既有空库升级、约束、回滚/再升级及备份恢复基线通过 | 生产备份保存期、PITR、跨区和负责人待步骤1确认 |
+| 2 B-01 工程 | `DONE_LOCAL_TEST` | API/Worker、配置、Compose、健康检查、锁文件及CI已落地；Docker、PostgreSQL、Redis、对象存储和真实BullMQ消费已有历史验证；当前后端 48 项测试通过 | 生产运行环境待步骤1决策 |
+| 3 B-01 契约 | `DONE` | 接收基线 `api-contract-v1.0.0` 已向后兼容扩展为当前 `api-contract-v1.2.0`；新增 S-01 与 S-02，OpenAPI 3.1、JSON Schema 2020-12、稳定错误码、请求ID、幂等和示例校验通过 | 当前客户端按固定契约适配后复验 |
+| 4 B-02 数据库 | `DONE_LOCAL_TEST` | 8 条成对 migration；0001～0008 已在隔离 PostgreSQL 18 完成升级、回滚和再升级，核验 32 张表；第 8 条增加 S-02 revision、多内容版本进度与 mutation 回执 | 生产备份/PITR/跨区仍待确认 |
 | 5 B-03 登录 | `DONE_LOCAL_TEST` | 微信code2Session适配器、显式test stub、短期JWT、refresh轮换/重放撤销、双签名密钥轮换、退出幂等、账号禁用和`/me`已实现；OpenID加密、查找HMAC及refresh摘要已验证 | 真实AppID/AppSecret、合法域名和微信环境联调需人工资料 |
 | 6 B-04 内容导入 | `PARTIAL_VALIDATION_PENDING` | 管理端批次、预签名分片上传、finalize、重试、取消、Worker、FFmpeg/字幕校验、死信恢复入口、原子发布/回滚门槛已实现；Peter Rabbit 7类资产经MinIO→BullMQ→Worker→PostgreSQL通过 | 仍需数百文件/总GB压测、客户端断点续传、Worker强杀接管、全链路取消/死信演练；C-03/C-05关闭前不可发布 |
 | 7 B-04 内容API | `DONE_LOCAL_TEST` | 已实现签名cursor的works/work/manifest、私有对象短期URL、版本失效和受限资源拒绝 | CDN、正式权益和生产域名待外部条件 |
@@ -19,7 +19,7 @@
 | 11 B-06 排行API | `DONE_LOCAL_TEST` | 排行选项、榜单和参与者Quiz明细API已实现；覆盖A/B、滚动7日、周/月/年、具体周/月、K～9年级、阅读级别、10人隐私门槛、同分快照和cursor分页；792种筛选组合测试通过 | 真实账号/真机验收待人工资料 |
 | 12 B-05 可观测性 | `DONE_LOCAL_TEST` | 结构化请求日志、脱敏、requestId、审计、受保护Prometheus指标、排行/队列/内容/登录指标、Grafana面板和运行手册已落地 | 告警接收人、生产阈值和监控托管平台待步骤1确认 |
 | 13 安全与恢复 | `DONE_LOCAL_TEST` | Redis限流、JWT双密钥轮换、上传MIME/大小/批次限制、MinIO最小权限和生命周期、DB事实源补队列、secret scan、CI、依赖审计0漏洞、备份恢复演练通过 | 生产KMS/密钥托管、云权限复核、PITR/跨区恢复和责任人待人工确认 |
-| 14 X/B联调 | `PARTIAL_PRODUCTION_PENDING` | 当前 X-06 已接入 session/refresh、content manifest、Quiz、ranking 与 local-import；本机真实依赖、排行页面和 S-01 HTTP/PostgreSQL 联调通过；客户端 99/99、后端 41/41 | 补真实微信、HTTPS 合法域名、体验版和 iOS/Android 真机证据 |
+| 14 X/B联调 | `PARTIAL_PRODUCTION_PENDING` | 当前 X-06 已接入 session/refresh、content manifest、Quiz、ranking、local-import 与 progress sync；排行、S-01 和 S-02 HTTP/PostgreSQL 联调通过；客户端 104/104、后端 48/48 | 补真实微信、HTTPS 合法域名、体验版和 iOS/Android 真机证据 |
 | 15 交付 | `PARTIAL` | 后端来源已固定为 `backend/v1@9efe8aac1d499fb14a81929ae3106fdea823cb25`，交接、运行、安全恢复和可观测性文档已接收 | 仍需生产决策、微信凭据、内容权利签署、规模压测、当前客户端联调和真机证据后才能宣称上线交付 |
 
 ## 排行算法口径

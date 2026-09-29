@@ -316,13 +316,40 @@
         { "$ref": "#/$defs/QuizAttemptRejectedResponse" }
       ]
     },
+    "ProgressRanges": {
+      "type":"array","maxItems":500,
+      "items":{"type":"array","prefixItems":[{"type":"integer","minimum":0,"maximum":86400000},{"type":"integer","minimum":1,"maximum":86400000}],"minItems":2,"maxItems":2}
+    },
+    "ProgressMutationRequest": {
+      "type":"object","additionalProperties":false,
+      "required":["schemaVersion","mutationId","baseRevision","contentVersion","checkpointMs","listenedRangesMs"],
+      "properties":{"schemaVersion":{"const":1},"mutationId":{"type":"string","minLength":8,"maxLength":128},"baseRevision":{"type":"string","pattern":"^[0-9]{1,20}$"},"contentVersion":{"type":"integer","minimum":1,"maximum":1000000},"checkpointMs":{"type":"integer","minimum":0,"maximum":86400000},"listenedRangesMs":{"$ref":"#/$defs/ProgressRanges"}}
+    },
+    "ProgressState": {
+      "type":"object","additionalProperties":false,
+      "required":["pieceId","contentVersion","revision","checkpointMs","listenedRangesMs","listenedMs","coverage","completed","historicalVersion","serverUpdatedAt"],
+      "properties":{"pieceId":{"type":"string","minLength":1,"maxLength":128},"contentVersion":{"type":"integer","minimum":1},"revision":{"type":"string","pattern":"^[0-9]{1,20}$"},"checkpointMs":{"type":"integer","minimum":0,"maximum":86400000},"listenedRangesMs":{"$ref":"#/$defs/ProgressRanges"},"listenedMs":{"type":"integer","minimum":0,"maximum":86400000},"coverage":{"type":"number","minimum":0,"maximum":1},"completed":{"type":"boolean"},"historicalVersion":{"type":"boolean"},"serverUpdatedAt":{"$ref":"#/$defs/Rfc3339"}}
+    },
+    "ProgressMutationResponse": {
+      "type":"object","additionalProperties":false,
+      "required":["requestId","mutationId","duplicate","mergeStatus","checkpointAccepted","historicalVersion","progress","acknowledgedAt"],
+      "properties":{"requestId":{"$ref":"#/$defs/RequestId"},"mutationId":{"type":"string","minLength":8,"maxLength":128},"duplicate":{"type":"boolean"},"mergeStatus":{"enum":["applied","merged_stale_base"]},"checkpointAccepted":{"type":"boolean"},"historicalVersion":{"type":"boolean"},"progress":{"$ref":"#/$defs/ProgressState"},"acknowledgedAt":{"$ref":"#/$defs/Rfc3339"}}
+    },
+    "ProgressGetResponse": {
+      "type":"object","additionalProperties":false,"required":["requestId","progress"],
+      "properties":{"requestId":{"$ref":"#/$defs/RequestId"},"progress":{"$ref":"#/$defs/ProgressState"}}
+    },
+    "ProgressListResponse": {
+      "type":"object","additionalProperties":false,"required":["requestId","items","nextCursor"],
+      "properties":{"requestId":{"$ref":"#/$defs/RequestId"},"items":{"type":"array","items":{"$ref":"#/$defs/ProgressState"}},"nextCursor":{"type":["string","null"]}}
+    },
     "LocalProgressImport": {
       "type": "object", "additionalProperties": false,
       "required": ["pieceId","contentVersion","durationMs","checkpointMs","listenedRangesMs","updatedAt"],
       "properties": {
         "pieceId": {"type":"string","minLength":1,"maxLength":128}, "contentVersion":{"type":"integer","minimum":1},
         "durationMs":{"type":"integer","minimum":1,"maximum":86400000}, "checkpointMs":{"type":"integer","minimum":0},
-        "listenedRangesMs":{"type":"array","maxItems":500,"items":{"type":"array","prefixItems":[{"type":"integer","minimum":0},{"type":"integer","minimum":1}],"minItems":2,"maxItems":2}},
+        "listenedRangesMs":{"$ref":"#/$defs/ProgressRanges"},
         "updatedAt":{"$ref":"#/$defs/Rfc3339"}
       }
     },
