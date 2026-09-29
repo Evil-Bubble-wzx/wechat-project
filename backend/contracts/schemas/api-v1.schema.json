@@ -316,6 +316,32 @@
         { "$ref": "#/$defs/QuizAttemptRejectedResponse" }
       ]
     },
+    "LocalProgressImport": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pieceId","contentVersion","durationMs","checkpointMs","listenedRangesMs","updatedAt"],
+      "properties": {
+        "pieceId": {"type":"string","minLength":1,"maxLength":128}, "contentVersion":{"type":"integer","minimum":1},
+        "durationMs":{"type":"integer","minimum":1,"maximum":86400000}, "checkpointMs":{"type":"integer","minimum":0},
+        "listenedRangesMs":{"type":"array","maxItems":500,"items":{"type":"array","prefixItems":[{"type":"integer","minimum":0},{"type":"integer","minimum":1}],"minItems":2,"maxItems":2}},
+        "updatedAt":{"$ref":"#/$defs/Rfc3339"}
+      }
+    },
+    "LocalImportPayload": {
+      "type":"object","additionalProperties":false,"required":["schemaVersion","progress","words","quizAttempts"],
+      "properties": {"schemaVersion":{"const":1},"progress":{"type":"array","maxItems":100,"items":{"$ref":"#/$defs/LocalProgressImport"}},"words":{"type":"array","maxItems":1000,"items":{"type":"object","additionalProperties":false,"required":["surface"],"properties":{"surface":{"type":"string","minLength":1,"maxLength":80}}}},"quizAttempts":{"type":"array","maxItems":100,"items":{"$ref":"#/$defs/QuizAttemptRequest"}}}
+    },
+    "LocalImportRequest": {
+      "type":"object","additionalProperties":false,"required":["snapshotId","payload","limitations"],
+      "properties":{"snapshotId":{"type":"string","pattern":"^s01-v1:[a-f0-9]{64}$"},"payload":{"$ref":"#/$defs/LocalImportPayload"},"limitations":{"type":"object","additionalProperties":false,"required":["words"],"properties":{"words":{"const":"surface_only"}}}}
+    },
+    "LocalImportSummary": {
+      "type":"object","additionalProperties":false,"required":["progress","words","quizAttempts"],
+      "properties":{"progress":{"type":"object","additionalProperties":false,"required":["accepted","unchanged","rejected"],"properties":{"accepted":{"type":"integer","minimum":0},"unchanged":{"type":"integer","minimum":0},"rejected":{"type":"integer","minimum":0}}},"words":{"type":"object","additionalProperties":false,"required":["pending","reused","rejected"],"properties":{"pending":{"type":"integer","minimum":0},"reused":{"type":"integer","minimum":0},"rejected":{"type":"integer","minimum":0}}},"quizAttempts":{"type":"object","additionalProperties":false,"required":["verified","rejected"],"properties":{"verified":{"type":"integer","minimum":0},"rejected":{"type":"integer","minimum":0}}}}
+    },
+    "LocalImportResponse": {
+      "type":"object","additionalProperties":false,"required":["requestId","snapshotId","status","duplicate","summary","items","acknowledgedAt"],
+      "properties":{"requestId":{"$ref":"#/$defs/RequestId"},"snapshotId":{"type":"string","pattern":"^s01-v1:[a-f0-9]{64}$"},"status":{"const":"completed"},"duplicate":{"type":"boolean"},"summary":{"$ref":"#/$defs/LocalImportSummary"},"items":{"type":"object","additionalProperties":false,"required":["progress","words","quizAttempts"],"properties":{"progress":{"type":"array","items":{"type":"object"}},"words":{"type":"array","items":{"type":"object"}},"quizAttempts":{"type":"array","items":{"type":"object"}}}},"acknowledgedAt":{"$ref":"#/$defs/Rfc3339"}}
+    },
     "Option": {
       "type": "object",
       "additionalProperties": false,

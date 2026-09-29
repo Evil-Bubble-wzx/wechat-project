@@ -1,89 +1,173 @@
 const apiConfig = require('../config/api')
+const { createApiClient } = require('./network/client')
+const { createMemoryTokenStore } = require('./network/token-store')
+const { createWxTransport } = require('./network/wx-transport')
 
-const SESSION_KEY = 'tingyue.session.v1'
-const DEVICE_KEY = 'tingyue.device.v1'
-let refreshPromise = null
+function createBackendApi(options = {}) {
+  const runtime = options.runtime || (typeof wx === 'undefined' ? null : wx)
+  const configuration = options.configuration || apiConfig.current(runtime)
+  const transport = options.transport || (runtime && typeof runtime.request === 'function' ? createWxTransport(runtime) : null)
+  const tokenStore = options.tokenStore || createMemoryTokenStore()
+  const makeId = options.makeId || randomId
+  let session = null
+  let user = null
 
-class ApiClientError extends Error {
-  constructor(code,message,statusCode=0,retryable=false,requestId=null,details=null) {
-    super(message);this.name='ApiClientError';this.code=code;this.statusCode=statusCode;this.retryable=retryable;this.requestId=requestId;this.details=details
+  const publicClient = createApiClient({
+    enabled:configuration.enabled,
+    baseUrl:configuration.apiRoot,
+    transport,
+    tokenStore:createMemoryTokenStore(),
+    timeoutMs:options.timeoutMs,
+    maxRetries:options.maxRetries,
+    sleep:options.sleep,
+    random:options.random
+  })
+  const client = createApiClient({
+    enabled:configuration.enabled,
+    baseUrl:configuration.apiRoot,
+    transport,
+    tokenStore,
+    timeoutMs:options.timeoutMs,
+    maxRetries:options.maxRetries,
+    sleep:options.sleep,
+    random:options.random,
+    refreshSession:async () => {
+      if (!session || !session.refreshToken) throw new Error('No refresh session')
+      const result = await publicClient.request({
+        method:'POST',
+        path:'/session/refresh',
+        headers:mutationHeaders(makeId('refresh')),
+        body:{ refreshToken:session.refreshToken }
+      })
+      session = normalizeSession(result.data, user)
+      return session
+    }
+  })
+
+  async function loginWechat() {
+    const platformCode = await getWechatCode(runtime)
+    const code = configuration.development && configuration.stubLoginCode ? configuration.stubLoginCode : platformCode
+    const result = await publicClient.request({
+      method:'POST',
+      path:'/session/wechat',
+      headers:mutationHeaders(makeId('login')),
+      body:{ code, deviceId:getDeviceId(runtime, makeId) }
+    })
+    session = normalizeSession(result.data)
+    tokenStore.setAccessToken(session.accessToken)
+    user = await getMe()
+    return user
+  }
+
+  async function getMe() {
+    const result = await client.request({ path:'/me' })
+    user = result.data
+    return user
+  }
+
+  async function logout() {
+    try {
+      if (tokenStore.getAccessToken()) await client.request({ method:'DELETE', path:'/session/current', headers:{ 'Idempotency-Key':makeId('logout') } })
+    } finally {
+      session = null
+      user = null
+      client.logout()
+      publicClient.logout()
+    }
+  }
+
+  const get = async (path, query) => (await client.request({ path:path + queryString(query) })).data
+  const post = async (path, body, idempotencyKey) => (await client.request({ method:'POST', path, headers:mutationHeaders(idempotencyKey || makeId('mutation')), body })).data
+
+  return {
+    contractVersion:configuration.contractVersion,
+    available:() => configuration.enabled === true,
+    isAuthenticated:() => !!(session && tokenStore.getAccessToken()),
+    currentUser:() => user,
+    currentSession:() => session ? Object.assign({}, session, { accessToken:undefined, refreshToken:undefined }) : null,
+    loginWechat,
+    getMe,
+    logout,
+    listWorks:(cursor, limit = 50) => get('/works', { cursor, limit }),
+    getWork:workId => get('/works/' + encodeURIComponent(workId)),
+    getManifest:(pieceId, contentVersion) => get('/pieces/' + encodeURIComponent(pieceId) + '/manifest', { contentVersion }),
+    submitQuiz:attempt => post('/me/quiz-attempts', quizPayload(attempt), attempt.attemptId),
+    localImport:request => post('/me/local-import', request, request.snapshotId),
+    rankingOptions:() => get('/ranking-options'),
+    rankings:filters => get('/rankings', rankingQuery(filters)),
+    rankingDetail:(participantId, filters) => get('/rankings/' + encodeURIComponent(participantId) + '/quizzes', rankingQuery(filters)),
+    _tokenStore:tokenStore
   }
 }
 
-const randomId = prefix => prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12)
-function session() { try { return wx.getStorageSync(SESSION_KEY)||null } catch (_) { return null } }
-function storeSession(value) { if(value)wx.setStorageSync(SESSION_KEY,value);else wx.removeStorageSync(SESSION_KEY) }
-function isAuthenticated() { const value=session();return !!(value&&value.accessToken&&value.refreshToken) }
-function currentUser() { return session()?.user||null }
-function available() { const config=apiConfig.current();return !wx.isBrowserPreview&&typeof wx.request==='function'&&!!config.baseUrl }
-function deviceId() { let value='';try{value=wx.getStorageSync(DEVICE_KEY)||''}catch(_){}if(!value){value=randomId('device');try{wx.setStorageSync(DEVICE_KEY,value)}catch(_){}}return value }
-
-function rawRequest(options) {
-  return new Promise((resolve,reject)=>{
-    wx.request(Object.assign({},options,{
-      timeout:10000,
-      success:resolve,
-      fail:error=>reject(new ApiClientError('DEPENDENCY_UNAVAILABLE',error?.errMsg||'Backend request failed',0,true))
-    }))
+function normalizeSession(value, existingUser = null) {
+  if (!value || !value.accessToken || !value.refreshToken) throw new Error('Invalid session response')
+  return Object.assign({}, value, { user:existingUser || null })
+}
+function mutationHeaders(key) { return { 'Content-Type':'application/json', 'Idempotency-Key':key } }
+function queryString(values = {}) {
+  const entries = Object.entries(values).filter(([, value]) => value !== undefined && value !== null && value !== '')
+  return entries.length ? '?' + entries.map(([key, value]) => encodeURIComponent(key) + '=' + encodeURIComponent(String(value))).join('&') : ''
+}
+function rankingQuery(filters = {}) {
+  return { campusId:filters.campusId, periodType:filters.periodType, periodKey:filters.periodKey, grade:filters.grade, level:filters.level, cursor:filters.cursor, limit:filters.limit || 50 }
+}
+function quizPayload(attempt) {
+  return {
+    schemaVersion:attempt.schemaVersion,
+    attemptId:attempt.attemptId,
+    workId:attempt.workId,
+    pieceId:attempt.pieceId,
+    contentVersion:attempt.contentVersion,
+    quizVersion:attempt.quizVersion,
+    questionIds:attempt.questionIds,
+    selectedOptions:attempt.selectedOptions,
+    startedAt:attempt.startedAt,
+    submittedAt:attempt.submittedAt
+  }
+}
+function randomId(prefix) { return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12) }
+function getWechatCode(runtime) {
+  return new Promise((resolve, reject) => {
+    if (!runtime || typeof runtime.login !== 'function') return reject(new Error('wx.login is unavailable'))
+    runtime.login({ success:result => result && result.code ? resolve(result.code) : reject(new Error('wx.login returned no code')), fail:reject })
   })
 }
-
-function apiError(response) {
-  const body=response?.data||{},error=body.error||{}
-  return new ApiClientError(error.code||'INTERNAL_ERROR',error.message||'Backend request failed',response?.statusCode||0,!!error.retryable,body.requestId||response?.header?.['x-request-id']||null,error.details??null)
+function getDeviceId(runtime, makeId) {
+  const key = 'tingyue.device.v1'
+  try {
+    const existing = runtime.getStorageSync(key)
+    if (existing) return existing
+    const created = makeId('device')
+    runtime.setStorageSync(key, created)
+    return created
+  } catch (_) { return makeId('device') }
 }
 
-async function refresh() {
-  if(refreshPromise)return refreshPromise
-  const saved=session()
-  if(!saved?.refreshToken)throw new ApiClientError('UNAUTHENTICATED','Login is required',401,false)
-  refreshPromise=(async()=>{
-    const config=apiConfig.current()
-    const response=await rawRequest({url:config.baseUrl+'/api/v1/session/refresh',method:'POST',header:{'content-type':'application/json','idempotency-key':randomId('refresh')},data:{refreshToken:saved.refreshToken}})
-    if(response.statusCode<200||response.statusCode>=300){storeSession(null);throw apiError(response)}
-    const next=Object.assign({},response.data,{user:saved.user||null})
-    storeSession(next)
-    return next
-  })().finally(()=>{refreshPromise=null})
-  return refreshPromise
+let singleton = null
+let singletonSignature = null
+function active() {
+  const configuration = apiConfig.current()
+  const signature = [configuration.enabled, configuration.apiRoot, configuration.stubLoginCode].join('|')
+  if (!singleton || signature !== singletonSignature) { singleton = createBackendApi({ configuration }); singletonSignature = signature }
+  return singleton
 }
 
-async function request(path,{method='GET',data,query,authorized=true,idempotencyKey,retry=true}={}) {
-  if(!available())throw new ApiClientError('DEPENDENCY_UNAVAILABLE','Backend is not configured',0,true)
-  const config=apiConfig.current(),saved=session()
-  if(authorized&&!saved?.accessToken)throw new ApiClientError('UNAUTHENTICATED','Login is required',401,false)
-  const queryString=Object.entries(query||{}).filter(([,value])=>value!==undefined&&value!==null&&value!=='').map(([key,value])=>encodeURIComponent(key)+'='+encodeURIComponent(String(value))).join('&')
-  const header={}
-  if(data!==undefined)header['content-type']='application/json'
-  if(authorized)header.authorization='Bearer '+saved.accessToken
-  if(method!=='GET')header['idempotency-key']=idempotencyKey||randomId('mutation')
-  const response=await rawRequest({url:config.baseUrl+path+(queryString?'?'+queryString:''),method,header,data})
-  if(response.statusCode>=200&&response.statusCode<300)return response.data
-  const error=apiError(response)
-  if(authorized&&retry&&(error.code==='ACCESS_TOKEN_EXPIRED'||error.code==='UNAUTHENTICATED')&&saved?.refreshToken){await refresh();return request(path,{method,data,query,authorized,idempotencyKey,retry:false})}
-  throw error
-}
-
-function loginCode() { return new Promise((resolve,reject)=>wx.login({success:result=>result?.code?resolve(result.code):reject(new ApiClientError('AUTH_CODE_INVALID','wx.login returned no code')),fail:error=>reject(new ApiClientError('AUTH_CODE_INVALID',error?.errMsg||'wx.login failed'))})) }
-async function loginWechat() {
-  if(!available())throw new ApiClientError('DEPENDENCY_UNAVAILABLE','Backend is not configured',0,true)
-  const config=apiConfig.current(),wechatCode=await loginCode(),code=config.development&&config.stubLoginCode?config.stubLoginCode:wechatCode
-  const response=await request('/api/v1/session/wechat',{method:'POST',authorized:false,idempotencyKey:randomId('login'),data:{code,deviceId:deviceId()}})
-  storeSession(response)
-  const user=await getMe()
-  return user
-}
-async function getMe() { const user=await request('/api/v1/me');const saved=session();storeSession(Object.assign({},saved,{user}));return user }
-async function logout() { const saved=session();if(!saved?.accessToken){storeSession(null);return}try{await request('/api/v1/session/current',{method:'DELETE',idempotencyKey:randomId('logout'),retry:false})}finally{storeSession(null)} }
-
-const rankingQuery=filters=>({campusId:filters.campusId,periodType:filters.periodType,periodKey:filters.periodKey,grade:filters.grade,level:filters.level,cursor:filters.cursor,limit:filters.limit||50})
-module.exports={
-  ApiClientError,SESSION_KEY,available,isAuthenticated,currentUser,session,storeSession,loginWechat,getMe,logout,refresh,request,
-  listWorks:(cursor,limit=50)=>request('/api/v1/works',{query:{cursor,limit}}),
-  getWork:workId=>request('/api/v1/works/'+encodeURIComponent(workId)),
-  getManifest:(pieceId,contentVersion)=>request('/api/v1/pieces/'+encodeURIComponent(pieceId)+'/manifest',{query:{contentVersion}}),
-  submitQuiz:attempt=>request('/api/v1/me/quiz-attempts',{method:'POST',idempotencyKey:attempt.attemptId,data:{schemaVersion:attempt.schemaVersion,attemptId:attempt.attemptId,workId:attempt.workId,pieceId:attempt.pieceId,contentVersion:attempt.contentVersion,quizVersion:attempt.quizVersion,questionIds:attempt.questionIds,selectedOptions:attempt.selectedOptions,startedAt:attempt.startedAt,submittedAt:attempt.submittedAt}}),
-  rankingOptions:()=>request('/api/v1/ranking-options'),
-  rankings:filters=>request('/api/v1/rankings',{query:rankingQuery(filters)}),
-  rankingDetail:(participantId,filters)=>request('/api/v1/rankings/'+encodeURIComponent(participantId)+'/quizzes',{query:rankingQuery(filters)})
+module.exports = {
+  createBackendApi,
+  available:() => active().available(),
+  isAuthenticated:() => active().isAuthenticated(),
+  currentUser:() => active().currentUser(),
+  currentSession:() => active().currentSession(),
+  loginWechat:() => active().loginWechat(),
+  getMe:() => active().getMe(),
+  logout:() => active().logout(),
+  listWorks:(cursor, limit) => active().listWorks(cursor, limit),
+  getWork:workId => active().getWork(workId),
+  getManifest:(pieceId, version) => active().getManifest(pieceId, version),
+  submitQuiz:attempt => active().submitQuiz(attempt),
+  localImport:request => active().localImport(request),
+  rankingOptions:() => active().rankingOptions(),
+  rankings:filters => active().rankings(filters),
+  rankingDetail:(participantId, filters) => active().rankingDetail(participantId, filters)
 }

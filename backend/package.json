@@ -23,6 +23,8 @@
     "test:integration:content": "node --experimental-strip-types scripts/content-smoke.ts",
     "test:integration:quiz": "node --experimental-strip-types scripts/quiz-smoke.ts",
     "test:integration:ranking": "node --experimental-strip-types scripts/ranking-smoke.ts",
+    "test:integration:ranking-page": "node --experimental-strip-types scripts/ranking-page-smoke.ts",
+    "test:integration:local-import": "node --experimental-strip-types scripts/local-import-smoke.ts",
     "test:integration:observability": "node --experimental-strip-types scripts/observability-smoke.ts",
     "test:integration:queue": "node --experimental-strip-types scripts/queue-smoke.ts",
     "recovery:requeue": "node --experimental-strip-types scripts/requeue-unfinished.ts",

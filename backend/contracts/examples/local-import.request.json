@@ -1,0 +1,10 @@
+{
+  "snapshotId": "s01-v1:01cae4ed74a11267264a2ce96d74acaeae6b3de72f57e6798e415169f72224d6",
+  "payload": {
+    "schemaVersion": 1,
+    "progress": [{"pieceId":"peter-rabbit-01","contentVersion":1,"durationMs":322026,"checkpointMs":21235,"listenedRangesMs":[[0,20000],[321000,322026]],"updatedAt":"2026-09-28T08:00:00.000Z"}],
+    "words": [{"surface":"Once"}],
+    "quizAttempts": [{"schemaVersion":1,"attemptId":"local-attempt-0001","workId":"peter-rabbit","pieceId":"peter-rabbit-01","contentVersion":1,"quizVersion":1,"questionIds":["PRQ-001","PRQ-002","PRQ-003","PRQ-004","PRQ-005","PRQ-006","PRQ-007","PRQ-008","PRQ-009","PRQ-010"],"selectedOptions":[0,1,1,2,1,0,0,1,0,1],"startedAt":"2026-09-28T07:55:00.000Z","submittedAt":"2026-09-28T08:00:00.000Z"}]
+  },
+  "limitations": {"words":"surface_only"}
+}

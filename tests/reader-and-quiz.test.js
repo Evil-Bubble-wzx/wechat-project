@@ -107,19 +107,19 @@ test('Peter Rabbit player resolves every reviewed contextual word card and prese
     assert.equal(page.data.selectedWord.definitionZh, peterVocab[token.vocabKey].definitionZh)
     assert.equal(page.data.selectedWord.example, peterCues[cueIndex].text)
     page.closeSheet()
-    assert.equal(plays, 1)
+    assert.equal(plays, 2)
     assert.equal(page.data.playing, true)
 
     page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
     listeners.pause()
     assert.equal(player.snapshot().pauseReason, 'system')
     page.closeSheet()
-    assert.equal(plays, 1)
+    assert.equal(plays, 2)
 
     player.pause('user')
     page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
     page.closeSheet()
-    assert.equal(plays, 1)
+    assert.equal(plays, 2)
     page.onUnload()
   } finally {
     player._resetForTests()

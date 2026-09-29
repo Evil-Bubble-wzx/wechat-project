@@ -3,17 +3,17 @@ const assert = require('node:assert/strict')
 
 function harness(duration=20) {
   const previousWx=global.wx
-  let stored={},clock=0,listeners={},manager
+  let stored={},clock=0,listeners={},manager,playCalls=0
   function freshManager(){
     listeners={}
     manager={
       _src:'',startTime:0,currentTime:0,duration,playbackRate:1,
       get src(){return this._src},
-      set src(value){this._src=value;listeners.play?.();listeners.canplay?.()},
+      set src(value){this._src=value;listeners.canplay?.()},
       onTimeUpdate(fn){listeners.time=fn},onEnded(fn){listeners.ended=fn},onError(fn){listeners.error=fn},
       onPlay(fn){listeners.play=fn},onPause(fn){listeners.pause=fn},onStop(fn){listeners.stop=fn},
       onSeeking(fn){listeners.seeking=fn},onSeeked(fn){listeners.seeked=fn},onCanplay(fn){listeners.canplay=fn},onWaiting(fn){listeners.waiting=fn},
-      play(){listeners.play?.()},pause(){listeners.pause?.()},stop(){listeners.stop?.()},
+      play(){playCalls++;listeners.play?.()},pause(){listeners.pause?.()},stop(){listeners.stop?.()},
       seek(value){listeners.seeking?.();this.currentTime=value;listeners.seeked?.()}
     }
   }
@@ -37,6 +37,7 @@ function harness(duration=20) {
     freshProcess(){player._resetForTests();player._setNowForTests(()=>clock);freshManager()},
     state(){return stored},
     manager(){return manager},
+    playCalls(){return playCalls},
     restore(){player._resetForTests();global.wx=previousWx}
   }
 }
@@ -56,6 +57,16 @@ test('X-02 restores an unfinished piece from its trusted checkpoint without auto
     assert.equal(restored.position,8)
     assert.equal(restored.status,'paused')
     assert.equal(h.manager()._src,'')
+  }finally{h.restore()}
+})
+
+test('X-02 explicitly starts a newly assigned background-audio source on iOS', () => {
+  const h=harness()
+  try{
+    assert.equal(h.player.playTrack(h.book),true)
+    assert.equal(h.manager().src,h.book.audioUrl)
+    assert.equal(h.playCalls(),1)
+    assert.equal(h.player.snapshot().status,'playing')
   }finally{h.restore()}
 })
 

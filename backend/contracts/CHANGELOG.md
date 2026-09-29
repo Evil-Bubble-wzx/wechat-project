@@ -1,5 +1,11 @@
 # API contract changelog
 
+## api-contract-v1.1.0 - 2026-09-28
+
+- 新增 `POST /api/v1/me/local-import`，以 `userId + snapshotId` 幂等导入本机可信进度证据、词面候选和未验证 Quiz。
+- 服务端重新校验内容版本、音频时长、收听区间和 Quiz 题包；不接受客户端完成状态、分数或权益字段。
+- 生词仅以 `surface_only` 候选保存为待解析状态，不冒充已完成 S-03 稳定词条同步。
+
 ## api-contract-v1.0.0 - 2026-09-24
 
 - 建立 OpenAPI 3.1 和 JSON Schema 2020-12 基线。

@@ -1,7 +1,7 @@
 # X/B联调记录
 
-- 日期：2026-09-24
-- 契约：`api-contract-v1.0.0`
+- 初始日期：2026-09-24；当前复验：2026-09-28
+- 接收契约：`api-contract-v1.0.0`；当前契约：`api-contract-v1.1.0`
 - 排行规则：`quiz-score-v1`
 - 环境：本机小程序API适配层、真实Fastify监听随机端口、隔离PostgreSQL测试schema
 
@@ -15,6 +15,7 @@
 6. 服务端按`quiz-score-v1`重建快照；少于10人的人群返回`cohort_too_small`且不泄露排名。
 7. 客户端退出后服务端撤销session，本机清除token。
 8. 审计表包含登录、刷新、内容读取、Quiz验证、排行读取和退出事件。
+9. S-01 通过真实客户端 transport、Fastify 与 PostgreSQL 导入：服务端重算进度、保留待解析词面、复判 Quiz，并对相同快照精确重放回执。
 
 ## 自动命令与结果
 
@@ -23,6 +24,8 @@ cd backend
 npm run test:integration:xb
 
 xb.integration.passed login=wechat refresh=retry content=works quiz=verified+idempotent+rejected ranking=small logout=revoked
+npm run test:integration:local-import
+local-import.smoke.passed progress=recomputed words=pending quiz=verified idempotent=replayed
 ```
 
 ## 仍需人工环境

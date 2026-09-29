@@ -215,7 +215,7 @@ export class IngestionService {
           input.pieceId,
           input.contentVersion,
           input.items.length,
-          JSON.stringify({ contractVersion: "api-contract-v1.0.0" }),
+          JSON.stringify({ contractVersion: "api-contract-v1.1.0" }),
         ],
       );
       for (const item of input.items) {

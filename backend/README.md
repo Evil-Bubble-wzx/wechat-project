@@ -15,14 +15,14 @@
 - Redis限流、双JWT签名密钥轮换、MinIO最小权限/生命周期和数据库事实源补队列；
 - `/health/live` 与 `/health/ready`；
 - local/dev/test Compose 定义；
-- `api-contract-v1.0.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
+- `api-contract-v1.1.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
 - 配置、API、契约、数据库、会话、内容、Quiz、排行、可观测性、安全、队列及X/B联调测试。
 
 排行规则已冻结为`quiz-score-v1`：完成Quiz的不同书本数、词量、贝叶斯校正正确率、挑战度、成长和题材广度共同形成0～1000算法分；完成书本数不是最终指标。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
 
 ## API 契约
 
-权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.0.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
+权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.1.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
 
 ```powershell
 npm run contract:check
@@ -56,6 +56,14 @@ npm install
 docker compose up -d
 npm run start:api
 ```
+
+旧版 MinIO 社区镜像如无法拉取，可先从 MinIO 官方申请 AIStor Free 许可，保存为仓库根目录的 `minio.license`（已加入 `.gitignore`，不得提交），再使用本地覆盖配置启动对象存储：
+
+```powershell
+docker compose -f compose.yaml -f compose.aistor-local.yaml up -d minio minio-init
+```
+
+该覆盖配置只读挂载许可文件，并固定官方 AIStor 服务端与客户端镜像；它不更改默认 Compose、现有数据卷或生产部署方案。许可证申请、续期和正式使用条款需由项目负责人确认。若本机 5432 端口已被其他 PostgreSQL 占用，不要停止已有数据库；联调可使用独立测试端口并设置 `DATABASE_URL`。
 
 另开终端启动 Worker：
 

@@ -1,7 +1,7 @@
 # 听阅 X 客户端 → B 后端开发交接文档 v1
 
 > 交接日期：2026-09-24
-> 文档状态：当前交接基线
+> 文档状态：B 交付与客户端核心适配已接收，真实依赖联调待复验
 > 交接范围：`X` 客户端与 `B-01`～`B-06` 后端基础
 > X 负责人：客户端负责人
 > B 负责人：后端同事
@@ -29,22 +29,16 @@
 - `B-02` 数据库与迁移；
 - `B-03` 微信登录会话；
 - `B-04` 内容 API 与资源鉴权；
-- `B-05` 日志、监控与运营后台基础；
-- `B-06` 真实排行聚合与筛选。
+- `B-05` 日志、监控与运营后台基础。
 
 第一批可联调接口只包含：
 
 - `POST /api/v1/session/wechat`；
-- `POST /api/v1/session/refresh`；
-- `DELETE /api/v1/session/current`；
 - `GET /api/v1/me`；
 - `GET /api/v1/works`；
 - `GET /api/v1/works/:workId`；
 - `GET /api/v1/pieces/:pieceId/manifest`；
 - `POST /api/v1/me/quiz-attempts`；
-- `GET /api/v1/ranking-options`；
-- `GET /api/v1/rankings`；
-- `GET /api/v1/rankings/:participantId/quizzes`；
 - 健康检查、稳定错误码、请求追踪和审计日志。
 
 ### 2.2 本轮不包含
@@ -93,24 +87,27 @@ B 分支是以下产物的权威来源：
 | 任务 | 状态 | 已有事实 | 尚缺 |
 | --- | --- | --- | --- |
 | X-01 播放器跨页状态 | `DONE` | 全局后台音频会话、跨页继续、返回接管、用户暂停保护、倍速、循环和系统媒体事件已实现并测试 | 无代码缺口 |
-| X-02 断点与可靠完成 | `PARTIAL_DEVICE_PENDING` | 可信断点、收听区间合并、真实墙钟计时、版本失效、异常后台采样拒绝已实现 | 微信真机后台、锁屏、系统控制和可信时长证据 |
+| X-02 断点与可靠完成 | `PARTIAL_B_AUDIO_PENDING` | 可信断点、收听区间合并、真实墙钟计时、版本失效、异常后台采样拒绝、iOS 首次播放显式触发已实现 | 现用 Archive.org 地址在本次 iPhone/开发网络不可播放；先由 B 提供受控音频托管和合法域名，再补后台、锁屏、系统控制与可信时长证据 |
 | X-03 正式点词 | `DONE` | 358 个审核义项覆盖 Peter Rabbit 全文 906 个可点击 token；上下文拆义和播放意图已测试 | 无代码缺口 |
-| X-04 Quiz/报告/排行边界 | `DONE_LOCAL_TEST` | 版本化attempt、本机未验证标签、旧记录隔离、服务端判题、`quiz-score-v1`算法排行、A/B校区与周期/年级/级别筛选及参与者Quiz明细已接入 | 真实微信账号和真机联调待外部资料 |
+| X-04 Quiz/报告/排行边界 | `DONE` | 版本化 attempt、本机未验证标签、旧记录隔离、6 篇趋势门槛和真实空排行已实现 | 服务端判题和真实排行属于后端阶段 |
 | X-05 正式/Demo 隔离 | `PARTIAL` | production/Demo 可复现双构建；正式包物理排除 Demo 能力且只含 Peter Rabbit；开发版本 `0.1.1` 已上传 | 微信基本资料初始化、体验版设置、Android/iPhone 体验版与正式版证据 |
+| X-06 客户端网络基础层 | `DONE` | 默认关闭的 API client、微信 transport、内存 access token、刷新并发锁、退出竞态清理、超时/取消、GET 重试和稳定错误模型已实现，16 项专项测试通过 | 真实 `wx.login`、refresh token 策略、业务 API 与 UI 行为等待固定契约版本和 B SHA |
 
-当前自动基线为小程序`npm test` 62/62、后端`npm run check` 38/38通过；真实Fastify+PostgreSQL的X/B联调也已通过。自动检查不能代替真机、账号、权利、隐私和上线资格。
+接收时自动基线为客户端 93/93、后端 38/38、契约 5/5；截至 2026-09-28 当前工作区为客户端 99/99、后端 41/41、契约 5/5。自动检查不能代替真机、账号、权利、隐私、生产依赖和上线资格。
 
-### 4.1 当前客户端网络能力与缺口
+### 4.1 当前不存在的客户端能力
 
-仓库已有`miniprogram/services/api.js`和`config/api.js`：
+仓库目前已有客户端网络基础层，但尚未接入正式后端：
 
-- 使用`wx.request`调用固定`api-contract-v1.0.0`；
-- 使用`wx.login`获取code，AppSecret只在服务端；
-- 保存access/refresh token，401时最多刷新一次并重试；
-- 映射稳定错误码，接入内容、Quiz、算法排行和排行明细；
-- develop环境可显式配置本机API与stub code，体验版/正式版不得使用stub。
+- `miniprogram/services/network/` 已有注入式 API client 和 `wx.request` transport；
+- 网络功能默认关闭，仓库中没有真实 API base URL；
+- access token 仅保存在内存；refresh callback 有并发锁，但尚未定义或持久化 refresh token；
+- 已有客户端稳定错误分类、GET 限次重试和 `requestId`/服务端错误码透传；
+- 已有配置后启用的 `wx.login` 正式流程，以及 session/refresh、content manifest、Quiz 和 ranking API 适配器；
+- 没有跨设备同步队列和冲突合并；
+- 没有真实订单、支付、权益或生产内容 API。
 
-尚未实现完整跨设备同步队列/冲突合并，也没有真实订单、支付或权益。真实微信凭据、合法域名和Android/iPhone真机联调仍待外部资料。`miniprogram/services/host.js`继续负责本地存储、导航和离线回退，不是HTTP客户端。
+`miniprogram/services/host.js` 仍只是微信本地存储与页面导航适配器；HTTP 基础设施位于 `miniprogram/services/network/`，不得混用两者。
 
 ## 5. 已冻结的身份、版本与内容边界
 
@@ -209,7 +206,7 @@ B 分支是以下产物的权威来源：
 
 ## 8. Quiz Attempt v1
 
-现有冻结契约以 `backend/contracts/openapi.json` 及其引用的 JSON Schema 为准。接入 `/api/v1` 后的正式地址为：
+现有冻结契约见 `docs/Quiz-attempt-API-v1.md`。接入 `/api/v1` 后的正式地址为：
 
 `POST /api/v1/me/quiz-attempts`
 
@@ -233,9 +230,7 @@ B 端实现前必须把现有 Markdown 契约转成 OpenAPI/JSON Schema，并补
 - 后端语言与框架；
 - 关系型数据库及版本；
 - 云供应商与中国大陆目标地域；
-- 对象存储/CDN、预签名分片直传和生命周期；
-- 队列、重试/死信和独立内容处理 Worker；
-- FFmpeg/ffprobe，以及可选 Python ASR/对齐 Worker 的边界；
+- 对象存储/CDN；
 - dev/test/prod 环境边界；
 - API 与资源域名；
 - 微信合法域名配置；
@@ -247,8 +242,6 @@ B 端实现前必须把现有 Markdown 契约转成 OpenAPI/JSON Schema，并补
 
 只实施 local/dev/test 和可重复部署方案。生产配置只提交无密钥模板；阶段 0 `GO` 前不部署或启用生产服务。
 
-建议基线为 Node.js 24 LTS + TypeScript + Fastify、PostgreSQL、Redis/BullMQ、MinIO/S3 兼容对象存储、FFmpeg/ffprobe 和可选 Python Worker。该建议必须在 B-01 ADR 中由双方确认后才算冻结。音频文件不得存入 PostgreSQL，也不得由 API 服务器代理整文件上传。详细设计见 `docs/批量音频字幕导入架构-v1.md`。
-
 ### 9.3 B-01 交付物
 
 - `backend/README.md`；
@@ -259,22 +252,30 @@ B 端实现前必须把现有 Markdown 契约转成 OpenAPI/JSON Schema，并补
 - local/dev/test 启动与部署命令；
 - `handoffBaseCommit`、契约版本和 B 分支提交 SHA。
 
+### 9.4 X-02 音频交付解阻要求
+
+X-02 已在 iPhone 真机复现当前 Archive.org 地址播放失败。B-01/B-04 的第一项可联调交付必须包含受控音频资源，至少满足：
+
+- 在中国大陆目标网络和 iPhone 微信中可访问的 HTTPS 对象存储/CDN地址；
+- 按微信后台实际规则配置对应合法域名，至少覆盖音频资源下载；
+- 直接返回可播放 MP3，不依赖 Cookie、网页会话或人工跳转；
+- 正确的 `Content-Type`、`Content-Length`，并支持字节 Range 请求及 `206 Partial Content`；
+- manifest 返回 `pieceId`、`contentVersion`、资源 URL、SHA-256、字节数、MIME 和时长；
+- dev/test/prod 资源隔离，签名地址的有效期足以支持后台播放且刷新策略有契约；
+- 用目标网络上的 iPhone 微信完成从头播放、拖动、后台和锁屏抽查，并保留请求/响应头与时间戳证据。
+
+当前 Archive.org 地址仍可保留为来源追溯字段，但不得继续作为正式运行时音频交付或 X-02 完成证据。
+
 ## 10. B-02 数据库与迁移
 
 ### 10.1 本轮核心对象
 
 - `users`：业务用户主键、最小化微信身份映射、状态、时间戳；
 - `user_sessions`：refresh token 摘要、设备/会话状态、过期与撤销；
-- `campuses`、`user_profiles`：稳定校区、年级、阅读级别及其可信来源；
 - `works`、`pieces`：稳定 ID、版本、发布状态、免费/付费属性；
 - `content_assets`：piece、内容版本、存储 key、SHA-256、状态；
-- `content_versions`、`content_reviews`：整套版本、审核门槛、发布指针和回滚；
-- `ingestion_batches`、`ingestion_items`：批次和每个文件的声明、状态及结果；
-- `upload_sessions`：预签名分片上传、对象 key、预期哈希和过期状态；
-- `processing_jobs`、`processing_artifacts`：Worker 任务、重试/死信和产物关系；
 - `quiz_packages`：题包版本和题目集合；
 - `quiz_attempts`：用户、piece、版本、逐题选择、服务端结果、时间；
-- `ranking_snapshots`：周期、校区、年级、级别、规则版本、聚合结果和生成时间；
 - `audit_events`：操作者、动作、目标、前后版本、requestId 和时间。
 
 可为未来阶段预留但本轮不开放 API：
@@ -339,15 +340,6 @@ AppSecret、openid 映射、refresh token 原文和服务器密钥不得进入�
 - 当前 Archive.org 音频地址只能作为候选来源，不能作为未来付费资源的鉴权机制；
 - 发布、回滚、缓存失效和 manifest hash 必须一致。
 
-### 12.3 批量内容导入
-
-- 管理端或受控导入 CLI 先创建批次，再通过短期预签名地址把音频、字幕等文件分片直传对象存储；
-- API 只负责控制面，完成上传后把任务写入 Redis/BullMQ；独立 Worker 负责哈希、格式、安全、音频探测/转码、字幕解析和版本组装；
-- 首版管理员接口包括批次创建/查询、上传会话创建/完成、批次 finalize、失败重试、取消、发布和回滚；
-- PostgreSQL 只保存元数据、任务和审计；原始文件、中间产物和发布资产进入不同存储前缀；
-- 同一 piece 版本必须原子发布，任何必需资产失败都不能让客户端读取半成品；
-- C-03/C-05 未关闭时，处理成功也只能进入待审核状态，不能把 `publishable:false` 提升为已发布。
-
 ### 12.3 发布限制
 
 B 可以导入测试环境候选数据，但不得：
@@ -363,7 +355,6 @@ B 可以导入测试环境候选数据，但不得：
 - 每个请求有 request/trace ID；
 - 登录、内容查询、manifest 获取、Quiz 验证、内容发布与回滚可审计；
 - 指标至少覆盖错误率、延迟、资源失败率、登录成功率和 Quiz 拒绝率；
-- 排行聚合延迟、失败率、快照版本和重算结果可观测；
 - 定义告警阈值、告警渠道和负责人；
 - dev/test/prod 日志和监控隔离；
 - 定义日志保存期限；
@@ -375,6 +366,8 @@ B 可以导入测试环境候选数据，但不得：
 ## 14. S 与 P 的预留边界
 
 ### 14.1 S 学习同步
+
+X 侧最初完成 S-01 客户端候选快照基础；当前工作区已经在相同安全边界上补齐 `api-contract-v1.1.0`、真实 API、显式同意页面、服务端可信重算、幂等回执和隔离 PostgreSQL 联调。该结果仅代表本机 `DONE_LOCAL_TEST`，不得视为日常跨设备同步或生产验收完成。
 
 后续必须单独冻结：
 
@@ -396,16 +389,13 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 1. B-01：冻结技术选择、环境、通用 API 规范和契约版本；
 2. B-02：完成数据库、迁移、测试种子和恢复演练；
 3. B-03：完成微信登录、会话与 `GET /me`；
-4. B-04：先完成批量直传、队列、Worker 和版本化导入，再完成 works、work、manifest 和测试环境资源鉴权；
+4. B-04：完成 works、work、manifest 和测试环境资源鉴权；
 5. Quiz：按现有 v1 契约实现服务端判题；
-6. B-06：冻结排行规则，完成校区、周期、年级、级别筛选和可信聚合；
-7. B-05：补齐日志、指标、告警、审计与回滚；
-8. B 发布固定契约版本和提交 SHA；
-9. X 在 `peter` 添加网络适配器和客户端契约测试；
-10. 双方在 test 环境完成错误、过期、重试、幂等和版本失效联调；
-11. 更新主计划状态，但阶段 0 未 `GO` 前不启用生产。
-
-逐项输入、操作、产物、测试和验收矩阵见 `docs/B后端详细实施步骤-v1.md`。
+6. B-05：补齐日志、指标、告警、审计与回滚；
+7. B 发布固定契约版本和提交 SHA；
+8. X 在 `peter` 添加网络适配器和客户端契约测试；
+9. 双方在 test 环境完成错误、过期、重试、幂等和版本失效联调；
+10. 更新主计划状态，但阶段 0 未 `GO` 前不启用生产。
 
 ## 16. 每个 B 任务的完成定义
 
@@ -436,7 +426,7 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 - [ ] `.env.example`；
 - [ ] 数据库 migrations 与 migration 测试；
 - [ ] local/dev/test 启动和部署说明；
-- [ ] session、content、Quiz、ranking 的自动测试；
+- [ ] session、content、Quiz 的自动测试；
 - [ ] 审计日志、指标和告警说明；
 - [ ] 备份、恢复和回滚记录；
 - [ ] 契约版本与 B 分支提交 SHA；
@@ -446,12 +436,12 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 
 客户端负责人收到 B 交付后：
 
+- [x] 建立默认关闭的通用网络基础层和 mock 测试，不预填真实契约；
 - [ ] 核对固定契约版本和 SHA；
-- [ ] 在 `peter` 新增正式 API 适配器，不修改 Demo 模块冒充正式实现；
+- [x] 在 `peter` 基于已核对契约新增具体业务 API 适配器，复用 X-06 且不修改 Demo 模块冒充正式实现；
 - [ ] 接入 `wx.login`、会话刷新与退出；
 - [ ] 接入内容列表、详情和 manifest；
 - [ ] 接入 Quiz 服务端验证并保留 `local_unverified` 降级状态；
-- [ ] 接入 ranking options 和 rankings，将校区、周期、周/月、年级和级别控件映射为契约参数；
 - [ ] 对所有稳定错误码建立 UI 行为；
 - [ ] 增加契约测试、弱网、过期、重试和版本失效测试；
 - [ ] 保持 production/Demo 物理隔离；
@@ -467,7 +457,6 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 - 后端语言、框架和数据库；
 - access/refresh token 具体有效期；
 - 日志保存期限和告警渠道；
-- 排名指标、并列规则、最小样本量、用户展示名和档案变更生效规则；
 - 小程序主体、类目、隐私和未成年人方案；
 - C-03 外部权利签署与 C-05 发布结论；
 - S、P 阶段的正式排期和负责人。
@@ -476,8 +465,7 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 
 - `docs/正式产品实施计划-v1.1.md`；
 - `docs/阶段0核验表-v1.0.md`；
-- `backend/contracts/openapi.json`；
-- `docs/B后端详细实施步骤-v1.md`；
+- `docs/Quiz-attempt-API-v1.md`；
 - `docs/X-02真机验收记录-template.md`；
 - `docs/X-05体验版正式版验收记录-template.md`；
 - `miniprogram/services/host.js`；
@@ -492,10 +480,11 @@ P 阶段只有在阶段 0 `GO` 后才能实施或启用。未来价格、支付�
 | 项目 | 记录 |
 | --- | --- |
 | 交接文档版本 | v1 |
-| X 负责人确认 | 2026-09-24 已确认采用建议技术基线和分支方案 |
-| B 负责人确认 | Codex 按确认内容开始实施，后续由实际后端负责人复核签署 |
+| X 负责人确认 | 待签署 |
+| B 负责人确认 | 待签署 |
 | B 分支名称 | `backend/v1` |
 | `handoffBaseCommit` | `7b882b22bfcf535cf2677616cfa82b6bb3d8a70e` |
-| 首个契约版本 | `api-contract-v1.0.0`（2026-09-24 工作区校验通过） |
-| B 契约提交 SHA | 待实际创建 B 分支提交后填写；当前未擅自提交用户工作区改动 |
-| 联调开始日期 | 待双方确认 |
+| 首个契约版本 | `api-contract-v1.0.0` |
+| B 契约提交 SHA | `9efe8aac1d499fb14a81929ae3106fdea823cb25` |
+| 接收日期 | 2026-09-28 |
+| 当前联调状态 | 后端与核心客户端适配已合并；本机真实依赖、排行完整 UI 和 S-01 服务端接口已完成联调；真实微信、生产环境和真机证据待完成 |

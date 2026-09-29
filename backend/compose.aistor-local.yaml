@@ -1,0 +1,9 @@
+# Optional local-only AIStor Free override. Keep ../minio.license out of Git.
+services:
+  minio:
+    image: quay.io/minio/aistor/minio:RELEASE.2026-09-07T08-39-31Z@sha256:afcfb54652c40c973012da19f924ebd591d7115d74ea5b75bcb6dc7edaf06c04
+    command: ["minio", "server", "/data", "--console-address", ":9001", "--license", "/minio.license"]
+    volumes:
+      - ../minio.license:/minio.license:ro
+  minio-init:
+    image: quay.io/minio/aistor/mc:RELEASE.2026-09-06T02-44-40Z@sha256:b8a369454c7cffe3aab1cc6e6b3e7e1eb958415ea275315245d994d830299dbb

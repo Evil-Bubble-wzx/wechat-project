@@ -21,8 +21,8 @@ const subtitles = require('../modules/listen-read/subtitles')
 const contentNotices = require('../modules/content-notices')
 const quizAttempts = require('../modules/quiz/attempts')
 const reportAggregate = require('../modules/report/aggregate')
+const localImport = require('../modules/sync/local-import')
 const rankingState = require('../modules/ranking/state')
-const rankingModel = require('../modules/ranking/model')
 const defaults = () => ({ favorites:[], recent:[], progress:{}, results:[], user:null, listeningSec:0, listenDaily:{} })
 /* @demo-start */
 const addDemoDefaults = state => {if(!Array.isArray(state.loans))state.loans=[];if(!Array.isArray(state.demoCoupons))state.demoCoupons=[];if(typeof state.demoInvitationCompleted!=='boolean')state.demoInvitationCompleted=false;if(!Array.isArray(state.demoPurchases))state.demoPurchases=[];return state}
@@ -40,44 +40,13 @@ const couponViews = (state, now = Date.now()) => (state.demoCoupons || []).map(c
 }))
 /* @demo-end */
 const tabs = [{id:'home',label:'Home',icon:'home'},{id:'recent',label:'Recent',icon:'play'},{id:'me',label:'Me',icon:'user'}]
-const titles = { home:'Tingyue',library:'Find Books',me:'Me',detail:'Book Details',player:'Read for Me',recent:'Recent',report:'My Quizzes',ranking:'Rankings','ranking-detail':'Quiz Details',login:'Welcome',quiz:'Take Quiz',notices:'内容来源与许可' }
+const titles = { home:'Tingyue',library:'Find Books',me:'Me',detail:'Book Details',player:'Read for Me',recent:'Recent',report:'My Quizzes',ranking:'Rankings',login:'Welcome',quiz:'Take Quiz',notices:'内容来源与许可' }
 /* @demo-start */
 Object.assign(titles,{loans:'Borrowed',coupons:'My Coupons',invite:'Invite Friends'})
 /* @demo-end */
-const rankingTypes = [
-  {id:'seven',label:'7-Day',description:'Rolling last 7 days'},
-  {id:'week',label:'Weekly',description:'Strict calendar week'},
-  {id:'month',label:'Monthly',description:'Calendar month'},
-  {id:'year',label:'Yearly',description:'Calendar year'}
-]
-const campusOptions = [{id:'a',label:'A Campus'},{id:'b',label:'B Campus'}]
-const gradeOptions = [{id:'all',label:'All Grades'},{id:'k',label:'Kindergarten'},...Array.from({length:9},(_,i)=>({id:String(i+1),label:'Grade '+(i+1)}))]
-const levelOptions = [{id:'all',label:'All Levels'},...Array.from({length:5},(_,i)=>({id:String(i+1),label:'Lv '+(i+1)+'.x'}))]
-const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December']
-const shortDate = date => pad2(date.getMonth()+1)+'/'+pad2(date.getDate())
-const dateKey = date => date.getFullYear()+'-'+pad2(date.getMonth()+1)+'-'+pad2(date.getDate())
-function isoWeek(date) {
-  const target=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()))
-  const day=target.getUTCDay()||7
-  target.setUTCDate(target.getUTCDate()+4-day)
-  const year=target.getUTCFullYear(),yearStart=new Date(Date.UTC(year,0,1))
-  return {year,week:Math.ceil((((target-yearStart)/86400000)+1)/7)}
-}
-function weekOptionsFrom(base=new Date()) {
-  const monday=new Date(base);monday.setHours(12,0,0,0);monday.setDate(monday.getDate()-((monday.getDay()+6)%7))
-  return Array.from({length:12},(_,index)=>{
-    const start=new Date(monday);start.setDate(start.getDate()-index*7)
-    const end=new Date(start);end.setDate(end.getDate()+6)
-    const value=isoWeek(start)
-    return {id:value.year+'-W'+pad2(value.week),label:value.year+' · Week '+value.week,description:shortDate(start)+'–'+shortDate(end),startDate:dateKey(start),endDate:dateKey(end)}
-  })
-}
-function monthOptionsFrom(base=new Date()) {
-  return Array.from({length:12},(_,index)=>{
-    const date=new Date(base.getFullYear(),base.getMonth()-index,1),year=date.getFullYear(),month=date.getMonth()+1
-    return {id:year+'-'+pad2(month),label:year+' · '+pad2(month),description:monthNames[month-1]+' '+year}
-  })
-}
+const rankingTypes = []
+const rankOption = item => ({id:String(item.value),label:String(item.label)})
+const rankAll = [{id:'all',label:'全部'}]
 const time = s => Math.floor(s/60).toString().padStart(2,'0') + ':' + Math.floor(s%60).toString().padStart(2,'0')
 function playableBook(book, chapterId) {
   const chapter = (book.chapters || []).find(item => item.id === chapterId) || (book.chapters || [])[0]
@@ -97,18 +66,13 @@ function createPage(requestedRoute) {
   const visibleBooks=isDemo?books:books.filter(book=>policy.allowsBook(book.id))
   const firstBook=visibleBooks[0]
   const ranking=rankingState.view('unavailable')
-  const weekOptions=weekOptionsFrom(),monthOptions=monthOptionsFrom(),selectedWeek=weekOptions[0],selectedMonth=monthOptions[0]
-  const emptyRankingDetail=rankingModel.normalizeDetail()
-  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteCatalogStatus:'idle', sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, campusOptions,campus:'a',campusLabel:'A Campus',rankingTypes,rankingType:'seven',rankingTypeLabel:'7-Day',weekOptions,monthOptions,selectedWeek:selectedWeek.id,selectedWeekLabel:selectedWeek.label,selectedMonth:selectedMonth.id,selectedMonthLabel:selectedMonth.label,gradeOptions,levelOptions,rankGrade:'all',rankGradeLabel:'All Grades',rankLevel:'all',rankLevelLabel:'All Levels',rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingMetricLabel:rankingModel.METRIC_LABEL, rankingEntries:[], rankingRangeLabel:'', rankingRuleVersion:'', rankingDetail:emptyRankingDetail, rankingQuizQuery:'', rankingQuizSort:'takenAt', rankingQuizSortLabel:rankingModel.sortOptions[0].label, rankingQuizSortOptions:rankingModel.sortOptions, rankingQuizRows:[], stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
-  data.rankingStartsAt=null
-  data.rankingEndsAt=null
+  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
   /* @demo-end */
   return {
     data,
-    onLoad(options) {if(!routeAllowed){host.go('home');return}const [bookId,chapterId]=((options&&options.id)||firstBook.id).split(':');const base=visibleBooks.find(b=>b.id===bookId)||firstBook;const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.remoteParticipantId=options&&options.id;this.setData({inset:host.inset(),book,duration:time(book.duration),contentNotices});if(route==='player'){const current=player.snapshot();if(current.pieceId!==cueKey(book))player.selectTrack(book);this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(route==='quiz')this.setupQuiz();if(route==='ranking-detail')this.setupRankingDetail(this.remoteParticipantId);this.refresh();this.loadRemote()},
-    setupRankingDetail(participantId) {const selected=rankingModel.selection(participantId);const fallback=selected?Object.assign({},selected.entry,selected.context):{participantId};const detail=rankingModel.normalizeDetail(selected?.context?.detail||{},fallback);this.rankingDetailSource=detail;this.setData({rankingDetail:detail,rankingQuizRows:rankingModel.visibleQuizzes(detail.quizzes),rankingQuizQuery:'',rankingQuizSort:'takenAt',rankingQuizSortLabel:rankingModel.sortOptions[0].label})},
+    onLoad(options) {if(!routeAllowed){host.go('home');return}const [bookId,chapterId]=((options&&options.id)||firstBook.id).split(':');const base=visibleBooks.find(b=>b.id===bookId)||firstBook;const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration),contentNotices});if(route==='player'){const current=player.snapshot();if(current.pieceId!==cueKey(book))player.selectTrack(book);this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(route==='quiz')this.setupQuiz();this.refresh();this.loadRemote()},
     setupQuiz() {
       const book=this.data.book
       let selectedPackage=quizPackage
@@ -163,8 +127,7 @@ function createPage(requestedRoute) {
         for(const chapter of book.chapters||[])compatiblePieces[chapter.id]={contentVersion:book.contentVersion??null,quizVersion:1}
       }
       const report=reportAggregate.summarize(s.results,compatiblePieces)
-      const accountUser=isDemo?null:api.currentUser()
-      const update={user:accountUser,favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?(s.words||[]).join(' · '):'在听读字幕中点击单词，把新认识的词收进来。',recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
+      const update={user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordsText:(s.words||[]).length?(s.words||[]).join(' · '):'在听读字幕中点击单词，把新认识的词收进来。',recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
       /* @demo-start */
       if(isDemo){
         const loanList=s.loans.map(l=>Object.assign({},l,{book:books.find(b=>b.id===l.bookId)})).filter(l=>l.book && (this.data.loanFilter==='all'||l.status===this.data.loanFilter))
@@ -189,7 +152,6 @@ function createPage(requestedRoute) {
       /* @demo-start */
       if(isDemo&&!this.state.user){host.go('login');return false}
       /* @demo-end */
-      if(!isDemo&&!api.isAuthenticated()){host.go('login');return false}
       return true
     },
     /* @demo-start */
@@ -207,23 +169,43 @@ function createPage(requestedRoute) {
     renewLoan(e) {if(!this.requireDemo())return;try{this.state.loans=this.state.loans.map(l=>l.id===e.currentTarget.dataset.id?rules.renew(l):l);this.save();host.toast('续借成功')}catch(e){host.toast(e.message)}},
     /* @demo-end */
     showSheet(e) {this.setData({sheet:e.currentTarget.dataset.sheet})},
-    closeSheet() {const token=this.data.sheet==='word'&&this.wordResume;this.wordResume=null;this.setData({sheet:''});const current=player.snapshot();if(token&&token.sessionId===current.sessionId&&token.pieceId===current.pieceId&&current.status==='paused'&&current.pauseReason==='word')player.resume()},
+    openLocalImport() {
+      if(isDemo)return
+      if(!api.isAuthenticated()){host.toast('请先登录微信账户');host.go('login');return}
+      const plan=localImport.prepareLocalImport({progress:this.state.progress,words:this.state.words,results:this.state.results})
+      this.localImportPlan=plan;this.localImportSession=localImport.createImportSession(plan)
+      this.setData({sheet:'localImport',localImportReady:plan.ready,localImportConsented:false,localImportBusy:false,localImportSummary:plan.summary,localImportErrors:plan.errors,localImportErrorText:plan.errors.join('；'),localImportReceipt:null})
+    },
+    toggleLocalImportConsent() {if(!this.localImportSession||!this.data.localImportReady)return;if(this.data.localImportConsented)this.localImportSession.decline();else this.localImportSession.consent();this.setData({localImportConsented:!this.data.localImportConsented})},
+    async submitLocalImport() {
+      if(!this.localImportSession||!this.data.localImportConsented||this.data.localImportBusy)return
+      this.setData({localImportBusy:true})
+      try{
+        const receipt=await this.localImportSession.submit(request=>api.localImport(request))
+        const results=new Map((receipt.items?.quizAttempts||[]).map(item=>[item.attemptId,item]))
+        this.state.results=(this.state.results||[]).map(item=>{const result=results.get(item.attemptId);return result?Object.assign({},item,result):item})
+        this.state.localImportReceipts=[{snapshotId:receipt.snapshotId,acknowledgedAt:receipt.acknowledgedAt,summary:receipt.summary},...(this.state.localImportReceipts||[]).filter(item=>item.snapshotId!==receipt.snapshotId)].slice(0,10)
+        this.save();this.setData({localImportReceipt:receipt});this.refresh();host.toast(receipt.duplicate?'该批数据已导入':'本机学习数据已确认')
+      }catch(_){host.toast('导入失败，本机数据未丢失')}
+      finally{this.setData({localImportBusy:false})}
+    },
+    closeSheet() {const token=this.data.sheet==='word'&&this.wordResume;this.wordResume=null;if(this.data.sheet==='rankingDetail')this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.setData({sheet:''});const current=player.snapshot();if(token&&token.sessionId===current.sessionId&&token.pieceId===current.pieceId&&current.status==='paused'&&current.pauseReason==='word')player.resume()},
     noop() {},
+    agreement() {this.setData({agreed:!this.data.agreed})},
     /* @demo-start */
     loginMethod(e) {this.setData({loginMethod:e.currentTarget.dataset.id})},
     phoneInput(e) {this.setData({phone:e.detail.value})},
     codeInput(e) {this.setData({code:e.detail.value})},
     sendCode() {if(!this.requireDemo())return;if(!/^1\d{10}$/.test(this.data.phone)){host.toast('请输入 11 位手机号');return}this.setData({codeSent:true});host.toast('演示验证码：123456，未发送短信')},
     /* @demo-end */
-    agreement() {this.setData({agreed:!this.data.agreed})},
     async login() {
       /* @demo-start */
       if(isDemo){try{this.state.user=demoLogin(this.data.loginMethod,this.data.phone,this.data.code,this.data.agreed);this.save();host.toast('已进入演示账户');host.back()}catch(e){host.toast(e.message)}return}
       /* @demo-end */
       if(!this.data.agreed){host.toast('请先阅读并同意用户协议和隐私政策');return}
-      if(!api.available()){host.toast('账户服务暂不可用，请检查开发环境 API 地址');return}
+      if(!api.available()){host.toast('账户服务暂不可用，请检查 API 地址');return}
       this.setData({accountBusy:true})
-      try{await api.loginWechat();this.refresh();host.toast('微信登录成功');host.back()}catch(error){host.toast(error?.code==='RATE_LIMITED'?'操作过于频繁，请稍后再试':'微信登录失败，请稍后重试')}finally{this.setData({accountBusy:false})}
+      try{await api.loginWechat();this.refresh();host.toast('微信登录成功');host.back()}catch(_){host.toast('微信登录失败，请稍后重试')}finally{this.setData({accountBusy:false})}
     },
     async logout() {
       /* @demo-start */
@@ -248,78 +230,96 @@ function createPage(requestedRoute) {
     nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const base=visibleBooks.find(b=>b.id===current.id)||firstBook;const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=visibleBooks.findIndex(b=>b.id===current.id);book=playableBook(visibleBooks[(i+step+visibleBooks.length)%visibleBooks.length])}player.selectTrack(book);this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false});this.updateSubtitles(0,true)},
     openQuiz() {const book=this.data.book;const pieceId=book.chapterId||(book.chapters||[])[0]?.id;/* @demo-start */if(book.workId!=='peter-rabbit'&&!(legacyQuizzes[pieceId]||[]).length){host.toast('这一章暂时没有小测');return}/* @demo-end */this.wordResume=null;player.pause('quiz');host.go('quiz',book.id+(pieceId?':'+pieceId:''))},
     playOption(e) {const option=this.data.quizOptions[Number(e.currentTarget.dataset.index)];if(!option?.audio)return;player.pause('quiz_option');if(!this.optionAudio)this.optionAudio=wx.createInnerAudioContext();this.optionAudio.stop();this.optionAudio.src=option.audio;this.optionAudio.play()},
-    onUnload() {this.detachPlayer();if(this.optionAudio)this.optionAudio.destroy()},
+    onUnload() {this.rankingEpoch=(this.rankingEpoch||0)+1;this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.detachPlayer();if(this.optionAudio)this.optionAudio.destroy()},
     answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
     nextQuestion() {if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];this.selectedOptions[this.data.questionIndex]=this.data.answer;const n=this.data.questionIndex+1;if(n>=this.questions.length){const attempt=quizAttempts.createLocalAttempt({quizPackage:this.quizPackage,book:this.data.book,selectedOptions:this.selectedOptions,startedAt:this.quizStartedAt});this.state.results=[attempt,...this.state.results];this.save();this.setData({result:true,score:attempt.score,scores,quizResultStatus:'本机练习结果 · 未经服务端验证'});this.submitQuizAttempt(attempt)}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
-    async submitQuizAttempt(attempt) {if(!api.available()||!api.isAuthenticated())return;try{const result=await api.submitQuiz(attempt);const merged=Object.assign({},attempt,result,{title:attempt.title});this.state.results=this.state.results.map(item=>item.attemptId===attempt.attemptId?merged:item);this.save();this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端已拒绝 · '+(result.error?.message||'请重新作答')})}catch(error){this.setData({quizResultStatus:error?.code==='RATE_LIMITED'?'提交过于频繁，结果暂存本机':'网络提交失败 · 结果已安全保存在本机'})}},
+    async submitQuizAttempt(attempt) {if(!api.available()||!api.isAuthenticated())return;try{const result=await api.submitQuiz(attempt);const merged=Object.assign({},attempt,result,{title:attempt.title});this.state.results=this.state.results.map(item=>item.attemptId===attempt.attemptId?merged:item);this.save();this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端未接受 · 结果保留在本机'})}catch(_){this.setData({quizResultStatus:'网络提交失败 · 结果已安全保存在本机'})}},
     retryQuiz() {this.setupQuiz()},
     async loadRemote() {
       this.remoteLoadedOnce=true
-      if(!api.available())return
-      if(route==='ranking'){await this.loadRankingOptions();await this.loadRanking();return}
-      if(route==='ranking-detail'){await this.loadRankingDetail(this.remoteParticipantId);return}
-      if(['home','library'].includes(route)){await this.loadRemoteCatalog();return}
+      if(route==='ranking'){await this.loadRankingOptions();return}
+      if(!api.available()||!api.isAuthenticated())return
       if(['detail','player','quiz'].includes(route))await this.loadRemoteContent()
     },
-    async loadRemoteCatalog() {
-      if(!api.isAuthenticated())return
-      try{
-        const response=await api.listWorks(null,50)
-        if(!response.items?.length){this.setData({remoteCatalogStatus:'empty'});return}
-        const merged=response.items.map(item=>{const local=visibleBooks.find(book=>book.id===item.workId);return Object.assign({},local||{id:item.workId,author:'',zh:'',series:'',editionLabel:'',number:item.workId,internalContentNumber:item.workId,words:0,pages:null,category:'fiction',stock:0,chapters:[]},{id:item.workId,workId:item.workId,title:item.title,cover:item.coverUrl||(local&&local.cover),pieceCount:item.pieceCount,access:item.access})})
-        this.setData({books:merged,shown:merged,featured:merged.slice(0,3),recommendations:merged.slice(0,2),remoteCatalogStatus:'ready'})
-      }catch(_){this.setData({remoteCatalogStatus:'unavailable'})}
-    },
     async loadRemoteContent() {
-      if(!api.isAuthenticated())return
       try{
         const response=await api.getWork(this.data.book.workId||this.data.book.id)
-        const wanted=cueKey(this.data.book),piece=response.pieces.find(item=>item.pieceId===wanted)||response.pieces[0]
+        const wanted=cueKey(this.data.book),piece=(response.pieces||[]).find(item=>item.pieceId===wanted)||(response.pieces||[])[0]
         if(!piece)return
         const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion)
-        const audio=manifest.assets.find(asset=>asset.type==='audio'),cover=manifest.assets.find(asset=>asset.type==='cover')
+        const audio=(manifest.assets||[]).find(asset=>asset.type==='audio'),cover=(manifest.assets||[]).find(asset=>asset.type==='cover')
         const book=Object.assign({},this.data.book,{workId:manifest.workId,pieceId:manifest.pieceId,contentVersion:manifest.contentVersion,quizVersion:manifest.quizVersion,localAudio:audio?.url||this.data.book.localAudio,cover:cover?.url||this.data.book.cover,remoteManifest:manifest})
-        this.setData({book,duration:time(book.duration)})
-      }catch(_){}
-    },
-    rankingFilters() {
-      const periodType=this.data.rankingType==='seven'?'rolling7':this.data.rankingType
-      const periodKey=periodType==='week'?this.data.selectedWeek:periodType==='month'?this.data.selectedMonth:undefined
-      return {campusId:this.data.campus,periodType,periodKey,grade:this.data.rankGrade,level:this.data.rankLevel,limit:50}
-    },
-    async loadRankingOptions() {
-      if(!api.isAuthenticated())return
-      try{
-        const options=await api.rankingOptions()
-        const campusOptionsRemote=options.campuses.map(item=>({id:item.value,label:item.label}))
-        const rankingTypesRemote=options.periodTypes.map(item=>({id:item.value==='rolling7'?'seven':item.value,label:item.label,description:item.requiresPeriodSelection?'选择具体周期':'当前周期'}))
-        const weekOptionsRemote=options.periods.week.map(item=>({id:item.key,label:item.label,description:shortDate(new Date(item.startsAt))+'–'+shortDate(new Date(item.endsAt))}))
-        const monthOptionsRemote=options.periods.month.map(item=>({id:item.key,label:item.label,description:item.key}))
-        this.setData({campusOptions:campusOptionsRemote.length?campusOptionsRemote:this.data.campusOptions,rankingTypes:rankingTypesRemote.length?rankingTypesRemote:this.data.rankingTypes,weekOptions:weekOptionsRemote.length?weekOptionsRemote:this.data.weekOptions,monthOptions:monthOptionsRemote.length?monthOptionsRemote:this.data.monthOptions,gradeOptions:options.grades.map(item=>({id:item.value,label:item.label})),levelOptions:options.levels.map(item=>({id:item.value,label:item.label}))})
-      }catch(_){}
-    },
-    async loadRanking() {
-      if(!api.isAuthenticated()){const state=rankingState.view('unauthenticated');this.setData({rankingStatus:state.status,rankingStatusTitle:state.title,rankingStatusDescription:state.description,rankingEntries:[]});return}
-      if(!api.available()){const state=rankingState.view('unavailable');this.setData({rankingStatus:state.status,rankingStatusTitle:state.title,rankingStatusDescription:state.description,rankingEntries:[]});return}
-      const token=Date.now()+Math.random();this.rankingRequestToken=token
-      try{const payload=await api.rankings(this.rankingFilters());if(this.rankingRequestToken!==token)return;const currentId=payload.currentUser?.participantId;payload.items=(payload.items||[]).map(item=>Object.assign({},item,{isCurrentUser:item.participantId===currentId}));this.applyRankingPayload(payload)}catch(error){if(this.rankingRequestToken!==token)return;const state=rankingState.view(error?.code==='UNAUTHENTICATED'?'unauthenticated':'unavailable');this.setData({rankingStatus:state.status,rankingStatusTitle:state.title,rankingStatusDescription:state.description,rankingEntries:[]})}
-    },
-    async loadRankingDetail(participantId) {
-      if(!participantId||!api.available()||!api.isAuthenticated())return
-      try{const payload=await api.rankingDetail(participantId,Object.assign(this.rankingFilters(),{limit:100}));this.applyRankingDetail(payload)}catch(_){}
+        this.setData({book,remoteContentStatus:'ready'})
+        if(route==='player'&&audio?.url){player.selectTrack(book);this.syncPlayer(player.snapshot(),true)}
+      }catch(_){this.setData({remoteContentStatus:'unavailable'})}
     },
     chooseRecentMode(e) {const recentMode=e.currentTarget.dataset.id;this.setData({recentMode,readingList:recentMode==='favorites'?this.data.favoriteBooks:this.data.recent})},
-    chooseCampus(e) {const option=this.data.campusOptions.find(item=>item.id===e.currentTarget.dataset.id);if(option){this.setData({campus:option.id,campusLabel:option.label,sheet:''});this.loadRanking()}},
-    chooseRankingType(e) {const option=this.data.rankingTypes.find(item=>item.id===e.currentTarget.dataset.id);if(option){this.setData({rankingType:option.id,rankingTypeLabel:option.label,sheet:''});this.loadRanking()}},
-    chooseRankingPeriod(e) {const options=this.data.rankingType==='week'?this.data.weekOptions:this.data.monthOptions;const option=options.find(item=>item.id===e.currentTarget.dataset.id);if(!option)return;if(this.data.rankingType==='week')this.setData({selectedWeek:option.id,selectedWeekLabel:option.label,sheet:''});else this.setData({selectedMonth:option.id,selectedMonthLabel:option.label,sheet:''});this.loadRanking()},
-    chooseRankGrade(e) {const option=this.data.gradeOptions.find(item=>item.id===e.currentTarget.dataset.id);if(option)this.setData({rankGrade:option.id,rankGradeLabel:option.label})},
-    chooseRankLevel(e) {const option=this.data.levelOptions.find(item=>item.id===e.currentTarget.dataset.id);if(option)this.setData({rankLevel:option.id,rankLevelLabel:option.label})},
-    applyRankFilter() {this.setData({sheet:''});this.loadRanking()},
-    applyRankingPayload(payload) {const board=rankingModel.normalizeLeaderboard(payload);const state=rankingState.view(board.status);this.rankingDetailsByParticipant=payload?.detailsByParticipant||{};this.setData({rankingStatus:state.status,rankingStatusTitle:state.title,rankingStatusDescription:state.description,rankingEntries:board.items,rankingRangeLabel:board.rangeLabel,rankingStartsAt:board.startsAt,rankingEndsAt:board.endsAt,rankingRuleVersion:board.ruleVersion})},
-    openRankingDetail(e) {const participantId=e.currentTarget.dataset.id;const entry=this.data.rankingEntries.find(item=>item.participantId===participantId);if(!entry){host.toast('该排名明细暂不可用');return}rankingModel.rememberSelection(entry,{periodLabel:this.data.rankingTypeLabel,startsAt:this.data.rankingStartsAt,endsAt:this.data.rankingEndsAt,rangeLabel:this.data.rankingRangeLabel,ruleVersion:this.data.rankingRuleVersion,detail:this.rankingDetailsByParticipant?.[participantId]});host.go('ranking-detail',participantId)},
-    applyRankingDetail(payload) {const fallback=this.data.rankingDetail||{};const detail=rankingModel.normalizeDetail(payload,fallback);this.rankingDetailSource=detail;this.setData({rankingDetail:detail,rankingQuizRows:rankingModel.visibleQuizzes(detail.quizzes,this.data.rankingQuizQuery,this.data.rankingQuizSort)})},
-    inputRankingQuizSearch(e) {const query=e.detail.value;this.setData({rankingQuizQuery:query,rankingQuizRows:rankingModel.visibleQuizzes(this.rankingDetailSource?.quizzes||[],query,this.data.rankingQuizSort)})},
-    chooseRankingQuizSort(e) {const option=rankingModel.sortOptions.find(item=>item.id===e.currentTarget.dataset.id);if(!option)return;this.setData({rankingQuizSort:option.id,rankingQuizSortLabel:option.label,rankingQuizRows:rankingModel.visibleQuizzes(this.rankingDetailSource?.quizzes||[],this.data.rankingQuizQuery,option.id),sheet:''})},
+    setRankingStatus(status) {const value=rankingState.view(status);this.setData({rankingStatus:value.status,rankingStatusTitle:value.title,rankingStatusDescription:value.description})},
+    async loadRankingOptions() {
+      const epoch=this.rankingEpoch=(this.rankingEpoch||0)+1
+      if(!api.available()){this.setRankingStatus('unavailable');return}
+      if(!api.isAuthenticated()){this.setRankingStatus('unauthenticated');return}
+      this.setRankingStatus('loading')
+      try {
+        const options=await api.rankingOptions()
+        if(epoch!==this.rankingEpoch)return
+        const campuses=(options.campuses||[]).map(rankOption),types=(options.periodTypes||[]).filter(item=>item.value!=='year').map(rankOption)
+        const type=types.find(item=>item.id===this.data.rankingType)||types.find(item=>item.id==='rolling7')||types[0]
+        const campusIndex=campuses.findIndex(item=>item.id===this.data.rankingCampuses[this.data.rankingCampusIndex]?.id)
+        const grades=[...rankAll,...(options.grades||[]).filter(item=>item.value!=='all').map(rankOption)]
+        const levels=[...rankAll,...(options.levels||[]).filter(item=>item.value!=='all').map(rankOption)]
+        this.rankingOptions=options
+        this.setData({rankingTypes:types,rankingType:type?.id||'',rankingTypeLabel:type?.label||'',rankingCampuses:campuses,rankingCampusIndex:campusIndex,rankingGrades:grades,rankingGradeIndex:Math.max(0,grades.findIndex(item=>item.id===this.data.rankingGrades[this.data.rankingGradeIndex]?.id)),rankingLevels:levels,rankingLevelIndex:Math.max(0,levels.findIndex(item=>item.id===this.data.rankingLevels[this.data.rankingLevelIndex]?.id))})
+        this.updateRankingPeriods()
+        if(!campuses.length)this.setRankingStatus('unavailable')
+        else if(campusIndex<0)this.setRankingStatus('choose_campus')
+        else await this.loadRankings()
+      }catch(_){if(epoch===this.rankingEpoch)this.setRankingStatus('error')}
+    },
+    updateRankingPeriods() {const periods=((this.rankingOptions||{}).periods||{})[this.data.rankingType]||[];this.setData({rankingPeriods:periods.map(item=>({id:item.key,label:item.label})),rankingPeriodIndex:0})},
+    rankingFilters(cursor) {return {campusId:this.data.rankingCampuses[this.data.rankingCampusIndex]?.id,periodType:this.data.rankingType,periodKey:this.data.rankingPeriods[this.data.rankingPeriodIndex]?.id,grade:this.data.rankingGrades[this.data.rankingGradeIndex]?.id||'all',level:this.data.rankingLevels[this.data.rankingLevelIndex]?.id||'all',cursor,limit:50}},
+    async loadRankings(cursor) {
+      const filters=this.rankingFilters(cursor)
+      if(!filters.campusId){this.setRankingStatus('choose_campus');return}
+      const epoch=cursor?this.rankingEpoch:(this.rankingEpoch=(this.rankingEpoch||0)+1)
+      if(this.data.rankingBusy&&cursor)return
+      this.setData({rankingBusy:true,...(!cursor?{rankingItems:[],rankingNextCursor:null,rankingCurrentUser:null}:{})})
+      if(!cursor)this.setRankingStatus('loading')
+      try {
+        const response=await api.rankings(filters)
+        if(epoch!==this.rankingEpoch)return
+        const status=response.status==='ready'&&response.cohortSize>=response.minimumCohortSize?'ready':response.status==='cohort_too_small'||response.status==='ready'?'cohort_too_small':'unavailable'
+        if(status!=='ready'){this.setData({rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null});this.setRankingStatus(status);return}
+        const items=(response.items||[]).map(item=>({rank:item.rank,participantId:item.participantId,displayName:item.displayName,gradeLabel:item.gradeLabel,readingLevelLabel:item.readingLevelLabel,score:item.metric?.value,scoreUnit:item.metric?.unit||'分'}))
+        const previous=cursor?this.data.rankingItems:[]
+        const ids=new Set(previous.map(item=>item.participantId))
+        this.setData({rankingItems:[...previous,...items.filter(item=>!ids.has(item.participantId))],rankingNextCursor:response.nextCursor||null,rankingCurrentUser:response.currentUser||null})
+        this.setRankingStatus('ready')
+      }catch(_){if(epoch===this.rankingEpoch)this.setRankingStatus('error')}
+      finally{if(epoch===this.rankingEpoch)this.setData({rankingBusy:false})}
+    },
+    chooseRankingType(e) {const option=this.data.rankingTypes.find(item=>item.id===e.currentTarget.dataset.id);if(!option)return;this.setData({rankingType:option.id,rankingTypeLabel:option.label});this.updateRankingPeriods();this.loadRankings()},
+    chooseRankingCampus(e) {this.setData({rankingCampusIndex:Number(e.detail.value)});this.loadRankings()},
+    chooseRankingGrade(e) {this.setData({rankingGradeIndex:Number(e.detail.value)});this.loadRankings()},
+    chooseRankingLevel(e) {this.setData({rankingLevelIndex:Number(e.detail.value)});this.loadRankings()},
+    chooseRankingPeriod(e) {this.setData({rankingPeriodIndex:Number(e.detail.value)});this.loadRankings()},
+    retryRanking() {this.loadRankingOptions()},
+    moreRankings() {if(this.data.rankingNextCursor&&!this.data.rankingBusy)this.loadRankings(this.data.rankingNextCursor)},
+    openRankingDetail(e) {const id=e.currentTarget.dataset.id;if(!id||this.data.rankingStatus!=='ready')return;this.setData({sheet:'rankingDetail',rankingDetail:null,rankingDetailStatus:'loading',rankingDetailNextCursor:null});this.loadRankingDetail(id)},
+    async loadRankingDetail(id,cursor) {
+      const epoch=cursor?this.rankingDetailEpoch:(this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1)
+      if(this.data.rankingDetailBusy&&cursor)return
+      this.setData({rankingDetailBusy:true})
+      try {
+        const response=await api.rankingDetail(id,this.rankingFilters(cursor))
+        if(epoch!==this.rankingDetailEpoch||this.data.sheet!=='rankingDetail')return
+        const quizzes=(response.quizzes||[]).map(item=>({attemptId:item.attemptId,title:item.title,takenAt:item.takenAt,correctPercent:item.correctPercent,level:item.level,wordCount:item.wordCount,completed:item.completed}))
+        const detail={participant:response.participant,rankingScore:response.rankingScore,scoreBreakdown:(response.scoreBreakdown||[]).map(item=>({key:item.key,label:item.label,points:item.points,maxPoints:item.maxPoints})),stats:response.stats,quizzes:cursor?[...(this.data.rankingDetail?.quizzes||[]),...quizzes]:quizzes}
+        this.setData({rankingDetail:detail,rankingDetailNextCursor:response.nextCursor||null,rankingDetailStatus:'ready'})
+      }catch(_){if(epoch===this.rankingDetailEpoch)this.setData({rankingDetailStatus:'error'})}
+      finally{if(epoch===this.rankingDetailEpoch)this.setData({rankingDetailBusy:false})}
+    },
+    moreRankingDetail() {if(this.data.rankingDetailNextCursor&&!this.data.rankingDetailBusy)this.loadRankingDetail(this.data.rankingDetail.participant.participantId,this.data.rankingDetailNextCursor)},
     noopRanking() {}
   }
 }

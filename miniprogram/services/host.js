@@ -1,6 +1,6 @@
 // Replace this adapter when embedding in another mini program.
 const productMode = require('../config/product-mode')
-const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','idMigrationVersion','progressSchemaVersion']
+const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','localImportReceipts','idMigrationVersion','progressSchemaVersion']
 const LEGACY_WORK_ID = 'peter'
 const WORK_ID = 'peter-rabbit'
 const PIECE_ID = 'peter-rabbit-01'
@@ -55,8 +55,7 @@ module.exports = {
   go(page, id) {
     const policy=productMode.current()
     const bookId=String(id||'').split(':')[0]
-    const bookRoute=['detail','player','quiz'].includes(page)
-    if(!policy.allowsRoute(page)||bookRoute&&bookId&&!policy.allowsBook(bookId)){this.toast('该内容尚未在正式模式开放');page='home';id=''}
+    if(!policy.allowsRoute(page)||bookId&&!policy.allowsBook(bookId)){this.toast('该内容尚未在正式模式开放');page='home';id=''}
     const route = page === 'quiz' && !wx.isBrowserPreview ? '/quiz/pages/index' : '/pages/' + page + '/index'
     const url = route + (id ? '?id=' + encodeURIComponent(id) : '')
     if (['home','recent','me'].includes(page)) wx.switchTab({ url })

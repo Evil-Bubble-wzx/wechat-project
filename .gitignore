@@ -13,6 +13,11 @@ coverage/
 
 # Local-only WeChat/Codex settings
 project.private.config.json
+backend/.env
+backend/.env.*
+!backend/.env.example
+minio.license
+artifacts/profile/
 .codex/
 .idea/
 

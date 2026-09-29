@@ -97,17 +97,17 @@ async function main(): Promise<void> {
     };
     (globalThis as unknown as { wx: typeof wx }).wx = wx;
     const require = createRequire(import.meta.url);
-    const miniappApi = require("../../miniprogram/services/api.js") as {
+    const { createBackendApi } = require("../../miniprogram/services/api.js") as { createBackendApi(): {
       loginWechat(): Promise<{ userId: string }>;
       listWorks(cursor?: string, limit?: number): Promise<{ items: Array<{ workId: string }> }>;
       submitQuiz(input: Record<string, unknown>): Promise<{ attemptId: string; status: string; score?: number; mastery?: boolean; verifiedAt?: string; error?: { code: string } }>;
       rankings(input: Record<string, unknown>): Promise<{ status: string; items: unknown[] }>;
       rankingOptions(): Promise<{ ruleVersion: string }>;
-      session(): Record<string, unknown>;
-      storeSession(value: unknown): void;
+      _tokenStore: { getAccessToken(): string | null; setAccessToken(value: string): void };
       logout(): Promise<void>;
       isAuthenticated(): boolean;
-    };
+    } };
+    const miniappApi = createBackendApi();
 
     const me = await miniappApi.loginWechat();
     await pool.query(
@@ -120,10 +120,9 @@ async function main(): Promise<void> {
     const works = await miniappApi.listWorks(undefined, 20);
     assert.deepEqual(works.items.map((item) => item.workId), ["xb-work"]);
 
-    const beforeRefresh = miniappApi.session();
-    miniappApi.storeSession({ ...beforeRefresh, accessToken: "forged-access-token" });
+    miniappApi._tokenStore.setAccessToken("forged-access-token");
     assert.equal((await miniappApi.listWorks()).items.length, 1, "401 must refresh and retry once");
-    assert.notEqual(miniappApi.session().accessToken, "forged-access-token");
+    assert.notEqual(miniappApi._tokenStore.getAccessToken(), "forged-access-token");
 
     const now = new Date();
     const attempt = {
