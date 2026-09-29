@@ -20,7 +20,7 @@ npm run preview
 
 已实现首页、书库、借阅、我的、图书详情、播放器、最近听读、阅读报告、榜单、登录、Quiz 与内容来源/许可等页面。正式预发布模式只暴露 Peter Rabbit 及本地学习记录；Demo 模式支持本地演示登录、搜索/分类、收藏、预约/防重复/取消、词卡与生词本、测验计分与报告持久化。
 
-**这是可交互的前端，不是已部署的线上系统。** 正式预发布模式不提供登录、支付或实体借阅。Demo 模式的微信/短信登录未调用真实身份服务，固定验证码 `123456` 仅用于显式 Demo；手机号不持久化，演示账户 ID 固定。预约不占用真实库存。所有记录保存于本机，切换设备不共享。
+**这是可交互的前端和本机可联调后端，不是已部署的线上系统。** 正式预发布模式在配置 API 后提供微信会话登录，但支付和实体借阅仍不开放；未配置或未启动后端时可以游客试读。Demo 模式的微信/短信登录不调用真实身份服务，固定验证码 `123456` 仅用于显式 Demo；手机号不持久化，演示账户 ID 固定。预约不占用真实库存。
 
 彼得兔已接入 LibriVox 的 Julian Pratley 真实朗读音频（5 分 22 秒，64kbps MP3）。本地测试文件位于 `preview/audio/peter-rabbit-librivox.mp3`，浏览器可播放、暂停续播、拖动与调整倍速；音频不随小程序主包打包。播放器使用进程内全局会话，离开播放器后可继续播放，返回时保持同一篇目、实时位置、播放状态与倍速；用户主动暂停不会因页面切换自动恢复。未完成内容在重启后暂停于可信断点；完成必须同时满足自然结束、至少 90% 唯一音频覆盖以及尾部 3 秒已听，拖动到结尾不会完成；倍速播放按真实花费时间累计。来源记录见 `preview/audio/SOURCE.md`。彼得兔与四本旧书共用七行听读界面：每行至多 40 个字符，正在朗读的句子高亮，句间空隙保持上一句高亮。Peter Rabbit 的 358 个审核词条已全部接入 906 个可点击 token，按上下文显示义项；播放中打开词卡会暂停，关闭后仅在原先播放时续播。其他未导入音频的示例书目会提示音频缺失。原生小程序使用目录中的远程 HTTPS 地址，需配置合法域名、后台音频能力并进行真机验证；X-02 已在 iPhone 复现当前 Archive.org 地址停在 `00:00`，现保持 `PARTIAL_B_AUDIO_PENDING`，需要可在目标网络播放的受控音频地址后继续后台/锁屏验收。
 
@@ -28,9 +28,17 @@ Peter Rabbit 的字幕人耳审核已完成；371 个词汇审核单元也已在
 
 阅读小测支持彼得兔固定 10 道项目原创双语理解题，每题绑定审核正文 cue，并提供双语解释；80 分只作本机掌握反馈，不限制内容访问。本机 attempt 保存题包版本与逐题选择，并明确标为“未经服务端验证”；旧记录保留展示但不进入新版统计，同一篇只采用最新兼容记录，至少 6 篇不同内容才显示趋势。三本原创故事保留各章节旧题和 54 段选项朗读；《The Wonderful Wizard of Oz》暂未导入小测。排行榜仅保留 7-Day / All-Time，真实服务未接入时显示不可用状态，不编造用户和排名；服务端判题契约见 `docs/Quiz-attempt-API-v1.md`。
 
-`backend/` 已从 `backend/v1@9efe8aac1d499fb14a81929ae3106fdea823cb25` 有机接入：包含 Fastify API/Worker、PostgreSQL migration、Redis/BullMQ、S3 兼容存储、微信会话、内容/Quiz/排行接口、可观测性、安全恢复，以及当前扩展后的 `api-contract-v1.1.0`。客户端已在 X-06 网络层上接入会话、自动刷新、内容 manifest、Quiz、排行和 S-01 一次性本机学习数据导入；服务端重算进度、复判 Quiz，并把只有词面的历史生词保留为待解析候选。access/refresh token 不持久化。正式环境仍需配置真实微信、合法域名、对象存储/CDN，完成规模压测和真机复验。归还、馆员核销、到期通知、账户合并、押金支付以及 S-02～S-04 日常跨设备同步仍未完成。
+`backend/` 已有 Fastify API/Worker、PostgreSQL migration、Redis/BullMQ、S3 兼容存储、微信会话、内容/Quiz/排行接口、可观测性和安全恢复，当前契约为 `api-contract-v1.3.0`。客户端已接入 S-01 显式本机导入、S-02 日常进度同步和 S-03 稳定生词同步；S-03 使用删除墓碑和 delete-wins 防止离线旧设备复活已删除词条。access/refresh token 不持久化。110 项客户端测试、58 项后端测试、9 条迁移及真实 Fastify/PostgreSQL 双设备脚本均通过；正式环境仍需真实微信、合法域名、对象存储/CDN、规模压测和真机复验。Quiz/报告历史、收藏书籍及支付权益的后续云同步仍未完成。
 
 开发版可通过 `tingyue.dev.apiBaseUrl` 指向本机后端（默认 `http://127.0.0.1:3100`）；体验版和正式版只从 ext config 的 `apiBaseUrl` 读取 HTTPS 地址。所有模式都不得把 AppSecret 放入小程序。
+
+## 当前如何登录
+
+正式开发构建先在 `backend/` 运行 `docker compose up -d postgres redis`、`npm run db:migrate`、`npm run start:api`，再于仓库根目录运行 `npm run build:production`，用默认 `project.config.json` 导入微信开发者工具。开发版默认请求 `http://127.0.0.1:3100`，并使用后端显式测试 code；进入 Me → Account status，勾选协议后点击 WeChat Login。开发者工具之外的手机不能把 `127.0.0.1` 当作电脑地址，必须配置手机可访问的 HTTPS 合法域名。access/refresh token 只存在内存中，因此小程序进程完全退出后需要重新登录。
+
+显式 Demo 登录运行 `npm run build:demo` 并使用 `project.demo.config.json`：勾选协议后可直接点 WeChat Login · Demo，或输入任意格式正确的 11 位测试手机号和验证码 `123456`。它只建立本机演示账户，不是真实微信身份。
+
+真实体验版/正式版还需要后端设置 `WECHAT_PROVIDER=real`、匹配当前 AppID 的 AppSecret，并在微信公众平台配置 HTTPS request 合法域名；AppSecret 只放服务端。
 
 ## 内容如何补充
 

@@ -1,0 +1,12 @@
+DROP TABLE progress_sync_operations;
+DROP TABLE progress_sync_batches;
+DROP TABLE user_learning_progress_history;
+DROP INDEX user_learning_progress_user_change_idx;
+ALTER TABLE user_learning_progress
+  DROP COLUMN change_seq,
+  DROP COLUMN source_kind,
+  DROP COLUMN last_device_id,
+  DROP COLUMN server_updated_at,
+  DROP COLUMN natural_end_observed,
+  DROP COLUMN revision;
+DROP SEQUENCE user_learning_progress_change_seq;

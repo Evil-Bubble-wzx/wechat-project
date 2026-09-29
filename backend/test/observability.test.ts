@@ -34,6 +34,8 @@ function metricsPool(): Pool {
 test("protected Prometheus endpoint exposes request, domain and operational metrics", async () => {
   const metrics = new MetricsRegistry();
   metrics.incrementDomain("tingyue_quiz_submissions_total", "rejected", "QUIZ_PACKAGE_MISMATCH");
+  metrics.incrementDomain("tingyue_progress_sync_batches_total", "completed");
+  metrics.incrementDomain("tingyue_word_sync_batches_total", "completed_with_rejections");
   const app = createApp({
     metrics,
     operationalMetrics: new OperationalMetricsCollector(metricsPool()),
@@ -52,6 +54,8 @@ test("protected Prometheus endpoint exposes request, domain and operational metr
   assert.match(response.body, /tingyue_http_requests_total/);
   assert.match(response.body, /tingyue_http_request_duration_seconds_bucket/);
   assert.match(response.body, /tingyue_quiz_submissions_total\{outcome="rejected",error_code="QUIZ_PACKAGE_MISMATCH"\} 1/);
+  assert.match(response.body, /tingyue_progress_sync_batches_total\{outcome="completed",error_code="NONE"\} 1/);
+  assert.match(response.body, /tingyue_word_sync_batches_total\{outcome="completed_with_rejections",error_code="NONE"\} 1/);
   assert.match(response.body, /tingyue_ingestion_queue_depth 2/);
   assert.match(response.body, /tingyue_ranking_snapshot_build_duration_seconds 0.125/);
   assert.doesNotMatch(response.body, /observability-test-token/);

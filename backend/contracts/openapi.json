@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tingyue Backend API",
-    "version": "1.1.0",
-    "description": "Authoritative API contract api-contract-v1.1.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages."
+    "version": "1.3.0",
+    "description": "Authoritative API contract api-contract-v1.3.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages."
   },
   "servers": [
     { "url": "http://127.0.0.1:3100", "description": "Local development" },
@@ -205,6 +205,52 @@
           "401": {"$ref": "#/components/responses/Unauthorized"},
           "409": {"$ref": "#/components/responses/Conflict"},
           "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/api/v1/me/progress/sync": {
+      "post": {
+        "operationId": "syncDailyLearningProgress",
+        "tags": ["Sync"],
+        "description": "Bidirectional daily progress sync. The Idempotency-Key must equal canonical batchId. Operation IDs are canonical evidence hashes. Same-revision operations may update checkpoints; stale operations only union listened ranges and natural-end evidence. Client timestamps never order conflicts.",
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressSyncRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-operation merge decisions plus authoritative progress changes after the signed cursor.",
+            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
+            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressSyncResponse" } } }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "429": { "$ref": "#/components/responses/RateLimited" }
+        }
+      }
+    },
+    "/api/v1/me/words/sync": {
+      "post": {
+        "operationId": "syncSavedWords",
+        "tags": ["Sync"],
+        "description": "Bidirectional stable saved-word sync. Deletions are revisioned tombstones. A stale delete wins over an active record, while a stale save cannot resurrect a tombstone. Restoring a deleted word requires an explicit save based on the current revision. Client timestamps never order conflicts.",
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-operation merge decisions plus authoritative saved-word changes and deletion tombstones after the signed cursor.",
+            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
+            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncResponse" } } }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "429": { "$ref": "#/components/responses/RateLimited" }
         }
       }
     },

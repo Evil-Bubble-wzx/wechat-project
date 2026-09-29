@@ -13,16 +13,17 @@
 - `quiz-score-v1`排行聚合、不可变快照、outbox重建、榜单及参与者Quiz明细；
 - 结构化日志、追加式审计、受保护Prometheus指标和Grafana面板；
 - Redis限流、双JWT签名密钥轮换、MinIO最小权限/生命周期和数据库事实源补队列；
+- S-01 显式本机导入、S-02 日常进度同步及 S-03 稳定生词同步、删除墓碑、离线幂等和多设备冲突合并；
 - `/health/live` 与 `/health/ready`；
 - local/dev/test Compose 定义；
-- `api-contract-v1.1.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
+- `api-contract-v1.3.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
 - 配置、API、契约、数据库、会话、内容、Quiz、排行、可观测性、安全、队列及X/B联调测试。
 
 排行规则已冻结为`quiz-score-v1`：完成Quiz的不同书本数、词量、贝叶斯校正正确率、挑战度、成长和题材广度共同形成0～1000算法分；完成书本数不是最终指标。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
 
 ## API 契约
 
-权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.1.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
+权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.3.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
 
 ```powershell
 npm run contract:check
@@ -40,7 +41,7 @@ npm run db:migrate
 npm run test:integration:db
 ```
 
-`db:rollback` 每次只回退最新一条，执行前必须评估数据影响。当前6条迁移创建27张业务表和`schema_migrations`，并幂等写入`a`、`b`两个校区。
+`db:rollback` 每次只回退最新一条，执行前必须评估数据影响。当前 9 条迁移包含 S-01 导入、S-02 进度及 S-03 生词同步状态，并幂等写入`a`、`b`两个校区。
 
 ## 本地启动
 
@@ -84,6 +85,8 @@ npm run test:integration:db
 npm run test:integration:session
 npm run test:integration:content
 npm run test:integration:quiz
+npm run test:integration:progress-sync
+npm run test:integration:saved-word-sync
 npm run test:integration:ranking
 npm run test:integration:observability
 npm run test:integration:security

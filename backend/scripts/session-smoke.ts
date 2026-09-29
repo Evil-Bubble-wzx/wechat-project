@@ -75,6 +75,7 @@ async function main(): Promise<void> {
 
     const authenticated = await service.authenticateAccessToken(login.accessToken);
     assert.equal(authenticated.userId, login.userId);
+    assert.equal(authenticated.deviceId, "device-alice-001");
     const rotatedConfig = loadConfig({
       APP_ENV: "test",
       DATABASE_URL: baseConfig.databaseUrl,

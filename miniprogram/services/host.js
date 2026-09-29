@@ -1,6 +1,6 @@
 // Replace this adapter when embedding in another mini program.
 const productMode = require('../config/product-mode')
-const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','localImportReceipts','idMigrationVersion','progressSchemaVersion']
+const learningFields = ['favorites','recent','progress','results','listeningSec','listenDaily','words','savedWordEntries','localImportReceipts','idMigrationVersion','progressSchemaVersion']
 const LEGACY_WORK_ID = 'peter'
 const WORK_ID = 'peter-rabbit'
 const PIECE_ID = 'peter-rabbit-01'

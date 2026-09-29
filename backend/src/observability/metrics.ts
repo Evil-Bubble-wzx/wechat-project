@@ -25,7 +25,7 @@ export class MetricsRegistry {
   private readonly histograms = new Map<string, Histogram>();
   private readonly domain = new Map<string, number>();
 
-  incrementDomain(metric: "tingyue_quiz_submissions_total" | "tingyue_ranking_queries_total", outcome: string, errorCode = "NONE"): void {
+  incrementDomain(metric: "tingyue_quiz_submissions_total" | "tingyue_ranking_queries_total" | "tingyue_progress_sync_batches_total" | "tingyue_word_sync_batches_total", outcome: string, errorCode = "NONE"): void {
     const key = `${metric}${labels({ outcome, error_code: errorCode })}`;
     this.domain.set(key, (this.domain.get(key) ?? 0) + 1);
   }

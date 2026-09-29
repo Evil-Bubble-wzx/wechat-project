@@ -25,6 +25,8 @@ Grafana 模板位于 `ops/grafana/tingyue-backend.json`。核心查询：
 | 登录成功率 | `sum(rate(tingyue_login_attempts_total{outcome="success"}[10m])) / sum(rate(tingyue_login_attempts_total[10m]))` |
 | 资源失败率 | `sum(rate(tingyue_content_resource_requests_total{outcome="failure"}[10m])) / sum(rate(tingyue_content_resource_requests_total[10m]))` |
 | Quiz 拒绝率 | `sum(rate(tingyue_quiz_submissions_total{outcome="rejected"}[15m])) / sum(rate(tingyue_quiz_submissions_total[15m]))` |
+| 进度同步含拒绝批次率 | `sum(rate(tingyue_progress_sync_batches_total{outcome="completed_with_rejections"}[15m])) / sum(rate(tingyue_progress_sync_batches_total[15m]))` |
+| 生词同步含拒绝批次率 | `sum(rate(tingyue_word_sync_batches_total{outcome="completed_with_rejections"}[15m])) / sum(rate(tingyue_word_sync_batches_total[15m]))` |
 | 排名积压/失败 | `tingyue_ranking_rebuild_queue_depth`, `tingyue_ranking_rebuild_failures`, `tingyue_ranking_rebuild_oldest_wait_seconds` |
 | 导入积压/死信 | `tingyue_ingestion_queue_depth`, `tingyue_ingestion_dead_letter`, `tingyue_ingestion_oldest_wait_seconds` |
 | 上传完成率 | `tingyue_upload_sessions_completed / tingyue_upload_sessions_total` |
@@ -41,6 +43,8 @@ Grafana 模板位于 `ops/grafana/tingyue-backend.json`。核心查询：
 | 登录成功率（10 分钟，至少 20 次） | <95% | <85% | 后端值班；微信平台异常时升级产品技术负责人 |
 | Manifest 失败率（10 分钟） | >3% | >10% | 后端值班/内容运维 |
 | Quiz 拒绝率（15 分钟） | >20% | >40% | 产品技术负责人；按错误码判断客户端版本问题 |
+| 进度同步含拒绝批次率（15 分钟） | >10% | >25% | 客户端/后端负责人；检查内容换版、future revision 与客户端版本分布 |
+| 生词同步含拒绝批次率（15 分钟） | >10% | >25% | 客户端/后端负责人；检查词条版本、墓碑冲突与旧客户端重放 |
 | 排名最老等待 | >120s | >600s | 后端值班 |
 | 排名失败事件 | >0 持续 10 分钟 | >10 | 后端值班 |
 | 导入最老等待 | >10 分钟 | >30 分钟 | 内容运维/后端值班 |

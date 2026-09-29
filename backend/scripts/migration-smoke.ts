@@ -32,6 +32,9 @@ async function main(): Promise<void> {
       "0004_ingestion_control_plane",
       "0005_ranking_aggregation",
       "0006_ranking_refresh",
+      "0007_local_learning_import",
+      "0008_progress_sync",
+      "0009_saved_word_sync",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -56,6 +59,15 @@ async function main(): Promise<void> {
       "audit_events",
       "idempotency_records",
       "user_roles",
+      "local_import_snapshots",
+      "user_learning_progress",
+      "user_learning_progress_history",
+      "progress_sync_batches",
+      "progress_sync_operations",
+      "user_saved_words",
+      "user_saved_word_history",
+      "word_sync_batches",
+      "word_sync_operations",
     ]) {
       assert.ok(tableNames.includes(requiredTable), `missing table ${requiredTable}`);
     }
@@ -94,12 +106,19 @@ async function main(): Promise<void> {
       "ranking_snapshot_entries_page_idx",
       "ranking_snapshot_quizzes_page_idx",
       "user_profile_versions_current_uidx",
+      "user_learning_progress_user_change_idx",
+      "progress_sync_operations_batch_idx",
+      "user_saved_words_user_change_idx",
+      "word_sync_operations_batch_idx",
     ]) {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
-    assert.equal(await rollbackOne(pool, { schema }), "0006_ranking_refresh");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0006_ranking_refresh"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0009_saved_word_sync"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
+    assert.equal(await rollbackOne(pool, { schema }), "0008_progress_sync");
+    assert.equal(await rollbackOne(pool, { schema }), "0007_local_learning_import");
     assert.equal(await rollbackOne(pool, { schema }), "0006_ranking_refresh");
     assert.equal(await rollbackOne(pool, { schema }), "0005_ranking_aggregation");
     assert.equal(await rollbackOne(pool, { schema }), "0004_ingestion_control_plane");

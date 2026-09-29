@@ -24,11 +24,13 @@
     {
       "id": 3,
       "type": "timeseries",
-      "title": "Login / Quiz outcomes",
+      "title": "Login / Quiz / Sync outcomes",
       "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
       "targets": [
         { "refId": "A", "expr": "sum by (outcome) (rate(tingyue_login_attempts_total[10m]))" },
-        { "refId": "B", "expr": "sum by (outcome) (rate(tingyue_quiz_submissions_total[10m]))" }
+        { "refId": "B", "expr": "sum by (outcome) (rate(tingyue_quiz_submissions_total[10m]))" },
+        { "refId": "C", "expr": "sum by (outcome) (rate(tingyue_progress_sync_batches_total[10m]))" },
+        { "refId": "D", "expr": "sum by (outcome) (rate(tingyue_word_sync_batches_total[10m]))" }
       ]
     },
     {

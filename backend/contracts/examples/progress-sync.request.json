@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "batchId": "s02-batch-v1:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "cursor": null,
+  "operations": [
+    {
+      "operationId": "s02-op-v1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "pieceId": "peter-rabbit-01",
+      "contentVersion": 1,
+      "durationMs": 20000,
+      "baseRevision": "4",
+      "listenedRangeDeltasMs": [[8000, 12000]],
+      "checkpointMs": 12000,
+      "naturalEndObserved": false,
+      "occurredAt": "2026-09-29T01:00:00.000Z"
+    }
+  ],
+  "limit": 100
+}

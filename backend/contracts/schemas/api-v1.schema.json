@@ -342,6 +342,164 @@
       "type":"object","additionalProperties":false,"required":["requestId","snapshotId","status","duplicate","summary","items","acknowledgedAt"],
       "properties":{"requestId":{"$ref":"#/$defs/RequestId"},"snapshotId":{"type":"string","pattern":"^s01-v1:[a-f0-9]{64}$"},"status":{"const":"completed"},"duplicate":{"type":"boolean"},"summary":{"$ref":"#/$defs/LocalImportSummary"},"items":{"type":"object","additionalProperties":false,"required":["progress","words","quizAttempts"],"properties":{"progress":{"type":"array","items":{"type":"object"}},"words":{"type":"array","items":{"type":"object"}},"quizAttempts":{"type":"array","items":{"type":"object"}}}},"acknowledgedAt":{"$ref":"#/$defs/Rfc3339"}}
     },
+    "ProgressRangeMs": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "integer", "minimum": 0, "maximum": 86400000 },
+        { "type": "integer", "minimum": 1, "maximum": 86400000 }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "ProgressSyncOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationId", "pieceId", "contentVersion", "durationMs", "baseRevision", "listenedRangeDeltasMs", "checkpointMs", "naturalEndObserved", "occurredAt"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^s02-op-v1:[a-f0-9]{64}$" },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "durationMs": { "type": "integer", "minimum": 1, "maximum": 86400000 },
+        "baseRevision": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$", "maxLength": 20 },
+        "listenedRangeDeltasMs": { "type": "array", "maxItems": 500, "items": { "$ref": "#/$defs/ProgressRangeMs" } },
+        "checkpointMs": { "type": ["integer", "null"], "minimum": 0, "maximum": 86400000 },
+        "naturalEndObserved": { "type": "boolean" },
+        "occurredAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "ProgressSyncRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "batchId", "cursor", "operations", "limit"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "batchId": { "type": "string", "pattern": "^s02-batch-v1:[a-f0-9]{64}$" },
+        "cursor": { "type": ["string", "null"], "maxLength": 256 },
+        "operations": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/ProgressSyncOperation" } },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+      }
+    },
+    "ProgressView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pieceId", "contentVersion", "durationMs", "revision", "checkpointMs", "listenedRangesMs", "listenedMs", "coverage", "completed", "naturalEndObserved", "serverUpdatedAt"],
+      "properties": {
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "durationMs": { "type": "integer", "minimum": 1, "maximum": 86400000 },
+        "revision": { "type": "string", "pattern": "^[1-9][0-9]*$", "maxLength": 20 },
+        "checkpointMs": { "type": "integer", "minimum": 0, "maximum": 86400000 },
+        "listenedRangesMs": { "type": "array", "maxItems": 500, "items": { "$ref": "#/$defs/ProgressRangeMs" } },
+        "listenedMs": { "type": "integer", "minimum": 0, "maximum": 86400000 },
+        "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "completed": { "type": "boolean" },
+        "naturalEndObserved": { "type": "boolean" },
+        "serverUpdatedAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "ProgressOperationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationId", "pieceId", "status", "checkpointDecision", "clockStatus", "reason", "progress"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^s02-op-v1:[a-f0-9]{64}$" },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "status": { "enum": ["applied", "merged_stale", "unchanged", "rejected"] },
+        "checkpointDecision": { "enum": ["accepted", "server_retained", "not_provided", "not_applicable"] },
+        "clockStatus": { "enum": ["ok", "future_skew"] },
+        "reason": { "type": ["string", "null"] },
+        "progress": { "oneOf": [{ "$ref": "#/$defs/ProgressView" }, { "type": "null" }] }
+      }
+    },
+    "ProgressSyncResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "schemaVersion", "batchId", "serverTime", "operations", "changes", "nextCursor", "hasMore"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "schemaVersion": { "const": 1 },
+        "batchId": { "type": "string", "pattern": "^s02-batch-v1:[a-f0-9]{64}$" },
+        "serverTime": { "$ref": "#/$defs/Rfc3339" },
+        "operations": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/ProgressOperationResult" } },
+        "changes": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/ProgressView" } },
+        "nextCursor": { "type": "string", "pattern": "^s02-cursor-v1:(0|[1-9][0-9]*):[a-f0-9]{64}$" },
+        "hasMore": { "type": "boolean" }
+      }
+    },
+    "SavedWordSyncOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationId", "entryId", "pieceId", "contentVersion", "vocabKey", "surface", "lemma", "action", "baseRevision", "occurredAt"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^s03-word-op-v1:[a-f0-9]{64}$" },
+        "entryId": { "type": "string", "pattern": "^ve-[a-f0-9]{12,64}$" },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "vocabKey": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "surface": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "lemma": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "action": { "enum": ["save", "delete"] },
+        "baseRevision": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$", "maxLength": 20 },
+        "occurredAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "SavedWordSyncRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "batchId", "cursor", "operations", "limit"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "batchId": { "type": "string", "pattern": "^s03-word-batch-v1:[a-f0-9]{64}$" },
+        "cursor": { "type": ["string", "null"], "maxLength": 256 },
+        "operations": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/SavedWordSyncOperation" } },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+      }
+    },
+    "SavedWordView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entryId", "pieceId", "contentVersion", "vocabKey", "surface", "lemma", "revision", "state", "serverUpdatedAt"],
+      "properties": {
+        "entryId": { "type": "string", "pattern": "^ve-[a-f0-9]{12,64}$" },
+        "pieceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "contentVersion": { "type": "integer", "minimum": 1 },
+        "vocabKey": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "surface": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "lemma": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "revision": { "type": "string", "pattern": "^[1-9][0-9]*$", "maxLength": 20 },
+        "state": { "enum": ["saved", "deleted"] },
+        "serverUpdatedAt": { "$ref": "#/$defs/Rfc3339" }
+      }
+    },
+    "SavedWordOperationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationId", "entryId", "status", "decision", "clockStatus", "reason", "word"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^s03-word-op-v1:[a-f0-9]{64}$" },
+        "entryId": { "type": "string", "pattern": "^ve-[a-f0-9]{12,64}$" },
+        "status": { "enum": ["applied", "merged_stale", "unchanged", "rejected"] },
+        "decision": { "enum": ["saved", "deleted", "server_retained", "not_applicable"] },
+        "clockStatus": { "enum": ["ok", "future_skew"] },
+        "reason": { "type": ["string", "null"] },
+        "word": { "oneOf": [{ "$ref": "#/$defs/SavedWordView" }, { "type": "null" }] }
+      }
+    },
+    "SavedWordSyncResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "schemaVersion", "batchId", "serverTime", "operations", "changes", "nextCursor", "hasMore"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/RequestId" },
+        "schemaVersion": { "const": 1 },
+        "batchId": { "type": "string", "pattern": "^s03-word-batch-v1:[a-f0-9]{64}$" },
+        "serverTime": { "$ref": "#/$defs/Rfc3339" },
+        "operations": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/SavedWordOperationResult" } },
+        "changes": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/SavedWordView" } },
+        "nextCursor": { "type": "string", "pattern": "^s03-word-cursor-v1:(0|[1-9][0-9]*):[a-f0-9]{64}$" },
+        "hasMore": { "type": "boolean" }
+      }
+    },
     "Option": {
       "type": "object",
       "additionalProperties": false,

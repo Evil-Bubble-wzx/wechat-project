@@ -106,6 +106,8 @@ test('Peter Rabbit player resolves every reviewed contextual word card and prese
     assert.equal(pauses, 1)
     assert.equal(page.data.selectedWord.definitionZh, peterVocab[token.vocabKey].definitionZh)
     assert.equal(page.data.selectedWord.example, peterCues[cueIndex].text)
+    assert.equal(page.data.selectedWord.entryId, peterVocab[token.vocabKey].entryId)
+    assert.equal(page.data.selectedWord.pieceId, 'peter-rabbit-01')
     page.closeSheet()
     assert.equal(plays, 2)
     assert.equal(page.data.playing, true)

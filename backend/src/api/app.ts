@@ -6,6 +6,8 @@ import { ApiError } from "./errors.ts";
 import { registerContentRoutes } from "./content-routes.ts";
 import { registerQuizRoutes } from "./quiz-routes.ts";
 import { registerLocalImportRoutes } from "./local-import-routes.ts";
+import { registerProgressSyncRoutes, type ProgressSyncServicePort } from "./progress-sync-routes.ts";
+import { registerSavedWordSyncRoutes, type SavedWordSyncServicePort } from "./saved-word-sync-routes.ts";
 import { registerRankingRoutes, type RankingServicePort } from "./ranking-routes.ts";
 import { registerIngestionRoutes } from "./ingestion-routes.ts";
 import { registerSessionRoutes, type SessionServicePort } from "./session-routes.ts";
@@ -30,6 +32,8 @@ export type CreateAppOptions = {
   contentService?: ContentService;
   quizService?: QuizService;
   localImportService?: LocalImportServicePort;
+  progressSyncService?: ProgressSyncServicePort;
+  savedWordSyncService?: SavedWordSyncServicePort;
   rankingService?: RankingServicePort;
   auditService?: AuditService;
   metrics?: MetricsRegistry;
@@ -222,6 +226,14 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
   if (options.localImportService) {
     if (!options.sessionService) throw new Error("Local import routes require a session service");
     registerLocalImportRoutes(app, options.localImportService, options.sessionService, options.auditService, options.rateLimiter);
+  }
+  if (options.progressSyncService) {
+    if (!options.sessionService) throw new Error("Progress sync routes require a session service");
+    registerProgressSyncRoutes(app, options.progressSyncService, options.sessionService, options.auditService, options.rateLimiter, options.metrics);
+  }
+  if (options.savedWordSyncService) {
+    if (!options.sessionService) throw new Error("Saved word sync routes require a session service");
+    registerSavedWordSyncRoutes(app, options.savedWordSyncService, options.sessionService, options.auditService, options.rateLimiter, options.metrics);
   }
   if (options.rankingService) {
     if (!options.sessionService) throw new Error("Ranking routes require a session service");

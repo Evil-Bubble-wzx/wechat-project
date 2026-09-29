@@ -1,0 +1,32 @@
+{
+  "requestId": "request-progress-sync-001",
+  "schemaVersion": 1,
+  "batchId": "s02-batch-v1:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "serverTime": "2026-09-29T01:00:01.000Z",
+  "operations": [
+    {
+      "operationId": "s02-op-v1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "pieceId": "peter-rabbit-01",
+      "status": "applied",
+      "checkpointDecision": "accepted",
+      "clockStatus": "ok",
+      "reason": null,
+      "progress": {
+        "pieceId": "peter-rabbit-01",
+        "contentVersion": 1,
+        "durationMs": 20000,
+        "revision": "5",
+        "checkpointMs": 12000,
+        "listenedRangesMs": [[0, 12000]],
+        "listenedMs": 12000,
+        "coverage": 0.6,
+        "completed": false,
+        "naturalEndObserved": false,
+        "serverUpdatedAt": "2026-09-29T01:00:01.000Z"
+      }
+    }
+  ],
+  "changes": [],
+  "nextCursor": "s02-cursor-v1:5:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "hasMore": false
+}

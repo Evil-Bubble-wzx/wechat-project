@@ -22,7 +22,8 @@ let requestedPauseReason = null
 let waitingWasPlaying = false
 let now = () => Date.now()
 const subscribers = new Set()
-const initialState = () => ({ sessionId:0, workId:null, pieceId:null, source:'', book:null, contentVersion:null, position:0, checkpointPosition:0, duration:0, rate:1, status:'idle', pauseReason:null, loop:false, completed:false, listenedRanges:[], coverage:0, error:null })
+const progressSubscribers = new Set()
+const initialState = () => ({ sessionId:0, workId:null, pieceId:null, source:'', book:null, contentVersion:null, position:0, checkpointPosition:0, duration:0, rate:1, status:'idle', pauseReason:null, loop:false, completed:false, naturalEndObserved:false, listenedRanges:[], coverage:0, error:null })
 let state = initialState()
 
 const pieceId = book => book && (book.chapterId || book.pieceId || book.id)
@@ -49,23 +50,32 @@ function progressFor(book){
   const duration=Number(book.duration)||0,stored=(host.read().progress||{})[pieceId(book)]||{}
   const durationMatches=!stored.duration||!duration||Math.abs(Number(stored.duration)-duration)<=.5
   const compatible=stored.schemaVersion===PROGRESS_SCHEMA_VERSION&&durationMatches&&(!stored.audioKey||stored.audioKey===audioKeyFor(book))&&(!stored.contentVersion||stored.contentVersion===book.contentVersion)
-  if(!compatible)return {position:0,checkpointPosition:0,completed:false,listenedRanges:[]}
+  if(!compatible)return {position:0,checkpointPosition:0,completed:false,naturalEndObserved:false,listenedRanges:[]}
   const listenedRanges=normalizeRanges(stored.listenedRanges,duration),completed=!!stored.completed
   const checkpointPosition=completed?0:clamp(stored.checkpointSeconds,0,Math.max(0,duration-.25))
-  return {position:checkpointPosition,checkpointPosition,completed,listenedRanges}
+  return {position:checkpointPosition,checkpointPosition,completed,naturalEndObserved:!!stored.naturalEndObserved,listenedRanges}
 }
 function persist(force=false){
   if(!state.pieceId)return
   const at=now();if(!force&&at-lastPersistAt<SAVE_INTERVAL_MS)return
   const listenAdd=pendingListenSeconds;pendingListenSeconds=0;lastPersistAt=at
-  const entry={seconds:state.position,checkpointSeconds:state.checkpointPosition,completed:state.completed,duration:state.duration,listenedRanges:state.listenedRanges.map(range=>range.map(value=>Math.round(value*1000)/1000)),listenedSeconds:Math.round(rangeSeconds(state.listenedRanges)*1000)/1000,coverage:Math.round(state.coverage*10000)/10000,completionReason:state.completed?'coverage_and_ended':null,contentVersion:state.contentVersion,audioKey:audioKeyFor(state.book),schemaVersion:PROGRESS_SCHEMA_VERSION,updatedAt:new Date(at).toISOString()}
+  const entry={seconds:state.position,checkpointSeconds:state.checkpointPosition,completed:state.completed,naturalEndObserved:state.naturalEndObserved,duration:state.duration,listenedRanges:state.listenedRanges.map(range=>range.map(value=>Math.round(value*1000)/1000)),listenedSeconds:Math.round(rangeSeconds(state.listenedRanges)*1000)/1000,coverage:Math.round(state.coverage*10000)/10000,completionReason:state.completed?'coverage_and_ended':null,contentVersion:state.contentVersion,audioKey:audioKeyFor(state.book),schemaVersion:PROGRESS_SCHEMA_VERSION,updatedAt:new Date(at).toISOString()}
+  let savedEntry=entry
   host.mutate(current=>{
     current.progress=Object.assign({},current.progress||{})
     const previous=current.progress[state.pieceId]||{}
     const sameVersion=previous.schemaVersion===PROGRESS_SCHEMA_VERSION&&(!previous.audioKey||previous.audioKey===entry.audioKey)&&(!previous.contentVersion||previous.contentVersion===entry.contentVersion)&&(!previous.duration||Math.abs(Number(previous.duration)-entry.duration)<=.5)
+    if(sameVersion){
+      entry.listenedRanges=normalizeRanges([...(previous.listenedRanges||[]),...entry.listenedRanges],entry.duration)
+      entry.listenedSeconds=Math.round(rangeSeconds(entry.listenedRanges)*1000)/1000
+      entry.coverage=Math.round(coverageFor(entry.listenedRanges,entry.duration)*10000)/10000
+      entry.naturalEndObserved=!!(previous.naturalEndObserved||entry.naturalEndObserved)
+      if(previous.syncRevision)entry.syncRevision=previous.syncRevision
+      if(previous.syncServerUpdatedAt)entry.syncServerUpdatedAt=previous.syncServerUpdatedAt
+    }
     entry.completed=!!((sameVersion&&previous.completed)||entry.completed)
     if(sameVersion&&previous.completed)entry.completionReason=previous.completionReason||'coverage_and_ended'
-    current.progress[state.pieceId]=entry
+    current.progress[state.pieceId]=entry;savedEntry=Object.assign({},entry,{listenedRanges:entry.listenedRanges.map(range=>range.slice())})
     if(listenAdd>0){
       const key=dayKey(new Date(at))+':'+state.pieceId
       current.listenDaily=Object.assign({},current.listenDaily||{})
@@ -75,6 +85,7 @@ function persist(force=false){
     current.progressSchemaVersion=PROGRESS_SCHEMA_VERSION
     return current
   })
+  for(const subscriber of [...progressSubscribers])subscriber({pieceId:state.pieceId,entry:savedEntry,immediate:!!force})
 }
 function clearAnchor(){anchor=null}
 function beginAnchor(position){if(state.status==='playing')anchor={sessionId:state.sessionId,pieceId:state.pieceId,source:state.source,position:Number(position)||0,at:now(),rate:state.rate,continuous:0}}
@@ -117,7 +128,7 @@ function onEnded(){
   const duration=Number.isFinite(context&&context.duration)&&context.duration>0?context.duration:state.duration
   sample(duration,false)
   const completed=state.completed||(state.coverage>=COMPLETION_COVERAGE&&tailCovered(state.listenedRanges,duration))
-  clearAnchor();state=Object.assign({},state,{position:duration,duration,completed,status:state.loop?'playing':'ended',pauseReason:null});persist(true);notify()
+  clearAnchor();state=Object.assign({},state,{position:duration,duration,completed,naturalEndObserved:true,status:state.loop?'playing':'ended',pauseReason:null});persist(true);notify()
   if(state.loop&&context){pendingSeek=0;applyPendingSeek();context.play()}
 }
 function audioErrorMessage(error){
@@ -153,7 +164,7 @@ function metadata(book,ctx){ctx.title=book.chapterTitle||book.title;ctx.singer=b
 function newSession(book,status){
   const restored=progressFor(book),source=sourceFor(book)
   sessionSequence++;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=now()
-  state={sessionId:sessionSequence,workId:book.workId||book.id,pieceId:pieceId(book),source,book:Object.assign({},book),contentVersion:book.contentVersion||null,position:restored.position,checkpointPosition:restored.checkpointPosition,duration:Number(book.duration)||0,rate:state.rate||1,status:status||'paused',pauseReason:status==='paused'?'selection':null,loop:false,completed:restored.completed,listenedRanges:restored.listenedRanges,coverage:coverageFor(restored.listenedRanges,Number(book.duration)||0),error:null}
+  state={sessionId:sessionSequence,workId:book.workId||book.id,pieceId:pieceId(book),source,book:Object.assign({},book),contentVersion:book.contentVersion||null,position:restored.position,checkpointPosition:restored.checkpointPosition,duration:Number(book.duration)||0,rate:state.rate||1,status:status||'paused',pauseReason:status==='paused'?'selection':null,loop:false,completed:restored.completed,naturalEndObserved:restored.naturalEndObserved,listenedRanges:restored.listenedRanges,coverage:coverageFor(restored.listenedRanges,Number(book.duration)||0),error:null}
   notify();return source
 }
 function selectTrack(book){const source=sourceFor(book);if(!source)return false;if(state.pieceId===pieceId(book)&&state.source===source)return true;if(context&&state.pieceId){sample(context.currentTime,true);if(state.status==='playing')context.pause()}newSession(book,'paused');return true}
@@ -188,7 +199,8 @@ function seek(seconds){
 function setRate(value){const rate=Number(value)||1;if(context&&state.pieceId)sample(context.currentTime,true);state=Object.assign({},state,{rate});if(context)context.playbackRate=rate;if(state.status==='playing')beginAnchor(context&&context.currentTime);notify()}
 function setLoop(loop){update({loop:!!loop})}
 function subscribe(subscriber){subscribers.add(subscriber);subscriber(snapshot());return()=>subscribers.delete(subscriber)}
-function resetForTests(){context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;now=()=>Date.now();subscribers.clear();state=initialState()}
+function subscribeProgress(subscriber){progressSubscribers.add(subscriber);return()=>progressSubscribers.delete(subscriber)}
+function resetForTests(){context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;now=()=>Date.now();subscribers.clear();progressSubscribers.clear();state=initialState()}
 function setNowForTests(fn){now=fn}
 
-module.exports={snapshot,subscribe,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}
+module.exports={snapshot,subscribe,subscribeProgress,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}

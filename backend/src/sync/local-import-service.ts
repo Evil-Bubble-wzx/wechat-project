@@ -4,6 +4,7 @@ import type { Pool, PoolClient } from "pg";
 
 import type { QuizAttemptInput, QuizService } from "../quiz/service.ts";
 import { ApiError } from "../api/errors.ts";
+import { deriveProgressFacts, mergeRangesMs, type MillisecondRange } from "./progress-state.ts";
 
 export type LocalProgressInput={pieceId:string;contentVersion:number;durationMs:number;checkpointMs:number;listenedRangesMs:Array<[number,number]>;updatedAt:string};
 export type LocalImportInput={snapshotId:string;payload:{schemaVersion:1;progress:LocalProgressInput[];words:Array<{surface:string}>;quizAttempts:QuizAttemptInput[]};limitations:{words:"surface_only"}};
@@ -16,22 +17,6 @@ function canonical(value:unknown):string{
 }
 const hash=(value:unknown)=>createHash("sha256").update(canonical(value)).digest("hex");
 const snapshotFor=(payload:LocalImportInput["payload"])=>`s01-v1:${hash(payload)}`;
-
-function mergeRanges(input:Array<[number,number]>,duration:number):Array<[number,number]>{
-  const sorted=input.map(range=>[range[0],range[1]] as [number,number]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
-  const output:Array<[number,number]>=[];
-  for(const range of sorted){const previous=output.at(-1);if(previous&&range[0]<=previous[1]+50)previous[1]=Math.max(previous[1],range[1]);else output.push(range)}
-  const bounded:Array<[number,number]>=[];
-  for(const [start,end] of output){const range:[number,number]=[Math.max(0,start),Math.min(duration,end)];if(range[1]>range[0])bounded.push(range)}
-  return bounded;
-}
-function derived(ranges:Array<[number,number]>,duration:number){
-  const listenedMs=Math.min(duration,ranges.reduce((total,[start,end])=>total+end-start,0));
-  const coverage=duration?listenedMs/duration:0;
-  const tailStart=Math.max(0,duration-3000);
-  const tailCovered=ranges.some(([start,end])=>start<=tailStart+50&&end>=duration-250);
-  return {listenedMs,coverage,completed:coverage>=0.9&&tailCovered};
-}
 
 export class LocalImportService{
   private readonly pool:Pool;
@@ -76,14 +61,24 @@ export class LocalImportService{
     const resource=await client.query<{duration_ms:string|null}>(`SELECT asset.duration_ms::text FROM pieces p JOIN content_versions cv ON cv.id=p.current_content_version_id LEFT JOIN content_assets asset ON asset.piece_id=p.id AND asset.content_version=cv.content_version AND asset.asset_type='audio' AND asset.status IN ('ready','published') WHERE p.id=$1 AND cv.content_version=$2 AND p.status='published' AND cv.status='published'`,[item.pieceId,item.contentVersion]);
     const serverDuration=resource.rows[0]?.duration_ms===null?null:Number(resource.rows[0]?.duration_ms);
     if(!serverDuration||Math.abs(serverDuration-item.durationMs)>500)return {pieceId:item.pieceId,status:"rejected",reason:serverDuration?"duration_mismatch":"content_version_unavailable"};
-    const current=await client.query<{content_version:number;checkpoint_ms:number;listened_ranges_ms:Array<[number,number]>;source_updated_at:Date}>("SELECT content_version,checkpoint_ms,listened_ranges_ms,source_updated_at FROM user_learning_progress WHERE user_id=$1 AND piece_id=$2",[userId,item.pieceId]);
+    const current=await client.query<{content_version:number;checkpoint_ms:number;listened_ranges_ms:MillisecondRange[];source_updated_at:Date;revision:string;natural_end_observed:boolean;completed:boolean}>("SELECT content_version,checkpoint_ms,listened_ranges_ms,source_updated_at,revision::text,natural_end_observed,completed FROM user_learning_progress WHERE user_id=$1 AND piece_id=$2 FOR UPDATE",[userId,item.pieceId]);
     const incomingAt=new Date(item.updatedAt),previous=current.rows[0];
     if(previous&&previous.source_updated_at>incomingAt)return {pieceId:item.pieceId,status:"unchanged",reason:"server_has_newer_progress"};
-    const ranges=mergeRanges([...(previous?.content_version===item.contentVersion?previous.listened_ranges_ms:[]),...item.listenedRangesMs],serverDuration);
+    const sameVersion=previous?.content_version===item.contentVersion;
+    const ranges=mergeRangesMs([...(sameVersion?previous.listened_ranges_ms:[]),...item.listenedRangesMs],serverDuration);
     const checkpoint=Math.min(serverDuration,Math.max(item.checkpointMs,previous?.content_version===item.contentVersion?previous.checkpoint_ms:0));
-    const facts=derived(ranges,serverDuration);
-    await client.query(`INSERT INTO user_learning_progress (user_id,piece_id,content_version,duration_ms,checkpoint_ms,listened_ranges_ms,listened_ms,coverage,completed,source_updated_at,source_snapshot_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT (user_id,piece_id) DO UPDATE SET content_version=EXCLUDED.content_version,duration_ms=EXCLUDED.duration_ms,checkpoint_ms=EXCLUDED.checkpoint_ms,listened_ranges_ms=EXCLUDED.listened_ranges_ms,listened_ms=EXCLUDED.listened_ms,coverage=EXCLUDED.coverage,completed=user_learning_progress.completed OR EXCLUDED.completed,source_updated_at=EXCLUDED.source_updated_at,imported_at=now(),source_snapshot_id=EXCLUDED.source_snapshot_id`,[userId,item.pieceId,item.contentVersion,serverDuration,checkpoint,JSON.stringify(ranges),facts.listenedMs,facts.coverage,facts.completed,incomingAt,snapshotId]);
-    return {pieceId:item.pieceId,status:"accepted",coverage:Number(facts.coverage.toFixed(6)),completed:facts.completed};
+    // S-01 predates explicit natural-end evidence. Preserve its accepted-completion
+    // behavior only when the imported ranges already satisfy coverage and tail gates.
+    const legacyNaturalEnd=deriveProgressFacts(ranges,serverDuration,true).completed;
+    const naturalEndObserved=Boolean((sameVersion&&previous.natural_end_observed)||legacyNaturalEnd);
+    const facts=deriveProgressFacts(ranges,serverDuration,naturalEndObserved);
+    const completed=Boolean((sameVersion&&previous.completed)||facts.completed);
+    const material=!previous||!sameVersion||previous.checkpoint_ms!==checkpoint||previous.natural_end_observed!==naturalEndObserved||previous.completed!==completed||JSON.stringify(previous.listened_ranges_ms)!==JSON.stringify(ranges);
+    if(!material)return {pieceId:item.pieceId,status:"unchanged",reason:"no_material_change",coverage:Number(facts.coverage.toFixed(6)),completed};
+    if(previous){await client.query(`INSERT INTO user_learning_progress_history (user_id,piece_id,content_version,duration_ms,revision,checkpoint_ms,listened_ranges_ms,listened_ms,coverage,completed,natural_end_observed,server_updated_at,last_device_id,source_kind,source_reference) SELECT user_id,piece_id,content_version,duration_ms,revision,checkpoint_ms,listened_ranges_ms,listened_ms,coverage,completed,natural_end_observed,server_updated_at,last_device_id,source_kind,source_snapshot_id FROM user_learning_progress WHERE user_id=$1 AND piece_id=$2`,[userId,item.pieceId])}
+    const revision=sameVersion?BigInt(previous.revision)+1n:1n;
+    await client.query(`INSERT INTO user_learning_progress (user_id,piece_id,content_version,duration_ms,revision,checkpoint_ms,listened_ranges_ms,listened_ms,coverage,completed,natural_end_observed,source_updated_at,server_updated_at,source_kind,source_snapshot_id,change_seq) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,now(),'s01_local_import',$13,nextval('user_learning_progress_change_seq')) ON CONFLICT (user_id,piece_id) DO UPDATE SET content_version=EXCLUDED.content_version,duration_ms=EXCLUDED.duration_ms,revision=EXCLUDED.revision,checkpoint_ms=EXCLUDED.checkpoint_ms,listened_ranges_ms=EXCLUDED.listened_ranges_ms,listened_ms=EXCLUDED.listened_ms,coverage=EXCLUDED.coverage,completed=EXCLUDED.completed,natural_end_observed=EXCLUDED.natural_end_observed,source_updated_at=EXCLUDED.source_updated_at,server_updated_at=now(),imported_at=now(),source_kind=EXCLUDED.source_kind,source_snapshot_id=EXCLUDED.source_snapshot_id,change_seq=nextval('user_learning_progress_change_seq')`,[userId,item.pieceId,item.contentVersion,serverDuration,revision.toString(),checkpoint,JSON.stringify(ranges),facts.listenedMs,facts.coverage,completed,naturalEndObserved,incomingAt,snapshotId]);
+    return {pieceId:item.pieceId,status:"accepted",coverage:Number(facts.coverage.toFixed(6)),completed,revision:revision.toString()};
   }
 }
 

@@ -13,6 +13,22 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: tingyue
+          POSTGRES_USER: tingyue
+          POSTGRES_PASSWORD: tingyue-local
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tingyue -d tingyue"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      DATABASE_URL: postgresql://tingyue:tingyue-local@127.0.0.1:5432/tingyue
     defaults:
       run:
         working-directory: backend
@@ -26,5 +42,8 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run contract:check
+      - run: npm run test:integration:db
+      - run: npm run test:integration:progress-sync
+      - run: npm run test:integration:saved-word-sync
       - run: npm run security:secrets
       - run: npm audit --audit-level=moderate

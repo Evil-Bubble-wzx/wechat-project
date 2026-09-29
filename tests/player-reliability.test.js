@@ -94,7 +94,7 @@ test('X-02 merges coverage across restarts and requires the naturally heard tail
     h.player.playTrack(h.book)
     for(let second=1;second<=10;second++)h.tick(second)
     h.player.pause('user')
-    h.freshProcess();h.player.selectTrack(h.book);h.player.playTrack(h.book)
+    h.freshProcess();const syncEvents=[];h.player.subscribeProgress(event=>syncEvents.push(event));h.player.selectTrack(h.book);h.player.playTrack(h.book)
     for(let second=11;second<=20;second++)h.tick(second)
     h.end()
     const progress=h.state().progress['peter-rabbit-01']
@@ -102,6 +102,8 @@ test('X-02 merges coverage across restarts and requires the naturally heard tail
     assert.equal(progress.completionReason,'coverage_and_ended')
     assert.equal(progress.coverage,1)
     assert.deepEqual(progress.listenedRanges,[[0,20]])
+    assert.equal(syncEvents.at(-1).immediate,true)
+    assert.equal(syncEvents.at(-1).entry.naturalEndObserved,true)
   }finally{h.restore()}
 })
 
