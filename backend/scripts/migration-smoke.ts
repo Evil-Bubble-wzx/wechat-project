@@ -35,6 +35,7 @@ async function main(): Promise<void> {
       "0007_local_learning_import",
       "0008_daily_progress_sync",
       "0009_saved_word_sync",
+      "0010_learning_points",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -44,6 +45,8 @@ async function main(): Promise<void> {
     );
     const tableNames = tables.rows.map(({ table_name }) => table_name);
     for (const requiredTable of [
+      "learning_score_events",
+      "learning_score_state",
       "users",
       "user_sessions",
       "campuses",

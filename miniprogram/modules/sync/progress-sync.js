@@ -1,3 +1,4 @@
+const learningPoints = require('../ranking/learning-points')
 const api = require('../../services/api')
 const host = require('../../services/host')
 
@@ -65,6 +66,7 @@ async function flush() {
           if(current&&current.request.mutationId===item.request.mutationId)delete latest.progressSyncOutbox[item.key]
           else if(current){current.request=Object.assign({},current.request,{mutationId:mutationId(),baseRevision:response.progress.revision});current.attempts=0;current.nextAttemptAt=0}
           applyRemote(latest,response.progress)
+          learningPoints.applyConfirmed(latest,response.learningScore)
           return latest
         })
       }catch(error){

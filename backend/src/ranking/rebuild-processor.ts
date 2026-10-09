@@ -8,7 +8,7 @@ const MAX_ATTEMPTS = 5;
 
 type RebuildEvent = {
   id: string;
-  quizAttemptId: string;
+  quizAttemptId: string | null;
   userId: string;
   submittedAt: Date;
 };
@@ -67,13 +67,13 @@ export class RankingRebuildProcessor {
       await client.query("BEGIN");
       const result = await client.query<{
         id: string;
-        quiz_attempt_id: string;
+        quiz_attempt_id: string | null;
         user_id: string;
         submitted_at: Date;
       }>(
-        `SELECT event.id, event.quiz_attempt_id, attempt.user_id, attempt.submitted_at
+        `SELECT event.id, event.quiz_attempt_id, COALESCE(event.user_id,attempt.user_id) AS user_id, COALESCE(event.earned_at,attempt.verified_at) AS submitted_at
          FROM ranking_rebuild_events event
-         JOIN quiz_attempts attempt ON attempt.id = event.quiz_attempt_id
+         LEFT JOIN quiz_attempts attempt ON attempt.id = event.quiz_attempt_id
          WHERE event.available_at <= now()
            AND (
              event.status = 'pending'

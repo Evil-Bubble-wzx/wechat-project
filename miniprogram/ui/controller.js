@@ -24,6 +24,7 @@ const reportAggregate = require('../modules/report/aggregate')
 const localImport = require('../modules/sync/local-import')
 const progressSync = require('../modules/sync/progress-sync')
 const savedWordSync = require('../modules/sync/saved-word-sync')
+const learningPoints = require('../modules/ranking/learning-points')
 const rankingState = require('../modules/ranking/state')
 const defaults = () => ({ favorites:[], recent:[], progress:{}, results:[], words:[], savedWordEntries:{}, user:null, listeningSec:0, listenDaily:{} })
 /* @demo-start */
@@ -74,7 +75,7 @@ function createPage(requestedRoute) {
   const visibleBooks=isDemo?books:books.filter(book=>policy.allowsBook(book.id))
   const firstBook=visibleBooks[0]
   const ranking=rankingState.view('unavailable')
-  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', syncStatus:'synced',syncStatusLabel:'学习进度已同步',syncPending:0,syncFailed:0, wordSyncStatus:'idle',wordSyncPending:0,wordSyncStatusLabel:'生词本待同步',savedWordItems:[],selectedWordSaved:false, sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
+  const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', syncStatus:'synced',syncStatusLabel:'学习进度已同步',syncPending:0,syncFailed:0, wordSyncStatus:'idle',wordSyncPending:0,wordSyncStatusLabel:'生词本待同步',savedWordItems:[],selectedWordSaved:false, sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, learningPoints:'—',learningPointsLabel:'登录并同步后计入积分',rankingRuleSummary:'积分规则待服务端确认', rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
   data.showAudioDiagnostic=showAudioDiagnostic
   data.audioDiagnostic=''
   /* @demo-start */
@@ -111,6 +112,7 @@ function createPage(requestedRoute) {
       const duration=Number(session.duration)||Number(this.data.book.duration)||0
       const update={playing:session.status==='playing'||session.status==='loading',playbackStatus:session.status,position:session.position||0,formatted:time(session.position||0),duration:time(duration),rate:session.rate||1,loop:!!session.loop,audioDiagnostic:showAudioDiagnostic&&session.status==='error'?developmentAudioErrorCode(session.error):''}
       if(session.book)update.book=Object.assign({},this.data.book,session.book,{duration})
+      Object.assign(update,learningPoints.view(host.read(),api.isAuthenticated()))
       this.setData(update)
       this.updateSubtitles(session.position||0,!!force)
       if(session.status==='error'&&this.lastPlayerError!==session.error){this.lastPlayerError=session.error;host.toast('音频加载失败，请稍后重试')}
@@ -142,7 +144,7 @@ function createPage(requestedRoute) {
       const stableEntries=Object.values(s.savedWordEntries||{})
       const savedWordItems=[...stableEntries.map(entry=>Object.assign({key:entry.entryId,stable:true},entry)),...(s.words||[]).filter(surface=>!stableEntries.some(entry=>entry.surface===surface)).map(surface=>({key:'legacy:'+surface,surface,stable:false}))]
       const wordSyncStatusLabel=wordSync.status==='synced'?'生词本已同步':wordSync.status==='syncing'?'生词本同步中':wordSync.status==='error'?'生词本同步失败':wordSync.status==='pending'?'生词本待同步':'生词本未同步'
-      const update={user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordItems,wordSyncStatus:wordSync.status,wordSyncPending:wordSync.pendingCount,wordSyncStatusLabel,recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),syncStatus:sync.status,syncStatusLabel:sync.label,syncPending:sync.pending,syncFailed:sync.failed,stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
+      const update={...learningPoints.view(s,!isDemo&&api.isAuthenticated()),user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordItems,wordSyncStatus:wordSync.status,wordSyncPending:wordSync.pendingCount,wordSyncStatusLabel,recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),syncStatus:sync.status,syncStatusLabel:sync.label,syncPending:sync.pending,syncFailed:sync.failed,stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
       /* @demo-start */
       if(isDemo){
         const loanList=s.loans.map(l=>Object.assign({},l,{book:books.find(b=>b.id===l.bookId)})).filter(l=>l.book && (this.data.loanFilter==='all'||l.status===this.data.loanFilter))
@@ -257,13 +259,19 @@ function createPage(requestedRoute) {
     onUnload() {this.rankingEpoch=(this.rankingEpoch||0)+1;this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.detachPlayer();if(this.wordSyncUnsubscribe)this.wordSyncUnsubscribe();if(this.optionAudio)this.optionAudio.destroy()},
     answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
     nextQuestion() {if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];this.selectedOptions[this.data.questionIndex]=this.data.answer;const n=this.data.questionIndex+1;if(n>=this.questions.length){const attempt=quizAttempts.createLocalAttempt({quizPackage:this.quizPackage,book:this.data.book,selectedOptions:this.selectedOptions,startedAt:this.quizStartedAt});this.state.results=[attempt,...this.state.results];this.save();this.setData({result:true,score:attempt.score,scores,quizResultStatus:'本机练习结果 · 未经服务端验证'});this.submitQuizAttempt(attempt)}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
-    async submitQuizAttempt(attempt) {if(!api.available()||!api.isAuthenticated())return;try{const result=await api.submitQuiz(attempt);const merged=Object.assign({},attempt,result,{title:attempt.title});this.state.results=this.state.results.map(item=>item.attemptId===attempt.attemptId?merged:item);this.save();this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端未接受 · 结果保留在本机'})}catch(_){this.setData({quizResultStatus:'网络提交失败 · 结果已安全保存在本机'})}},
+    async submitQuizAttempt(attempt) {if(!api.available()||!api.isAuthenticated())return;try{const result=await api.submitQuiz(attempt);const merged=Object.assign({},attempt,result,{title:attempt.title});this.state.results=this.state.results.map(item=>item.attemptId===attempt.attemptId?merged:item);learningPoints.applyConfirmed(this.state,result.learningScore);this.save();this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端未接受 · 结果保留在本机'})}catch(_){this.setData({quizResultStatus:'网络提交失败 · 结果已安全保存在本机'})}},
     retryQuiz() {this.setupQuiz()},
     async loadRemote() {
       this.remoteLoadedOnce=true
-      if(route==='ranking'){await this.loadRankingOptions();return}
+      if(route==='ranking'){await this.loadLearningScore();await this.loadRankingOptions();return}
       if(!api.available()||!api.isAuthenticated())return
+      await this.loadLearningScore()
       if(['detail','player','quiz'].includes(route))await this.loadRemoteContent()
+    },
+    async loadLearningScore(){
+      if(!api.available()||!api.isAuthenticated()||typeof api.learningScore!=='function')return
+      const userId=api.currentUser()?.userId
+      try{const summary=await api.learningScore();if(userId&&api.currentUser()?.userId===userId&&host.accountScope()===userId){host.mutate(state=>learningPoints.applyConfirmed(state,summary));this.refresh()}}catch(_){/* A failed score read must not erase confirmed points. */}
     },
     async loadRemoteContent() {
       try{
@@ -288,13 +296,13 @@ function createPage(requestedRoute) {
       try {
         const options=await api.rankingOptions()
         if(epoch!==this.rankingEpoch)return
-        const campuses=(options.campuses||[]).map(rankOption),types=(options.periodTypes||[]).filter(item=>item.value!=='year').map(rankOption)
+        const campuses=(options.campuses||[]).map(rankOption),types=(options.periodTypes||[]).map(rankOption)
         const type=types.find(item=>item.id===this.data.rankingType)||types.find(item=>item.id==='rolling7')||types[0]
         const campusIndex=campuses.findIndex(item=>item.id===this.data.rankingCampuses[this.data.rankingCampusIndex]?.id)
         const grades=[...rankAll,...(options.grades||[]).filter(item=>item.value!=='all').map(rankOption)]
         const levels=[...rankAll,...(options.levels||[]).filter(item=>item.value!=='all').map(rankOption)]
         this.rankingOptions=options
-        this.setData({rankingTypes:types,rankingType:type?.id||'',rankingTypeLabel:type?.label||'',rankingCampuses:campuses,rankingCampusIndex:campusIndex,rankingGrades:grades,rankingGradeIndex:Math.max(0,grades.findIndex(item=>item.id===this.data.rankingGrades[this.data.rankingGradeIndex]?.id)),rankingLevels:levels,rankingLevelIndex:Math.max(0,levels.findIndex(item=>item.id===this.data.rankingLevels[this.data.rankingLevelIndex]?.id))})
+        this.setData({rankingRuleSummary:learningPoints.ruleText(options.scoreRules),rankingTypes:types,rankingType:type?.id||'',rankingTypeLabel:type?.label||'',rankingCampuses:campuses,rankingCampusIndex:campusIndex,rankingGrades:grades,rankingGradeIndex:Math.max(0,grades.findIndex(item=>item.id===this.data.rankingGrades[this.data.rankingGradeIndex]?.id)),rankingLevels:levels,rankingLevelIndex:Math.max(0,levels.findIndex(item=>item.id===this.data.rankingLevels[this.data.rankingLevelIndex]?.id))})
         this.updateRankingPeriods()
         if(!campuses.length)this.setRankingStatus('unavailable')
         else if(campusIndex<0)this.setRankingStatus('choose_campus')
@@ -315,10 +323,10 @@ function createPage(requestedRoute) {
         if(epoch!==this.rankingEpoch)return
         const status=response.status==='ready'&&response.cohortSize>=response.minimumCohortSize?'ready':response.status==='cohort_too_small'||response.status==='ready'?'cohort_too_small':'unavailable'
         if(status!=='ready'){this.setData({rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null});this.setRankingStatus(status);return}
-        const items=(response.items||[]).map(item=>({rank:item.rank,participantId:item.participantId,displayName:item.displayName,gradeLabel:item.gradeLabel,readingLevelLabel:item.readingLevelLabel,score:item.metric?.value,scoreUnit:item.metric?.unit||'分'}))
+        const items=(response.items||[]).map(item=>({rank:item.rank,participantId:item.participantId,displayName:item.displayName,gradeLabel:item.gradeLabel,readingLevelLabel:item.readingLevelLabel,score:learningPoints.formatPoints(item.metric?.value),scoreUnit:'分'}))
         const previous=cursor?this.data.rankingItems:[]
         const ids=new Set(previous.map(item=>item.participantId))
-        this.setData({rankingItems:[...previous,...items.filter(item=>!ids.has(item.participantId))],rankingNextCursor:response.nextCursor||null,rankingCurrentUser:response.currentUser||null})
+        this.setData({rankingItems:[...previous,...items.filter(item=>!ids.has(item.participantId))],rankingNextCursor:response.nextCursor||null,rankingCurrentUser:response.currentUser?Object.assign({},response.currentUser,{pointsLabel:learningPoints.formatPoints(response.currentUser.metric?.value)}):null})
         this.setRankingStatus('ready')
       }catch(_){if(epoch===this.rankingEpoch)this.setRankingStatus('error')}
       finally{if(epoch===this.rankingEpoch)this.setData({rankingBusy:false})}
@@ -339,7 +347,7 @@ function createPage(requestedRoute) {
         const response=await api.rankingDetail(id,this.rankingFilters(cursor))
         if(epoch!==this.rankingDetailEpoch||this.data.sheet!=='rankingDetail')return
         const quizzes=(response.quizzes||[]).map(item=>({attemptId:item.attemptId,title:item.title,takenAt:item.takenAt,correctPercent:item.correctPercent,level:item.level,wordCount:item.wordCount,completed:item.completed}))
-        const detail={participant:response.participant,rankingScore:response.rankingScore,scoreBreakdown:(response.scoreBreakdown||[]).map(item=>({key:item.key,label:item.label,points:item.points,maxPoints:item.maxPoints})),stats:response.stats,quizzes:cursor?[...(this.data.rankingDetail?.quizzes||[]),...quizzes]:quizzes}
+        const detail={participant:response.participant,rankingScore:learningPoints.formatPoints(response.rankingScore),scoreBreakdown:(response.scoreBreakdown||[]).map(item=>({key:item.key,label:item.label,points:learningPoints.formatPoints(item.points),quantity:learningPoints.formatPoints(item.quantity),unit:item.unit})),stats:response.stats,quizzes:cursor?[...(this.data.rankingDetail?.quizzes||[]),...quizzes]:quizzes}
         this.setData({rankingDetail:detail,rankingDetailNextCursor:response.nextCursor||null,rankingDetailStatus:'ready'})
       }catch(_){if(epoch===this.rankingDetailEpoch)this.setData({rankingDetailStatus:'error'})}
       finally{if(epoch===this.rankingDetailEpoch)this.setData({rankingDetailBusy:false})}

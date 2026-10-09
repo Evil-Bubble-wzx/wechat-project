@@ -161,7 +161,7 @@ async function main(): Promise<void> {
       readingLevel: null,
       requestId: "xb-ranking-build",
     });
-    assert.equal((await miniappApi.rankingOptions()).ruleVersion, "quiz-score-v1");
+    assert.equal((await miniappApi.rankingOptions()).ruleVersion, "learning-points-v2");
     const ranking = await miniappApi.rankings({ campusId: "a", periodType: "rolling7", grade: "all", level: "all", limit: 20 });
     assert.equal(ranking.status, "cohort_too_small");
     assert.deepEqual(ranking.items, []);

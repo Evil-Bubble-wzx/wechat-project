@@ -206,3 +206,6 @@ text { line-height:1.5; white-space:pre-line; }
 .notice-card { background:#fff; border:2rpx solid #e2e7dc; border-radius:22rpx; padding:28rpx; margin-top:24rpx; display:flex; flex-direction:column; gap:16rpx; }
 .notice-card .description { white-space:normal; }
 .notice-url { color:#397358; font-size:21rpx; line-height:1.5; word-break:break-all; }
+.learning-points-note { font-size:20rpx; color:#64805d; margin-top:10rpx; overflow-wrap:anywhere; }
+.rank-score { max-width:45%; overflow-wrap:anywhere; }
+.rank-detail-line text:last-child { overflow-wrap:anywhere; text-align:right; max-width:60%; }

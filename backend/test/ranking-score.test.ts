@@ -1,84 +1,37 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import {
-  buildRankingFeatures,
-  RANKING_RULE_VERSION,
-  RANKING_WEIGHTS,
-  scoreRankingCohort,
-  type RankingParticipantFacts,
-} from "../src/ranking/score.ts";
-
-const attempt = (
-  workId: string,
-  submittedAt: string,
-  accuracyPercent: number,
-  wordCount: number,
-  bookLevel = 3,
-  category: "fiction" | "nonfiction" = "fiction",
-) => ({ workId, submittedAt, accuracyPercent, wordCount, bookLevel, category });
-
-test("ranking score v1 has explicit weights that total one", () => {
-  assert.equal(RANKING_RULE_VERSION, "quiz-score-v1");
-  assert.equal(Object.values(RANKING_WEIGHTS).reduce((sum, value) => sum + value, 0), 1);
+import {RANKING_RULE_VERSION,LEARNING_POINT_RULES,scoreLearningEvents,scoreRankingCohort,type LearningScoreFact} from "../src/ranking/score.ts";
+const fact=(id:string,kind:LearningScoreFact["kind"],points:string):LearningScoreFact=>({id,kind,points});
+test("v2 has explicit additive unit rules and no maximum",()=>{
+ assert.equal(RANKING_RULE_VERSION,"learning-points-v2");
+ assert.deepEqual(Object.values(LEARNING_POINT_RULES).map(rule=>rule.pointsPerUnit),["1","50","10"]);
 });
-
-test("the first verified Quiz per work is the only attempt that affects ranking features", () => {
-  const features = buildRankingFeatures({
-    participantId: "reader-a",
-    profileLevel: 3,
-    attempts: [
-      attempt("book-1", "2026-09-20T08:00:00Z", 60, 1000),
-      attempt("book-1", "2026-09-21T08:00:00Z", 100, 1000),
-      attempt("book-2", "2026-09-22T08:00:00Z", 80, 1500, 4, "nonfiction"),
-    ],
-  });
-  assert.equal(features.completion, 2);
-  assert.ok(features.accuracy < 80, "the retry must not replace the first attempt");
-  assert.equal(features.challenge, 0.5);
-  assert.equal(features.breadth, 1);
+test("each new learning portion increases points even before any Quiz",()=>{
+ const before=scoreLearningEvents([fact("p1","listening","12")]);
+ const after=scoreLearningEvents([fact("p1","listening","12"),fact("p2","listening","3"),fact("q1","quizCorrect","10"),fact("done","completion","50")]);
+ assert.equal(before.score,"12");assert.equal(after.score,"75");
+ assert.equal(after.breakdown.reduce((sum,part)=>sum+BigInt(part.points),0n).toString(),after.score);
 });
-
-test("cohort score rewards balanced verified performance and stays within 0-1000", () => {
-  const participants: RankingParticipantFacts[] = [
-    {
-      participantId: "reader-a",
-      profileLevel: 3,
-      attempts: Array.from({ length: 6 }, (_, index) =>
-        attempt(`a-${index}`, `2026-09-${String(10 + index).padStart(2, "0")}T08:00:00Z`, 75 + index * 3, 1800, 3.5, index % 2 ? "fiction" : "nonfiction")),
-    },
-    {
-      participantId: "reader-b",
-      profileLevel: 3,
-      attempts: Array.from({ length: 3 }, (_, index) =>
-        attempt(`b-${index}`, `2026-09-${String(10 + index).padStart(2, "0")}T08:00:00Z`, 65, 700, 2.5, "fiction")),
-    },
-  ];
-  const ranked = scoreRankingCohort(participants);
-  assert.equal(ranked[0]?.participantId, "reader-a");
-  assert.equal(ranked[0]?.rank, 1);
-  assert.ok(ranked.every((item) => item.score >= 0 && item.score <= 1000));
-  assert.equal(ranked[0]?.breakdown.length, 6);
+test("replaying an event cannot increase points; conflicting IDs fail closed",()=>{
+ const event=fact("once","listening","100");
+ assert.equal(scoreLearningEvents([event,event]).score,"100");
+ assert.throws(()=>scoreLearningEvents([event,{...event,points:"101"}]),/Conflicting/);
 });
-
-test("missing level, growth and category facts are neutral rather than fabricated", () => {
-  const ranked = scoreRankingCohort([
-    { participantId:"reader-a", attempts:[attempt("a", "2026-09-10T08:00:00Z", 80, 1000)] },
-    { participantId:"reader-b", attempts:[attempt("b", "2026-09-10T08:00:00Z", 80, 1000)] },
-  ]);
-  assert.equal(ranked[0]?.features.challenge,null);
-  assert.equal(ranked[0]?.features.growth,null);
-  assert.equal(ranked[0]?.score,500);
-  assert.equal(ranked[1]?.score,500);
-  assert.equal(ranked[0]?.rank,1);
-  assert.equal(ranked[1]?.rank,1);
+test("points exceed 1000 and JS safe integers without truncation",()=>{
+ const huge="900719925474099312345678901";
+ assert.equal(scoreLearningEvents([fact("large","listening",huge),fact("more","quizCorrect","10")]).score,(BigInt(huge)+10n).toString());
 });
-
-test("participants without a completed Quiz book are not ranked", () => {
-  const ranked = scoreRankingCohort([
-    { participantId:"reader-empty", attempts:[] },
-    { participantId:"reader-active", attempts:[attempt("book-1", "2026-09-10T08:00:00Z", 80, 1000)] },
-  ]);
-  assert.deepEqual(ranked.map((item) => item.participantId),["reader-active"]);
-  assert.equal(ranked[0]?.score,500);
+test("cohort changes never change personal scores; equal totals share rank",()=>{
+ const a={participantId:"a",attempts:[],events:[fact("a","listening","1250")]};
+ const b={participantId:"b",attempts:[],events:[fact("b","listening","1250")]};
+ const c={participantId:"c",attempts:[],events:[fact("c","listening","1")]};
+ assert.equal(scoreRankingCohort([a])[0]?.score,"1250");
+ assert.deepEqual(scoreRankingCohort([a,b,c]).map(item=>[item.score,item.rank]),[["1250",1],["1250",1],["1",3]]);
+});
+test("partial listening is eligible without a completed Quiz, zero learners are not",()=>{
+ assert.deepEqual(scoreRankingCohort([{participantId:"empty",attempts:[],events:[]},{participantId:"partial",attempts:[],events:[fact("new","listening","1")]}]).map(item=>item.participantId),["partial"]);
+});
+test("malformed, negative, fractional, unknown or mismatched credit facts are rejected",()=>{
+ for(const points of ["0","-1","1.5","NaN","01"])assert.throws(()=>scoreLearningEvents([fact("bad","listening",points)]));
+ assert.throws(()=>scoreLearningEvents([fact("bad","completion","49")]),/rule unit/);
 });

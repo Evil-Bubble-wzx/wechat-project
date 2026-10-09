@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 import type { Pool } from "pg";
+import { readLearningScore, type LearningScoreSummary } from "../ranking/learning-score.ts";
 
 export type QuizAttemptInput = {
   schemaVersion: 1;
@@ -22,6 +23,7 @@ export type QuizAttemptResult =
       score: number;
       mastery: boolean;
       verifiedAt: string;
+      learningScore?: LearningScoreSummary;
     }
   | {
       attemptId: string;
@@ -101,6 +103,7 @@ export class QuizService {
           score: row.score!,
           mastery: row.mastery!,
           verifiedAt: row.verified_at!.toISOString(),
+          learningScore: await readLearningScore(client,userId),
         };
       }
 
@@ -226,8 +229,10 @@ export class QuizService {
          ON CONFLICT (quiz_attempt_id) DO NOTHING`,
         [attempt.rows[0]!.id],
       );
+      const learningScore=await readLearningScore(client,userId);
       await client.query("COMMIT");
       return {
+        learningScore,
         attemptId: input.attemptId,
         status: "server_verified",
         score,

@@ -2,7 +2,8 @@ import type { Pool } from "pg";
 
 import { ApiError } from "../api/errors.ts";
 import { decodeKey, hmacSha256 } from "../security/crypto.ts";
-import { RANKING_RULE_VERSION, type RankingScoreBreakdown } from "./score.ts";
+import { RANKING_RULE_VERSION, LEARNING_POINT_RULES, type RankingScoreBreakdown } from "./score.ts";
+import { readLearningScore } from "./learning-score.ts";
 import type { RankingPeriodType } from "./aggregation-service.ts";
 
 export const RANKING_TIMEZONE = "Asia/Shanghai";
@@ -138,6 +139,8 @@ export class RankingQueryService{
     return {campusId:input.campusId,periodType:input.periodType,periodKey:input.periodType==="rolling7"?undefined:window.periodKey,grade,level,window};
   }
 
+  async learningScore(userId:string){return readLearningScore(this.pool,userId)}
+
   async options(){
     const campuses=(await this.pool.query<{id:string;display_name:string}>("SELECT id,display_name FROM campuses WHERE status='active' ORDER BY id")).rows.map(row=>({value:row.id,label:row.display_name}));
     const now=this.now();
@@ -151,7 +154,7 @@ export class RankingQueryService{
       const date=new Date(Date.UTC(local.getUTCFullYear(),local.getUTCMonth()-index,1)),year=date.getUTCFullYear(),month=date.getUTCMonth()+1,window=monthWindow(`${year}-${pad2(month)}`);
       return {key:`${year}-${pad2(month)}`,label:`${year}年${month}月`,startsAt:iso(window.startsAt),endsAt:iso(window.endsAt)};
     });
-    return {timezone:RANKING_TIMEZONE,minimumCohortSize:10,ruleVersion:RANKING_RULE_VERSION,campuses,periodTypes:[{value:"rolling7",label:"最近七天",requiresPeriodSelection:false},{value:"week",label:"周榜",requiresPeriodSelection:true},{value:"month",label:"月榜",requiresPeriodSelection:true},{value:"year",label:"年榜",requiresPeriodSelection:false}],periods:{week:weeks,month:months},grades:[{value:"all",label:"全部年级"},{value:"k",label:"幼儿园"},...Array.from({length:9},(_,index)=>({value:String(index+1),label:`${index+1}年级`}))],levels:[{value:"all",label:"全部级别"},...Array.from({length:5},(_,index)=>({value:String(index+1),label:`Lv ${index+1}.x`}))]};
+    return {timezone:RANKING_TIMEZONE,minimumCohortSize:10,ruleVersion:RANKING_RULE_VERSION,scoreRules:LEARNING_POINT_RULES,scoreCap:null,campuses,periodTypes:[{value:"rolling7",label:"最近七天",requiresPeriodSelection:false},{value:"week",label:"周榜",requiresPeriodSelection:true},{value:"month",label:"月榜",requiresPeriodSelection:true},{value:"year",label:"年榜",requiresPeriodSelection:false}],periods:{week:weeks,month:months},grades:[{value:"all",label:"全部年级"},{value:"k",label:"幼儿园"},...Array.from({length:9},(_,index)=>({value:String(index+1),label:`${index+1}年级`}))],levels:[{value:"all",label:"全部级别"},...Array.from({length:5},(_,index)=>({value:String(index+1),label:`Lv ${index+1}.x`}))]};
   }
 
   private async assertActiveCampus(campusId:string):Promise<void>{
@@ -185,13 +188,13 @@ export class RankingQueryService{
     const normalizedFilters={campusId:filters.campusId,periodType:filters.periodType,periodKey:snapshot?.period_key??filters.window.periodKey,grade:filters.grade,level:filters.level};
     if(!snapshot)return {status:"unavailable" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:RANKING_RULE_VERSION,periodType:filters.periodType,periodKey:normalizedFilters.periodKey,startsAt:iso(filters.window.startsAt),endsAt:iso(filters.window.endsAt),generatedAt:null,minimumCohortSize:10,cohortSize:0,items:[],currentUser:null,nextCursor:null};
     if(snapshot.result_status!=="ready")return {status:snapshot.result_status??"unavailable",timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at?.toISOString()??null,minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:[],currentUser:null,nextCursor:null};
-    const rows=await this.pool.query<{rank:number;participant_id:string;display_name:string;score:number;profile_grade:string|null;profile_reading_level:string|null}>(
+    const rows=await this.pool.query<{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null}>(
       `SELECT rank,participant_id,display_name,score,profile_grade,profile_reading_level FROM ranking_snapshot_entries
        WHERE snapshot_id=$1 AND ($2::integer IS NULL OR rank>$2 OR (rank=$2 AND participant_id>$3))
        ORDER BY rank,participant_id LIMIT $4`,[snapshot.id,after?.rank??null,after?.participantId??null,limit+1]);
     const page=rows.rows.slice(0,limit),hasMore=rows.rows.length>limit;
-    const mapEntry=(row:{rank:number;participant_id:string;display_name:string;score:number;profile_grade:string|null;profile_reading_level:string|null})=>({rank:row.rank,participantId:row.participant_id,displayName:row.display_name,gradeLabel:gradeLabel(row.profile_grade),readingLevelLabel:levelLabel(row.profile_reading_level),metric:{key:"rankingScore" as const,label:"Quiz Score" as const,value:row.score,unit:"points" as const}});
-    const current=(await this.pool.query<{rank:number;participant_id:string;display_name:string;score:number;profile_grade:string|null;profile_reading_level:string|null}>("SELECT rank,participant_id,display_name,score,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND user_id=$2",[snapshot.id,userId])).rows[0];
+    const mapEntry=(row:{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null})=>({rank:row.rank,participantId:row.participant_id,displayName:row.display_name,gradeLabel:gradeLabel(row.profile_grade),readingLevelLabel:levelLabel(row.profile_reading_level),metric:{key:"rankingScore" as const,label:"Learning Points" as const,value:String(row.score),unit:"points" as const}});
+    const current=(await this.pool.query<{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null}>("SELECT rank,participant_id,display_name,score,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND user_id=$2",[snapshot.id,userId])).rows[0];
     const last=page.at(-1);
     return {status:"ready" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at!.toISOString(),minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:page.map(mapEntry),currentUser:current?mapEntry(current):null,nextCursor:hasMore&&last?this.encodeCursor({type:"ranking",snapshotId:snapshot.id,rank:last.rank,participantId:last.participant_id}):null};
   }
@@ -202,7 +205,7 @@ export class RankingQueryService{
     const after=this.decodeCursor(cursor,"quizzes") as Extract<CursorPayload,{type:"quizzes"}>|null;
     const snapshot=await this.snapshot(filters,after?.snapshotId);
     if(!snapshot||snapshot.result_status!=="ready")throw new ApiError("RANKING_UNAVAILABLE",503,true,"Ranking snapshot is unavailable");
-    const entry=(await this.pool.query<{user_id:string;display_name:string;score:number;score_breakdown:RankingScoreBreakdown[];stats:Record<string,number|null>;profile_grade:string|null;profile_reading_level:string|null}>("SELECT user_id,display_name,score,score_breakdown,stats,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND participant_id=$2",[snapshot.id,participantId])).rows[0];
+    const entry=(await this.pool.query<{user_id:string;display_name:string;score:string;score_breakdown:RankingScoreBreakdown[];stats:Record<string,number|null>;profile_grade:string|null;profile_reading_level:string|null}>("SELECT user_id,display_name,score,score_breakdown,stats,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND participant_id=$2",[snapshot.id,participantId])).rows[0];
     if(!entry)throw new ApiError("RESOURCE_NOT_FOUND",404,false,"Ranking participant is unavailable");
     const rows=await this.pool.query<{quiz_attempt_id:string;work_id:string;piece_id:string;title:string;series:string|null;author:string|null;taken_at:Date;correct_percent:string;level:string|null;category:"fiction"|"nonfiction"|null;word_count:number}>(
       `SELECT quiz_attempt_id,work_id,piece_id,title,series,author,taken_at,correct_percent,level,category,word_count
@@ -210,6 +213,6 @@ export class RankingQueryService{
          AND ($3::timestamptz IS NULL OR taken_at<$3 OR (taken_at=$3 AND quiz_attempt_id::text>$4))
        ORDER BY taken_at DESC,quiz_attempt_id LIMIT $5`,[snapshot.id,entry.user_id,after?.takenAt??null,after?.attemptId??null,limit+1]);
     const page=rows.rows.slice(0,limit),hasMore=rows.rows.length>limit,last=page.at(-1);
-    return {ruleVersion:snapshot.rule_version,participant:{participantId,displayName:entry.display_name,gradeLabel:gradeLabel(entry.profile_grade),readingLevelLabel:levelLabel(entry.profile_reading_level)},periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),rankingScore:entry.score,scoreBreakdown:entry.score_breakdown,stats:entry.stats,quizzes:page.map(row=>({attemptId:row.quiz_attempt_id,workId:row.work_id,pieceId:row.piece_id,title:row.title,series:row.series,author:row.author,takenAt:row.taken_at.toISOString(),correctPercent:Number(row.correct_percent),level:row.level===null?null:Number(row.level),category:row.category,wordCount:row.word_count,completed:true as const})),nextCursor:hasMore&&last?this.encodeCursor({type:"quizzes",snapshotId:snapshot.id,takenAt:last.taken_at.toISOString(),attemptId:last.quiz_attempt_id}):null};
+    return {ruleVersion:snapshot.rule_version,participant:{participantId,displayName:entry.display_name,gradeLabel:gradeLabel(entry.profile_grade),readingLevelLabel:levelLabel(entry.profile_reading_level)},periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),rankingScore:String(entry.score),scoreBreakdown:entry.score_breakdown,stats:entry.stats,quizzes:page.map(row=>({attemptId:row.quiz_attempt_id,workId:row.work_id,pieceId:row.piece_id,title:row.title,series:row.series,author:row.author,takenAt:row.taken_at.toISOString(),correctPercent:Number(row.correct_percent),level:row.level===null?null:Number(row.level),category:row.category,wordCount:row.word_count,completed:true as const})),nextCursor:hasMore&&last?this.encodeCursor({type:"quizzes",snapshotId:snapshot.id,takenAt:last.taken_at.toISOString(),attemptId:last.quiz_attempt_id}):null};
   }
 }

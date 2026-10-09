@@ -9,7 +9,7 @@
     "grade": "3",
     "level": "4"
   },
-  "ruleVersion": "quiz-score-v1",
+  "ruleVersion": "learning-points-v2",
   "periodType": "rolling7",
   "periodKey": "2026-09-18/2026-09-25",
   "startsAt": "2026-09-18T00:00:00.000Z",
@@ -26,8 +26,8 @@
       "readingLevelLabel": "Lv 4.x",
       "metric": {
         "key": "rankingScore",
-        "label": "Quiz Score",
-        "value": 782,
+        "label": "Learning Points",
+        "value": "1414",
         "unit": "points"
       }
     }

@@ -8,7 +8,7 @@ import type { RateLimiterPort } from "../security/rate-limiter.ts";
 import { ApiError } from "./errors.ts";
 import type { SessionServicePort } from "./session-routes.ts";
 
-export type RankingServicePort = Pick<RankingQueryService,"options"|"rankings"|"detail">;
+export type RankingServicePort = Pick<RankingQueryService,"options"|"rankings"|"detail"> & Partial<Pick<RankingQueryService,"learningScore">>;
 
 function bearer(request:FastifyRequest):string{
   const value=request.headers.authorization;
@@ -34,6 +34,12 @@ function filters(query:Record<string,unknown>){
 }
 
 export function registerRankingRoutes(app:FastifyInstance,ranking:RankingServicePort,sessions:SessionServicePort,audit?:AuditService,metrics?:MetricsRegistry,rateLimiter?:RateLimiterPort):void{
+  app.get("/api/v1/me/learning-score",async(request)=>{
+    const session=await sessions.authenticateAccessToken(bearer(request));
+    await rateLimiter?.consume("learning-score-read",session.userId,120,60);
+    if(!ranking.learningScore)throw new ApiError("DEPENDENCY_UNAVAILABLE",503,true,"Learning score service is unavailable");
+    return {requestId:request.id,...await ranking.learningScore(session.userId)};
+  });
   app.get("/api/v1/ranking-options",async(request)=>{
     const session=await sessions.authenticateAccessToken(bearer(request));
     await rateLimiter?.consume("ranking-read",session.userId,120,60);

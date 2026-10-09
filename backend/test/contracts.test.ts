@@ -69,7 +69,7 @@ function operationEntries(document: OpenApiDocument) {
 test("OpenAPI 3.1 document and external schemas are valid", async () => {
   const document = (await SwaggerParser.validate(openApiPath)) as unknown as OpenApiDocument;
 
-  assert.equal(document.info.version, "1.3.0");
+  assert.equal(document.info.version, "2.0.0");
   assert.ok(Object.keys(document.paths).length >= 10);
 });
 
@@ -111,7 +111,7 @@ test("error catalog exactly matches the stable ErrorCode enum", async () => {
   const schemaCodes = [...errorCode.enum].sort();
   const catalogCodes = catalog.errors.map(({ code }) => code).sort();
 
-  assert.equal(version, "api-contract-v1.3.0");
+  assert.equal(version, "api-contract-v2.0.0");
   assert.equal(catalog.contractVersion, version);
   assert.deepEqual(catalogCodes, schemaCodes);
   assert.equal(new Set(catalogCodes).size, catalogCodes.length);
@@ -155,15 +155,15 @@ test("contract examples validate against JSON Schema 2020-12", async () => {
   }
 });
 
-test("ranking metric accepts the bounded algorithm score and rejects raw book counts", async () => {
+test("ranking metric accepts unlimited exact points and rejects floating or legacy numbers", async () => {
   const schema = await readJson<ContractSchema>("schemas/api-v1.schema.json");
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   ajv.addSchema(schema);
   const validate = ajv.getSchema(`${schema.$id}#/$defs/RankingMetric`);
   assert.ok(validate);
-  assert.equal(validate({key:"rankingScore",label:"Quiz Score",value:782,unit:"points"}),true);
+  assert.equal(validate({key:"rankingScore",label:"Learning Points",value:"782",unit:"points"}),true);
   assert.equal(validate({key:"completedQuizBooks",label:"Quiz Books",value:7,unit:"books"}),false);
-  assert.equal(validate({key:"rankingScore",label:"Quiz Score",value:1001,unit:"points"}),false);
-  assert.equal(validate({key:"rankingScore",label:"Quiz Score",value:782.5,unit:"points"}),false);
+  assert.equal(validate({key:"rankingScore",label:"Learning Points",value:"900719925474099312345678901",unit:"points"}),true);
+  assert.equal(validate({key:"rankingScore",label:"Learning Points",value:782.5,unit:"points"}),false);
 });

@@ -4,11 +4,13 @@ import type { Pool, PoolClient } from "pg";
 
 import {
   RANKING_RULE_VERSION,
+  LEARNING_POINT_RULES,
   selectRankingAttempts,
   scoreRankingCohort,
   type RankingAttemptFact,
   type RankingParticipantFacts,
   type RankingScoreResult,
+  type LearningScoreFact,
 } from "./score.ts";
 
 export type RankingPeriodType = "rolling7" | "week" | "month" | "year";
@@ -82,7 +84,7 @@ export type RankingBuildResult = {
     rank: number;
     participantId: string;
     displayName: string;
-    metric: { key: "rankingScore"; label: "Quiz Score"; value: number; unit: "points" };
+    metric: { key: "rankingScore"; label: "Learning Points"; value: string; unit: "points" };
   }>;
 };
 
@@ -200,12 +202,29 @@ export class RankingAggregationService {
   async compute(dimensionsInput: RankingDimensions, client: Pool | PoolClient = this.pool): Promise<ComputedRanking> {
     const dimensions = this.validateDimensions(dimensionsInput);
     const rows = await this.readFacts(client, dimensions);
+    const scoreRows=(await client.query<LearningScoreFact & {user_id:string;earned_at:Date;quiz_attempt_id:string|null;profile_grade:string|null;profile_level:string|null}>(
+      `SELECT event.id,event.kind,event.points::text,event.user_id,event.earned_at,event.quiz_attempt_id,
+              profile.grade AS profile_grade,profile.reading_level AS profile_level
+       FROM valid_learning_score_events event
+       JOIN LATERAL (
+         SELECT campus_id,grade,reading_level FROM user_profile_versions upv
+         WHERE upv.user_id=event.user_id AND upv.effective_from<=$1
+           AND (upv.effective_until IS NULL OR upv.effective_until>$1)
+           AND upv.profile_source IN ('admin','school_sync') AND upv.source_verified_at IS NOT NULL
+         ORDER BY upv.effective_from DESC LIMIT 1
+       ) profile ON true
+       WHERE event.earned_at >= $1 AND event.earned_at < $2 AND profile.campus_id=$3
+         AND ($4::text IS NULL OR profile.grade=$4) AND ($5::text IS NULL OR profile.reading_level=$5)
+       ORDER BY event.user_id,event.earned_at,event.id`,
+      [dimensions.startsAt,dimensions.endsAt,dimensions.campusId,dimensions.grade,dimensions.readingLevel])).rows;
+    const eventsByUser=new Map<string,typeof scoreRows>();
+    for(const row of scoreRows)eventsByUser.set(row.user_id,[...(eventsByUser.get(row.user_id)||[]),row]);
     const rowsByUser = new Map<string, RankingFactRow[]>();
     for (const row of rows) rowsByUser.set(row.user_id, [...(rowsByUser.get(row.user_id) ?? []), row]);
-    const participants: RankingParticipantFacts[] = [...rowsByUser.entries()].map(([userId, userRows]) => ({
+    const participants: RankingParticipantFacts[] = [...eventsByUser.entries()].map(([userId, events]) => ({
       participantId:userId,
-      profileLevel:userRows[0]?.profile_level === null ? null : Number(userRows[0]?.profile_level),
-      attempts:userRows.map((row): RankingAttemptFact => ({
+      events,
+      attempts:(rowsByUser.get(userId)||[]).map((row): RankingAttemptFact => ({
         workId:row.work_id,
         submittedAt:row.submitted_at.toISOString(),
         accuracyPercent:row.score,
@@ -216,16 +235,16 @@ export class RankingAggregationService {
     }));
     const scores = scoreRankingCohort(participants);
     const entries = scores.map((score): ComputedRankingEntry => {
-      const userRows = rowsByUser.get(score.participantId)!;
-      const firstAttemptIds = new Set(firstRowsPerWork(userRows).map((row) => row.quiz_attempt_id));
+      const userRows = rowsByUser.get(score.participantId)||[];
+      const firstAttemptIds = new Set((eventsByUser.get(score.participantId)||[]).map(event=>event.quiz_attempt_id).filter(Boolean));
       const participantId = this.participantId(score.participantId);
       return {
         ...score,
         userId:score.participantId,
         participantId,
         displayName:`Reader ${participantId.slice(-6).toUpperCase()}`,
-        profileGrade:userRows[0]?.profile_grade ?? null,
-        profileReadingLevel:userRows[0]?.profile_level ?? null,
+        profileGrade:eventsByUser.get(score.participantId)?.[0]?.profile_grade ?? null,
+        profileReadingLevel:eventsByUser.get(score.participantId)?.[0]?.profile_level ?? null,
         stats:statsFor(userRows),
         quizzes:userRows.map((row) => ({
           quizAttemptId:row.quiz_attempt_id,
@@ -243,8 +262,8 @@ export class RankingAggregationService {
         })),
       };
     });
-    const sourceMax = rows.reduce<Date | null>((latest, row) => !latest || row.verified_at > latest ? row.verified_at : latest, null);
-    const sourceFingerprint = createHash("sha256").update(JSON.stringify(rows.map((row) => ({
+    const sourceMax = scoreRows.reduce<Date | null>((latest,row)=>!latest||row.earned_at>latest?row.earned_at:latest,null);
+    const sourceFingerprint = createHash("sha256").update(JSON.stringify({events:scoreRows,quizzes:rows.map((row) => ({
       quizAttemptId:row.quiz_attempt_id,
       userId:row.user_id,
       workId:row.work_id,
@@ -256,7 +275,7 @@ export class RankingAggregationService {
       rankingCategory:row.ranking_category,
       profileGrade:row.profile_grade,
       profileLevel:row.profile_level,
-    })))).digest("hex");
+    }))})).digest("hex");
     return { sourceMaxVerifiedAt:sourceMax?.toISOString() ?? null, sourceFingerprint, entries };
   }
 
@@ -305,14 +324,14 @@ export class RankingAggregationService {
            period_type, period_key, starts_at, ends_at, campus_id, grade, reading_level,
            rule_version, status, minimum_cohort_size, algorithm_metadata, source_fingerprint
          ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'building',$9,$10,$11) RETURNING id`,
-        [dimensions.periodType,dimensions.periodKey,dimensions.startsAt,dimensions.endsAt,dimensions.campusId,dimensions.grade,dimensions.readingLevel,RANKING_RULE_VERSION,dimensions.minimumCohortSize,JSON.stringify({weights:{completion:0.3,words:0.15,accuracy:0.25,challenge:0.15,growth:0.1,breadth:0.05}}),computed.sourceFingerprint],
+        [dimensions.periodType,dimensions.periodKey,dimensions.startsAt,dimensions.endsAt,dimensions.campusId,dimensions.grade,dimensions.readingLevel,RANKING_RULE_VERSION,dimensions.minimumCohortSize,JSON.stringify({rules:LEARNING_POINT_RULES,cap:null,aggregation:"earned_delta",pointEncoding:"decimal-string"}),computed.sourceFingerprint],
       )).rows[0]!;
       const resultStatus = computed.entries.length < dimensions.minimumCohortSize ? "cohort_too_small" : "ready";
       const publicEntries: RankingBuildResult["entries"] = resultStatus === "ready" ? computed.entries.map((entry) => ({
         rank:entry.rank,
         participantId:entry.participantId,
         displayName:entry.displayName,
-        metric:{key:"rankingScore",label:"Quiz Score",value:entry.score,unit:"points"},
+        metric:{key:"rankingScore",label:"Learning Points",value:entry.score,unit:"points"},
       })) : [];
 
       if (resultStatus === "ready") {

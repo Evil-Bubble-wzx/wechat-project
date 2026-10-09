@@ -2,11 +2,12 @@ import { createHash } from "node:crypto";
 
 import type { Pool, PoolClient } from "pg";
 
+import { readLearningScore, type LearningScoreSummary } from "../ranking/learning-score.ts";
 import { ApiError } from "../api/errors.ts";
 
 export type ProgressMutationInput={schemaVersion:1;mutationId:string;baseRevision:string;contentVersion:number;checkpointMs:number;listenedRangesMs:Array<[number,number]>};
 export type ProgressState={pieceId:string;contentVersion:number;revision:string;checkpointMs:number;listenedRangesMs:Array<[number,number]>;listenedMs:number;coverage:number;completed:boolean;historicalVersion:boolean;serverUpdatedAt:string};
-export type ProgressMutationResponse={mutationId:string;duplicate:boolean;mergeStatus:"applied"|"merged_stale_base";checkpointAccepted:boolean;historicalVersion:boolean;progress:ProgressState;acknowledgedAt:string};
+export type ProgressMutationResponse={learningScore?:LearningScoreSummary;mutationId:string;duplicate:boolean;mergeStatus:"applied"|"merged_stale_base";checkpointAccepted:boolean;historicalVersion:boolean;progress:ProgressState;acknowledgedAt:string};
 export type ProgressListResponse={items:ProgressState[];nextCursor:string|null};
 
 function canonical(value:unknown):string{
@@ -65,7 +66,7 @@ export class ProgressSyncService{
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,now(),$10,$11,$12,$10,$13)
         ON CONFLICT (user_id,piece_id,content_version) DO UPDATE SET duration_ms=EXCLUDED.duration_ms,checkpoint_ms=EXCLUDED.checkpoint_ms,listened_ranges_ms=EXCLUDED.listened_ranges_ms,listened_ms=EXCLUDED.listened_ms,coverage=EXCLUDED.coverage,completed=user_learning_progress.completed OR EXCLUDED.completed,revision=EXCLUDED.revision,server_updated_at=EXCLUDED.server_updated_at,last_mutation_id=EXCLUDED.last_mutation_id,historical=EXCLUDED.historical
         RETURNING *`,[userId,pieceId,input.contentVersion,resource.durationMs,checkpoint,JSON.stringify(ranges),facts.listenedMs,facts.coverage,facts.completed,input.mutationId,revision.toString(),acknowledgedAt,resource.historical]);
-      const response:ProgressMutationResponse={mutationId:input.mutationId,duplicate:false,mergeStatus:checkpointAccepted?"applied":"merged_stale_base",checkpointAccepted,historicalVersion:resource.historical,progress:state(saved.rows[0]!),acknowledgedAt};
+      const response:ProgressMutationResponse={mutationId:input.mutationId,duplicate:false,mergeStatus:checkpointAccepted?"applied":"merged_stale_base",checkpointAccepted,historicalVersion:resource.historical,progress:state(saved.rows[0]!),learningScore:await readLearningScore(client,userId),acknowledgedAt};
       await client.query("INSERT INTO progress_sync_mutations (user_id,mutation_id,request_hash,response) VALUES ($1,$2,$3,$4)",[userId,input.mutationId,requestHash,JSON.stringify(response)]);
       await client.query("COMMIT");return response;
     }catch(error){await client.query("ROLLBACK");throw error}finally{client.release()}

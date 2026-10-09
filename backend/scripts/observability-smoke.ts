@@ -1,3 +1,4 @@
+import { LEARNING_POINT_RULES } from "../src/ranking/score.ts";
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 
@@ -32,8 +33,8 @@ class SmokeSession implements SessionServicePort {
 }
 
 class SmokeRanking implements RankingServicePort {
-  async options() { return { timezone: "Asia/Shanghai", minimumCohortSize: 10, ruleVersion: "quiz-score-v1", campuses: [], periodTypes: [], periods: { week: [], month: [] }, grades: [], levels: [] }; }
-  async rankings() { return { status: "unavailable" as const, timezone: "Asia/Shanghai", filters: { campusId: "a", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", grade: null, level: null }, ruleVersion: "quiz-score-v1", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", startsAt: "2026-09-17T00:00:00.000Z", endsAt: "2026-09-24T00:00:00.000Z", generatedAt: null, minimumCohortSize: 10, cohortSize: 0, items: [], currentUser: null, nextCursor: null }; }
+  async options() { return { timezone: "Asia/Shanghai", minimumCohortSize: 10, ruleVersion: "learning-points-v2", campuses: [], periodTypes: [], periods: { week: [], month: [] }, grades: [], levels: [] }; }
+  async rankings() { return { status: "unavailable" as const, timezone: "Asia/Shanghai", filters: { campusId: "a", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", grade: null, level: null }, ruleVersion: "learning-points-v2", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", startsAt: "2026-09-17T00:00:00.000Z", endsAt: "2026-09-24T00:00:00.000Z", generatedAt: null, minimumCohortSize: 10, cohortSize: 0, items: [], currentUser: null, nextCursor: null }; }
   async detail(): Promise<never> { throw new Error("unused"); }
 }
 

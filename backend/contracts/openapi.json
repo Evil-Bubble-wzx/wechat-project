@@ -2,34 +2,73 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tingyue Backend API",
-    "version": "1.3.0",
-    "description": "Authoritative API contract api-contract-v1.3.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages."
+    "version": "2.0.0",
+    "description": "Authoritative API contract api-contract-v2.0.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
   },
   "servers": [
-    { "url": "http://127.0.0.1:3100", "description": "Local development" },
-    { "url": "https://api.test.example.invalid", "description": "Test placeholder; replace after domain approval" }
+    {
+      "url": "http://127.0.0.1:3100",
+      "description": "Local development"
+    },
+    {
+      "url": "https://api.test.example.invalid",
+      "description": "Test placeholder; replace after domain approval"
+    }
   ],
   "tags": [
-    { "name": "Health" },
-    { "name": "Session" },
-    { "name": "Content" },
-    { "name": "Quiz" },
-    { "name": "Sync" },
-    { "name": "Ranking" },
-    { "name": "Admin ingestion" }
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Session"
+    },
+    {
+      "name": "Content"
+    },
+    {
+      "name": "Quiz"
+    },
+    {
+      "name": "Sync"
+    },
+    {
+      "name": "Ranking"
+    },
+    {
+      "name": "Admin ingestion"
+    }
   ],
-  "security": [{ "bearerAuth": [] }],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
     "/health/live": {
       "get": {
         "operationId": "getLiveness",
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "security": [],
         "responses": {
           "200": {
             "description": "API process is alive.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" }, "X-API-Contract-Version": { "$ref": "#/components/headers/ContractVersion" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/LiveResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/LiveResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -37,18 +76,40 @@
     "/health/ready": {
       "get": {
         "operationId": "getReadiness",
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "security": [],
         "responses": {
           "200": {
             "description": "All required dependencies are ready.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ReadyResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/ReadyResponse"
+                }
+              }
+            }
           },
           "503": {
             "description": "At least one required dependency is unavailable.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/NotReadyResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/NotReadyResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -56,485 +117,1220 @@
     "/api/v1/session/wechat": {
       "post": {
         "operationId": "createWechatSession",
-        "tags": ["Session"],
+        "tags": [
+          "Session"
+        ],
         "security": [],
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SessionWechatRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/SessionWechatRequest"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
             "description": "Session created. The login code and returned refresh token must never be logged.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SessionResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SessionResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": { "$ref": "#/components/responses/Conflict" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
         }
       }
     },
     "/api/v1/session/refresh": {
       "post": {
         "operationId": "refreshSession",
-        "tags": ["Session"],
+        "tags": [
+          "Session"
+        ],
         "security": [],
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SessionRefreshRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/SessionRefreshRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
             "description": "Refresh token rotated and a new token pair issued.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SessionResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SessionResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": { "$ref": "#/components/responses/Conflict" },
-          "429": { "$ref": "#/components/responses/RateLimited" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
     "/api/v1/session/current": {
       "delete": {
         "operationId": "revokeCurrentSession",
-        "tags": ["Session"],
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "tags": [
+          "Session"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Current session revoked. Repeating the same request is safe.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SessionRevokedResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SessionRevokedResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/me": {
       "get": {
         "operationId": "getMe",
-        "tags": ["Session"],
+        "tags": [
+          "Session"
+        ],
         "responses": {
           "200": {
             "description": "Current business user and trusted profile fields. Clients gate optional sync features using the contract-version response header.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" }, "X-API-Contract-Version": { "$ref": "#/components/headers/ContractVersion" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/MeResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/MeResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/works": {
       "get": {
         "operationId": "listWorks",
-        "tags": ["Content"],
+        "tags": [
+          "Content"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/Cursor" },
-          { "$ref": "#/components/parameters/Limit" }
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          }
         ],
         "responses": {
           "200": {
             "description": "Visible works in stable cursor order.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/WorksResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/WorksResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/works/{workId}": {
       "get": {
         "operationId": "getWork",
-        "tags": ["Content"],
-        "parameters": [{ "$ref": "#/components/parameters/WorkId" }],
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkId"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Work and piece metadata.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/WorkResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/WorkResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/api/v1/pieces/{pieceId}/manifest": {
       "get": {
         "operationId": "getPieceManifest",
-        "tags": ["Content"],
+        "tags": [
+          "Content"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/PieceId" },
+          {
+            "$ref": "#/components/parameters/PieceId"
+          },
           {
             "name": "contentVersion",
             "in": "query",
             "required": false,
             "description": "Omit for the current published version.",
-            "schema": { "type": "integer", "minimum": 1 }
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Immutable versioned manifest with short-lived asset URLs and SHA-256 checksums.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ManifestResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/ManifestResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/me/local-import": {
       "post": {
         "operationId": "importLocalLearningData",
-        "tags": ["Sync"],
+        "tags": [
+          "Sync"
+        ],
         "description": "Explicit one-time import of allowlisted local learning evidence. Idempotency identity is userId plus snapshotId; the Idempotency-Key must equal snapshotId. Server recomputes progress completion and Quiz scores. Word surfaces remain pending candidates until stable vocabulary identities exist.",
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
-        "requestBody": {"required": true,"content": {"application/json": {"schema": {"$ref": "./schemas/api-v1.schema.json#/$defs/LocalImportRequest"}}}},
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/LocalImportRequest"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {"description": "Per-item import receipt. Exact duplicate snapshots return the original receipt with duplicate=true.","headers": {"X-Request-Id": {"$ref": "#/components/headers/RequestId"}},"content": {"application/json": {"schema": {"$ref": "./schemas/api-v1.schema.json#/$defs/LocalImportResponse"}}}},
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "409": {"$ref": "#/components/responses/Conflict"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "200": {
+            "description": "Per-item import receipt. Exact duplicate snapshots return the original receipt with duplicate=true.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/LocalImportResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
     "/api/v1/me/progress": {
       "get": {
         "operationId": "listMyProgress",
-        "tags": ["Sync"],
+        "tags": [
+          "Sync"
+        ],
         "description": "Returns current-version authoritative progress in stable piece order. Historical content versions are retained but omitted.",
-        "parameters": [{ "$ref": "#/components/parameters/Cursor" }, { "$ref": "#/components/parameters/Limit" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          }
+        ],
         "responses": {
-          "200": {"description":"A page of current-version progress.","headers":{"X-Request-Id":{"$ref":"#/components/headers/RequestId"}},"content":{"application/json":{"schema":{"$ref":"./schemas/api-v1.schema.json#/$defs/ProgressListResponse"}}}},
-          "400": {"$ref":"#/components/responses/BadRequest"},
-          "401": {"$ref":"#/components/responses/Unauthorized"}
+          "200": {
+            "description": "A page of current-version progress.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/me/progress/{pieceId}": {
       "get": {
         "operationId": "getMyPieceProgress",
-        "tags": ["Sync"],
-        "parameters": [{ "$ref": "#/components/parameters/PieceId" }],
+        "tags": [
+          "Sync"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PieceId"
+          }
+        ],
         "responses": {
-          "200": {"description":"Current-version authoritative progress, including an empty revision 0 state when no evidence exists.","headers":{"X-Request-Id":{"$ref":"#/components/headers/RequestId"}},"content":{"application/json":{"schema":{"$ref":"./schemas/api-v1.schema.json#/$defs/ProgressGetResponse"}}}},
-          "401": {"$ref":"#/components/responses/Unauthorized"},
-          "404": {"$ref":"#/components/responses/NotFound"}
+          "200": {
+            "description": "Current-version authoritative progress, including an empty revision 0 state when no evidence exists.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "put": {
         "operationId": "mergeMyPieceProgress",
-        "tags": ["Sync"],
+        "tags": [
+          "Sync"
+        ],
         "description": "Merges trusted listened ranges for one immutable content version. A stale base revision may add ranges but cannot replace the authoritative checkpoint.",
-        "parameters": [{ "$ref": "#/components/parameters/PieceId" }, { "$ref": "#/components/parameters/IdempotencyKey" }],
-        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"./schemas/api-v1.schema.json#/$defs/ProgressMutationRequest"}}}},
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PieceId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressMutationRequest"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {"description":"Idempotent merge receipt and complete authoritative state.","headers":{"X-Request-Id":{"$ref":"#/components/headers/RequestId"}},"content":{"application/json":{"schema":{"$ref":"./schemas/api-v1.schema.json#/$defs/ProgressMutationResponse"}}}},
-          "400": {"$ref":"#/components/responses/BadRequest"},
-          "401": {"$ref":"#/components/responses/Unauthorized"},
-          "409": {"$ref":"#/components/responses/Conflict"},
-          "429": {"$ref":"#/components/responses/RateLimited"}
+          "200": {
+            "description": "Idempotent merge receipt and complete authoritative state.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/ProgressMutationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
     "/api/v1/me/words/sync": {
       "post": {
         "operationId": "syncSavedWords",
-        "tags": ["Sync"],
+        "tags": [
+          "Sync"
+        ],
         "description": "Bidirectional stable saved-word sync. Deletions are revisioned tombstones. A stale delete wins over an active record, while a stale save cannot resurrect a tombstone. Restoring a deleted word requires an explicit save based on the current revision. Client timestamps never order conflicts.",
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
             "description": "Per-operation merge decisions plus authoritative saved-word changes and deletion tombstones after the signed cursor.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SavedWordSyncResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": { "$ref": "#/components/responses/Conflict" },
-          "429": { "$ref": "#/components/responses/RateLimited" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
     "/api/v1/me/quiz-attempts": {
       "post": {
         "operationId": "submitQuizAttempt",
-        "tags": ["Quiz"],
+        "tags": [
+          "Quiz"
+        ],
         "description": "Idempotency identity is userId plus attemptId. Client-provided score, mastery and ranking are forbidden by the request schema.",
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/QuizAttemptRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/QuizAttemptRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
             "description": "Server-verified score or stable rejected result. Exact duplicate attempts return the original result.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/QuizAttemptResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/QuizAttemptResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/ranking-options": {
       "get": {
         "operationId": "getRankingOptions",
-        "tags": ["Ranking"],
+        "tags": [
+          "Ranking"
+        ],
         "responses": {
           "200": {
             "description": "Server-authoritative campus, period, grade and reading-level options. Week and month options drive the fourth selector in the client.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/RankingOptionsResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/RankingOptionsResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/rankings": {
       "get": {
         "operationId": "getRankings",
-        "tags": ["Ranking"],
+        "tags": [
+          "Ranking"
+        ],
         "parameters": [
-          { "name": "campusId", "in": "query", "required": true, "schema": { "type": "string", "minLength": 1 } },
-          { "name": "periodType", "in": "query", "required": true, "schema": { "enum": ["rolling7", "week", "month", "year"] } },
-          { "name": "periodKey", "in": "query", "required": false, "description": "Required for week and month; values come from ranking-options.", "schema": { "type": "string", "minLength": 1 } },
-          { "name": "grade", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1 } },
-          { "name": "level", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1 } },
-          { "$ref": "#/components/parameters/Cursor" },
-          { "$ref": "#/components/parameters/Limit" }
+          {
+            "name": "campusId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "periodType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "rolling7",
+                "week",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "name": "periodKey",
+            "in": "query",
+            "required": false,
+            "description": "Required for week and month; values come from ranking-options.",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "grade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          }
         ],
         "responses": {
           "200": {
             "description": "Immutable ranking snapshot ordered by a server-computed 0-1000 Quiz score. The score combines cohort percentiles for distinct completed books, verified reading volume, Bayesian-adjusted accuracy, challenge, growth and breadth. The exact formula and tie rule are identified by ruleVersion.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/RankingsResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/RankingsResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "503": { "$ref": "#/components/responses/ServiceUnavailable" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
         }
       }
     },
     "/api/v1/rankings/{participantId}/quizzes": {
       "get": {
         "operationId": "getRankingQuizDetail",
-        "tags": ["Ranking"],
+        "tags": [
+          "Ranking"
+        ],
         "description": "Returns the score breakdown and server-verified per-book Quiz facts behind one visible ranking participant. It never returns answers or a real-name field.",
         "parameters": [
-          { "name": "participantId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 8, "maxLength": 128 } },
-          { "name": "campusId", "in": "query", "required": true, "schema": { "type": "string", "minLength": 1 } },
-          { "name": "periodType", "in": "query", "required": true, "schema": { "enum": ["rolling7", "week", "month", "year"] } },
-          { "name": "periodKey", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1 } },
-          { "name": "grade", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1 } },
-          { "name": "level", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1 } },
-          { "$ref": "#/components/parameters/Cursor" },
-          { "$ref": "#/components/parameters/Limit" }
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "campusId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "periodType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "rolling7",
+                "week",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "name": "periodKey",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "grade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          }
         ],
         "responses": {
           "200": {
             "description": "Algorithm score breakdown and paginated Quiz book records from the same immutable ranking snapshot.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/RankingQuizDetailResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/RankingQuizDetailResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "503": { "$ref": "#/components/responses/ServiceUnavailable" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
         }
       }
     },
     "/api/v1/admin/ingestion-batches": {
       "post": {
         "operationId": "createIngestionBatch",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "description": "Creates only control-plane metadata. File bytes are uploaded directly to object storage.",
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchCreateRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchCreateRequest"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
             "description": "Batch and declared items created.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/admin/ingestion-batches/{batchId}": {
       "get": {
         "operationId": "getIngestionBatch",
-        "tags": ["Admin ingestion"],
-        "parameters": [{ "$ref": "#/components/parameters/BatchId" }],
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/BatchId"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Batch, item and processing status without presigned URLs or sensitive payloads.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchResponse"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/api/v1/admin/upload-sessions": {
       "post": {
         "operationId": "createUploadSession",
-        "tags": ["Admin ingestion"],
-        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionCreateRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionCreateRequest"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
             "description": "Short-lived multipart upload session. URLs are never written to ordinary logs.",
-            "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-            "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionResponse" } } }
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionResponse"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/admin/upload-sessions/{uploadSessionId}/complete": {
       "post": {
         "operationId": "completeUploadSession",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/UploadSessionId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/UploadSessionId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionCompleteRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionCompleteRequest"
+              }
+            }
+          }
         },
         "responses": {
-          "200": { "$ref": "#/components/responses/AdminAction" },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "409": { "$ref": "#/components/responses/Conflict" },
-          "410": { "$ref": "#/components/responses/Gone" },
-          "422": { "$ref": "#/components/responses/Unprocessable" }
+          "200": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/Gone"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
         }
       }
     },
     "/api/v1/admin/ingestion-batches/{batchId}/finalize": {
       "post": {
         "operationId": "finalizeIngestionBatch",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/BatchId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/BatchId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "responses": {
-          "202": { "$ref": "#/components/responses/AdminAction" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "409": { "$ref": "#/components/responses/Conflict" },
-          "422": { "$ref": "#/components/responses/Unprocessable" }
+          "202": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
         }
       }
     },
     "/api/v1/admin/ingestion-batches/{batchId}/cancel": {
       "post": {
         "operationId": "cancelIngestionBatch",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/BatchId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/BatchId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "responses": {
-          "200": { "$ref": "#/components/responses/AdminAction" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "200": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/admin/ingestion-jobs/{jobId}/retry": {
       "post": {
         "operationId": "retryIngestionJob",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/JobId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/JobId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "responses": {
-          "202": { "$ref": "#/components/responses/AdminAction" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "202": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/admin/content-versions/{contentVersionId}/publish": {
       "post": {
         "operationId": "publishContentVersion",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "description": "Atomically changes the published manifest only after all technical and human review gates are satisfied.",
         "parameters": [
-          { "$ref": "#/components/parameters/ContentVersionId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/ContentVersionId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/PublishContentVersionRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/PublishContentVersionRequest"
+              }
+            }
+          }
         },
         "responses": {
-          "200": { "$ref": "#/components/responses/AdminAction" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "200": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
       }
     },
     "/api/v1/admin/content-versions/{contentVersionId}/rollback": {
       "post": {
         "operationId": "rollbackContentVersion",
-        "tags": ["Admin ingestion"],
+        "tags": [
+          "Admin ingestion"
+        ],
         "parameters": [
-          { "$ref": "#/components/parameters/ContentVersionId" },
-          { "$ref": "#/components/parameters/IdempotencyKey" }
+          {
+            "$ref": "#/components/parameters/ContentVersionId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/RollbackContentVersionRequest" } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/RollbackContentVersionRequest"
+              }
+            }
+          }
         },
         "responses": {
-          "200": { "$ref": "#/components/responses/AdminAction" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "409": { "$ref": "#/components/responses/Conflict" }
+          "200": {
+            "$ref": "#/components/responses/AdminAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
         }
+      }
+    },
+    "/api/v1/me/learning-score": {
+      "get": {
+        "operationId": "getMyLearningScore",
+        "tags": [
+          "Ranking"
+        ],
+        "responses": {
+          "200": {
+            "description": "Server-authoritative campus, period, grade and reading-level options. Week and month options drive the fourth selector in the client.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/LearningScoreSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "description": "Authenticated lifetime confirmed learning points; each earned fact counts once, without a cap."
       }
     }
   },
@@ -551,12 +1347,19 @@
       "RequestId": {
         "description": "Opaque request correlation identifier.",
         "required": true,
-        "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+        "schema": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        }
       },
       "ContractVersion": {
         "description": "Authoritative API contract implemented by this server instance.",
         "required": true,
-        "schema": { "type": "string", "pattern": "^api-contract-v[0-9]+\\.[0-9]+\\.[0-9]+$" }
+        "schema": {
+          "type": "string",
+          "pattern": "^api-contract-v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
       }
     },
     "parameters": {
@@ -565,86 +1368,263 @@
         "in": "header",
         "required": true,
         "description": "Opaque key unique to one logical mutation. Reusing it with a different request body returns IDEMPOTENCY_KEY_REUSED.",
-        "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+        "schema": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        }
       },
       "Cursor": {
         "name": "cursor",
         "in": "query",
         "required": false,
         "description": "Opaque cursor returned by the preceding page.",
-        "schema": { "type": "string", "minLength": 1, "maxLength": 2048 }
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
       },
       "Limit": {
         "name": "limit",
         "in": "query",
         "required": false,
-        "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 }
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        }
       },
-      "WorkId": { "name": "workId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } },
-      "PieceId": { "name": "pieceId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } },
-      "BatchId": { "name": "batchId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
-      "UploadSessionId": { "name": "uploadSessionId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
-      "JobId": { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
-      "ContentVersionId": { "name": "contentVersionId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+      "WorkId": {
+        "name": "workId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "PieceId": {
+        "name": "pieceId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "BatchId": {
+        "name": "batchId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "UploadSessionId": {
+        "name": "uploadSessionId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "JobId": {
+        "name": "jobId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "ContentVersionId": {
+        "name": "contentVersionId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
     },
     "responses": {
       "BadRequest": {
         "description": "Malformed request, invalid ranking period or invalid filter.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "Unauthorized": {
         "description": "Authentication failed, expired or was revoked.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "Forbidden": {
         "description": "Authenticated identity lacks the required permission or content access.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "NotFound": {
         "description": "Business resource not found or not visible.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "Conflict": {
         "description": "State, version or idempotency conflict.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "Gone": {
         "description": "The upload session has expired.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "Unprocessable": {
         "description": "Checksum, subtitle or processing validation failed.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "RateLimited": {
         "description": "Rate limit exceeded.",
         "headers": {
-          "X-Request-Id": { "$ref": "#/components/headers/RequestId" },
-          "Retry-After": { "description": "Seconds before retrying.", "schema": { "type": "integer", "minimum": 1 } }
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          },
+          "Retry-After": {
+            "description": "Seconds before retrying.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
         },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "InternalError": {
         "description": "Internal details are suppressed from the response.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "ServiceUnavailable": {
         "description": "A required dependency, ranking snapshot or service is unavailable.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/ErrorResponse"
+            }
+          }
+        }
       },
       "AdminAction": {
         "description": "Idempotent administrative action accepted or completed.",
-        "headers": { "X-Request-Id": { "$ref": "#/components/headers/RequestId" } },
-        "content": { "application/json": { "schema": { "$ref": "./schemas/api-v1.schema.json#/$defs/AdminActionResponse" } } }
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/RequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./schemas/api-v1.schema.json#/$defs/AdminActionResponse"
+            }
+          }
+        }
       }
     }
   }

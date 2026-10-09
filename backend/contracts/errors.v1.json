@@ -1,5 +1,5 @@
 {
-  "contractVersion": "api-contract-v1.3.0",
+  "contractVersion": "api-contract-v2.0.0",
   "errors": [
     { "code": "INVALID_REQUEST", "httpStatus": 400, "retryable": false, "description": "请求字段、格式或约束无效。" },
     { "code": "AUTH_CODE_INVALID", "httpStatus": 401, "retryable": false, "description": "微信一次性登录 code 无效、过期或已使用。" },

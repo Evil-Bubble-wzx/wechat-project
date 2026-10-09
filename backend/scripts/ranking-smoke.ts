@@ -105,7 +105,7 @@ async function main():Promise<void>{
     assert.deepEqual(secondComputation,firstComputation,"full recomputation must be deterministic");
     assert.equal(firstComputation.entries.length,10);
     assert.equal(firstComputation.entries[0]?.completedBooks,6);
-    assert.ok(firstComputation.entries.every((entry)=>entry.score>=0&&entry.score<=1000));
+    assert.ok(firstComputation.entries.every((entry)=>BigInt(entry.score)>=0n));
     const retry=firstComputation.entries.flatMap((entry)=>entry.quizzes).find((quiz)=>quiz.quizAttemptId===retryId);
     assert.equal(retry?.countedInScore,false,"retakes stay visible but cannot change the score");
 
@@ -138,7 +138,7 @@ async function main():Promise<void>{
     assert.equal(secondPage.items.length,3);
     assert.equal(new Set([...firstPage.items,...secondPage.items].map((item)=>item.participantId)).size,6);
     const detail=await queryService.detail({campusId:"a",periodType:"rolling7",grade:"3",level:"3"},firstPage.items[0]!.participantId,undefined,1);
-    assert.equal(detail.scoreBreakdown.length,6);
+    assert.equal(detail.scoreBreakdown.length,3);
     assert.equal(detail.quizzes.length,1);
     assert.ok(detail.nextCursor);
     const detailPage2=await queryService.detail({campusId:"a",periodType:"rolling7",grade:"3",level:"3"},firstPage.items[0]!.participantId,detail.nextCursor!,1);
@@ -150,7 +150,7 @@ async function main():Promise<void>{
     const headers={authorization:"Bearer ranking-smoke-token"};
     const apiOptions=await app.inject({method:"GET",url:"/api/v1/ranking-options",headers});
     assert.equal(apiOptions.statusCode,200);
-    assert.equal(apiOptions.json().ruleVersion,"quiz-score-v1");
+    assert.equal(apiOptions.json().ruleVersion,"learning-points-v2");
     const apiList=await app.inject({method:"GET",url:"/api/v1/rankings?campusId=a&periodType=rolling7&grade=3&level=3&limit=2",headers});
     assert.equal(apiList.statusCode,200);
     assert.equal(apiList.json().status,"ready");
@@ -158,7 +158,7 @@ async function main():Promise<void>{
     assert.equal(apiList.json().items[0].metric.key,"rankingScore");
     const apiDetail=await app.inject({method:"GET",url:`/api/v1/rankings/${apiList.json().items[0].participantId}/quizzes?campusId=a&periodType=rolling7&grade=3&level=3&limit=2`,headers});
     assert.equal(apiDetail.statusCode,200);
-    assert.equal(apiDetail.json().scoreBreakdown.length,6);
+    assert.equal(apiDetail.json().scoreBreakdown.length,3);
     await app.close();
 
     await pool.query("INSERT INTO ranking_rebuild_events (quiz_attempt_id) VALUES ($1)",[retryId]);

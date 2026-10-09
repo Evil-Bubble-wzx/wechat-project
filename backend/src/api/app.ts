@@ -71,7 +71,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
 
   app.addHook("onSend", async (request, reply, payload) => {
     reply.header("X-Request-Id", request.id);
-    reply.header("X-API-Contract-Version", "api-contract-v1.3.0");
+    reply.header("X-API-Contract-Version", "api-contract-v2.0.0");
     return payload;
   });
 
