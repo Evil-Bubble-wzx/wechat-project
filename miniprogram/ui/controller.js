@@ -50,6 +50,10 @@ const rankingTypes = []
 const rankOption = item => ({id:String(item.value),label:String(item.label)})
 const rankAll = [{id:'all',label:'全部'}]
 const time = s => Math.floor(s/60).toString().padStart(2,'0') + ':' + Math.floor(s%60).toString().padStart(2,'0')
+const developmentAudioErrorCode = error => {
+  const match = String(error || '').match(/^(?:audio_error\s+)?(\d{1,8})(?::|\s|$)/)
+  return match ? match[1] : '未知'
+}
 function playableBook(book, chapterId) {
   const chapter = (book.chapters || []).find(item => item.id === chapterId) || (book.chapters || [])[0]
   return chapter ? Object.assign({}, book, { chapterId: chapter.id, chapterTitle: chapter.title, duration: chapter.duration, localAudio: chapter.localAudio, hasQuiz: chapter.hasQuiz }) : book
@@ -63,12 +67,16 @@ const findCue = (cues, milliseconds) => {
 function createPage(requestedRoute) {
   const policy=productMode.current()
   const isDemo=policy.isDemo
+  let showAudioDiagnostic=false
+  try { showAudioDiagnostic=wx.getAccountInfoSync?.().miniProgram?.envVersion==='develop' } catch (_) {}
   const routeAllowed=policy.allowsRoute(requestedRoute)
   const route=routeAllowed?requestedRoute:'home'
   const visibleBooks=isDemo?books:books.filter(book=>policy.allowsBook(book.id))
   const firstBook=visibleBooks[0]
   const ranking=rankingState.view('unavailable')
   const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', syncStatus:'synced',syncStatusLabel:'学习进度已同步',syncPending:0,syncFailed:0, wordSyncStatus:'idle',wordSyncPending:0,wordSyncStatusLabel:'生词本待同步',savedWordItems:[],selectedWordSaved:false, sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
+  data.showAudioDiagnostic=showAudioDiagnostic
+  data.audioDiagnostic=''
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
   /* @demo-end */
@@ -101,7 +109,7 @@ function createPage(requestedRoute) {
     syncPlayer(session, force) {
       if(route!=='player'||session.pieceId!==cueKey(this.data.book))return
       const duration=Number(session.duration)||Number(this.data.book.duration)||0
-      const update={playing:session.status==='playing'||session.status==='loading',playbackStatus:session.status,position:session.position||0,formatted:time(session.position||0),duration:time(duration),rate:session.rate||1,loop:!!session.loop}
+      const update={playing:session.status==='playing'||session.status==='loading',playbackStatus:session.status,position:session.position||0,formatted:time(session.position||0),duration:time(duration),rate:session.rate||1,loop:!!session.loop,audioDiagnostic:showAudioDiagnostic&&session.status==='error'?developmentAudioErrorCode(session.error):''}
       if(session.book)update.book=Object.assign({},this.data.book,session.book,{duration})
       this.setData(update)
       this.updateSubtitles(session.position||0,!!force)

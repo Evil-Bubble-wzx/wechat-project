@@ -130,6 +130,7 @@ text { line-height:1.5; white-space:pre-line; }
 .reader-controls .play-button image { width:44rpx; height:44rpx; filter:brightness(0) invert(1); }
 .reader-panel-bottom { display:flex; justify-content:space-between; gap:16rpx; color:#96a48c; font-size:19rpx; margin-top:10rpx; }
 .reader-panel-bottom text:last-child { color:#64805d; }
+.reader-audio-diagnostic { color:#9b4a35; font-size:20rpx; margin-top:10rpx; }
 .answer-text { flex:1; }
 .answer-speaker { flex-shrink:0; min-width:50rpx; height:50rpx; border-radius:50%; background:#edf3e7; color:#4f8055; text-align:center; line-height:50rpx; font-size:32rpx; }
 .answer.quiz-correct { border-color:#75a071; background:#edf4e6; }

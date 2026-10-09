@@ -28,6 +28,10 @@ function lineTokens(text) {
 
 function cueTokensInRange(cue, start, end, lineIndex) {
   if (!Array.isArray(cue.tokens)) return lineTokens(cue.text.slice(start, end))
+  if (cue.tokens.length === 0) {
+    const surface = cue.text.slice(start, end)
+    return surface ? [{ id: `${cue.id || 'cue'}:l${lineIndex}`, surface, vocabKey: null }] : []
+  }
   const result = []
   let offset = 0
   for (const token of cue.tokens) {
