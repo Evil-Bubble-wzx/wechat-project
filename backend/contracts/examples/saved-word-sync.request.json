@@ -1,0 +1,20 @@
+{
+  "batchId": "s03-word-batch-v1:70126b4cc85d3bd370f74039e1699704fa30ebcb7e4117a673f087298b2f789b",
+  "schemaVersion": 1,
+  "cursor": null,
+  "operations": [
+    {
+      "operationId": "s03-word-op-v1:33d54159a8c3caaf760ac723e8af86566b67c7b63d8bcac6dc700314139a3812",
+      "entryId": "ve-5732b4cca2b4",
+      "pieceId": "peter-rabbit-01",
+      "contentVersion": 1,
+      "vocabKey": "a:determiner:1",
+      "surface": "a",
+      "lemma": "a",
+      "action": "save",
+      "baseRevision": "0",
+      "occurredAt": "2026-09-29T01:00:00.000Z"
+    }
+  ],
+  "limit": 100
+}

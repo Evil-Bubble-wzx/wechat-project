@@ -1,5 +1,12 @@
 # API contract changelog
 
+## api-contract-v1.3.0 - 2026-10-09
+
+- 新增 `POST /api/v1/me/words/sync`，按稳定词条 ID 双向同步生词。
+- 删除操作保留 revision 墓碑；旧设备删除优先，旧保存不能恢复墓碑。恢复需要基于当前 revision 显式保存。
+- 请求使用确定性 operation/batch ID；变更拉取使用签名 cursor。
+- 保留 v1.2.0 的单篇进度 PUT/GET API 和 `0008_daily_progress_sync`，生词表由 `0009_saved_word_sync` 新增。
+
 ## api-contract-v1.2.0 - 2026-09-29
 
 - 新增 `GET /api/v1/me/progress`、`GET /api/v1/me/progress/{pieceId}` 和 `PUT /api/v1/me/progress/{pieceId}`。

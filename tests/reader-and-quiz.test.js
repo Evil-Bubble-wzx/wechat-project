@@ -120,6 +120,16 @@ test('Peter Rabbit player resolves every reviewed contextual word card and prese
     page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
     page.closeSheet()
     assert.equal(plays, 2)
+
+    page.requireUser=()=>true
+    page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
+    assert.equal(page.data.selectedWord.entryId,peterVocab[token.vocabKey].entryId)
+    page.saveWord()
+    assert.equal(page.data.savedWordItems[0].entryId,peterVocab[token.vocabKey].entryId)
+    page.word({ currentTarget:{ dataset:{ word:token.surface, vocabKey:token.vocabKey, cueIndex } } })
+    assert.equal(page.data.selectedWordSaved,true)
+    page.removeSelectedWord()
+    assert.equal(page.data.savedWordItems.length,0)
     page.onUnload()
   } finally {
     player._resetForTests()

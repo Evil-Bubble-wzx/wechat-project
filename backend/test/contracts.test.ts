@@ -69,7 +69,7 @@ function operationEntries(document: OpenApiDocument) {
 test("OpenAPI 3.1 document and external schemas are valid", async () => {
   const document = (await SwaggerParser.validate(openApiPath)) as unknown as OpenApiDocument;
 
-  assert.equal(document.info.version, "1.2.0");
+  assert.equal(document.info.version, "1.3.0");
   assert.ok(Object.keys(document.paths).length >= 10);
 });
 
@@ -111,7 +111,7 @@ test("error catalog exactly matches the stable ErrorCode enum", async () => {
   const schemaCodes = [...errorCode.enum].sort();
   const catalogCodes = catalog.errors.map(({ code }) => code).sort();
 
-  assert.equal(version, "api-contract-v1.2.0");
+  assert.equal(version, "api-contract-v1.3.0");
   assert.equal(catalog.contractVersion, version);
   assert.deepEqual(catalogCodes, schemaCodes);
   assert.equal(new Set(catalogCodes).size, catalogCodes.length);
@@ -137,6 +137,8 @@ test("contract examples validate against JSON Schema 2020-12", async () => {
     ["examples/local-import.response.json", "LocalImportResponse"],
     ["examples/progress-mutation.request.json", "ProgressMutationRequest"],
     ["examples/progress-mutation.response.json", "ProgressMutationResponse"],
+    ["examples/saved-word-sync.request.json", "SavedWordSyncRequest"],
+    ["examples/saved-word-sync.response.json", "SavedWordSyncResponse"],
     ["examples/ranking-options.response.json", "RankingOptionsResponse"],
     ["examples/ranking-ready.response.json", "RankingsResponse"],
     ["examples/ranking-quiz-detail.response.json", "RankingQuizDetailResponse"],

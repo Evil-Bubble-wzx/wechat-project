@@ -34,6 +34,7 @@ async function main(): Promise<void> {
       "0006_ranking_refresh",
       "0007_local_learning_import",
       "0008_daily_progress_sync",
+      "0009_saved_word_sync",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -61,6 +62,10 @@ async function main(): Promise<void> {
       "local_import_snapshots",
       "user_learning_progress",
       "progress_sync_mutations",
+      "user_saved_words",
+      "user_saved_word_history",
+      "word_sync_batches",
+      "word_sync_operations",
     ]) {
       assert.ok(tableNames.includes(requiredTable), `missing table ${requiredTable}`);
     }
@@ -103,8 +108,9 @@ async function main(): Promise<void> {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
-    assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0008_daily_progress_sync"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0009_saved_word_sync"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
     assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");
     assert.equal(await rollbackOne(pool, { schema }), "0007_local_learning_import");
     assert.equal(await rollbackOne(pool, { schema }), "0006_ranking_refresh");

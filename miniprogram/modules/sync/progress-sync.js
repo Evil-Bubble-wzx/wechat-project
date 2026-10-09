@@ -1,6 +1,5 @@
 const api = require('../../services/api')
 const host = require('../../services/host')
-const apiConfig = require('../../config/api')
 
 const SCHEMA_VERSION = 1
 const EXPECTED_CONTRACT = 'api-contract-v1.2.0'
@@ -15,7 +14,7 @@ const cloneRanges = ranges => (Array.isArray(ranges) ? ranges : []).map(range =>
 const mutationId = () => 'progress-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14)
 function runnable() {
   const user=api.currentUser()
-  return !!(user&&user.userId&&host.accountScope()===user.userId&&api.available()&&api.isAuthenticated()&&api.progressSyncAvailable()&&apiConfig.CONTRACT_VERSION===EXPECTED_CONTRACT&&!host.policy().isDemo)
+  return !!(user&&user.userId&&host.accountScope()===user.userId&&api.available()&&api.isAuthenticated()&&api.progressSyncAvailable()&&!host.policy().isDemo)
 }
 function payloadFor(baseRevision, entry) {
   return {schemaVersion:SCHEMA_VERSION,mutationId:mutationId(),baseRevision:String(baseRevision||'0'),contentVersion:Number(entry.contentVersion),checkpointMs:Math.round((Number(entry.checkpointSeconds)||0)*1000),listenedRangesMs:cloneRanges(entry.listenedRanges)}

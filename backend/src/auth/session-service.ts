@@ -31,6 +31,7 @@ export type SessionTokenResponse = {
 export type AuthenticatedSession = {
   userId: string;
   sessionId: string;
+  deviceId?: string | null;
 };
 
 export type CurrentUser = {
@@ -429,8 +430,8 @@ export class SessionService {
 
   async authenticateAccessToken(token: string): Promise<AuthenticatedSession> {
     const claims = await this.verifyAccessTokenClaims(token);
-    const result = await this.pool.query<{ status: string; revoked_at: Date | null }>(
-      `SELECT u.status, s.revoked_at
+    const result = await this.pool.query<{ status: string; revoked_at: Date | null; device_id: string | null }>(
+      `SELECT u.status, s.revoked_at, s.device_id
        FROM user_sessions s
        JOIN users u ON u.id = s.user_id
        WHERE s.id = $1 AND s.user_id = $2`,
@@ -443,7 +444,7 @@ export class SessionService {
     if (row.status !== "active") {
       throw new ApiError("FORBIDDEN", 403, false, "User account is disabled");
     }
-    return claims;
+    return { ...claims, deviceId: row.device_id };
   }
 
   private async verifyAccessTokenClaims(token: string): Promise<AuthenticatedSession> {

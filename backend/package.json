@@ -26,6 +26,8 @@
     "test:integration:ranking-page": "node --experimental-strip-types scripts/ranking-page-smoke.ts",
     "test:integration:local-import": "node --experimental-strip-types scripts/local-import-smoke.ts",
     "test:integration:progress-sync": "node --experimental-strip-types scripts/progress-sync-smoke.ts",
+    "test:integration:saved-word-sync": "node --experimental-strip-types scripts/saved-word-sync-smoke.ts",
+    "test:integration:s04-sync": "node --experimental-strip-types scripts/s04-sync-smoke.ts",
     "test:integration:observability": "node --experimental-strip-types scripts/observability-smoke.ts",
     "test:integration:queue": "node --experimental-strip-types scripts/queue-smoke.ts",
     "recovery:requeue": "node --experimental-strip-types scripts/requeue-unfinished.ts",

@@ -1,6 +1,6 @@
 # B-05 可观测性与故障处理手册
 
-> 本地验证基线：2026-09-24。生产告警联系人、日志平台和对象存储厂商指标需在生产环境决策后填写。
+> 本地验证基线：2026-10-09。生产告警联系人、日志平台和对象存储厂商指标需在生产环境决策后填写。
 
 ## 1. 日志与关联标识
 
@@ -25,6 +25,7 @@ Grafana 模板位于 `ops/grafana/tingyue-backend.json`。核心查询：
 | 登录成功率 | `sum(rate(tingyue_login_attempts_total{outcome="success"}[10m])) / sum(rate(tingyue_login_attempts_total[10m]))` |
 | 资源失败率 | `sum(rate(tingyue_content_resource_requests_total{outcome="failure"}[10m])) / sum(rate(tingyue_content_resource_requests_total[10m]))` |
 | Quiz 拒绝率 | `sum(rate(tingyue_quiz_submissions_total{outcome="rejected"}[15m])) / sum(rate(tingyue_quiz_submissions_total[15m]))` |
+| 生词同步批次 | `sum by (outcome) (rate(tingyue_word_sync_batches_total[15m]))` |
 | 排名积压/失败 | `tingyue_ranking_rebuild_queue_depth`, `tingyue_ranking_rebuild_failures`, `tingyue_ranking_rebuild_oldest_wait_seconds` |
 | 导入积压/死信 | `tingyue_ingestion_queue_depth`, `tingyue_ingestion_dead_letter`, `tingyue_ingestion_oldest_wait_seconds` |
 | 上传完成率 | `tingyue_upload_sessions_completed / tingyue_upload_sessions_total` |
