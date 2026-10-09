@@ -6,7 +6,7 @@
 
 | 项目 | 记录 |
 | --- | --- |
-| AppID | `wxcfd1db942d1d02e9` |
+| 已注册目标小程序 AppID（不可填测试号） | 待确认 |
 | 上传版本 | `0.1.1` |
 | Git 提交 | `218bff7ff4295ce38a00caea9c935b12d3dc3904` |
 | 正式产物树 SHA-256 | `8712edeeceb7cbbedb3d58e4451bab31aa656d67d8e29746d1684b9848b757bc` |

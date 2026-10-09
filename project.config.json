@@ -1,5 +1,5 @@
 {
-  "description": "听阅 · 正式隔离构建（先运行 npm run build:production）",
+  "description": "听阅 · 生产模式隔离构建（当前为小程序测试号，非正式发布账号；先运行 npm run build:production）",
   "miniprogramRoot": "build/production-miniprogram/",
   "compileType": "miniprogram",
   "appid": "wxcfd1db942d1d02e9",

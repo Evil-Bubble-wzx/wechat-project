@@ -1,5 +1,5 @@
 {
-  "description": "听阅 · 仅开发使用的 Demo 构建（先运行 npm run build:demo）",
+  "description": "听阅 · 小程序测试号的 Demo 开发构建（先运行 npm run build:demo）",
   "miniprogramRoot": "build/demo-miniprogram/",
   "compileType": "miniprogram",
   "appid": "wxcfd1db942d1d02e9",
