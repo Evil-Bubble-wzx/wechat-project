@@ -64,7 +64,7 @@ export function registerContentRoutes(
     if (version !== undefined && (!Number.isInteger(version) || version < 1)) {
       throw new ApiError("INVALID_REQUEST", 400, false, "contentVersion is invalid");
     }
-    const response = await content.getManifest(pieceId, version);
+    const response = await content.getManifest(pieceId, version, session.userId);
     await audit?.record({
       actorType: "user", actorId: session.userId, action: "content_manifest_read",
       targetType: "piece", targetId: pieceId, requestId: request.id,

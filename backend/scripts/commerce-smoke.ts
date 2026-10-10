@@ -1,0 +1,92 @@
+import assert from 'node:assert/strict';
+import { randomBytes,randomUUID } from 'node:crypto';
+import pg from 'pg';
+import { S3Client } from '@aws-sdk/client-s3';
+import { loadConfig } from '../src/config.ts';
+import { migrateUp,rollbackOne } from '../src/database/migrator.ts';
+import { createApp } from '../src/api/app.ts';
+import { SessionService } from '../src/auth/session-service.ts';
+import { StubWechatIdentityProvider } from '../src/auth/wechat-provider.ts';
+import { CommerceService } from '../src/commerce/service.ts';
+import { ContentService } from '../src/content/service.ts';
+import { ProgressSyncService } from '../src/sync/progress-sync-service.ts';
+import { QuizService } from '../src/quiz/service.ts';
+import { SavedWordSyncService,savedWordBatchIdFor,savedWordOperationIdFor } from '../src/sync/saved-word-sync-service.ts';
+import { seedCommerceFixture,fixtureBundle,fixturePiece } from './commerce-fixture.ts';
+
+const config=loadConfig(),schema=`commerce_${randomBytes(8).toString('hex')}`;
+const admin=new pg.Pool({connectionString:config.databaseUrl,max:1});
+const pool=new pg.Pool({connectionString:config.databaseUrl,max:8,options:`-c search_path=${schema},public`});
+const s3=new S3Client({endpoint:'http://127.0.0.1:59000',region:'us-east-1',forcePathStyle:true,credentials:{accessKeyId:'smoke',secretAccessKey:'smoke-test-secret'}});
+let app:ReturnType<typeof createApp>|undefined;
+try{
+  await admin.query(`CREATE SCHEMA "${schema}"`);await migrateUp(pool,{schema});await seedCommerceFixture(pool,'test');
+  const sessions=new SessionService(pool,new StubWechatIdentityProvider(),{...config,appEnv:'test'}),commerce=new CommerceService(pool),content=new ContentService(pool,s3,config.auth.identityHashKeyBase64,true),progress=new ProgressSyncService(pool,true),quiz=new QuizService(pool,true),words=new SavedWordSyncService(pool,config.auth.identityHashKeyBase64,true);
+  app=createApp({appEnv:'test',sessionService:sessions,commerceService:commerce,contentService:content,progressSyncService:progress,quizService:quiz,savedWordSyncService:words});
+  const a=await sessions.createWechatSession({code:'test:commerce-a#ticket-a',deviceId:'commerce-device-a',idempotencyKey:'commerce-login-a'}),b=await sessions.createWechatSession({code:'test:commerce-b#ticket-b',deviceId:'commerce-device-b',idempotencyKey:'commerce-login-b'});
+  const request=async(method:'GET'|'POST'|'PUT',url:string,payload?:any,token=a.accessToken,key=payload?.mutationId || payload?.batchId || randomUUID())=>app!.inject({method,url,payload,headers:{authorization:`Bearer ${token}`,'idempotency-key':key}});
+  const body={bundleId:fixtureBundle,bundleVersion:1},manifest=`/api/v1/pieces/${fixturePiece}/manifest`,put=`/api/v1/me/progress/${fixturePiece}`;
+  assert.equal((await app.inject('/api/v1/bundles')).statusCode,401);
+  assert.equal((await request('GET','/api/v1/bundles')).json().items[0].amountFen,100);
+  for(const extra of [{amountFen:1},{status:'paid'},{userId:b.userId},{contents:[]}])assert.equal((await request('POST','/api/v1/me/orders',{...body,...extra})).statusCode,400);
+  assert.equal((await request('GET','/api/v1/me/orders/'+ '-'.repeat(36))).statusCode,400);
+  const key=randomUUID(),created=await Promise.all(Array.from({length:5},()=>request('POST','/api/v1/me/orders',body,a.accessToken,key)));
+  created.forEach(r=>assert.equal(r.statusCode,200));const order=created[0].json().order;assert.ok(created.every(r=>r.json().order.orderId===order.orderId));assert.equal(order.status,'pending');
+  assert.equal((await request('POST','/api/v1/me/orders',{...body,bundleVersion:2},a.accessToken,key)).statusCode,409);
+  assert.equal((await request('GET',manifest)).statusCode,403);
+  assert.equal((await request('GET','/api/v1/me/orders/'+order.orderId,undefined,b.accessToken)).statusCode,404);
+  assert.equal((await request('GET','/api/v1/me/orders',undefined,b.accessToken)).json().items.length,0);
+  assert.equal((await request('POST','/api/v1/me/orders/'+order.orderId+'/pay',{})).statusCode,404);
+  const mutation={schemaVersion:1,mutationId:randomUUID(),baseRevision:'0',contentVersion:1,checkpointMs:10000,listenedRangesMs:[[0,10000]]};
+  const attempt={schemaVersion:1,attemptId:randomUUID(),workId:'commerce-test',pieceId:fixturePiece,contentVersion:1,quizVersion:1,questionIds:['test-q1'],selectedOptions:[0],startedAt:new Date().toISOString(),submittedAt:new Date().toISOString()};
+  const op={entryId:'ve-0123456789abcdef',pieceId:fixturePiece,contentVersion:1,vocabKey:'bird',surface:'bird',lemma:'bird',action:'save' as const,baseRevision:'0',occurredAt:new Date().toISOString()};
+  const wordRequest=(operation:typeof op|any)=>{const p={schemaVersion:1 as const,cursor:null,operations:[{...operation,operationId:savedWordOperationIdFor(operation)}],limit:50};return {...p,batchId:savedWordBatchIdFor(p)};};
+  assert.equal((await request('PUT',put,mutation)).statusCode,403);
+  assert.equal((await request('POST','/api/v1/me/quiz-attempts',attempt)).statusCode,403);
+  assert.equal((await request('POST','/api/v1/me/words/sync',wordRequest(op))).statusCode,403);
+  await assert.rejects(commerce.simulate(order.orderId,'pay','wrong-amount',1));
+  await assert.rejects(commerce.simulate(order.orderId,'refund','early-refund',100));
+  const paid=await Promise.all(Array.from({length:5},()=>commerce.simulate(order.orderId,'pay','payment-event-one',100)));paid.forEach(o=>assert.equal(o.status,'paid'));
+  assert.equal((await pool.query('SELECT count(*)::int AS n FROM simulated_payment_events')).rows[0].n,1);
+  assert.equal((await request('GET',manifest)).statusCode,200);
+  assert.equal((await request('GET',manifest,undefined,b.accessToken)).statusCode,403);
+  assert.equal((await request('PUT',put,mutation)).statusCode,200);
+  assert.equal((await request('POST','/api/v1/me/quiz-attempts',attempt)).json().score,100);
+  assert.equal((await request('POST','/api/v1/me/words/sync',wordRequest(op))).statusCode,200);
+  // Retain the purchased v1 when v2 becomes current; free content follows its
+  // original current-version policy while purchased snapshots stay usable.
+  const newVersion=(await pool.query("INSERT INTO content_versions(piece_id,content_version,status,publishable,manifest_sha256,published_at) VALUES ($1,2,'published',true,$2,now()) RETURNING id",[fixturePiece,'d'.repeat(64)])).rows[0];
+  await pool.query("UPDATE content_versions SET status='superseded' WHERE piece_id=$1 AND content_version=1",[fixturePiece]);
+  await pool.query('UPDATE pieces SET current_content_version_id=$1 WHERE id=$2',[newVersion.id,fixturePiece]);
+  assert.equal((await request('GET',manifest+'?contentVersion=1')).statusCode,200);
+  assert.equal((await request('POST','/api/v1/me/quiz-attempts',{...attempt,attemptId:randomUUID()})).json().score,100);
+  assert.equal((await request('POST','/api/v1/me/words/sync',wordRequest({...op,baseRevision:'1',occurredAt:new Date(Date.now()+1).toISOString()}))).statusCode,200);
+  assert.equal((await request('PUT',put,{...mutation,mutationId:randomUUID(),baseRevision:'1'})).statusCode,200);
+  // Restore current for the rest of the refund/history checks.
+  await pool.query("UPDATE content_versions SET status='published' WHERE piece_id=$1 AND content_version=1",[fixturePiece]);
+  await pool.query('UPDATE pieces SET current_content_version_id=(SELECT id FROM content_versions WHERE piece_id=$1 AND content_version=1) WHERE id=$1',[fixturePiece]);
+  const before=(await pool.query('SELECT COALESCE(sum(points),0)::text AS total_points FROM valid_learning_score_events WHERE user_id=$1',[a.userId])).rows;
+  // A second snapshot adds v2; the original order must never acquire it.
+  await pool.query('INSERT INTO content_bundles(id,version,title,price_fen,contents) VALUES ($1,2,$2,100,$3)',[fixtureBundle,'v2 fixture',JSON.stringify([{pieceId:fixturePiece,contentVersion:1},{pieceId:fixturePiece,contentVersion:2}])]);
+  assert.equal(await commerce.canAccess(a.userId,fixturePiece,2),false);
+  await assert.rejects(pool.query('UPDATE content_bundles SET price_fen=1 WHERE id=$1',[fixtureBundle]));
+  await assert.rejects(pool.query('UPDATE purchase_orders SET amount_fen=1 WHERE id=$1',[order.orderId]));
+  const second=await commerce.createOrder(a.userId,fixtureBundle,1,randomUUID());await commerce.simulate(second.orderId,'pay','payment-event-two',100);
+  await assert.rejects(commerce.simulate(second.orderId,'pay','payment-event-one',100));
+  await commerce.simulate(order.orderId,'refund','refund-one',100);assert.equal((await request('GET',manifest)).statusCode,200,'another paid order retains access');
+  await commerce.simulate(second.orderId,'refund','refund-two',100);
+  assert.equal((await commerce.simulate(order.orderId,'pay','payment-event-one',100)).status,'refunded','late duplicate must not resurrect');
+  await assert.rejects(commerce.simulate(order.orderId,'pay','new-late-event',100));
+  assert.equal((await request('GET',manifest)).statusCode,403);
+  assert.equal((await request('PUT',put,{...mutation,mutationId:randomUUID()})).statusCode,403);
+  assert.equal((await request('POST','/api/v1/me/quiz-attempts',{...attempt,attemptId:randomUUID()})).statusCode,403);
+  assert.equal((await request('GET','/api/v1/me/progress')).json().items[0].completed,true);
+  assert.equal((await request('POST','/api/v1/me/words/sync',wordRequest({...op,action:'delete',baseRevision:'1'}))).statusCode,200);
+  assert.deepEqual((await pool.query('SELECT COALESCE(sum(points),0)::text AS total_points FROM valid_learning_score_events WHERE user_id=$1',[a.userId])).rows,before);
+  // Work restrictions must also apply when the individual piece says free.
+  await pool.query("UPDATE pieces SET access_type='free' WHERE id=$1",[fixturePiece]);assert.equal((await request('GET',manifest)).statusCode,403);
+  await pool.query("UPDATE works SET access_type='free' WHERE id='commerce-test'");assert.equal((await request('GET',manifest)).statusCode,200);
+  assert.throws(()=>createApp({appEnv:'prod',commerceService:commerce,sessionService:sessions}));
+  await assert.rejects(rollbackOne(pool,{schema}),/orders|Orders|order/);
+  console.log('commerce.smoke.passed: concurrent idempotency, server prices, isolation, access, refund, history, snapshots, production guard');
+}finally{if(app)await app.close();s3.destroy();await pool.end();await admin.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);await admin.end();}

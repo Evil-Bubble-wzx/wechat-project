@@ -1,0 +1,19 @@
+{
+  "requestId": "request-commerce-example",
+  "items": [
+    {
+      "bundleId": "commerce-test-bundle",
+      "version": 1,
+      "title": "模拟内容包 · 不收费",
+      "amountFen": 100,
+      "currency": "CNY",
+      "mode": "simulation",
+      "contents": [
+        {
+          "pieceId": "commerce-test-piece",
+          "contentVersion": 1
+        }
+      ]
+    }
+  ]
+}

@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tingyue Backend API",
-    "version": "2.0.0",
-    "description": "Authoritative API contract api-contract-v2.0.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
+    "version": "2.1.0",
+    "description": "Authoritative API contract api-contract-v2.1.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
   },
   "servers": [
     {
@@ -540,6 +540,9 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
@@ -590,6 +593,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "409": {
             "$ref": "#/components/responses/Conflict"
@@ -644,6 +650,9 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
           "409": {
             "$ref": "#/components/responses/Conflict"
           },
@@ -696,6 +705,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "409": {
             "$ref": "#/components/responses/Conflict"
@@ -1331,6 +1343,188 @@
           }
         },
         "description": "Authenticated lifetime confirmed learning points; each earned fact counts once, without a cap."
+      }
+    },
+    "/api/v1/bundles": {
+      "get": {
+        "operationId": "listSimulatedBundles",
+        "tags": [
+          "CommerceSimulation"
+        ],
+        "description": "Experimental local/test simulation only. Absent in dev/prod. No real charges.",
+        "x-stage": "local-simulation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Simulated commerce response",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SimulatedBundleListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/me/orders": {
+      "get": {
+        "operationId": "listMySimulatedOrders",
+        "tags": [
+          "CommerceSimulation"
+        ],
+        "description": "Experimental local/test simulation only. Absent in dev/prod. No real charges.",
+        "x-stage": "local-simulation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Simulated commerce response",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SimulatedOrderListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSimulatedOrder",
+        "tags": [
+          "CommerceSimulation"
+        ],
+        "description": "Experimental local/test simulation only. Absent in dev/prod. No real charges.",
+        "x-stage": "local-simulation",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulated commerce response",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SimulatedOrderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/SimulatedOrderRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/orders/{orderId}": {
+      "get": {
+        "operationId": "getMySimulatedOrder",
+        "tags": [
+          "CommerceSimulation"
+        ],
+        "description": "Experimental local/test simulation only. Absent in dev/prod. No real charges.",
+        "x-stage": "local-simulation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulated commerce response",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/SimulatedOrderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
       }
     }
   },

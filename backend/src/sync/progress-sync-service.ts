@@ -4,6 +4,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { readLearningScore, type LearningScoreSummary } from "../ranking/learning-score.ts";
 import { ApiError } from "../api/errors.ts";
+import { assertContentAccess } from '../commerce/access.ts';
 
 export type ProgressMutationInput={schemaVersion:1;mutationId:string;baseRevision:string;contentVersion:number;checkpointMs:number;listenedRangesMs:Array<[number,number]>};
 export type ProgressState={pieceId:string;contentVersion:number;revision:string;checkpointMs:number;listenedRangesMs:Array<[number,number]>;listenedMs:number;coverage:number;completed:boolean;historicalVersion:boolean;serverUpdatedAt:string};
@@ -41,7 +42,8 @@ function state(row:ProgressRow):ProgressState{return {pieceId:row.piece_id,conte
 
 export class ProgressSyncService{
   private readonly pool:Pool;
-  constructor(pool:Pool){this.pool=pool}
+  private readonly simulation:boolean;
+  constructor(pool:Pool,simulation=false){this.pool=pool;this.simulation=simulation}
 
   async put(userId:string,pieceId:string,input:ProgressMutationInput):Promise<ProgressMutationResponse>{
     const requestHash=hash({pieceId,input}),client=await this.pool.connect();
@@ -55,6 +57,7 @@ export class ProgressSyncService{
         await client.query("COMMIT");return {...replay.rows[0].response,duplicate:true};
       }
       const resource=await this.resource(client,pieceId,input.contentVersion);
+      await assertContentAccess(client,userId,pieceId,input.contentVersion,this.simulation,true);
       if(input.checkpointMs>resource.durationMs||input.listenedRangesMs.some(([,end])=>end>resource.durationMs))throw new ApiError("INVALID_REQUEST",400,false,"Progress evidence exceeds the authoritative audio duration");
       const previousResult=await client.query<ProgressRow>("SELECT * FROM user_learning_progress WHERE user_id=$1 AND piece_id=$2 AND content_version=$3 FOR UPDATE",[userId,pieceId,input.contentVersion]);
       const previous=previousResult.rows[0],currentRevision=previous?BigInt(previous.revision):0n,baseRevision=BigInt(input.baseRevision);
@@ -74,6 +77,7 @@ export class ProgressSyncService{
 
   async get(userId:string,pieceId:string):Promise<ProgressState>{
     const resource=await this.currentResource(this.pool,pieceId);
+    await assertContentAccess(this.pool,userId,pieceId,resource.contentVersion,this.simulation);
     const result=await this.pool.query<ProgressRow>("SELECT * FROM user_learning_progress WHERE user_id=$1 AND piece_id=$2 AND content_version=$3",[userId,pieceId,resource.contentVersion]);
     if(result.rows[0])return state(result.rows[0]);
     return {pieceId,contentVersion:resource.contentVersion,revision:"0",checkpointMs:0,listenedRangesMs:[],listenedMs:0,coverage:0,completed:false,historicalVersion:false,serverUpdatedAt:new Date(0).toISOString()};
@@ -86,14 +90,14 @@ export class ProgressSyncService{
   }
 
   private async currentResource(query:Pick<Pool,"query">,pieceId:string):Promise<{contentVersion:number;durationMs:number}>{
-    const result=await query.query<{content_version:number;duration_ms:string|null}>(`SELECT cv.content_version,asset.duration_ms::text FROM pieces p JOIN works w ON w.id=p.work_id JOIN content_versions cv ON cv.id=p.current_content_version_id LEFT JOIN content_assets asset ON asset.piece_id=p.id AND asset.content_version=cv.content_version AND asset.asset_type='audio' AND asset.status IN ('ready','published') WHERE p.id=$1 AND p.status='published' AND w.status='published' AND p.access_type='free' AND w.access_type='free'`,[pieceId]);
+    const result=await query.query<{content_version:number;duration_ms:string|null}>(`SELECT cv.content_version,asset.duration_ms::text FROM pieces p JOIN works w ON w.id=p.work_id JOIN content_versions cv ON cv.id=p.current_content_version_id LEFT JOIN content_assets asset ON asset.piece_id=p.id AND asset.content_version=cv.content_version AND asset.asset_type='audio' AND asset.status IN ('ready','published') WHERE p.id=$1 AND p.status='published' AND w.status='published'`,[pieceId]);
     const row=result.rows[0],durationMs=row?.duration_ms===null?null:Number(row?.duration_ms);
     if(!row||!durationMs)throw new ApiError("RESOURCE_NOT_FOUND",404,false,"Published progress resource was not found");
     return {contentVersion:row.content_version,durationMs};
   }
 
   private async resource(client:PoolClient,pieceId:string,contentVersion:number):Promise<{durationMs:number;historical:boolean}>{
-    const result=await client.query<{status:string;current_version:number;duration_ms:string|null}>(`SELECT cv.status,current.content_version AS current_version,asset.duration_ms::text FROM pieces p JOIN works w ON w.id=p.work_id JOIN content_versions cv ON cv.piece_id=p.id AND cv.content_version=$2 JOIN content_versions current ON current.id=p.current_content_version_id LEFT JOIN content_assets asset ON asset.piece_id=p.id AND asset.content_version=cv.content_version AND asset.asset_type='audio' AND asset.status IN ('ready','published') WHERE p.id=$1 AND p.status='published' AND w.status='published' AND p.access_type='free' AND w.access_type='free'`,[pieceId,contentVersion]);
+    const result=await client.query<{status:string;current_version:number;duration_ms:string|null}>(`SELECT cv.status,current.content_version AS current_version,asset.duration_ms::text FROM pieces p JOIN works w ON w.id=p.work_id JOIN content_versions cv ON cv.piece_id=p.id AND cv.content_version=$2 JOIN content_versions current ON current.id=p.current_content_version_id LEFT JOIN content_assets asset ON asset.piece_id=p.id AND asset.content_version=cv.content_version AND asset.asset_type='audio' AND asset.status IN ('ready','published') WHERE p.id=$1 AND p.status='published' AND w.status='published'`,[pieceId,contentVersion]);
     const row=result.rows[0],durationMs=row?.duration_ms===null?null:Number(row?.duration_ms);
     if(!row||!durationMs||!["published","superseded"].includes(row.status))throw new ApiError("CONTENT_VERSION_UNAVAILABLE",409,false,"Progress content version is unavailable");
     return {durationMs,historical:row.current_version!==contentVersion};

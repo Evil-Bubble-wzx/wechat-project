@@ -26,6 +26,16 @@ const session = (accessToken='a'.repeat(32), refreshToken='r'.repeat(32)) => ({
   accessTokenExpiresAt:'2026-09-28T12:00:00Z', refreshToken, refreshTokenExpiresAt:'2026-10-28T12:00:00Z'
 })
 
+test('development stub login does not depend on the real wx.login service', async () => {
+  const stored = new Map()
+  const api = createBackendApi({
+    runtime:{login:()=>{throw new Error('Real login must not run')},getStorageSync:key=>stored.get(key),setStorageSync:(key,value)=>stored.set(key,value)},
+    configuration:{enabled:true,apiRoot:'https://api.test.invalid/api/v1',development:true,stubLoginCode:'test:device-user'},
+    transport:async request=>({statusCode:request.url.endsWith('/me')?200:201,data:request.url.endsWith('/me')?{userId:'stub-user'}:session(),header:{'X-API-Contract-Version':'api-contract-v2.0.0'}})
+  })
+  assert.equal((await api.loginWechat()).userId,'stub-user')
+})
+
 test('backend adapter reuses X-06 and keeps credentials out of persistent storage', async () => {
   const {api,calls,stored}=fixture(request => {
     if(request.url.endsWith('/session/wechat'))return {statusCode:201,data:session()}
@@ -34,7 +44,7 @@ test('backend adapter reuses X-06 and keeps credentials out of persistent storag
   })
   const user=await api.loginWechat()
   assert.equal(user.profile.campusId,'a')
-  assert.equal(calls[0].body.code,'test:miniapp-develop')
+  assert.match(calls[0].body.code,/^test:miniapp-develop#ticket-/)
   assert.equal(calls[0].body.AppSecret,undefined)
   assert.equal(calls[0].headers['Idempotency-Key'],'login-fixed')
   assert.equal(api.isAuthenticated(),true)

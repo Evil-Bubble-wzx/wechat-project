@@ -32,7 +32,7 @@ let browser
 
   await page.goto('http://127.0.0.1:4173/#login')
   await page.waitForSelector('.login-button')
-  assert.ok((await page.locator('.login-button').textContent()).includes('coming soon'))
+  assert.ok((await page.locator('.login-button').textContent()).includes('WeChat Login'))
   assert.equal(await page.getByText(/123456/).count(),0)
   assert.equal(await page.locator('input').count(),0)
 

@@ -99,8 +99,12 @@ export class StubWechatIdentityProvider implements WechatIdentityProvider {
     if (!code.startsWith("test:") || code.length < 8 || this.usedCodes.has(code)) {
       throw new WechatProviderError("invalid_code", "Test login code is invalid or already used");
     }
+    const parts = code.slice("test:".length).split("#");
+    if (parts.length > 2 || !parts[0] || (parts.length === 2 && !/^[a-zA-Z0-9-]{8,128}$/.test(parts[1]!))) {
+      throw new WechatProviderError("invalid_code", "Test login ticket is invalid");
+    }
     this.usedCodes.add(code);
-    const stableTestIdentity = code.slice("test:".length);
+    const stableTestIdentity = parts[0];
     return {
       openid: `stub-openid-${stableTestIdentity}`,
       unionid: `stub-unionid-${stableTestIdentity}`,

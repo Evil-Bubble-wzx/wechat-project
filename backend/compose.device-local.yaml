@@ -1,0 +1,52 @@
+name: tingyue-device-local
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tingyue
+      POSTGRES_USER: tingyue
+      POSTGRES_PASSWORD: ${DEVICE_DB_PASSWORD:?Generate private configuration first}
+    ports: ["127.0.0.1:55433:5432"]
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tingyue -d tingyue"]
+      interval: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    environment:
+      REDIS_PASSWORD: ${DEVICE_REDIS_PASSWORD:?Generate private configuration first}
+    command: ["sh", "-c", "exec redis-server --appendonly yes --requirepass \"$$REDIS_PASSWORD\""]
+    ports: ["127.0.0.1:56379:6379"]
+    volumes: ["redis-data:/data"]
+  minio:
+    image: quay.io/minio/aistor/minio:RELEASE.2026-09-07T08-39-31Z@sha256:afcfb54652c40c973012da19f924ebd591d7115d74ea5b75bcb6dc7edaf06c04
+    command: ["minio", "server", "/data", "--console-address", ":9001", "--license", "/minio.license"]
+    environment:
+      MINIO_ROOT_USER: tingyue-device-root
+      MINIO_ROOT_PASSWORD: ${DEVICE_STORAGE_ROOT_PASSWORD:?Generate private configuration first}
+    ports: ["127.0.0.1:59000:9000", "127.0.0.1:59001:9001"]
+    volumes: ["minio-data:/data", "../minio.license:/minio.license:ro"]
+  minio-init:
+    image: quay.io/minio/aistor/mc:RELEASE.2026-09-06T02-44-40Z@sha256:b8a369454c7cffe3aab1cc6e6b3e7e1eb958415ea275315245d994d830299dbb
+    depends_on: [minio]
+    environment:
+      ROOT_PASSWORD: ${DEVICE_STORAGE_ROOT_PASSWORD:?Generate private configuration first}
+      APP_PASSWORD: ${OBJECT_STORAGE_SECRET_KEY:?Generate private configuration first}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        until mc alias set local http://minio:9000 tingyue-device-root "$$ROOT_PASSWORD" >/dev/null 2>&1; do sleep 1; done;
+        mc mb --ignore-existing local/tingyue-incoming &&
+        mc mb --ignore-existing local/tingyue-published &&
+        mc admin user add local tingyue-device-app "$$APP_PASSWORD" &&
+        mc admin policy create local tingyue-app /config/app-policy.json &&
+        mc admin policy attach local tingyue-app --user tingyue-device-app &&
+        mc version enable local/tingyue-published &&
+        mc ilm import local/tingyue-incoming < /config/incoming-lifecycle.json &&
+        mc ilm import local/tingyue-published < /config/published-lifecycle.json
+    volumes: ["./ops/minio:/config:ro"]
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:

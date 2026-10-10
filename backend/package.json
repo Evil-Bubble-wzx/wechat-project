@@ -23,6 +23,7 @@
     "test:integration:content": "node --experimental-strip-types scripts/content-smoke.ts",
     "test:integration:quiz": "node --experimental-strip-types scripts/quiz-smoke.ts",
     "test:integration:ranking": "node --experimental-strip-types scripts/ranking-smoke.ts",
+    "test:integration:learning-points": "node --experimental-strip-types scripts/learning-points-smoke.ts",
     "test:integration:ranking-page": "node --experimental-strip-types scripts/ranking-page-smoke.ts",
     "test:integration:local-import": "node --experimental-strip-types scripts/local-import-smoke.ts",
     "test:integration:progress-sync": "node --experimental-strip-types scripts/progress-sync-smoke.ts",
@@ -34,7 +35,9 @@
     "security:secrets": "node --experimental-strip-types scripts/secret-scan.ts",
     "test:integration:security": "node --experimental-strip-types scripts/security-smoke.ts",
     "test:integration:xb": "node --experimental-strip-types scripts/xb-integration-smoke.ts",
-    "check": "npm run typecheck && npm test"
+    "check": "npm run typecheck && npm test",
+    "test:integration:commerce": "node --experimental-strip-types scripts/commerce-smoke.ts",
+    "commerce:simulate": "node --experimental-strip-types scripts/simulated-commerce.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1139.0",

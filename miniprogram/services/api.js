@@ -47,8 +47,7 @@ function createBackendApi(options = {}) {
   })
 
   async function loginWechat() {
-    const platformCode = await getWechatCode(runtime)
-    const code = configuration.development && configuration.stubLoginCode ? configuration.stubLoginCode : platformCode
+    const code = configuration.development && configuration.stubLoginCode ? configuration.stubLoginCode + '#' + makeId('ticket') : await getWechatCode(runtime)
     const result = await publicClient.request({
       method:'POST',
       path:'/session/wechat',
@@ -107,6 +106,9 @@ function createBackendApi(options = {}) {
     listProgress:(cursor, limit = 50) => get('/me/progress', { cursor, limit }),
     savedWordSync:request => post('/me/words/sync', request, request.batchId),
     learningScore:() => get('/me/learning-score'),
+    listBundles:() => get('/bundles'),
+    listOrders:() => get('/me/orders'),
+    createOrder:(bundle, key) => post('/me/orders', {bundleId:bundle.bundleId,bundleVersion:bundle.version}, key),
     rankingOptions:() => get('/ranking-options'),
     rankings:filters => get('/rankings', rankingQuery(filters)),
     rankingDetail:(participantId, filters) => get('/rankings/' + encodeURIComponent(participantId) + '/quizzes', rankingQuery(filters)),
@@ -189,6 +191,9 @@ module.exports = {
   listProgress:(cursor, limit) => active().listProgress(cursor, limit),
   savedWordSync:request => active().savedWordSync(request),
   learningScore:() => active().learningScore(),
+  listBundles:() => active().listBundles(),
+  listOrders:() => active().listOrders(),
+  createOrder:(bundle, key) => active().createOrder(bundle, key),
   rankingOptions:() => active().rankingOptions(),
   rankings:filters => active().rankings(filters),
   rankingDetail:(participantId, filters) => active().rankingDetail(participantId, filters)

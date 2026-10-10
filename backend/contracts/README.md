@@ -1,6 +1,6 @@
 # API 契约
 
-当前权威版本：`api-contract-v1.3.0`
+当前权威版本：`api-contract-v2.1.0`
 
 - `openapi.json`：OpenAPI 3.1 路由、鉴权、状态码、分页和幂等语义。
 - `schemas/api-v1.schema.json`：JSON Schema 2020-12 请求与响应模型。
@@ -17,6 +17,10 @@
 
 破坏性变更必须由 X/B 双方确认，发布新 MAJOR，并保留迁移与弃用记录。每次 X/B 联调必须同时固定契约标签和 B 分支提交 SHA，不能引用“最新版本”。
 
+## v2 迁移记录（2026-10-10）
+
+积分数值由 JSON 数字改为十进制整数字符串，旧 0～1000 公式被累计学习积分取代；客户端与后端必须成对更新，路径仍为 `/api/v1`。新增 `/me/learning-score` 及进度/Quiz 回执摘要，期间榜支持年榜。0010 历史回填只进入累计。Quiz 重提的答卷/判分保持幂等，附带累计积分摘要为新读取，其 `asOf` 可变化；进度 mutation 的幂等回执仍完整重放。
+
 ## 通用约束
 
 - 业务前缀为 `/api/v1`；JSON 使用 `camelCase`；时间使用 UTC RFC 3339。
@@ -24,7 +28,9 @@
 - 所有写操作要求 `Idempotency-Key`。相同键和相同请求返回原结果；相同键和不同请求返回 `IDEMPOTENCY_KEY_REUSED`。
 - Access token 使用 Bearer 传输；微信 code、token、预签名 URL 和用户答案不得进入普通日志。
 - 列表使用不透明 `cursor`，客户端不得解析或拼装 cursor。
-- 排行主指标固定为服务端计算的`rankingScore`（0～1000整数，单位`points`）；客户端不得自行计算或上传可信排名分。当前公式版本为`quiz-score-v1`，见`docs/adr/0003-ranking-score-v1.md`。
+- 排行主指标为服务端计算的 `rankingScore`，无业务上限的十进制整数字符串，单位 `points`；规则 `learning-points-v2`，见 `docs/adr/0004-learning-points-v2.md`。
 - 管理端上传接口只传控制面元数据，文件字节通过短期预签名地址直传对象存储。
 
 运行 `npm run contract:check` 校验 OpenAPI、Schema、错误码同步、示例、请求 ID 和写接口幂等头。
+
+- [模拟收费本机验收与操作](../../docs/模拟收费验收与操作-2026-10-10.md)：固定版本订单、授权和退款；只在 local/test 注册，不接真实收款。

@@ -3,12 +3,14 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { Pool } from "pg";
 
 import { ApiError } from "../api/errors.ts";
+import { assertContentAccess,hasPurchasedVersion } from '../commerce/access.ts';
 import { decodeKey, hmacSha256 } from "../security/crypto.ts";
 
 type CursorPayload = { after: string };
 
 export class ContentService {
   private readonly pool: Pool;
+  private readonly simulation: boolean;
   private readonly s3: S3Client;
   private readonly cursorKey: Buffer;
 
@@ -16,8 +18,10 @@ export class ContentService {
     pool: Pool,
     s3: S3Client,
     cursorKeyBase64: string,
+    simulation = false,
   ) {
     this.pool = pool;
+    this.simulation=simulation;
     this.s3 = s3;
     this.cursorKey = decodeKey(cursorKeyBase64);
   }
@@ -119,7 +123,7 @@ export class ContentService {
     };
   }
 
-  async getManifest(pieceId: string, requestedVersion?: number) {
+  async getManifest(pieceId: string, requestedVersion?: number, userId?: string) {
     const version = await this.pool.query<{
       id: string;
       work_id: string;
@@ -135,14 +139,14 @@ export class ContentService {
        FROM pieces p
        JOIN content_versions cv
          ON cv.piece_id = p.id
-        AND cv.status = 'published'
+        AND (cv.status = 'published' OR ($2::integer IS NOT NULL AND $3::boolean AND cv.status='superseded'))
         AND (($2::integer IS NULL AND cv.id = p.current_content_version_id) OR cv.content_version = $2)
        LEFT JOIN quiz_packages qp
          ON qp.piece_id = p.id AND qp.content_version = cv.content_version AND qp.status = 'published'
        WHERE p.id = $1 AND p.status = 'published'
        GROUP BY cv.id, p.work_id, p.id
        LIMIT 1`,
-      [pieceId, requestedVersion ?? null],
+      [pieceId, requestedVersion ?? null, await hasPurchasedVersion(this.pool,userId,pieceId,requestedVersion ?? 0,this.simulation)],
     );
     const selected = version.rows[0];
     if (!selected) {
@@ -153,14 +157,7 @@ export class ContentService {
         "Published content version is unavailable",
       );
     }
-    if (selected.access_type === "restricted") {
-      throw new ApiError(
-        "CONTENT_ACCESS_DENIED",
-        403,
-        false,
-        "Restricted content entitlement is not available in this phase",
-      );
-    }
+    await assertContentAccess(this.pool,userId,pieceId,selected.content_version,this.simulation);
     const assets = await this.pool.query<{
       id: string;
       asset_type: string;

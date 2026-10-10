@@ -70,3 +70,12 @@ test("stub provider only accepts explicit one-time test codes", async () => {
   await assert.rejects(provider.exchangeCode("test:user-001"), /already used/);
   await assert.rejects(provider.exchangeCode("production-looking-code"), /invalid/);
 });
+
+test("stub tickets permit repeated login to one identity without accepting ticket replay", async () => {
+  const provider = new StubWechatIdentityProvider();
+  const first = await provider.exchangeCode("test:device-user#ticket-0001");
+  assert.deepEqual(await provider.exchangeCode("test:device-user#ticket-0002"), first);
+  await assert.rejects(provider.exchangeCode("test:device-user#ticket-0001"), /already used/);
+  assert.notDeepEqual(await provider.exchangeCode("test:other-user#ticket-0001"), first);
+  await assert.rejects(provider.exchangeCode("test:device-user#"), /invalid/);
+});

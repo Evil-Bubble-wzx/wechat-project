@@ -1,0 +1,23 @@
+// Temporary local preview; source catalog and release builds stay independent.
+const fs = require('node:fs');
+const path = require('node:path');
+const { build, manifest, repoRoot } = require('./build-miniapp.js');
+const input = new URL(process.argv[2]);
+if (input.protocol !== 'https:' || !input.hostname.endsWith('.trycloudflare.com') || input.pathname !== '/peter-rabbit.mp3' || input.search || input.hash) throw new Error('Expected the confirmed single-audio HTTPS URL');
+const project = path.join(repoRoot, 'build/device-audio-preview');
+const target = path.join(project, 'miniprogram');
+build('production', target);
+const catalogPath = path.join(target, 'modules/catalog/catalog.json');
+const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+if (catalog.length !== 1 || catalog[0].id !== 'peter-rabbit') throw new Error('Unexpected preview catalog');
+catalog[0].audioUrl = input.href;
+fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + '\n');
+fs.writeFileSync(path.join(target, 'modules/catalog/catalog-data.js'), 'module.exports = ' + JSON.stringify(catalog, null, 2) + '\n');
+const config = JSON.parse(fs.readFileSync(path.join(repoRoot, 'project.config.json'), 'utf8'));
+config.miniprogramRoot = 'miniprogram/';
+config.projectname = '听阅-临时音频预览';
+config.description = 'Temporary single-audio device preview; not a release build';
+fs.writeFileSync(path.join(project, 'project.config.json'), JSON.stringify(config, null, 2) + '\n');
+const result = manifest(target, 'production');
+fs.writeFileSync(path.join(target, 'build-manifest.json'), JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify({ project, treeSha256: result.treeSha256, fileCount: result.fileCount }, null, 2));

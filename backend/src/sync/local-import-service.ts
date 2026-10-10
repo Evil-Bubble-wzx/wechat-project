@@ -43,6 +43,7 @@ export class LocalImportService{
     const requestHash=hash(input),client=await this.pool.connect();
     try{
       await client.query("BEGIN");
+      await client.query("SELECT set_config('app.learning_points_backfill','true',true)");
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))",[`local-import:${userId}:${input.snapshotId}`]);
       const existing=await client.query<{request_hash:string;status:string;response:LocalImportResponse|null}>("SELECT request_hash,status,response FROM local_import_snapshots WHERE user_id=$1 AND snapshot_id=$2",[userId,input.snapshotId]);
       if(existing.rows[0]){
@@ -61,7 +62,7 @@ export class LocalImportService{
       }
       const quizAttempts=[] as Array<Record<string,unknown>>;
       for(const attempt of input.payload.quizAttempts){
-        const result=await this.quiz.submit(userId,attempt);
+        const result=await this.quiz.submit(userId,attempt,{historical:true});
         quizAttempts.push(result.status==="server_verified"?{attemptId:result.attemptId,status:"server_verified",score:result.score,mastery:result.mastery,verifiedAt:result.verifiedAt}:{attemptId:result.attemptId,status:"rejected",reason:result.error.code});
       }
       const count=(items:Array<Record<string,unknown>>,status:string)=>items.filter(item=>item.status===status).length;

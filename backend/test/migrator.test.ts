@@ -18,6 +18,8 @@ test("migration files are paired, ordered and have stable checksums", async () =
       "0007_local_learning_import",
       "0008_daily_progress_sync",
       "0009_saved_word_sync",
+      "0010_learning_points",
+      "0011_simulated_commerce",
     ],
   );
   for (const migration of migrations) {

@@ -11,6 +11,7 @@ import { loadConfig } from "../src/config.ts";
 import { migrateUp } from "../src/database/migrator.ts";
 import { QuizService } from "../src/quiz/service.ts";
 import { LocalImportService } from "../src/sync/local-import-service.ts";
+import { readLearningScore } from "../src/ranking/learning-score.ts";
 
 const {Pool}=pg,require=createRequire(import.meta.url);
 const schema=`local_import_${randomBytes(8).toString("hex")}`;
@@ -50,6 +51,8 @@ async function main():Promise<void>{
     const request={snapshotId:plan.snapshotId,payload:plan.payload,limitations:plan.limitations};
     const first=await api.localImport(request);assert.equal(first.duplicate,false);assert.deepEqual(first.summary,{progress:{accepted:1,unchanged:0,rejected:0},words:{pending:2,reused:0,rejected:0},quizAttempts:{verified:1,rejected:0}});assert.equal(first.items.progress[0].completed,false);assert.equal(first.items.quizAttempts[0].score,100);
     const repeated=await api.localImport(request);assert.equal(repeated.duplicate,true);assert.equal(repeated.acknowledgedAt,first.acknowledgedAt);
+    assert.equal((await readLearningScore(pool,me.userId)).totalPoints,'121');
+    assert.equal((await pool.query(`SELECT count(*)::integer AS count FROM learning_score_events WHERE user_id=$1 AND NOT historical`,[me.userId])).rows[0].count,0,'historical local import cannot enter period rankings');
     const stored=await pool.query<{progress:string;words:string;attempts:string;events:string;completed:boolean;coverage:string}>(`SELECT (SELECT count(*)::text FROM user_learning_progress WHERE user_id=$1) progress,(SELECT count(*)::text FROM user_saved_word_candidates WHERE user_id=$1) words,(SELECT count(*)::text FROM quiz_attempts WHERE user_id=$1) attempts,(SELECT count(*)::text FROM ranking_rebuild_events) events,(SELECT completed FROM user_learning_progress WHERE user_id=$1 AND piece_id='peter-rabbit-01') completed,(SELECT coverage::text FROM user_learning_progress WHERE user_id=$1 AND piece_id='peter-rabbit-01') coverage`,[me.userId]);
     assert.deepEqual({progress:stored.rows[0]!.progress,words:stored.rows[0]!.words,attempts:stored.rows[0]!.attempts,events:stored.rows[0]!.events,completed:stored.rows[0]!.completed},{progress:"1",words:"2",attempts:"1",events:"1",completed:false});assert.ok(Number(stored.rows[0]!.coverage)<0.1,"server must ignore client completion and recompute coverage");
     process.stdout.write(`local-import.smoke.passed schema=${schema} progress=recomputed words=pending quiz=verified idempotent=replayed\n`);

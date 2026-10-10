@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 import type { Pool } from "pg";
+import { assertContentAccess,hasPurchasedVersion } from '../commerce/access.ts';
 import { readLearningScore, type LearningScoreSummary } from "../ranking/learning-score.ts";
 
 export type QuizAttemptInput = {
@@ -55,16 +56,19 @@ function rejected(
 
 export class QuizService {
   private readonly pool: Pool;
+  private readonly simulation: boolean;
 
-  constructor(pool: Pool) {
+  constructor(pool: Pool, simulation = false) {
     this.pool = pool;
+    this.simulation=simulation;
   }
 
-  async submit(userId: string, input: QuizAttemptInput): Promise<QuizAttemptResult> {
+  async submit(userId: string, input: QuizAttemptInput, options: {historical?:boolean} = {}): Promise<QuizAttemptResult> {
     const hash = requestHash(input);
     const client = await this.pool.connect();
     try {
       await client.query("BEGIN");
+      if(options.historical)await client.query("SELECT set_config('app.learning_points_backfill','true',true)");
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [
         `quiz-attempt:${userId}:${input.attemptId}`,
       ]);
@@ -113,9 +117,11 @@ export class QuizService {
            JOIN works w ON w.id = p.work_id
            JOIN content_versions cv ON cv.piece_id = p.id
            WHERE p.id = $1 AND w.id = $2 AND cv.content_version = $3
-             AND cv.status = 'published' AND p.current_content_version_id = cv.id
+             AND p.status='published' AND w.status='published'
+             AND ((cv.status = 'published' AND p.current_content_version_id = cv.id)
+               OR ($4::boolean AND cv.status IN ('published','superseded')))
          ) AS exists`,
-        [input.pieceId, input.workId, input.contentVersion],
+        [input.pieceId, input.workId, input.contentVersion, await hasPurchasedVersion(client,userId,input.pieceId,input.contentVersion,this.simulation)],
       );
       if (!piece.rows[0]?.exists) {
         await client.query("COMMIT");
@@ -125,6 +131,7 @@ export class QuizService {
           "Content version is not the current published version",
         );
       }
+      await assertContentAccess(client,userId,input.pieceId,input.contentVersion,this.simulation,true);
       const packageResult = await client.query<{
         id: string;
         mastery_threshold: number;
@@ -226,7 +233,7 @@ export class QuizService {
       await client.query(
         `INSERT INTO ranking_rebuild_events (quiz_attempt_id)
          VALUES ($1)
-         ON CONFLICT (quiz_attempt_id) DO NOTHING`,
+         ON CONFLICT DO NOTHING`,
         [attempt.rows[0]!.id],
       );
       const learningScore=await readLearningScore(client,userId);

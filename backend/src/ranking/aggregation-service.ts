@@ -213,7 +213,7 @@ export class RankingAggregationService {
            AND upv.profile_source IN ('admin','school_sync') AND upv.source_verified_at IS NOT NULL
          ORDER BY upv.effective_from DESC LIMIT 1
        ) profile ON true
-       WHERE event.earned_at >= $1 AND event.earned_at < $2 AND profile.campus_id=$3
+       WHERE NOT event.historical AND event.earned_at >= $1 AND event.earned_at < $2 AND profile.campus_id=$3
          AND ($4::text IS NULL OR profile.grade=$4) AND ($5::text IS NULL OR profile.reading_level=$5)
        ORDER BY event.user_id,event.earned_at,event.id`,
       [dimensions.startsAt,dimensions.endsAt,dimensions.campusId,dimensions.grade,dimensions.readingLevel])).rows;
@@ -308,6 +308,9 @@ export class RankingAggregationService {
       );
       const ready = existing.rows[0];
       if (ready?.status === "ready" && ready.result_status && ready.generated_at) {
+        // Reactivate immutable contents when facts return to an earlier state.
+        // Keep the original generation time and cursor-bound snapshot intact.
+        await client.query("UPDATE ranking_snapshots SET activated_at=clock_timestamp() WHERE id=$1",[ready.id]);
         await client.query("COMMIT");
         return {
           snapshotId:ready.id,
@@ -359,7 +362,7 @@ export class RankingAggregationService {
       await client.query(
         `UPDATE ranking_snapshots SET
            starts_at=$2, ends_at=$3, status='ready', result_status=$4, cohort_size=$5,
-           minimum_cohort_size=$6, entries=$7, generated_at=$8, source_max_verified_at=$9
+           minimum_cohort_size=$6, entries=$7, generated_at=$8, source_max_verified_at=$9, activated_at=clock_timestamp()
          WHERE id=$1`,
         [snapshot.id,dimensions.startsAt,dimensions.endsAt,resultStatus,computed.entries.length,dimensions.minimumCohortSize,JSON.stringify(publicEntries),generatedAt,computed.sourceMaxVerifiedAt],
       );

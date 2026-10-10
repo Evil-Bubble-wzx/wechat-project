@@ -1,6 +1,6 @@
 const DEV_API_BASE_URL_KEY = 'tingyue.dev.apiBaseUrl'
 const DEV_STUB_LOGIN_CODE_KEY = 'tingyue.dev.stubLoginCode'
-const CONTRACT_VERSION = 'api-contract-v2.0.0'
+const CONTRACT_VERSION = 'api-contract-v2.1.0'
 
 function current(runtime = typeof wx === 'undefined' ? null : wx) {
   const envVersion = readEnvVersion(runtime)

@@ -1,8 +1,9 @@
-import { readFile, readdir } from "node:fs/promises";
-import { extname, relative } from "node:path";
+import { readFile } from "node:fs/promises";
+import { extname, relative, resolve, sep } from "node:path";
+import { fileURLToPath,pathToFileURL } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = new URL("..", import.meta.url);
-const ignoredDirectories = new Set([".git", "node_modules", "artifacts", "coverage", "dist"]);
 const textExtensions = new Set([".ts", ".js", ".json", ".md", ".sql", ".yaml", ".yml", ".env", ".example", ".ps1"]);
 const allowedLocalValues = new Set([
   "tingyue-local",
@@ -20,14 +21,13 @@ const patterns: Array<{ name: string; expression: RegExp }> = [
 const assignment = /^(WECHAT_APP_SECRET|TOKEN_SIGNING_KEY_BASE64|IDENTITY_HASH_KEY_BASE64|DATA_ENCRYPTION_KEY_BASE64|METRICS_BEARER_TOKEN|OBJECT_STORAGE_SECRET_KEY|MINIO_ROOT_PASSWORD)[ \t]*=[ \t]*["']?([^\s"'#]+)?/gm;
 
 async function files(directory: URL): Promise<URL[]> {
-  const found: URL[] = [];
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
-    const child = new URL(`${entry.name}${entry.isDirectory() ? "/" : ""}`, directory);
-    if (entry.isDirectory()) found.push(...await files(child));
-    else if (textExtensions.has(extname(entry.name)) || entry.name.startsWith(".env")) found.push(child);
-  }
-  return found;
+  const backendRoot=fileURLToPath(directory);
+  const repo=execFileSync('git',['rev-parse','--show-toplevel'],{cwd:backendRoot,encoding:'utf8'}).trim();
+  // Scan tracked files even if now ignored, plus all nonignored untracked files.
+  // Local secret env files intentionally excluded by Git are runtime inputs.
+  const names=execFileSync('git',['ls-files','--cached','--others','--exclude-standard','-z','--','backend'],{cwd:repo,encoding:'utf8'}).split('\0').filter(Boolean);
+  return names.map(name=>resolve(repo,name)).filter(name=>name.startsWith(resolve(backendRoot)+sep))
+    .filter(name=>textExtensions.has(extname(name))||name.split(sep).at(-1)!.startsWith('.env')).map(name=>pathToFileURL(name));
 }
 
 const findings: string[] = [];

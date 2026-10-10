@@ -36,6 +36,7 @@ async function main(): Promise<void> {
       "0008_daily_progress_sync",
       "0009_saved_word_sync",
       "0010_learning_points",
+      "0011_simulated_commerce",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -111,8 +112,15 @@ async function main(): Promise<void> {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
+    assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
+    assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0010_learning_points", "0011_simulated_commerce"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
+    assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
     assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0009_saved_word_sync"]);
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0009_saved_word_sync", "0010_learning_points", "0011_simulated_commerce"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
+    assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
     assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
     assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");
     assert.equal(await rollbackOne(pool, { schema }), "0007_local_learning_import");

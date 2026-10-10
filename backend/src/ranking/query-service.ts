@@ -174,7 +174,7 @@ export class RankingQueryService{
          AND grade IS NOT DISTINCT FROM $3 AND reading_level IS NOT DISTINCT FROM $4
          AND rule_version=$5 AND ($6::text IS NULL OR period_key=$6)
          AND ($7::uuid IS NULL OR id=$7)
-       ORDER BY generated_at DESC LIMIT 1`,
+       ORDER BY COALESCE(activated_at,generated_at) DESC LIMIT 1`,
       [filters.campusId,filters.periodType,filters.grade,filters.level,RANKING_RULE_VERSION,filters.periodKey,snapshotId??null],
     );
     return result.rows[0]??null;

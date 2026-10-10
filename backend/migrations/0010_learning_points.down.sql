@@ -4,6 +4,12 @@ DO $$ BEGIN
     RAISE EXCEPTION 'Learning points exist; export and explicitly retire v2 data before rollback';
   END IF;
 END; $$;
+DROP TRIGGER quiz_attempts_score_refresh ON quiz_attempts;
+DROP TRIGGER quiz_answers_score_refresh ON quiz_answers;
+DROP FUNCTION refresh_quiz_learning_score();
+DELETE FROM ranking_rebuild_events a USING ranking_rebuild_events b
+WHERE a.quiz_attempt_id=b.quiz_attempt_id AND a.id>b.id;
+ALTER TABLE ranking_rebuild_events ADD CONSTRAINT ranking_rebuild_events_quiz_attempt_id_key UNIQUE (quiz_attempt_id);
 DROP TRIGGER quiz_answers_score ON quiz_answers;
 DROP FUNCTION award_quiz_correct_answer();
 DROP TRIGGER user_learning_progress_score ON user_learning_progress;
@@ -16,6 +22,7 @@ ALTER TABLE ranking_rebuild_events ALTER COLUMN quiz_attempt_id SET NOT NULL;
 DROP VIEW valid_learning_score_events;
 DROP TABLE learning_score_events;
 DROP TABLE learning_score_state;
+ALTER TABLE ranking_snapshots DROP COLUMN activated_at;
 ALTER TABLE ranking_snapshot_entries DROP CONSTRAINT ranking_snapshot_entries_score_check;
 ALTER TABLE ranking_snapshot_entries ALTER COLUMN score TYPE integer USING score::integer;
 ALTER TABLE ranking_snapshot_entries ADD CONSTRAINT ranking_snapshot_entries_score_check CHECK (score BETWEEN 0 AND 1000);

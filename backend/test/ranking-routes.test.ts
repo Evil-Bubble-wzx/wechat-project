@@ -52,7 +52,7 @@ test("ranking detail validates participant and forwards pagination",async()=>{
   assert.equal(invalid.statusCode,400);
   const detail=await app.inject({method:"GET",url:"/api/v1/rankings/participant-001/quizzes?campusId=a&periodType=week&periodKey=2026-W39&cursor=next-page&limit=5",headers});
   assert.equal(detail.statusCode,200);
-  assert.equal(detail.json().rankingScore,700);
+  assert.equal(detail.json().rankingScore,"700");
   assert.deepEqual(ranking.lastCall,{input:{campusId:"a",periodType:"week",periodKey:"2026-W39",grade:undefined,level:undefined},participantId:"participant-001",cursor:"next-page",limit:5});
   await app.close();
 });

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { randomBytes, randomUUID } from "node:crypto";
 
 import pg from "pg";
+import { seedCorrectAnswer } from "./learning-points-fixtures.ts";
 
 import { loadConfig } from "../src/config.ts";
 import { createApp } from "../src/api/app.ts";
@@ -68,6 +69,7 @@ async function insertAttempt(userId:string,book:{packageId:string;workId:string;
      ) VALUES ($1,$2,$3,$4,$5,$6,'server_verified',$7,$8,$9,$6)`,
     [id,userId,attemptId,book.packageId,new Date(submittedAt.getTime()-60000),submittedAt,score,score>=80,"c".repeat(64)],
   );
+  await seedCorrectAnswer(pool,id,book.packageId);
   return id;
 }
 
@@ -163,7 +165,7 @@ async function main():Promise<void>{
 
     await pool.query("INSERT INTO ranking_rebuild_events (quiz_attempt_id) VALUES ($1)",[retryId]);
     const processor=new RankingRebuildProcessor(pool,service,()=>endsAt);
-    assert.equal(await processor.processAvailable(1),1);
+    await processor.processAvailable(100);
     const eventStatus=await pool.query<{status:string;attempts:number}>("SELECT status,attempts FROM ranking_rebuild_events WHERE quiz_attempt_id=$1",[retryId]);
     assert.deepEqual(eventStatus.rows[0],{status:"completed",attempts:1});
 

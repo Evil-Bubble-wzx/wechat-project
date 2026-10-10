@@ -69,7 +69,7 @@ function operationEntries(document: OpenApiDocument) {
 test("OpenAPI 3.1 document and external schemas are valid", async () => {
   const document = (await SwaggerParser.validate(openApiPath)) as unknown as OpenApiDocument;
 
-  assert.equal(document.info.version, "2.0.0");
+  assert.equal(document.info.version, "2.1.0");
   assert.ok(Object.keys(document.paths).length >= 10);
 });
 
@@ -111,7 +111,7 @@ test("error catalog exactly matches the stable ErrorCode enum", async () => {
   const schemaCodes = [...errorCode.enum].sort();
   const catalogCodes = catalog.errors.map(({ code }) => code).sort();
 
-  assert.equal(version, "api-contract-v2.0.0");
+  assert.equal(version, "api-contract-v2.1.0");
   assert.equal(catalog.contractVersion, version);
   assert.deepEqual(catalogCodes, schemaCodes);
   assert.equal(new Set(catalogCodes).size, catalogCodes.length);
@@ -129,6 +129,9 @@ test("contract examples validate against JSON Schema 2020-12", async () => {
   ajv.addSchema(schema);
 
   const examples: Array<[string, string]> = [
+    ["examples/simulated-order.request.json", "SimulatedOrderRequest"],
+    ["examples/simulated-order.response.json", "SimulatedOrderResponse"],
+    ["examples/simulated-bundles.response.json", "SimulatedBundleListResponse"],
     ["examples/session-wechat.request.json", "SessionWechatRequest"],
     ["examples/session-wechat.response.json", "SessionResponse"],
     ["examples/quiz-attempt.request.json", "QuizAttemptRequest"],

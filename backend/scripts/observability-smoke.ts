@@ -33,7 +33,7 @@ class SmokeSession implements SessionServicePort {
 }
 
 class SmokeRanking implements RankingServicePort {
-  async options() { return { timezone: "Asia/Shanghai", minimumCohortSize: 10, ruleVersion: "learning-points-v2", campuses: [], periodTypes: [], periods: { week: [], month: [] }, grades: [], levels: [] }; }
+  async options() { return { timezone: "Asia/Shanghai", minimumCohortSize: 10, ruleVersion: "learning-points-v2", scoreRules: LEARNING_POINT_RULES, scoreCap: null, campuses: [], periodTypes: [], periods: { week: [], month: [] }, grades: [], levels: [] }; }
   async rankings() { return { status: "unavailable" as const, timezone: "Asia/Shanghai", filters: { campusId: "a", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", grade: null, level: null }, ruleVersion: "learning-points-v2", periodType: "rolling7" as const, periodKey: "2026-09-17/2026-09-24", startsAt: "2026-09-17T00:00:00.000Z", endsAt: "2026-09-24T00:00:00.000Z", generatedAt: null, minimumCohortSize: 10, cohortSize: 0, items: [], currentUser: null, nextCursor: null }; }
   async detail(): Promise<never> { throw new Error("unused"); }
 }

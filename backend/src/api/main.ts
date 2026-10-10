@@ -1,5 +1,6 @@
 import { Queue } from "bullmq";
 
+import { CommerceService } from "../commerce/service.ts";
 import { createApp } from "./app.ts";
 import { SessionService } from "../auth/session-service.ts";
 import {
@@ -44,15 +45,18 @@ const ingestionService = new IngestionService(
   config.objectStorage.incomingBucket,
   config.objectStorage.publishedBucket,
 );
+const simulation = config.appEnv === "local" || config.appEnv === "test";
+const commerceService = simulation ? new CommerceService(infrastructure.postgres) : undefined;
 const contentService = new ContentService(
   infrastructure.postgres,
   infrastructure.objectStorage,
   config.auth.identityHashKeyBase64,
+  simulation,
 );
-const quizService = new QuizService(infrastructure.postgres);
+const quizService = new QuizService(infrastructure.postgres, simulation);
 const localImportService = new LocalImportService(infrastructure.postgres, quizService);
-const progressSyncService = new ProgressSyncService(infrastructure.postgres);
-const savedWordSyncService = new SavedWordSyncService(infrastructure.postgres, config.auth.identityHashKeyBase64);
+const progressSyncService = new ProgressSyncService(infrastructure.postgres, simulation);
+const savedWordSyncService = new SavedWordSyncService(infrastructure.postgres, config.auth.identityHashKeyBase64, simulation);
 const rankingService = new RankingQueryService(
   infrastructure.postgres,
   config.auth.identityHashKeyBase64,
@@ -67,6 +71,7 @@ const app = createApp({
   sessionService,
   ingestionService,
   contentService,
+  commerceService,
   quizService,
   localImportService,
   progressSyncService,

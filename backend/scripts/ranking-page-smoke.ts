@@ -4,6 +4,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 
 import type { S3Client } from "@aws-sdk/client-s3";
 import pg from "pg";
+import { seedCorrectAnswer } from "./learning-points-fixtures.ts";
 
 import { createApp } from "../src/api/app.ts";
 import { SessionService } from "../src/auth/session-service.ts";
@@ -33,7 +34,9 @@ async function seedBook():Promise<{packageId:string}> {
 }
 
 async function addAttempt(userId:string,packageId:string,label:string,score:number,submittedAt:Date):Promise<void> {
-  await pool.query(`INSERT INTO quiz_attempts (id,user_id,attempt_id,quiz_package_id,started_at,submitted_at,status,score,mastery,request_hash,verified_at) VALUES ($1,$2,$3,$4,$5,$6,'server_verified',$7,$8,$9,$6)`,[randomUUID(),userId,label,packageId,new Date(submittedAt.getTime()-60_000),submittedAt,score,score>=80,"c".repeat(64)]);
+  const id=randomUUID();
+  await pool.query(`INSERT INTO quiz_attempts (id,user_id,attempt_id,quiz_package_id,started_at,submitted_at,status,score,mastery,request_hash,verified_at) VALUES ($1,$2,$3,$4,$5,$6,'server_verified',$7,$8,$9,$6)`,[id,userId,label,packageId,new Date(submittedAt.getTime()-60_000),submittedAt,score,score>=80,"c".repeat(64)]);
+  await seedCorrectAnswer(pool,id,packageId);
 }
 
 async function main():Promise<void> {

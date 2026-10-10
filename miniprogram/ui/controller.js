@@ -77,6 +77,8 @@ function createPage(requestedRoute) {
   const ranking=rankingState.view('unavailable')
   const data={ route, title:titles[route], tabs, isTab:tabs.some(t=>t.id===route), inset:24, books:visibleBooks, featured:visibleBooks.slice(0,3), recommendations:visibleBooks.slice(0,2), book:firstBook, query:'',filter:'all', filters:[{id:'all',label:'All Books'},{id:'fiction',label:'Fiction'},{id:'nonfiction',label:'Nonfiction'},{id:'available',label:'Available'}], shown:visibleBooks, favorites:[], favoriteBooks:[], recent:[], readingList:[], recentMode:'recent', user:null, agreed:false, accountBusy:false, remoteContentStatus:'idle', syncStatus:'synced',syncStatusLabel:'学习进度已同步',syncPending:0,syncFailed:0, wordSyncStatus:'idle',wordSyncPending:0,wordSyncStatusLabel:'生词本待同步',savedWordItems:[],selectedWordSaved:false, sheet:'', playing:false, rate:1, position:0, formatted:'00:00',duration:time(firstBook.duration), subtitle:true, subtitleRows:[], subtitleStart:null, subtitleCurrent:-1, activeCue:null, selectedWord:{surface:'',phonetic:'—',partOfSpeech:'pending',definitionZh:'释义待审核',definitionEn:'This word is waiting for editorial review.',example:''}, loop:false, question:questions[0], questionIndex:0, answer:-1, checked:false, result:false, score:0, scores:[], quizTotal:questions.length, quizProgress:20, quizLabel:'THE TALE OF PETER RABBIT · 阅读小测', quizOptions:[], quizResultStatus:'', results:[], reportTrend:{ready:false,remaining:6,early:null,recent:null,delta:null,pieceCount:0}, localImportReady:false,localImportConsented:false,localImportBusy:false,localImportSummary:{progressPieces:0,words:0,quizAttempts:0,excluded:0},localImportErrors:[],localImportReceipt:null, learningPoints:'—',learningPointsLabel:'登录并同步后计入积分',rankingRuleSummary:'积分规则待服务端确认', rankingTypes, rankingType:'rolling7', rankingTypeLabel:'最近七天', rankingStatus:ranking.status, rankingStatusTitle:ranking.title, rankingStatusDescription:ranking.description, rankingCampuses:[],rankingCampusIndex:-1,rankingGrades:rankAll,rankingGradeIndex:0,rankingLevels:rankAll,rankingLevelIndex:0,rankingPeriods:[],rankingPeriodIndex:0,rankingItems:[],rankingCurrentUser:null,rankingNextCursor:null,rankingBusy:false,rankingDetail:null,rankingDetailStatus:'',rankingDetailNextCursor:null,rankingDetailBusy:false, stats:{pieces:0,words:0,correct:0,correctLabel:'—',listening:'00:00'}, currentFavorite:false, isDemo, isProduction:!isDemo }
   data.showAudioDiagnostic=showAudioDiagnostic
+  data.showCommerceTest=showAudioDiagnostic && require('../config/commerce-test').enabled
+  data.commerceBundles=[];data.commerceOrders=[];data.commerceBusy=false;data.commerceError=''
   data.audioDiagnostic=''
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
@@ -120,8 +122,10 @@ function createPage(requestedRoute) {
     attachPlayer() {if(route==='player'&&!this.playerUnsubscribe)this.playerUnsubscribe=player.subscribe(session=>this.syncPlayer(session,false))},
     detachPlayer() {if(this.playerUnsubscribe){this.playerUnsubscribe();this.playerUnsubscribe=null}this.wordResume=null},
     onShow() {this.refresh();if(route==='player'){this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(this.remoteLoadedOnce)this.loadRemote();if(!isDemo&&api.isAuthenticated()){void progressSync.activate();savedWordSync.foreground()}},
-    onHide() {if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
+    onHide() {if(this.data.sheet==="commerceReader"){this.clearCommerceReader();this.setData({sheet:""})}if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
     refresh() {
+      const commerceScope=api.currentUser()?.userId||null
+      if(this.commerceScope!==commerceScope){this.commerceScope=commerceScope;this.resetCommerceTest()}
       this.state = Object.assign(defaults(),host.read())
       /* @demo-start */
       if(isDemo)addDemoDefaults(this.state)
@@ -186,6 +190,64 @@ function createPage(requestedRoute) {
     renewLoan(e) {if(!this.requireDemo())return;try{this.state.loans=this.state.loans.map(l=>l.id===e.currentTarget.dataset.id?rules.renew(l):l);this.save();host.toast('续借成功')}catch(e){host.toast(e.message)}},
     /* @demo-end */
     showSheet(e) {this.setData({sheet:e.currentTarget.dataset.sheet})},
+    clearCommerceReader() {this.commerceReaderEpoch=(this.commerceReaderEpoch||0)+1;this.setData({commerceReaderText:"",commerceReaderError:"",commerceReaderBusy:false})},
+    async openCommerceReader(e) {
+      if(!this.data.showCommerceTest)return
+      const order=this.data.commerceOrders.find(o=>o.orderId===e.currentTarget.dataset.id),piece=order?.contents?.[0];if(!piece)return
+      this.clearCommerceReader();const epoch=this.commerceReaderEpoch,guard=this.commerceGuard();if(!guard())return
+      const current=()=>guard() && epoch===this.commerceReaderEpoch && this.data.sheet==="commerceReader"
+      this.setData({sheet:"commerceReader",commerceReaderBusy:true})
+      try{const manifest=await api.getManifest(piece.pieceId,piece.contentVersion);if(!current())return;const text=await require("../services/commerce-reader").readText(manifest,wx);if(current())this.setData({commerceReaderText:text})}
+      catch(error){if(current())this.setData({commerceReaderText:"",commerceReaderError:error?.statusCode===403?"当前没有有效访问权限，请检查订单状态":"正文读取失败，请返回订单后重试"})}
+      finally{if(current())this.setData({commerceReaderBusy:false})}
+    },
+    backCommerceOrders() {this.clearCommerceReader();this.setData({sheet:"commerceTest"});this.refreshCommerceTest()},
+    resetCommerceTest() {this.clearCommerceReader();this.commerceEpoch=(this.commerceEpoch||0)+1;this.commerceKeys={};this.setData({commerceOrders:[],commerceBundles:[],commerceBusy:false,commerceError:''})},
+    commerceGuard() {const user=api.currentUser(),epoch=this.commerceEpoch||0;return ()=>user && api.currentUser()===user && api.isAuthenticated() && host.accountScope()===user.userId && epoch===(this.commerceEpoch||0)},
+    async openCommerceTest() {
+      if(!this.data.showCommerceTest)return
+      if(!api.isAuthenticated()){host.toast('请先登录测试账户');return}
+      this.setData({sheet:'commerceTest'});await this.refreshCommerceTest()
+    },
+    async refreshCommerceTest() {
+      if(!this.data.showCommerceTest || this.data.commerceBusy)return
+      const stillCurrent=this.commerceGuard()
+      this.setData({commerceBusy:true,commerceError:''})
+      try{const [bundles,orders]=await Promise.all([api.listBundles(),api.listOrders()]);
+        if(!stillCurrent())return
+        this.setData({commerceBundles:bundles.items.map(b=>Object.assign({},b,{priceLabel:'¥'+(b.amountFen/100).toFixed(2)})),commerceOrders:orders.items.map(o=>Object.assign({},o,{statusLabel:({pending:'待模拟付款',paid:'已授权',refunded:'已退款'})[o.status]}))})
+      }catch(_){if(stillCurrent())this.setData({commerceError:'测试服务暂不可用，请重试'})}finally{if(stillCurrent())this.setData({commerceBusy:false})}
+    },
+    async createCommerceOrder(e) {
+      if(!this.data.showCommerceTest || this.data.commerceBusy)return
+      const bundle=this.data.commerceBundles.find(b=>b.bundleId===e.currentTarget.dataset.id && b.version===Number(e.currentTarget.dataset.version));if(!bundle)return
+      const pending=this.data.commerceOrders.find(o=>o.bundleId===bundle.bundleId && o.bundleVersion===bundle.version && o.status==='pending')
+      if(pending){host.toast('已有待付款订单，请复制订单号继续测试');return}
+      const user=api.currentUser();const stillCurrent=this.commerceGuard();if(!stillCurrent())return
+      const signature=user.userId+':'+bundle.bundleId+':'+bundle.version
+      this.commerceKeys=this.commerceKeys||{}
+      const key=this.commerceKeys[signature]||(this.commerceKeys[signature]='order-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2))
+      this.setData({commerceBusy:true,commerceError:''})
+      let succeeded=false
+      try{const response=await api.createOrder(bundle,key);if(!stillCurrent())return;succeeded=true;const order=Object.assign({},response.order,{statusLabel:'待模拟付款'});this.setData({commerceOrders:[order,...this.data.commerceOrders.filter(o=>o.orderId!==order.orderId)]});delete this.commerceKeys[signature];host.toast('测试订单已创建，不会扣款')}
+      catch(_){if(!stillCurrent())return;this.setData({commerceError:'创建未确认，重试将复用同一订单请求'})}
+      finally{if(stillCurrent()){this.setData({commerceBusy:false});if(succeeded)await this.refreshCommerceTest()}}
+    },
+    async checkCommerceAccess(e) {
+      if(!this.data.showCommerceTest || this.data.commerceBusy)return
+      const order=this.data.commerceOrders.find(o=>o.orderId===e.currentTarget.dataset.id),piece=order?.contents?.[0];if(!piece)return
+      const stillCurrent=this.commerceGuard();if(!stillCurrent())return
+      this.setData({commerceBusy:true})
+      try{await api.getManifest(piece.pieceId,piece.contentVersion);if(stillCurrent())host.toast('服务端已确认该版本访问权限')}
+      catch(error){if(stillCurrent())host.toast(error?.statusCode===403 ? '当前订单没有有效访问权限' : '访问未成功，请检查订单状态')}
+      finally{if(stillCurrent())this.setData({commerceBusy:false})}
+    },
+    copyCommerceOrder(e) {
+      if(!this.data.showCommerceTest)return
+      const order=this.data.commerceOrders.find(o=>o.orderId===e.currentTarget.dataset.id);if(!order)return
+      if(typeof wx.setClipboardData==='function')wx.setClipboardData({data:order.orderId,success:()=>host.toast('订单号已复制')})
+      else host.toast('请复制订单下方的订单号')
+    },
     openLocalImport() {
       if(isDemo)return
       if(!api.isAuthenticated()){host.toast('请先登录微信账户');host.go('login');return}
@@ -210,7 +272,7 @@ function createPage(requestedRoute) {
       }catch(_){host.toast('导入失败，本机数据未丢失')}
       finally{this.setData({localImportBusy:false})}
     },
-    closeSheet() {const token=this.data.sheet==='word'&&this.wordResume;this.wordResume=null;if(this.data.sheet==='rankingDetail')this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.setData({sheet:''});const current=player.snapshot();if(token&&token.sessionId===current.sessionId&&token.pieceId===current.pieceId&&current.status==='paused'&&current.pauseReason==='word')player.resume()},
+    closeSheet() {this.clearCommerceReader();const token=this.data.sheet==='word'&&this.wordResume;this.wordResume=null;if(this.data.sheet==='rankingDetail')this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.setData({sheet:''});const current=player.snapshot();if(token&&token.sessionId===current.sessionId&&token.pieceId===current.pieceId&&current.status==='paused'&&current.pauseReason==='word')player.resume()},
     noop() {},
     agreement() {this.setData({agreed:!this.data.agreed})},
     /* @demo-start */
@@ -229,6 +291,7 @@ function createPage(requestedRoute) {
       try{const user=await api.loginWechat();player.reloadScope();await progressSync.activate();savedWordSync.activate(user.userId);this.refresh();host.toast('微信登录成功');host.back()}catch(_){host.toast('微信登录失败，请稍后重试')}finally{this.setData({accountBusy:false})}
     },
     async logout() {
+      this.resetCommerceTest()
       /* @demo-start */
       if(isDemo){this.state.user=null;this.save();this.setData({sheet:''});host.toast('已退出演示账户');return}
       /* @demo-end */
@@ -256,10 +319,22 @@ function createPage(requestedRoute) {
     nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const base=visibleBooks.find(b=>b.id===current.id)||firstBook;const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=visibleBooks.findIndex(b=>b.id===current.id);book=playableBook(visibleBooks[(i+step+visibleBooks.length)%visibleBooks.length])}player.selectTrack(book);this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false});this.updateSubtitles(0,true)},
     openQuiz() {const book=this.data.book;const pieceId=book.chapterId||(book.chapters||[])[0]?.id;/* @demo-start */if(book.workId!=='peter-rabbit'&&!(legacyQuizzes[pieceId]||[]).length){host.toast('这一章暂时没有小测');return}/* @demo-end */this.wordResume=null;player.pause('quiz');host.go('quiz',book.id+(pieceId?':'+pieceId:''))},
     playOption(e) {const option=this.data.quizOptions[Number(e.currentTarget.dataset.index)];if(!option?.audio)return;player.pause('quiz_option');if(!this.optionAudio)this.optionAudio=wx.createInnerAudioContext();this.optionAudio.stop();this.optionAudio.src=option.audio;this.optionAudio.play()},
-    onUnload() {this.rankingEpoch=(this.rankingEpoch||0)+1;this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.detachPlayer();if(this.wordSyncUnsubscribe)this.wordSyncUnsubscribe();if(this.optionAudio)this.optionAudio.destroy()},
+    onUnload() {this.clearCommerceReader();this.commerceEpoch=(this.commerceEpoch||0)+1;this.rankingEpoch=(this.rankingEpoch||0)+1;this.rankingDetailEpoch=(this.rankingDetailEpoch||0)+1;this.detachPlayer();if(this.wordSyncUnsubscribe)this.wordSyncUnsubscribe();if(this.optionAudio)this.optionAudio.destroy()},
     answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
     nextQuestion() {if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];this.selectedOptions[this.data.questionIndex]=this.data.answer;const n=this.data.questionIndex+1;if(n>=this.questions.length){const attempt=quizAttempts.createLocalAttempt({quizPackage:this.quizPackage,book:this.data.book,selectedOptions:this.selectedOptions,startedAt:this.quizStartedAt});this.state.results=[attempt,...this.state.results];this.save();this.setData({result:true,score:attempt.score,scores,quizResultStatus:'本机练习结果 · 未经服务端验证'});this.submitQuizAttempt(attempt)}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
-    async submitQuizAttempt(attempt) {if(!api.available()||!api.isAuthenticated())return;try{const result=await api.submitQuiz(attempt);const merged=Object.assign({},attempt,result,{title:attempt.title});this.state.results=this.state.results.map(item=>item.attemptId===attempt.attemptId?merged:item);learningPoints.applyConfirmed(this.state,result.learningScore);this.save();this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端未接受 · 结果保留在本机'})}catch(_){this.setData({quizResultStatus:'网络提交失败 · 结果已安全保存在本机'})}},
+    async submitQuizAttempt(attempt) {
+      if(!api.available()||!api.isAuthenticated())return
+      const user=api.currentUser(),scope=host.accountScope()
+      const stillCurrent=()=>user&&api.isAuthenticated()&&api.currentUser()===user&&host.accountScope()===scope&&scope===user.userId
+      try {
+        const result=await api.submitQuiz(attempt)
+        if(!stillCurrent())return
+        const merged=Object.assign({},attempt,result,{title:attempt.title})
+        host.mutate(state=>{state.results=(state.results||[]).map(item=>item.attemptId===attempt.attemptId?merged:item);return learningPoints.applyConfirmed(state,result.learningScore)})
+        this.refresh()
+        this.setData({score:result.score??attempt.score,quizResultStatus:result.status==='server_verified'?'服务端已验证 · 已计入可信统计':'服务端未接受 · 结果保留在本机'})
+      } catch(_) {if(stillCurrent())this.setData({quizResultStatus:'网络提交失败 · 结果已安全保存在本机'})}
+    },
     retryQuiz() {this.setupQuiz()},
     async loadRemote() {
       this.remoteLoadedOnce=true

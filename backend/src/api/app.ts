@@ -3,6 +3,8 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import Fastify, { LogController, type FastifyInstance, type FastifyRequest } from "fastify";
 
 import { ApiError } from "./errors.ts";
+import { registerCommerceRoutes } from './commerce-routes.ts';
+import type { CommerceService } from '../commerce/service.ts';
 import { registerContentRoutes } from "./content-routes.ts";
 import { registerQuizRoutes } from "./quiz-routes.ts";
 import { registerLocalImportRoutes } from "./local-import-routes.ts";
@@ -30,6 +32,7 @@ export type CreateAppOptions = {
   sessionService?: SessionServicePort;
   ingestionService?: IngestionService;
   contentService?: ContentService;
+  commerceService?: CommerceService;
   quizService?: QuizService;
   localImportService?: LocalImportServicePort;
   progressSyncService?: ProgressSyncServicePort;
@@ -71,7 +74,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
 
   app.addHook("onSend", async (request, reply, payload) => {
     reply.header("X-Request-Id", request.id);
-    reply.header("X-API-Contract-Version", "api-contract-v2.0.0");
+    reply.header("X-API-Contract-Version", "api-contract-v2.1.0");
     return payload;
   });
 
@@ -219,6 +222,11 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
   if (options.contentService) {
     if (!options.sessionService) throw new Error("Content routes require a session service");
     registerContentRoutes(app, options.contentService, options.sessionService, options.auditService);
+  }
+  if (options.commerceService) {
+    if (options.appEnv !== 'local' && options.appEnv !== 'test') throw new Error('Simulated commerce requires local/test environment');
+    if (!options.sessionService) throw new Error('Commerce routes require sessions');
+    registerCommerceRoutes(app, options.commerceService, options.sessionService);
   }
   if (options.quizService) {
     if (!options.sessionService) throw new Error("Quiz routes require a session service");

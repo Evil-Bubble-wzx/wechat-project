@@ -2,6 +2,7 @@ import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 import type { Pool, PoolClient } from "pg";
 
+import { assertContentAccess,hasPurchasedVersion } from "../commerce/access.ts";
 import { ApiError } from "../api/errors.ts";
 import {
   mergeSavedWordMutation,
@@ -146,9 +147,11 @@ const selectColumns = `entry_id,piece_id,content_version,vocab_key,surface,lemma
 export class SavedWordSyncService {
   private readonly cursorKey: Buffer;
   private readonly pool: Pool;
+  private readonly simulation: boolean;
 
-  constructor(pool: Pool, cursorKeyBase64: string) {
+  constructor(pool: Pool, cursorKeyBase64: string, simulation = false) {
     this.pool = pool;
+    this.simulation=simulation;
     this.cursorKey = Buffer.from(cursorKeyBase64, "base64");
     if (this.cursorKey.length !== 32) throw new Error("Saved word cursor key must be 32 bytes");
   }
@@ -263,7 +266,9 @@ export class SavedWordSyncService {
       && previousRow?.piece_id === operation.pieceId
       && previousRow.vocab_key === operation.vocabKey
       && previousRow.lemma === operation.lemma;
-    if ((!resource.rows[0] || resource.rows[0].content_version !== operation.contentVersion) && !historicalDelete) {
+    const purchasedOldVersion = await hasPurchasedVersion(client,userId,operation.pieceId,operation.contentVersion,this.simulation)
+      && (await client.query("SELECT 1 FROM content_versions WHERE piece_id=$1 AND content_version=$2 AND status IN ('published','superseded')",[operation.pieceId,operation.contentVersion])).rows.length>0;
+    if ((!resource.rows[0] || resource.rows[0].content_version !== operation.contentVersion) && !historicalDelete && !purchasedOldVersion) {
       return this.saveOperation(client, userId, batchId, operation, {
         operationId: operation.operationId,
         entryId: operation.entryId,
@@ -275,6 +280,7 @@ export class SavedWordSyncService {
       });
     }
 
+    if (!historicalDelete) await assertContentAccess(client,userId,operation.pieceId,operation.contentVersion,this.simulation,true);
     const retained = operation.action === "delete" && previousRow ? stored(previousRow) : null;
     const mutation: SavedWordMutation = {
       entryId: operation.entryId,

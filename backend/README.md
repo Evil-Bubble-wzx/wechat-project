@@ -11,19 +11,19 @@
 - 批量内容导入控制面、S3 分片直传、BullMQ Worker、FFmpeg/字幕校验和发布门槛；
 - works、work、私有 manifest 短期 URL 与服务端 Quiz 判题；
 - S-01 一次性本机导入、S-02 revision/幂等进度同步与 S-03 稳定生词双向同步；
-- `quiz-score-v1`排行聚合、不可变快照、outbox重建、榜单及参与者Quiz明细；
+- `learning-points-v2`排行聚合、不可变快照、outbox重建、榜单及参与者Quiz明细；
 - 结构化日志、追加式审计、受保护Prometheus指标和Grafana面板；
 - Redis限流、双JWT签名密钥轮换、MinIO最小权限/生命周期和数据库事实源补队列；
 - `/health/live` 与 `/health/ready`；
 - local/dev/test Compose 定义；
-- `api-contract-v1.3.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
+- `api-contract-v2.0.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
 - 配置、API、契约、数据库、会话、内容、Quiz、排行、可观测性、安全、队列及X/B联调测试。
 
-排行规则已冻结为`quiz-score-v1`：完成Quiz的不同书本数、词量、贝叶斯校正正确率、挑战度、成长和题材广度共同形成0～1000算法分；完成书本数不是最终指标。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
+排行采用 `learning-points-v2`：有效听读每秒 1 分、篇目首次完成 50 分、同题首次确认答对 10 分，不设业务积分上限，API 以十进制整数字符串传输。历史回填只进累计，撤回答案触发原期间重算。详见 [ADR 0004](docs/adr/0004-learning-points-v2.md) 和 [本轮验收](../docs/学习积分验收与交接-2026-10-10.md)。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
 
 ## API 契约
 
-权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.3.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
+权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v2.0.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
 
 ```powershell
 npm run contract:check
@@ -39,13 +39,14 @@ npm run contract:check
 npm run db:status
 npm run db:migrate
 npm run test:integration:db
+npm run test:integration:learning-points
 npm run test:integration:local-import
 npm run test:integration:progress-sync
 npm run test:integration:saved-word-sync
 npm run test:integration:s04-sync
 ```
 
-`db:rollback` 每次只回退最新一条，执行前必须评估数据影响。当前9条迁移创建35张业务表和`schema_migrations`，并幂等写入`a`、`b`两个校区。
+`db:rollback` 每次只回退最新一条，执行前必须评估数据影响。当前10条迁移的隔离验收核验39个表/视图条目（包括迁移表与有效积分视图），并幂等写入`a`、`b`两个校区。
 
 ## 本地启动
 

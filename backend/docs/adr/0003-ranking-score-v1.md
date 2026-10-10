@@ -1,6 +1,6 @@
 # ADR 0003：Quiz 排行综合得分 v1
 
-- 状态：Accepted
+- 状态：Superseded by [ADR 0004](0004-learning-points-v2.md)；保留旧快照解释
 - 日期：2026-09-24
 - 规则版本：`quiz-score-v1`
 - 业务时区：`Asia/Shanghai`
