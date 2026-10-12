@@ -80,6 +80,16 @@ test('POST is never automatically retried', async () => {
   assert.equal(attempts, 1)
 })
 
+test('POST exposes server-declared retryability to the owning offline queue', async () => {
+  const api = client({ transport:async()=>({statusCode:429,data:{error:{code:'RATE_LIMITED',retryable:true}}}) })
+  await assert.rejects(api.request({method:'POST',path:'/me/progress/sync',body:{}}),error=>{
+    assert.equal(error.kind,ERROR_KINDS.SERVER)
+    assert.equal(error.serverCode,'RATE_LIMITED')
+    assert.equal(error.retryable,true)
+    return true
+  })
+})
+
 test('GET retries network failures but not ordinary 4xx responses', async () => {
   let attempts = 0
   const api = client({

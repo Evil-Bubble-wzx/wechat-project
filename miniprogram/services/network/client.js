@@ -158,7 +158,7 @@ function responseError(response) {
     statusCode: response.statusCode,
     serverCode,
     requestId: response.requestId,
-    retryable: RETRYABLE_STATUS.has(response.statusCode)
+    retryable: RETRYABLE_STATUS.has(response.statusCode) || !!(serverError && serverError.retryable)
   })
 }
 

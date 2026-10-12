@@ -108,6 +108,8 @@ async function main(): Promise<void> {
       "ranking_snapshot_entries_page_idx",
       "ranking_snapshot_quizzes_page_idx",
       "user_profile_versions_current_uidx",
+      "user_saved_words_user_change_idx",
+      "word_sync_operations_batch_idx",
     ]) {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
