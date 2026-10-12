@@ -10,6 +10,7 @@ for(const account of ['primary','isolation']){
   api=api.replace(marker,`const base=options.configuration || apiConfig.current(runtime); const configuration=base.development ? Object.assign({},base,{enabled:true,apiRoot:'http://127.0.0.1:3100/api/v1',stubLoginCode:'test:device-restricted-${account}'}) : Object.assign({},base,{enabled:false})`);
   fs.writeFileSync(apiFile,api);
   const config=JSON.parse(fs.readFileSync(path.join(repoRoot,'project.config.json')));
+  config.libVersion='3.17.3';
   config.appid='wxef246c6a495e4030';config.miniprogramRoot='miniprogram/';config.projectname=`听阅-本机模拟交易-${account}`;
   config.description='本机模拟订单验收专用；不扣款，不用于发布或手机预览';
   config.setting=Object.assign({},config.setting,{urlCheck:false});
