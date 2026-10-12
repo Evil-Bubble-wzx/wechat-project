@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "batchId": "library-example-001",
+  "cursor": null,
+  "operations": [
+    {
+      "operationId": "library-op-v1:e6502d798725a877299d5c0cf11de9209bc2d260a40729c8d85c916356611a2a",
+      "workId": "peter-rabbit",
+      "action": "favorite",
+      "baseRevision": "0",
+      "occurredAt": "2026-10-10T05:00:00.000Z"
+    }
+  ],
+  "limit": 100
+}

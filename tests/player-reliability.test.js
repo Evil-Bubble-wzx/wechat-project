@@ -61,6 +61,29 @@ test('X-02 restores an unfinished piece from its trusted checkpoint without auto
   }finally{h.restore()}
 })
 
+test('renewing a signed audio URL preserves the active session and restart checkpoint',()=>{
+  const h=harness(60)
+  try{
+    const first={...h.book,audioUrl:h.book.audioUrl+'?signature=old'},renewed={...h.book,audioUrl:h.book.audioUrl+'?signature=new'}
+    h.player.playTrack(first);for(let second=1;second<=30;second++)h.tick(second)
+    const session=h.player.snapshot().sessionId,oldStream=h.manager().src
+    h.player.selectTrack(renewed)
+    assert.equal(h.player.snapshot().sessionId,session);assert.equal(h.player.snapshot().status,'playing');assert.equal(h.player.snapshot().checkpointPosition,30);assert.equal(h.manager().src,oldStream)
+    h.player.pause('user');h.player.resume();assert.equal(h.manager().src,renewed.audioUrl)
+    h.player.pause('user');h.freshProcess();h.player.selectTrack({...renewed,audioUrl:h.book.audioUrl+'?signature=third'})
+    assert.equal(h.player.snapshot().position,30);assert.deepEqual(h.player.snapshot().listenedRanges,[[0,30]])
+  }finally{h.restore()}
+})
+
+test('legacy URL-based progress migrates without granting progress to another version',()=>{
+  const h=harness(60)
+  try{
+    h.host.write({idMigrationVersion:1,progressSchemaVersion:2,progress:{'peter-rabbit-01':{schemaVersion:2,contentVersion:1,duration:60,audioKey:'1|'+h.book.audioUrl+'?old',checkpointSeconds:30,listenedRanges:[[0,30]],completed:false}}})
+    h.player.selectTrack({...h.book,audioUrl:h.book.audioUrl+'?renewed'});assert.equal(h.player.snapshot().checkpointPosition,30)
+    h.player.selectTrack({...h.book,contentVersion:2});assert.equal(h.player.snapshot().checkpointPosition,0);assert.deepEqual(h.player.snapshot().listenedRanges,[])
+  }finally{h.restore()}
+})
+
 test('X-02 explicitly starts a newly assigned background-audio source on iOS', () => {
   const h=harness()
   try{

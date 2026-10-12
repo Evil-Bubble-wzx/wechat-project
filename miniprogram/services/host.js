@@ -1,6 +1,7 @@
 // Replace this adapter when embedding in another mini program.
 const productMode = require('../config/product-mode')
-const learningFields = ['learningScoreSummary','favorites','recent','progress','results','listeningSec','listenDaily','words','savedWordEntries','localImportReceipts','idMigrationVersion','progressSchemaVersion','progressSyncOutbox','progressSyncBaselines','progressSyncFailures']
+const catalog = require('../modules/catalog/remote-catalog')
+const learningFields = ['cloudQuizHistory','cloudLearningSummary','learningScoreSummary','favorites','recent','progress','results','listeningSec','listenDaily','words','savedWordEntries','localImportReceipts','idMigrationVersion','progressSchemaVersion','progressSyncOutbox','progressSyncBaselines','progressSyncFailures']
 const LEGACY_WORK_ID = 'peter'
 const WORK_ID = 'peter-rabbit'
 const PIECE_ID = 'peter-rabbit-01'
@@ -65,7 +66,7 @@ module.exports = {
   go(page, id) {
     const policy=productMode.current()
     const bookId=String(id||'').split(':')[0]
-    if(!policy.allowsRoute(page)||bookId&&!policy.allowsBook(bookId)){this.toast('该内容尚未在正式模式开放');page='home';id=''}
+    if(!policy.allowsRoute(page)||bookId&&!policy.allowsBook(bookId)&&!(activeUserId&&catalog.scope()===activeUserId&&catalog.has(bookId))){this.toast('该内容尚未在正式模式开放');page='home';id=''}
     const route = page === 'quiz' && !wx.isBrowserPreview ? '/quiz/pages/index' : '/pages/' + page + '/index'
     const url = route + (id ? '?id=' + encodeURIComponent(id) : '')
     if (['home','recent','me'].includes(page)) wx.switchTab({ url })

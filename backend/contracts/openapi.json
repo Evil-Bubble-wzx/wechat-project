@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tingyue Backend API",
-    "version": "2.0.0",
-    "description": "Authoritative API contract api-contract-v2.0.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
+    "version": "2.4.0",
+    "description": "Authoritative API contract api-contract-v2.3.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
   },
   "servers": [
     {
@@ -290,6 +290,59 @@
         }
       }
     },
+    "/api/v1/me/library/sync": {
+      "post": {
+        "operationId": "syncReaderLibrary",
+        "tags": [
+          "Sync"
+        ],
+        "description": "Account-scoped favorites and recent opening observations. Favorites use revisioned deletion tombstones: a stale favorite cannot resurrect an unfavorite. Open times merge monotonically and future client clocks clamp to serverTime. These actions do not earn learning points. Retry the immutable batch with the same batchId; every new pull must use a fresh batchId even when its cursor has not advanced.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/LibrarySyncRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Idempotent operation acknowledgements and paginated changes, including unfavorite tombstones.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/LibrarySyncResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
     "/api/v1/works": {
       "get": {
         "operationId": "listWorks",
@@ -302,6 +355,30 @@
           },
           {
             "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "description": "Literal case-insensitive title, author, series or internal content number search."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "fiction",
+                "nonfiction",
+                "available"
+              ],
+              "default": "all"
+            },
+            "description": "Available means currently published free digital content, not physical copy stock."
           }
         ],
         "responses": {
@@ -326,7 +403,8 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "description": "Current published works with version-aligned metadata and signed covers; cursors bind the search and category. New published works appear without a client rebuild."
       }
     },
     "/api/v1/works/{workId}": {
@@ -606,7 +684,7 @@
         "tags": [
           "Sync"
         ],
-        "description": "Bidirectional stable saved-word sync. Deletions are revisioned tombstones. A stale delete wins over an active record, while a stale save cannot resurrect a tombstone. Restoring a deleted word requires an explicit save based on the current revision. Client timestamps never order conflicts.",
+        "description": "Bidirectional stable saved-word sync. Deletions are revisioned tombstones. A stale delete wins over an active record, while a stale save cannot resurrect a tombstone. Restoring a deleted word requires an explicit save based on the current revision. Client timestamps never order conflicts. v2.1 clients use a fresh optional pullNonce for each new pull and retain it with the immutable batch on retries; older clients may omit it. Cursor changes are ordered by numeric sequence.",
         "parameters": [
           {
             "$ref": "#/components/parameters/IdempotencyKey"
@@ -711,7 +789,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Server-authoritative campus, period, grade and reading-level options. Week and month options drive the fourth selector in the client.",
+            "description": "Confirmed learning points and component breakdown.",
             "headers": {
               "X-Request-Id": {
                 "$ref": "#/components/headers/RequestId"
@@ -831,6 +909,16 @@
         ],
         "description": "Returns the score breakdown and server-verified per-book Quiz facts behind one visible ranking participant. It never returns answers or a real-name field.",
         "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "query",
+            "required": false,
+            "description": "Pin the detail to the snapshotId returned by the ranking list. A cursor must reference the same snapshot.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           {
             "name": "participantId",
             "in": "path",
@@ -1331,6 +1419,256 @@
           }
         },
         "description": "Authenticated lifetime confirmed learning points; each earned fact counts once, without a cap."
+      }
+    },
+    "/api/v1/me/quiz-history": {
+      "get": {
+        "operationId": "getMyQuizHistory",
+        "tags": [
+          "Quiz"
+        ],
+        "description": "Account-scoped revision deltas including withdrawals. Cursors bind user and database epoch; invalid cursors require an atomic full repull.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account-scoped revision deltas including withdrawals. Cursors bind user and database epoch; invalid cursors require an atomic full repull.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/QuizHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/me/learning-summary": {
+      "get": {
+        "operationId": "getMyLearningSummary",
+        "tags": [
+          "Quiz"
+        ],
+        "description": "Server-verified statistics: first-completion pieces and version-specific words; deduplicated effective listening. Quiz averages/trends use the latest verified, nonwithdrawn, currently compatible attempt per piece ordered by server verification time. Unknown words are null; integer totals remain decimal strings.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Server-verified statistics: first-completion pieces and version-specific words; deduplicated effective listening. Quiz averages/trends use the latest verified, nonwithdrawn, currently compatible attempt per piece ordered by server verification time. Unknown words are null; integer totals remain decimal strings.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/LearningSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/rankings/{participantId}/quiz-analysis": {
+      "get": {
+        "operationId": "getRankingQuizAnalysis",
+        "tags": [
+          "Ranking"
+        ],
+        "description": "Immutable same-snapshot Quiz analysis. Statistics use the latest server-verified attempt per piece; PASSED uses stored mastery, not the ranking metric. Search and sorting apply to all attempt records, not the aggregate statistics. Confirmation time is server verified_at. No answers, user ID or real-name fields.",
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "query",
+            "required": true,
+            "description": "Pin the detail to the snapshotId returned by the ranking list. A cursor must reference the same snapshot.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "campusId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "periodType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "rolling7",
+                "week",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "name": "periodKey",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "grade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "Literal title, series, author, work or piece ID search; wildcard characters are escaped."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "date",
+                "title",
+                "accuracy",
+                "level",
+                "words",
+                "quizPoints"
+              ],
+              "default": "date"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Algorithm score breakdown and paginated Quiz book records from the same immutable ranking snapshot.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/QuizAnalysisResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
       }
     }
   },

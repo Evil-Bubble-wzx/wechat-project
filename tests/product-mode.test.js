@@ -111,7 +111,7 @@ test('audio error diagnostic exposes only a code in develop previews', () => {
       }
       const page = createPage('player')
       page.setData = patch => Object.assign(page.data, patch)
-      page.syncPlayer({ pieceId:'peter-rabbit-01', status:'error', error:'10003: failed https://example.test/audio?token=private', position:0, duration:322 }, true)
+      page.syncPlayer({ accountScope:require('../miniprogram/services/host').accountScope(), pieceId:'peter-rabbit-01', status:'error', error:'10003: failed https://example.test/audio?token=private', position:0, duration:322 }, true)
       assert.equal(page.data.showAudioDiagnostic, envVersion === 'develop')
       assert.equal(page.data.audioDiagnostic, envVersion === 'develop' ? '10003' : '')
       assert.equal(JSON.stringify(page.data).includes('token=private'), false)

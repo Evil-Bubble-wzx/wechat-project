@@ -24,7 +24,7 @@ function createLocalAttempt({quizPackage,book,selectedOptions,startedAt,submitte
   const score=questions.length?Math.round(correct/questions.length*100):0
   const submitted=iso(submittedAt)
   const attempt={
-    attemptId:attemptId||['local',pieceId(book),Date.parse(submitted),Math.random().toString(36).slice(2,8)].join('-'),
+    attemptId:attemptId||['local',Date.parse(submitted),Math.random().toString(36).slice(2,14)].join('-'),
     schemaVersion:ATTEMPT_SCHEMA_VERSION,
     workId:book.workId||book.id,
     pieceId:pieceId(book),

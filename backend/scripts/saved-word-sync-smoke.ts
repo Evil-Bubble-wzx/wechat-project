@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { createRequire } from "node:module";
+import { readFile } from "node:fs/promises";
+import { Ajv2020 } from "ajv/dist/2020.js";
+import type { FormatsPlugin } from "ajv-formats";
 
 import { SignJWT } from "jose";
 import pg from "pg";
@@ -25,6 +29,14 @@ const base = loadConfig();
 const config = loadConfig({ APP_ENV: "test", DATABASE_URL: base.databaseUrl, WECHAT_PROVIDER: "stub" });
 const adminPool = new Pool({ connectionString: config.databaseUrl, max: 1 });
 const pool = new Pool({ connectionString: config.databaseUrl, max: 5, options: `-c search_path=${schema},public` });
+
+const require = createRequire(import.meta.url);
+const addFormats = require("ajv-formats") as FormatsPlugin;
+const schemaDocument = JSON.parse(await readFile(new URL("../contracts/schemas/api-v1.schema.json", import.meta.url), "utf8"));
+const ajv = new Ajv2020({ allErrors: true, strict: true });
+addFormats(ajv); ajv.addSchema(schemaDocument);
+const validateRequest = ajv.getSchema(schemaDocument.$id + "#/$defs/SavedWordSyncRequest")!;
+const validateResponse = ajv.getSchema(schemaDocument.$id + "#/$defs/SavedWordSyncResponse")!;
 
 const entry = {
   entryId: "ve-5732b4cca2b4",
@@ -53,12 +65,13 @@ function mutation(action: "save" | "delete", baseRevision: string, occurredAt = 
   return operation({ ...entry, action, baseRevision, occurredAt });
 }
 
-function batch(operations: SavedWordSyncOperation[], cursor: string | null = null, limit = 100): SavedWordSyncInput {
-  const payload = { schemaVersion: 1 as const, cursor, operations, limit };
+function batch(operations: SavedWordSyncOperation[], cursor: string | null = null, limit = 100, pullNonce?: string): SavedWordSyncInput {
+  const payload = { schemaVersion: 1 as const, cursor, operations, limit, ...(pullNonce === undefined ? {} : { pullNonce }) };
   return { batchId: savedWordBatchIdFor(payload), ...payload };
 }
 
 async function post(address: string, token: string, input: SavedWordSyncInput): Promise<{ status: number; body: any }> {
+  assert.equal(validateRequest(input), true, ajv.errorsText(validateRequest.errors));
   const response = await fetch(`${address}/api/v1/me/words/sync`, {
     method: "POST",
     headers: {
@@ -68,7 +81,9 @@ async function post(address: string, token: string, input: SavedWordSyncInput): 
     },
     body: JSON.stringify(input),
   });
-  return { status: response.status, body: await response.json() };
+  const body = await response.json();
+  if (response.status === 200) assert.equal(validateResponse(body), true, ajv.errorsText(validateResponse.errors));
+  return { status: response.status, body };
 }
 
 async function createSecondDeviceToken(userId: string): Promise<string> {
@@ -179,7 +194,35 @@ async function main(): Promise<void> {
       [deviceA.userId, entry.entryId],
     );
     assert.deepEqual(stored.rows[0], { revision: "6", deleted: false, last_device_id: "device-word-b", history_count: "5" });
-    process.stdout.write(`saved-word-sync.smoke.passed schema=${schema} devices=2 delete=winner stale-save=blocked restore=explicit version-change=preserved idempotency=exact\n`);
+
+    // Isolated fixture: 2, 9, 10 exposes text-alias ordering that silently skips changes.
+    await pool.query("UPDATE user_saved_words SET change_seq=2 WHERE user_id=$1", [deviceA.userId]);
+    await pool.query(
+      `INSERT INTO user_saved_words(user_id,entry_id,piece_id,content_version,vocab_key,surface,lemma,revision,deleted,change_seq)
+       VALUES($1,'ve-aaaaaaaaaaaa','peter-rabbit-01',2,'one:noun:1','one','one',1,false,9),
+             ($1,'ve-bbbbbbbbbbbb','peter-rabbit-01',2,'two:noun:1','two','two',1,false,10)`,
+      [deviceA.userId],
+    );
+    let numericCursor: string | null = null;
+    const seen: string[] = [];
+    for (let index = 0; index < 3; index++) {
+      const page = await post(address, deviceA.accessToken, batch([], numericCursor, 1, "word-numeric-page-" + index));
+      assert.equal(page.status, 200);
+      assert.equal(page.body.changes.length, 1);
+      seen.push(page.body.changes[0].entryId);
+      numericCursor = page.body.nextCursor;
+    }
+    assert.deepEqual(seen, [entry.entryId, "ve-aaaaaaaaaaaa", "ve-bbbbbbbbbbbb"]);
+    const noChanges = await post(address, deviceA.accessToken, batch([], numericCursor, 1, "word-fresh-pull-1"));
+    assert.equal(noChanges.status, 200);
+    assert.equal(noChanges.body.changes.length, 0);
+    await pool.query("UPDATE user_saved_words SET deleted=true,revision=revision+1,change_seq=11 WHERE user_id=$1 AND entry_id='ve-aaaaaaaaaaaa'", [deviceA.userId]);
+    const newChanges = await post(address, tokenB, batch([], numericCursor, 1, "word-fresh-pull-2"));
+    assert.equal(newChanges.status, 200);
+    assert.equal(newChanges.body.changes.length, 1);
+    assert.equal(newChanges.body.changes[0].entryId, "ve-aaaaaaaaaaaa");
+    assert.equal(newChanges.body.changes[0].state, "deleted");
+    process.stdout.write(`saved-word-sync.smoke.passed schema=${schema} devices=2 delete=winner stale-save=blocked restore=explicit version-change=preserved idempotency=exact numeric-pagination=2+9+10 fresh-pull=visible\n`);
   } finally {
     if (app) await app.close();
     await pool.end();

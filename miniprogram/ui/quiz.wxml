@@ -1,4 +1,6 @@
 <view class="content quiz-content" wx:if="{{route === 'quiz'}}">
+  <view class="info-note" wx:if="{{book.remote && remoteContentStatus === 'loading'}}">Loading versioned Quiz…</view>
+  <button wx:if="{{book.remote && remoteContentStatus === 'unavailable'}}" bindtap="retryContent">Retry resources</button>
   <text class="eyebrow">A LITTLE QUIZ, A BIG DISCOVERY</text>
   <view wx:if="{{quizTotal}}">
     <view wx:if="{{!result}}">

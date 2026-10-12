@@ -1,13 +1,17 @@
 import type { Pool } from "pg";
+import {readAnalysis,normalizeAnalysis,type AnalysisOptions} from "./analysis-query.ts";
+import { randomUUID } from "node:crypto";
 
 import { ApiError } from "../api/errors.ts";
 import { decodeKey, hmacSha256 } from "../security/crypto.ts";
 import { RANKING_RULE_VERSION, LEARNING_POINT_RULES, type RankingScoreBreakdown } from "./score.ts";
 import { readLearningScore } from "./learning-score.ts";
-import type { RankingPeriodType } from "./aggregation-service.ts";
+import { RankingAggregationService, type RankingPeriodType } from "./aggregation-service.ts";
 
 export const RANKING_TIMEZONE = "Asia/Shanghai";
 const SHANGHAI_OFFSET_MS = 8 * 60 * 60 * 1000;
+export const ROLLING_RANKING_REFRESH_MS = 30_000;
+const snapshotIdPattern=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const gradeValues = ["k", ...Array.from({length:9},(_,index)=>String(index+1))];
 const levelValues = Array.from({length:5},(_,index)=>String(index+1));
 
@@ -21,6 +25,7 @@ type RankingFilters = {
 
 type SnapshotRow = {
   id: string;
+  analysis_version: number;
   period_type: RankingPeriodType;
   period_key: string;
   starts_at: Date;
@@ -89,11 +94,13 @@ export class RankingQueryService{
   private readonly pool:Pool;
   private readonly cursorKey:Buffer;
   private readonly now:()=>Date;
+  private readonly aggregation:Pick<RankingAggregationService,"build">;
 
-  constructor(pool:Pool,cursorKeyBase64:string,now:()=>Date=()=>new Date()){
+  constructor(pool:Pool,cursorKeyBase64:string,now:()=>Date=()=>new Date(),aggregation?:Pick<RankingAggregationService,"build">){
     this.pool=pool;
     this.cursorKey=decodeKey(cursorKeyBase64);
     this.now=now;
+    this.aggregation=aggregation??new RankingAggregationService(pool,cursorKeyBase64);
   }
 
   private encodeCursor(payload:CursorPayload):string{
@@ -107,7 +114,7 @@ export class RankingQueryService{
     if(!payload||!signature||extra||hmacSha256(payload,this.cursorKey)!==signature)throw new ApiError("INVALID_REQUEST",400,false,"Cursor is invalid");
     try{
       const decoded=JSON.parse(Buffer.from(payload,"base64url").toString("utf8")) as CursorPayload;
-      if(decoded.type!==expectedType||typeof decoded.snapshotId!=="string")throw new Error("scope");
+      if(decoded.type!==expectedType||!snapshotIdPattern.test(decoded.snapshotId))throw new Error("scope");
       return decoded;
     }catch{throw new ApiError("INVALID_REQUEST",400,false,"Cursor is invalid")}
   }
@@ -123,7 +130,8 @@ export class RankingQueryService{
     let window:{startsAt:Date;endsAt:Date;periodKey:string};
     if(input.periodType==="rolling7"){
       if(input.periodKey)throw new ApiError("RANKING_PERIOD_INVALID",400,false,"rolling7 does not accept periodKey");
-      const endsAt=now,startsAt=new Date(now.getTime()-7*86400000);
+      // One immutable snapshot per 30-second window; even an idle cohort ages out.
+      const endsAt=new Date(Math.floor(now.getTime()/ROLLING_RANKING_REFRESH_MS)*ROLLING_RANKING_REFRESH_MS),startsAt=new Date(endsAt.getTime()-7*86400000);
       window={startsAt,endsAt,periodKey:`${dateKey(startsAt)}/${dateKey(endsAt)}`};
     }else if(input.periodType==="week"){
       if(!input.periodKey)throw new ApiError("RANKING_PERIOD_INVALID",400,false,"Week periodKey is required");
@@ -167,27 +175,39 @@ export class RankingQueryService{
 
   private async snapshot(filters:ReturnType<RankingQueryService["validateFilters"]>,snapshotId?:string):Promise<SnapshotRow|null>{
     const result=await this.pool.query<SnapshotRow>(
-      `SELECT id,period_type,period_key,starts_at,ends_at,rule_version,result_status,
+      `SELECT id,analysis_version,period_type,period_key,starts_at,ends_at,rule_version,result_status,
               cohort_size,minimum_cohort_size,generated_at
        FROM ranking_snapshots
        WHERE status='ready' AND campus_id=$1 AND period_type=$2
          AND grade IS NOT DISTINCT FROM $3 AND reading_level IS NOT DISTINCT FROM $4
          AND rule_version=$5 AND ($6::text IS NULL OR period_key=$6)
          AND ($7::uuid IS NULL OR id=$7)
+         AND ($7::uuid IS NOT NULL OR $2<>'rolling7' OR (starts_at=$8::timestamptz AND ends_at=$9::timestamptz))
        ORDER BY generated_at DESC LIMIT 1`,
-      [filters.campusId,filters.periodType,filters.grade,filters.level,RANKING_RULE_VERSION,filters.periodKey,snapshotId??null],
+      [filters.campusId,filters.periodType,filters.grade,filters.level,RANKING_RULE_VERSION,filters.periodKey,snapshotId??null,filters.window.startsAt,filters.window.endsAt],
     );
     return result.rows[0]??null;
+  }
+
+  private async currentSnapshot(filters:ReturnType<RankingQueryService["validateFilters"]>,snapshotId?:string):Promise<SnapshotRow|null>{
+    if(snapshotId&&!snapshotIdPattern.test(snapshotId))throw new ApiError("INVALID_REQUEST",400,false,"Snapshot is invalid");
+    const cached=await this.snapshot(filters,snapshotId);
+    if(snapshotId||cached&&cached.analysis_version!==0||!cached&&filters.periodType!=="rolling7")return cached;
+    const built=await this.aggregation.build({periodType:filters.periodType,periodKey:cached?.period_key??filters.window.periodKey,
+      startsAt:cached?iso(cached.starts_at):iso(filters.window.startsAt),endsAt:cached?iso(cached.ends_at):iso(filters.window.endsAt),campusId:filters.campusId,
+      grade:filters.grade,readingLevel:filters.level,requestId:randomUUID()});
+    return this.snapshot(filters,built.snapshotId);
   }
 
   async rankings(userId:string,input:RankingFilters,cursor:string|undefined,limit:number){
     const filters=this.validateFilters(input);
     await this.assertActiveCampus(filters.campusId);
     const after=this.decodeCursor(cursor,"ranking") as Extract<CursorPayload,{type:"ranking"}>|null;
-    const snapshot=await this.snapshot(filters,after?.snapshotId);
+    const snapshot=await this.currentSnapshot(filters,after?.snapshotId);
+    if(after&&!snapshot)throw new ApiError("INVALID_REQUEST",400,false,"Ranking cursor does not match these filters");
     const normalizedFilters={campusId:filters.campusId,periodType:filters.periodType,periodKey:snapshot?.period_key??filters.window.periodKey,grade:filters.grade,level:filters.level};
-    if(!snapshot)return {status:"unavailable" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:RANKING_RULE_VERSION,periodType:filters.periodType,periodKey:normalizedFilters.periodKey,startsAt:iso(filters.window.startsAt),endsAt:iso(filters.window.endsAt),generatedAt:null,minimumCohortSize:10,cohortSize:0,items:[],currentUser:null,nextCursor:null};
-    if(snapshot.result_status!=="ready")return {status:snapshot.result_status??"unavailable",timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at?.toISOString()??null,minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:[],currentUser:null,nextCursor:null};
+    if(!snapshot)return {snapshotId:null,status:"unavailable" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:RANKING_RULE_VERSION,periodType:filters.periodType,periodKey:normalizedFilters.periodKey,startsAt:iso(filters.window.startsAt),endsAt:iso(filters.window.endsAt),generatedAt:null,minimumCohortSize:10,cohortSize:0,items:[],currentUser:null,nextCursor:null};
+    if(snapshot.result_status!=="ready")return {snapshotId:snapshot.id,status:snapshot.result_status??"unavailable",timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at?.toISOString()??null,minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:[],currentUser:null,nextCursor:null};
     const rows=await this.pool.query<{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null}>(
       `SELECT rank,participant_id,display_name,score,profile_grade,profile_reading_level FROM ranking_snapshot_entries
        WHERE snapshot_id=$1 AND ($2::integer IS NULL OR rank>$2 OR (rank=$2 AND participant_id>$3))
@@ -196,14 +216,24 @@ export class RankingQueryService{
     const mapEntry=(row:{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null})=>({rank:row.rank,participantId:row.participant_id,displayName:row.display_name,gradeLabel:gradeLabel(row.profile_grade),readingLevelLabel:levelLabel(row.profile_reading_level),metric:{key:"rankingScore" as const,label:"Learning Points" as const,value:String(row.score),unit:"points" as const}});
     const current=(await this.pool.query<{rank:number;participant_id:string;display_name:string;score:string;profile_grade:string|null;profile_reading_level:string|null}>("SELECT rank,participant_id,display_name,score,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND user_id=$2",[snapshot.id,userId])).rows[0];
     const last=page.at(-1);
-    return {status:"ready" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at!.toISOString(),minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:page.map(mapEntry),currentUser:current?mapEntry(current):null,nextCursor:hasMore&&last?this.encodeCursor({type:"ranking",snapshotId:snapshot.id,rank:last.rank,participantId:last.participant_id}):null};
+    return {snapshotId:snapshot.id,status:"ready" as const,timezone:RANKING_TIMEZONE,filters:normalizedFilters,ruleVersion:snapshot.rule_version,periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),generatedAt:snapshot.generated_at!.toISOString(),minimumCohortSize:snapshot.minimum_cohort_size,cohortSize:snapshot.cohort_size,items:page.map(mapEntry),currentUser:current?mapEntry(current):null,nextCursor:hasMore&&last?this.encodeCursor({type:"ranking",snapshotId:snapshot.id,rank:last.rank,participantId:last.participant_id}):null};
   }
 
-  async detail(input:RankingFilters,participantId:string,cursor:string|undefined,limit:number){
+  async analysis(input:RankingFilters,participantId:string,cursor:string|undefined,limit:number,snapshotId:string,options:AnalysisOptions={}){
+    normalizeAnalysis(options);
+    if(!snapshotIdPattern.test(snapshotId))throw new ApiError("INVALID_REQUEST",400,false,"A ranking snapshot is required");
+    const filters=this.validateFilters(input);await this.assertActiveCampus(filters.campusId);
+    const snapshot=await this.currentSnapshot(filters,snapshotId);
+    if(!snapshot||snapshot.result_status!=="ready")throw new ApiError("RANKING_UNAVAILABLE",503,true,"Ranking snapshot is unavailable");
+    return readAnalysis(this.pool,this.cursorKey,snapshot,participantId,cursor,limit,options);
+  }
+
+  async detail(input:RankingFilters,participantId:string,cursor:string|undefined,limit:number,snapshotId?:string){
     const filters=this.validateFilters(input);
     await this.assertActiveCampus(filters.campusId);
     const after=this.decodeCursor(cursor,"quizzes") as Extract<CursorPayload,{type:"quizzes"}>|null;
-    const snapshot=await this.snapshot(filters,after?.snapshotId);
+    if(snapshotId&&after&&snapshotId!==after.snapshotId)throw new ApiError("INVALID_REQUEST",400,false,"Snapshot and cursor do not match");
+    const snapshot=await this.currentSnapshot(filters,after?.snapshotId??snapshotId);
     if(!snapshot||snapshot.result_status!=="ready")throw new ApiError("RANKING_UNAVAILABLE",503,true,"Ranking snapshot is unavailable");
     const entry=(await this.pool.query<{user_id:string;display_name:string;score:string;score_breakdown:RankingScoreBreakdown[];stats:Record<string,number|null>;profile_grade:string|null;profile_reading_level:string|null}>("SELECT user_id,display_name,score,score_breakdown,stats,profile_grade,profile_reading_level FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND participant_id=$2",[snapshot.id,participantId])).rows[0];
     if(!entry)throw new ApiError("RESOURCE_NOT_FOUND",404,false,"Ranking participant is unavailable");
@@ -213,6 +243,6 @@ export class RankingQueryService{
          AND ($3::timestamptz IS NULL OR taken_at<$3 OR (taken_at=$3 AND quiz_attempt_id::text>$4))
        ORDER BY taken_at DESC,quiz_attempt_id LIMIT $5`,[snapshot.id,entry.user_id,after?.takenAt??null,after?.attemptId??null,limit+1]);
     const page=rows.rows.slice(0,limit),hasMore=rows.rows.length>limit,last=page.at(-1);
-    return {ruleVersion:snapshot.rule_version,participant:{participantId,displayName:entry.display_name,gradeLabel:gradeLabel(entry.profile_grade),readingLevelLabel:levelLabel(entry.profile_reading_level)},periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),rankingScore:String(entry.score),scoreBreakdown:entry.score_breakdown,stats:entry.stats,quizzes:page.map(row=>({attemptId:row.quiz_attempt_id,workId:row.work_id,pieceId:row.piece_id,title:row.title,series:row.series,author:row.author,takenAt:row.taken_at.toISOString(),correctPercent:Number(row.correct_percent),level:row.level===null?null:Number(row.level),category:row.category,wordCount:row.word_count,completed:true as const})),nextCursor:hasMore&&last?this.encodeCursor({type:"quizzes",snapshotId:snapshot.id,takenAt:last.taken_at.toISOString(),attemptId:last.quiz_attempt_id}):null};
+    return {snapshotId:snapshot.id,ruleVersion:snapshot.rule_version,participant:{participantId,displayName:entry.display_name,gradeLabel:gradeLabel(entry.profile_grade),readingLevelLabel:levelLabel(entry.profile_reading_level)},periodType:snapshot.period_type,periodKey:snapshot.period_key,startsAt:iso(snapshot.starts_at),endsAt:iso(snapshot.ends_at),rankingScore:String(entry.score),scoreBreakdown:entry.score_breakdown,stats:entry.stats,quizzes:page.map(row=>({attemptId:row.quiz_attempt_id,workId:row.work_id,pieceId:row.piece_id,title:row.title,series:row.series,author:row.author,takenAt:row.taken_at.toISOString(),correctPercent:Number(row.correct_percent),level:row.level===null?null:Number(row.level),category:row.category,wordCount:row.word_count,completed:true as const})),nextCursor:hasMore&&last?this.encodeCursor({type:"quizzes",snapshotId:snapshot.id,takenAt:last.taken_at.toISOString(),attemptId:last.quiz_attempt_id}):null};
   }
 }

@@ -1,0 +1,32 @@
+{
+  "test": "audio-lease-browser",
+  "scope": "local HTTP fixture and actual frontend/Edge audio; manifest API is a test adapter",
+  "bytes": 2580786,
+  "sha256": "6949f07f5234e789903c6089bbee70e8989701ad72dffaf08a6ee89960f02e36",
+  "expiredHttp403": "PASS",
+  "freshHttp206": "PASS",
+  "realDecodedSamples": "PASS",
+  "cursor": "PASS",
+  "rate": "PASS",
+  "loop": "PASS",
+  "requests": {
+    "expired": 1,
+    "fresh": 1,
+    "range": 1
+  },
+  "result": {
+    "position": 31.275931,
+    "checkpoint": 30,
+    "rate": 1.25,
+    "loop": true,
+    "apiCalls": 1,
+    "coverage": [
+      [
+        0,
+        31.275931
+      ]
+    ],
+    "status": "paused"
+  },
+  "errors": []
+}

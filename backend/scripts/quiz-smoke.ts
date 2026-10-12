@@ -83,7 +83,12 @@ async function main(): Promise<void> {
       assert.equal(verified.score, 100);
       assert.equal(verified.mastery, true);
     }
-    assert.deepEqual(await service.submit(userId, input), verified);
+    const replay=await service.submit(userId,input);
+    assert.equal(replay.status,verified.status);
+    if(replay.status==='server_verified'&&verified.status==='server_verified'){
+      assert.deepEqual({...replay,learningScore:undefined},{...verified,learningScore:undefined});
+      assert.equal(replay.learningScore?.totalPoints,verified.learningScore?.totalPoints);
+    }
     const attemptReuse = await service.submit(userId, {
       ...input,
       selectedOptions: [1, 1],

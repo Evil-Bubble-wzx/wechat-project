@@ -13,5 +13,8 @@ assert.ok(!/\{\{[^}]*\.\w+\(/.test(template),'No JS method calls in WXML binding
 const {createPage}=require(path.join(mini,'ui/controller'));const page=createPage('home')
 for(const m of template.matchAll(/(?:bind|catch)(?:tap|input|change)="(\w+)"/g))assert.equal(typeof page[m[1]],'function','Missing handler '+m[1])
 for(const m of template.matchAll(/src="(\/assets\/[^{}"]+)"/g))assert.ok(fs.existsSync(path.join(mini,m[1])),'Missing '+m[1])
+const analysisTemplate=fs.readFileSync(path.join(mini,'ui/ranking-detail.wxml'),'utf8'),analysisPage=createPage('ranking-detail')
+assert.ok(!/<(?:div|span|br|img|html)\b/.test(analysisTemplate),'Analysis must use native tags')
+for(const m of analysisTemplate.matchAll(/(?:bind|catch)(?:tap|input|change|confirm)="(\w+)"/g))assert.equal(typeof analysisPage[m[1]],'function','Missing analysis handler '+m[1])
 const total=files.reduce((n,f)=>n+fs.statSync(f).size,0)
 console.log('Validated '+app.pages.length+' routes in '+path.relative(root,mini)+', all handlers, native bindings, assets and JS/JSON syntax. Package: '+Math.round(total/1024)+' KiB.')

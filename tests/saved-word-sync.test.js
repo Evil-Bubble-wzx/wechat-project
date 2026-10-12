@@ -8,11 +8,11 @@ const word = overrides => Object.assign({
   vocabKey:'a:determiner:1',surface:'a',lemma:'a'
 },overrides)
 
-function response(request,overrides={}){return Object.assign({schemaVersion:1,batchId:request.batchId,serverTime:'2026-09-29T02:00:00.000Z',operations:[],changes:[],nextCursor:'s03-word-cursor-v1:0:'+'a'.repeat(64),hasMore:false},overrides)}
-function harness(handler){
+function response(request,overrides={}){return Object.assign({schemaVersion:1,batchId:request.batchId,serverTime:'2026-09-29T02:00:00.000Z',operations:request.operations.map(operation=>({operationId:operation.operationId,entryId:operation.entryId,status:'applied',word:null})),changes:[],nextCursor:'s03-word-cursor-v1:0:'+'a'.repeat(64),hasMore:false},overrides)}
+function harness(handler,apiOverrides={}){
   const storage=new Map(),requests=[],remote=[],scheduled=[];let userId='user-a',authenticated=true
   const manager=createSavedWordSyncManager({
-    runtime:{getStorageSync:key=>storage.get(key),setStorageSync:(key,value)=>storage.set(key,value)},api:{},host:{},
+    runtime:{getStorageSync:key=>storage.get(key),setStorageSync:(key,value)=>storage.set(key,value)},api:apiOverrides,host:{},
     random:()=>0,now:()=>Date.parse('2026-09-29T02:00:00.000Z'),schedule:(fn,delay)=>{const timer={fn,delay};scheduled.push(timer);return timer},cancel:()=>{},
     isAuthenticated:()=>authenticated,currentUser:()=>({userId}),applyRemote:value=>remote.push(value),
     submit:async request=>{requests.push(request);return handler(request,requests.length)}
@@ -89,4 +89,54 @@ test('S-03 discards an in-flight response after switching accounts', async()=>{
   assert.equal(h.remote.length,0)
   const firstAccount=h.storage.get(STORAGE_PREFIX+encodeURIComponent('user-a'))
   assert.equal(firstAccount.queue.length,1)
+})
+
+test('S-03 fresh pulls are not stuck on a replayed empty result',async()=>{
+  const cache=new Map();let phase='empty'
+  const h=harness(request=>{
+    if(cache.has(request.batchId))return cache.get(request.batchId)
+    const value=response(request,{changes:phase==='empty'?[]:[word({revision:'1',state:'saved',serverUpdatedAt:'2026-10-10T05:00:00.000Z'})],nextCursor:'unchanged-cursor'})
+    cache.set(request.batchId,value);return value
+  })
+  h.manager.activate('user-a',{sync:false});await h.manager.trigger('pull',true);await h.manager.trigger('pull',true)
+  phase='saved';await h.manager.trigger('pull',true)
+  assert.equal(h.requests[1].cursor,h.requests[2].cursor);assert.notEqual(h.requests[1].batchId,h.requests[2].batchId)
+  assert.equal(h.remote.at(-1).state,'saved')
+})
+
+test('S-03 omits the optional fresh-pull nonce for older servers',async()=>{
+  const h=harness(request=>response(request),{savedWordPullNonceAvailable:()=>false})
+  h.manager.activate('user-a',{sync:false});await h.manager.trigger('pull',true)
+  assert.equal(h.requests[0].pullNonce,undefined)
+})
+
+test('S-03 keeps a newer local delete visible while an older save is acknowledged',async()=>{
+  let finish
+  const h=harness((request,count)=>{
+    if(count>1)throw Object.assign(new Error('offline'),{retryable:true,kind:'network'})
+    return new Promise(resolve=>{finish=()=>resolve(response(request,{changes:[word({revision:'1',state:'saved',serverUpdatedAt:'2026-10-10T05:00:00.000Z'})]}))})
+  })
+  h.manager.activate('user-a',{sync:false});h.manager.saveWord(word(),false)
+  const inFlight=h.manager.trigger('save',false)
+  h.manager.deleteWord(word(),false);finish();await inFlight
+  assert.equal(h.remote.at(-1).state,'deleted')
+  assert.equal(h.manager._inspect().words[word().entryId].state,'saved')
+  assert.equal(h.manager._inspect().queue[0].operations[0].action,'delete')
+})
+
+test('S-03 does not regress a confirmed revision from a replayed operation result',async()=>{
+  let phase=0
+  const h=harness(request=>response(request,{changes:[word({revision:phase++?'9':'10',state:phase===1?'deleted':'saved',serverUpdatedAt:'2026-10-10T05:00:00.000Z'})]}))
+  h.manager.activate('user-a',{sync:false});await h.manager.trigger('pull',true);await h.manager.trigger('pull',true)
+  assert.equal(h.manager._inspect().words[word().entryId].revision,'10')
+  assert.equal(h.remote.at(-1).state,'deleted')
+})
+
+test('S-03 retains the immutable batch after an incomplete acknowledgement',async()=>{
+  const h=harness(request=>response(request,{operations:[]}))
+  h.manager.activate('user-a',{sync:false});h.manager.saveWord(word(),false)
+  assert.equal(await h.manager.trigger('send',false),false)
+  assert.equal(h.manager.status().error,'contract')
+  assert.deepEqual(h.manager._inspect().queue[0],h.requests[0])
+  assert.equal(h.manager._inspect().cursor,null)
 })

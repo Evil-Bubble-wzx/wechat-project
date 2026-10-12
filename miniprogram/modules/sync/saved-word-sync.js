@@ -29,7 +29,7 @@ function normalizeEntry(value) {
 }
 
 function emptyAccount(userId) {
-  return {schemaVersion:SCHEMA_VERSION,userId,cursor:null,words:{},blocked:{},drafts:{},queue:[],terminal:[],retryAttempt:0,lastSyncedAt:null}
+  return {schemaVersion:SCHEMA_VERSION,userId,cursor:null,words:{},blocked:{},drafts:{},queue:[],terminal:[],retryAttempt:0,lastSyncedAt:null,pullSequence:0}
 }
 
 function normalizeAccount(value,userId) {
@@ -101,15 +101,26 @@ function createSavedWordSyncManager(options={}) {
       return Object.assign({operationId:operationIdFor(payload)},payload)
     })
     const payload={schemaVersion:SCHEMA_VERSION,cursor:account.cursor,operations,limit:100}
+    if(pull&&(typeof api.savedWordPullNonceAvailable!=='function'||api.savedWordPullNonceAvailable())){
+      account.pullSequence=(Number(account.pullSequence)||0)+1
+      payload.pullNonce='s03-pull-'+now().toString(36)+'-'+random().toString(36).slice(2,12)+'-'+account.pullSequence
+    }
     const batch=Object.assign({batchId:batchIdFor(payload)},payload)
     for(const key of keys)delete account.drafts[key]
     account.queue.push(batch);save();return batch
   }
 
   function rememberTerminal(item){account.terminal=[Object.assign({recordedAt:new Date(now()).toISOString()},item),...account.terminal].slice(0,MAX_TERMINAL)}
-  function acceptWord(word){if(!word||!word.entryId)return;account.words[word.entryId]=clone(word);delete account.blocked[word.entryId];applyRemote(word)}
+  function acceptWord(word){
+    if(!word||!word.entryId)return
+    const previous=account.words[word.entryId],revision=String(word.revision||'0'),knownRevision=String(previous?.revision||'0')
+    if(previous&&(revision.length<knownRevision.length||(revision.length===knownRevision.length&&revision<knownRevision)))return
+    account.words[word.entryId]=clone(word);delete account.blocked[word.entryId]
+    const pending=account.drafts[word.entryId]||account.queue.slice().reverse().flatMap(batch=>batch.operations).find(operation=>operation.entryId===word.entryId)
+    applyRemote(pending?Object.assign({},word,pending,{state:pending.action==='delete'?'deleted':'saved'}):word)
+  }
   function handleResponse(batch,response){
-    if(!response||response.batchId!==batch.batchId)throw Object.assign(new Error('Saved word sync response batch mismatch'),{retryable:false,kind:'contract'})
+    if(!response||response.schemaVersion!==SCHEMA_VERSION||response.batchId!==batch.batchId||typeof response.nextCursor!=='string'||!Array.isArray(response.changes)||!Array.isArray(response.operations)||response.operations.length!==batch.operations.length||response.operations.some((item,index)=>item.operationId!==batch.operations[index].operationId))throw Object.assign(new Error('Saved word sync response is incomplete or mismatched'),{retryable:false,kind:'contract'})
     account.queue.shift();account.retryAttempt=0
     const submitted=new Map(batch.operations.map(operation=>[operation.operationId,operation]))
     for(const result of response.operations||[]){
@@ -142,6 +153,7 @@ function createSavedWordSyncManager(options={}) {
         }catch(error){
           if(activeUserId!==syncUserId||account!==syncAccount||!accountScopeMatches(syncUserId))return false
           if(error&&error.kind==='unauthorized'){updateStatus('error','authentication');return false}
+          if(error&&error.kind==='contract'){updateStatus('error','contract');return false}
           if(error&&error.retryable===false){
             account.queue.shift();const reason=error.serverCode||error.kind||'terminal_error'
             for(const operation of batch.operations)account.blocked[operation.entryId]={contentVersion:operation.contentVersion,reason,recordedAt:new Date(now()).toISOString()}

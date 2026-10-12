@@ -243,7 +243,10 @@ function canonicalStringify(value) {
 
 // Synchronous UTF-8 SHA-256 for the WeChat runtime; no Node crypto dependency.
 function sha256(text) {
-  const bytes = utf8Bytes(String(text))
+  return sha256Bytes(utf8Bytes(String(text)))
+}
+function sha256Bytes(input) {
+  const bytes = Array.from(input instanceof ArrayBuffer ? new Uint8Array(input) : input)
   const bitLength = bytes.length * 8
   bytes.push(0x80)
   while (bytes.length % 64 !== 56) bytes.push(0)
@@ -307,4 +310,4 @@ const exclusion = (kind, id, reason) => ({ kind, id, reason })
 const invalid = reason => ({ valid: false, reason })
 const clone = value => JSON.parse(JSON.stringify(value))
 
-module.exports = { SNAPSHOT_SCHEMA_VERSION, prepareLocalImport, createImportSession, canonicalStringify, sha256, normalizeRangesMs }
+module.exports = { SNAPSHOT_SCHEMA_VERSION, prepareLocalImport, createImportSession, canonicalStringify, sha256, sha256Bytes, normalizeRangesMs }

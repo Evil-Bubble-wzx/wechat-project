@@ -103,3 +103,25 @@ test("saved word sync rejects unknown fields and sessions without a device", asy
   assert.equal(denied.statusCode, 401);
   await noDevice.close();
 });
+
+test("saved word sync accepts the optional fresh-pull nonce and rejects malformed values", async () => {
+  const service = new FakeWordSync();
+  const app = createApp({ sessionService: new WordSession(), savedWordSyncService: service });
+  try {
+    const { batchId: _oldBatchId, ...payload } = request();
+    const fresh = { ...payload, operations: [], pullNonce: "word-fresh-pull-1" };
+    const input = { ...fresh, batchId: savedWordBatchIdFor(fresh) };
+    const headers = { authorization: "Bearer word-token", "idempotency-key": input.batchId };
+    const accepted = await app.inject({ method: "POST", url: "/api/v1/me/words/sync", headers, payload: input });
+    assert.equal(accepted.statusCode, 200);
+    assert.deepEqual(service.last, {
+      userId: "11111111-1111-4111-8111-111111111111", deviceId: "device-word-a", input,
+    });
+    for (const pullNonce of ["short", 123, null]) {
+      const invalid = await app.inject({ method: "POST", url: "/api/v1/me/words/sync", headers, payload: { ...input, pullNonce } });
+      assert.equal(invalid.statusCode, 400);
+    }
+  } finally {
+    await app.close();
+  }
+});

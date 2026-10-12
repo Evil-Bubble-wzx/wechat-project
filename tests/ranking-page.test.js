@@ -39,19 +39,32 @@ test('ranking clears stale entries and exposes retryable network failure',async(
   })
 })
 
-test('ranking rejects stale replies and detail maps only anonymous summary fields',async()=>{
-  let release
-  const stale=new Promise(resolve=>{release=resolve})
-  let count=0
-  await stub({available:()=>true,isAuthenticated:()=>true,rankingOptions:async()=>options,rankings:async()=>++count===1?stale:{status:'ready',cohortSize:10,minimumCohortSize:10,items:[{rank:1,participantId:'reader-001',displayName:'读者01',metric:{value:88,unit:'分'}}]},rankingDetail:async()=>({participant:{participantId:'reader-001',displayName:'读者01'},rankingScore:88,scoreBreakdown:[],stats:{},quizzes:[{attemptId:'a1',title:'故事',correctPercent:80,selectedOptions:[1,2],phone:'secret'}]})},async()=>{
-    const view=page();view.setData({rankingCampuses:[{id:'campus-1',label:'一校区'}],rankingCampusIndex:0})
-    const first=view.loadRankings();const second=view.loadRankings();await second
-    release({status:'unavailable',items:[]});await first
-    assert.equal(view.data.rankingStatus,'ready');assert.equal(view.data.rankingItems.length,1)
-    view.openRankingDetail({currentTarget:{dataset:{id:'reader-001'}}})
-    await Promise.resolve();await Promise.resolve()
-    assert.equal(view.data.rankingDetail.quizzes[0].correctPercent,80)
-    assert.equal('selectedOptions' in view.data.rankingDetail.quizzes[0],false)
-    assert.equal('phone' in view.data.rankingDetail.quizzes[0],false)
+test('ranking rejects stale list replies and records the exact returned snapshot filters',async()=>{
+ let release,count=0;const pending=new Promise(done=>release=done);
+ await stub({isAuthenticated:()=>true,rankings:async()=>++count===1?pending:{status:'ready',snapshotId:'00000000-0000-4000-8000-000000000002',cohortSize:10,minimumCohortSize:10,items:[{rank:1,participantId:'reader-001',metric:{value:'70'}}]}},async()=>{
+  const view=page();view.setData({rankingCampuses:[{id:'a'}],rankingCampusIndex:0});
+  const first=view.loadRankings();await view.loadRankings();release({status:'unavailable',items:[]});await first;
+  assert.equal(view.data.rankingStatus,'ready');assert.equal(view.rankingScopeFilters.snapshotId,view.data.rankingSnapshotId);assert.equal(view.rankingScopeFilters.campusId,'a');
+ });
+});
+
+test('ranking rejects a pagination response that changes the immutable snapshot',async()=>{
+ await stub({isAuthenticated:()=>true,rankings:async()=>({snapshotId:'other',status:'ready',cohortSize:10,minimumCohortSize:10,items:[{participantId:'bad'}]})},async()=>{
+  const view=page();view.setData({rankingCampuses:[{id:'a'}],rankingCampusIndex:0,rankingSnapshotId:'original',rankingItems:[{participantId:'keep'}]});await view.loadRankings('cursor');
+  assert.equal(view.data.rankingStatus,'error');assert.deepEqual(view.data.rankingItems,[{participantId:'keep'}]);
+ });
+});
+test('ranking list discards replies from the previous account',async()=>{
+  const host=require('../miniprogram/services/host'),previous=host.accountScope()
+  let userId='account-a',releaseList
+  await stub({isAuthenticated:()=>true,currentUser:()=>({userId}),rankings:()=>new Promise(resolve=>{releaseList=resolve})},async()=>{
+    try{
+      host.setAccountScope(userId);const view=page();view.setData({rankingCampuses:[{id:'a'}],rankingCampusIndex:0,sheet:'rankingDetail'})
+      const list=view.loadRankings()
+      userId='account-b';host.setAccountScope(userId)
+      releaseList({status:'ready',cohortSize:10,minimumCohortSize:10,currentUser:{participantId:'reader-a'},items:[{participantId:'reader-a'}]})
+      await list
+      assert.deepEqual(view.data.rankingItems,[]);assert.equal(view.data.rankingCurrentUser,null);assert.equal(view.data.rankingDetail,null)
+    }finally{host.setAccountScope(previous)}
   })
 })

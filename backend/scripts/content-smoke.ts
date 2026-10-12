@@ -81,6 +81,19 @@ async function main(): Promise<void> {
     assert.ok(first.nextCursor);
     const second = await service.listWorks(first.nextCursor!, 1);
     assert.equal(second.items[0]?.workId, "b-work");
+    assert.equal(first.items[0]?.metadata.wordCount, null);
+    assert.equal(first.items[0]?.metadata.durationMs, null);
+    await pool.query("UPDATE content_versions SET catalog_metadata=$1 WHERE piece_id IN ('a-piece','b-piece')", [JSON.stringify({author:"Verified Author",category:"fiction",internalContentNumber:"A-101"})]);
+    const filtered = await service.listWorks(undefined, 1, {query:"verified author",category:"fiction"});
+    assert.equal(filtered.items[0]?.workId, "a-work");assert.ok(filtered.nextCursor);
+    await expectCode(service.listWorks(filtered.nextCursor!, 1, {query:"other",category:"fiction"}), "INVALID_REQUEST");
+    await expectCode(service.listWorks(filtered.nextCursor!, 1, {query:"verified author",category:"nonfiction"}), "INVALID_REQUEST");
+    assert.equal((await service.listWorks(undefined, 10, {query:"A-101"})).items.length, 2);
+    assert.equal((await service.listWorks(undefined, 10, {category:"available"})).items.length, 2);
+    await pool.query("UPDATE pieces SET access_type='restricted' WHERE id='a-piece'");
+    assert.equal((await service.listWorks(undefined, 10, {category:"available"})).items.length, 1);
+    await pool.query("UPDATE pieces SET access_type='free' WHERE id='a-piece'");
+    await pool.query("UPDATE pieces SET access_type='free' WHERE id='restricted-piece'");
     await expectCode(service.listWorks(`${first.nextCursor}tampered`, 1), "INVALID_REQUEST");
 
     const work = await service.getWork("a-work");
@@ -90,6 +103,12 @@ async function main(): Promise<void> {
     assert.match(manifest.assets[0]!.url, /X-Amz-(?:Signature|Credential)=/i);
     await expectCode(service.getManifest("a-piece", 2), "CONTENT_VERSION_UNAVAILABLE");
     await expectCode(service.getManifest("restricted-piece"), "CONTENT_ACCESS_DENIED");
+    assert.equal((await service.getWork("restricted-work")).pieces[0]?.access, "restricted");
+    await pool.query("UPDATE works SET status='archived' WHERE id='a-work'");
+    await expectCode(service.getWork("a-work"), "RESOURCE_NOT_FOUND");
+    await expectCode(service.getManifest("a-piece"), "RESOURCE_NOT_FOUND");
+    await pool.query("INSERT INTO works(id,title,status) VALUES('empty-published','No approved chapters','published')");
+    assert.equal((await service.listWorks(undefined,100)).items.some(item=>item.workId==="empty-published"),false);
     process.stdout.write("content.smoke.passed cursor=signed manifest=presigned restricted=blocked\n");
   } finally {
     s3.destroy();

@@ -22,6 +22,7 @@ const server = http.createServer((req,res) => {
     const screen=fs.readFileSync(path.join(ui,'screen.wxml'),'utf8')
       .replace('<include src="./player.wxml" />',fs.readFileSync(path.join(ui,'player.wxml'),'utf8'))
       .replace('<include src="./quiz.wxml" />',fs.readFileSync(path.join(ui,'quiz.wxml'),'utf8'))
+      .replace('<include src="./ranking-detail.wxml" />',fs.readFileSync(path.join(ui,'ranking-detail.wxml'),'utf8'))
     res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'});res.end(screen);return
   }
   else if(url.pathname.startsWith('/assets/')||url.pathname.startsWith('/quiz/assets/'))file=path.join(miniRoot,decodeURIComponent(url.pathname))
@@ -43,4 +44,4 @@ const server = http.createServer((req,res) => {
   }
   fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);res.end('Not found');return}const type={'.html':'text/html','.js':'text/javascript','.wxml':'text/plain','.css':'text/css','.png':'image/png'}[path.extname(file)]||'application/octet-stream';res.writeHead(200,{'Content-Type':type+'; charset=utf-8','Cache-Control':'no-store'});res.end(data)})
 })
-server.listen(Number(process.env.PORT||4173),'127.0.0.1',()=>console.log('Tingyue '+previewMode+' preview ('+path.relative(root,miniRoot)+'): http://127.0.0.1:'+(process.env.PORT||4173)))
+server.listen(Number(process.env.PORT||4173),'127.0.0.1',()=>console.log('Tingyue '+previewMode+' preview ('+path.relative(root,miniRoot)+'): http://127.0.0.1:'+server.address().port))

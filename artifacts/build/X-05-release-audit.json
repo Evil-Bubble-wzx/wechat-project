@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "production": {
-    "fileCount": 113,
-    "totalBytes": 641358,
-    "treeSha256": "f73f8df34847224e09f2e5211dd40bf3938fc76f84ea2db9913e49d48bcbdca0"
+    "fileCount": 125,
+    "totalBytes": 718484,
+    "treeSha256": "190edc70f3659798d0fece41db2529428e984d191e9f87726f8b9ade4820babc"
   },
   "demo": {
-    "fileCount": 200,
-    "totalBytes": 2559078,
-    "treeSha256": "a31010ab3bb97b448d3422638f42ba7848054a691fdc89d2da9282199455a4ae"
+    "fileCount": 212,
+    "totalBytes": 2636073,
+    "treeSha256": "586ffbaecb31c9af0cd8a7f2f2679de462e78845fd360e34be11e33edb0adc27"
   },
   "checks": {
     "productionForbiddenPaths": true,

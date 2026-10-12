@@ -86,7 +86,7 @@ function parseOperation(value: unknown): SavedWordSyncInput["operations"][number
 
 function parseInput(request: FastifyRequest): SavedWordSyncInput {
   if (!plain(request.body)) throw new ApiError("INVALID_REQUEST", 400, false, "JSON object body is required");
-  exact(request.body, ["schemaVersion", "batchId", "cursor", "operations", "limit"], "Saved word sync request");
+  exact(request.body, ["schemaVersion", "batchId", "cursor", "operations", "limit", "pullNonce"], "Saved word sync request");
   if (request.body.schemaVersion !== 1) {
     throw new ApiError("INVALID_REQUEST", 400, false, "schemaVersion is unsupported");
   }
@@ -110,6 +110,7 @@ function parseInput(request: FastifyRequest): SavedWordSyncInput {
   return {
     schemaVersion: 1,
     batchId,
+    ...(request.body.pullNonce===undefined?{}:{pullNonce:text(request.body.pullNonce,8,128,"pullNonce")}),
     cursor: request.body.cursor as string | null,
     operations,
     limit: integer(request.body.limit, 1, 100, "limit"),

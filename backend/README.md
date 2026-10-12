@@ -9,21 +9,23 @@
 - 独立内容处理 Worker 入口；
 - 微信会话、refresh 轮换、退出和当前用户接口；
 - 批量内容导入控制面、S3 分片直传、BullMQ Worker、FFmpeg/字幕校验和发布门槛；
-- works、work、私有 manifest 短期 URL 与服务端 Quiz 判题；
+- 动态 works/work 目录、搜索分类、同版本元数据/章节、私有 manifest 短期 URL 与服务端 Quiz 判题；客户端同版本续签、恢复断点及账号/权限校验已通过本机 MinIO/Edge，微信真机和生产 CDN 待验收；
 - S-01 一次性本机导入、S-02 revision/幂等进度同步与 S-03 稳定生词双向同步；
-- `quiz-score-v1`排行聚合、不可变快照、outbox重建、榜单及参与者Quiz明细；
+- 账号收藏/最近阅读云同步、取消收藏墓碑、离线幂等批次与账号绑定游标；
+- Quiz 不可变离线补传、云历史/撤回 revision 及 Me/报告共同使用的可信学习摘要；
+- `learning-points-v2` 累计积分、期间排行、不可变快照、outbox 重建、榜单及参与者 Quiz 明细；独立分析页的同快照 PASSED/ALL、全量文字搜索与排序分页；
 - 结构化日志、追加式审计、受保护Prometheus指标和Grafana面板；
 - Redis限流、双JWT签名密钥轮换、MinIO最小权限/生命周期和数据库事实源补队列；
 - `/health/live` 与 `/health/ready`；
 - local/dev/test Compose 定义；
-- `api-contract-v1.3.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
+- `api-contract-v2.4.0` OpenAPI 3.1、JSON Schema、稳定错误码和示例；
 - 配置、API、契约、数据库、会话、内容、Quiz、排行、可观测性、安全、队列及X/B联调测试。
 
-排行规则已冻结为`quiz-score-v1`：完成Quiz的不同书本数、词量、贝叶斯校正正确率、挑战度、成长和题材广度共同形成0～1000算法分；完成书本数不是最终指标。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
+排行采用 `learning-points-v2`：新增有效听读每满 1 秒加 1 分，每篇首次完成加 50 分，每篇同一逻辑题首次经服务端确认答对加 10 分。积分无业务上限，重复证据不重复得分，API 使用十进制整数字符串；期间榜单统计期间新增积分，个人页面显示累计积分。默认系数与边界见 [ADR 0004](docs/adr/0004-learning-points-v2.md)，旧 `quiz-score-v1` 快照保留。数百文件压测、生产云环境、正式微信凭据、CDN/权益、生产告警和真机验收仍未完成。契约中的接口只有标记为已实现并通过对应测试后才视为可联调能力。
 
 ## API 契约
 
-权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v1.3.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。
+权威入口为 `contracts/openapi.json`，版本为 `contracts/VERSION` 中的 `api-contract-v2.4.0`。Schema、错误码、示例与版本规则见 `contracts/README.md`。积分类型发生破坏性变更，前后端必须对齐后发布；接口路径仍使用 `/api/v1`。
 
 ```powershell
 npm run contract:check
@@ -39,13 +41,29 @@ npm run contract:check
 npm run db:status
 npm run db:migrate
 npm run test:integration:db
+npm run test:integration:learning-points
 npm run test:integration:local-import
 npm run test:integration:progress-sync
 npm run test:integration:saved-word-sync
+npm run test:integration:reader-library
 npm run test:integration:s04-sync
 ```
 
-`db:rollback` 每次只回退最新一条，执行前必须评估数据影响。当前9条迁移创建35张业务表和`schema_migrations`，并幂等写入`a`、`b`两个校区。
+db:rollback 每次只回退最新一条，执行前必须评估数据影响。当前有 15 条成对迁移；隔离 PostgreSQL 已核验 42 个关系（含积分视图和 schema_migrations）。0010/0011/0012/0013 有防丢积分、快照、重建任务、收藏或验证元数据的拒绝条件。0014 仅移除派生同步字段，保留逐题事实；再升级后需完整拉取历史。0015 回退只删除派生排行分析，再升级后需重建新快照；均不能直接当作生产回退方案。
+
+## 动态新书链路验收
+
+2026-10-10 在隔离本机依赖上通过两版本导入、审批夹具发布、动态发现、完整资源校验、Quiz 判题、进度、云收藏/最近阅读/生词和回滚。运行 `npm run test:integration:catalog-ingestion` 时必须显式配置本机 15432 的 tingyue_test 数据库、127.0.0.1 对象存储、Redis 和 ffprobe；脚本使用随机书目/章节/队列，仅清理自身测试对象和 schema。夹具审批不代表 Peter 或任何正式书目可发布。
+
+阅读 JSON 限每份 8 MiB，字幕、上下文词条和题包需规范化，题数最多 100；原始 VTT/SRT 的自动转换、数百文件/GB 压测和运营界面待开发。已有内容版本需要验证元数据、音频时长和同版本题包，不能只升级前端就宣称兼容。
+
+## 排行分析验收
+
+完整详情使用 GET /api/v1/rankings/{participantId}/quiz-analysis，固定列表快照；旧 /quizzes 保持兼容。PASSED/ALL 按期间内每篇章最新验真且未撤回的结果去重，通过采用保存的 mastery；未知词数为 null，满六篇才显示早期/近期趋势。Learning Points 仍按原规则累计，详情不会重新算排名或将篇章数当积分。
+
+本机前端 184/184、后端 76/76 与类型/契约检查、15 项隔离集成、正式/Demo 浏览器及真实 MP3 回归通过。独立排行专项还覆盖真实前端→HTTP/Fastify→PG→Edge 的 50+8 分页、服务端搜索/排序与返回筛选。测试微信身份和预览导航不代替真机证据。
+
+先在仓库根目录运行 npm run build:production，再于 backend 中执行 npm run test:integration:ranking-browser。需本机 Edge、根目录 Playwright 依赖及显式 DATABASE_URL 指向隔离测试库；不会自动启动或迁移生产库。统计、回退和后续业务状态见 [正式版对齐清单](../docs/正式版前后端功能对齐清单-2026-10-10.md)。
 
 ## 本地启动
 

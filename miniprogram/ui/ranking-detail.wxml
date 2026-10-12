@@ -1,0 +1,29 @@
+<view class="content ranking-analysis" wx:if="{{route === 'ranking-detail'}}">
+  <view class="analysis-heading"><text class="eyebrow">READER QUIZZES</text><view class="headline">{{detail ? detail.displayName : 'Quizzes'}}</view><text class="muted">榜单同一快照 · Asia/Shanghai</text></view>
+  <view class="info-note" wx:if="{{notice}}">{{notice}}</view>
+  <view wx:if="{{detail}}">
+    <view class="analysis-period">{{periodLabel}}</view>
+    <view class="analysis-points"><text>Learning Points</text><text>{{detail.rankingScore}}</text></view>
+    <view class="rank-detail-line" wx:for="{{detail.scoreBreakdown}}" wx:key="key"><text>{{item.label}}</text><text>{{item.points}} 分 · {{item.quantity}} {{item.unit}}</text></view>
+    <view class="analysis-profile"><text>{{detail.gradeLabel}}</text><text>{{detail.levelLabel}}</text></view>
+    <view class="section-head" bindtap="toggleStats"><text class="section-title">STATS</text><text class="muted">PASSED / ALL {{statsOpen ? '−' : '+'}}</text></view>
+    <view class="analysis-stats" wx:if="{{statsOpen}}">
+      <view class="analysis-stat" wx:for="{{statsRows}}" wx:key="key"><text>{{item.label}}</text><text>{{item.passed}}</text><text class="muted">/</text><text>{{item.all}}</text></view>
+    </view>
+    <view class="info-note">统计按期间内每篇章最新验真结果去重，PASSED 采用题包达标判定。早期与近期各 3 篇，至少 6 篇才显示趋势。未知值为 —；级别和 Fiction 仅统计已知项。总积分包含听读与完成奖励，不按通过状态拆分。</view>
+    <view class="search-row analysis-search"><input class="search-input" value="{{query}}" maxlength="128" placeholder="Title / Series / Author / No." bindinput="typeQuery" bindconfirm="search" /><button class="tiny-button" bindtap="clearSearch">清空</button><button class="tiny-button" bindtap="search" loading="{{busy}}">搜索</button></view>
+    <view class="analysis-tools"><text class="muted">{{totalMatches}} QUIZZES · 全期 {{detail.attempts}}</text><picker range="{{sorts}}" range-key="label" value="{{sortIndex}}" bindchange="chooseSort"><view class="rank-control">{{sorts[sortIndex].label}}</view></picker><button class="tiny-button" bindtap="toggleDirection">{{sortArrow}}</button></view>
+    <view class="analysis-quiz" wx:for="{{quizzes}}" wx:key="attemptId">
+      <view class="muted" wx:if="{{item.series}}">{{item.series}}</view>
+      <view class="analysis-quiz-heading"><text class="section-title">{{item.title}}</text><text class="analysis-quiz-points">+{{item.quizPoints}}</text></view>
+      <view class="muted">{{item.author || '—'}} · {{item.workId}} / {{item.pieceId}}</view>
+      <view class="muted">服务端确认 {{item.takenAt}} · v{{item.contentVersion}}</view>
+      <view class="analysis-quiz-meta"><text class="{{item.passed ? 'analysis-passed' : 'muted'}}">{{item.passedLabel}}</text><text>Correct {{item.correctLabel}}</text><text>Level {{item.levelLabel}}</text><text>F/NF {{item.categoryLabel}}</text><text>{{item.wordsLabel}} words</text></view>
+      <text class="muted">本次新增答题积分；不含听读或完成奖励</text>
+    </view>
+    <view class="small-empty" wx:if="{{status === 'ready' && !quizzes.length}}">没有匹配的小测记录；统计仍为整个期间。</view>
+    <button class="secondary full" wx:if="{{nextCursor}}" disabled="{{busy}}" loading="{{busy}}" bindtap="more">加载更多</button>
+  </view>
+  <view class="small-empty" wx:if="{{busy && !detail}}">正在加载详情…</view>
+  <button class="secondary full" wx:if="{{status === 'error'}}" disabled="{{busy}}" bindtap="retry">重试</button>
+</view>

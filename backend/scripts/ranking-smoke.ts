@@ -56,6 +56,8 @@ async function seedBook(index: number): Promise<{ packageId: string; workId: str
      VALUES ($1,1,1,$2,'published',80,now()) RETURNING id`,
     [pieceId,String(index).padStart(64,"b").slice(-64).replace(/[^a-f0-9]/g,"b")],
   );
+  await pool.query(`INSERT INTO quiz_questions (quiz_package_id,question_id,prompt,options,correct_option,sort_order)
+    SELECT $1,'question-'||n,'Ranking question','["Correct","Wrong"]'::jsonb,0,n FROM generate_series(0,9) n`,[quizPackage.rows[0]!.id]);
   return {packageId:quizPackage.rows[0]!.id,workId,pieceId};
 }
 
@@ -68,6 +70,9 @@ async function insertAttempt(userId:string,book:{packageId:string;workId:string;
      ) VALUES ($1,$2,$3,$4,$5,$6,'server_verified',$7,$8,$9,$6)`,
     [id,userId,attemptId,book.packageId,new Date(submittedAt.getTime()-60000),submittedAt,score,score>=80,"c".repeat(64)],
   );
+  await pool.query(`INSERT INTO quiz_answers (quiz_attempt_id,quiz_question_id,selected_option,is_correct)
+    SELECT $1,id,CASE WHEN sort_order < floor($3::numeric/10) THEN 0 ELSE 1 END,sort_order < floor($3::numeric/10)
+    FROM quiz_questions WHERE quiz_package_id=$2`,[id,book.packageId,score]);
   return id;
 }
 
@@ -107,7 +112,7 @@ async function main():Promise<void>{
     assert.equal(firstComputation.entries[0]?.completedBooks,6);
     assert.ok(firstComputation.entries.every((entry)=>BigInt(entry.score)>=0n));
     const retry=firstComputation.entries.flatMap((entry)=>entry.quizzes).find((quiz)=>quiz.quizAttemptId===retryId);
-    assert.equal(retry?.countedInScore,false,"retakes stay visible but cannot change the score");
+    assert.equal(retry?.countedInScore,true,"a retake earns only previously uncredited correct answers");
 
     const built=await service.build(dimensions);
     assert.equal(built.status,"ready");
@@ -124,6 +129,9 @@ async function main():Promise<void>{
     );
     assert.deepEqual(stored.rows[0],{entries:"10",quizzes:String(expectedQuizRows),audits:"1"});
 
+    // The queried rolling window starts six days before this fixture's period.
+    // Enrollment must already have been verified at that window's start.
+    await pool.query("UPDATE user_profile_versions SET effective_from=$1",[new Date(startsAt.getTime()-8*86400000)]);
     const queryService=new RankingQueryService(pool,config.auth.identityHashKeyBase64,()=>new Date(startsAt.getTime()+86400000));
     const options=await queryService.options();
     assert.deepEqual(options.campuses,[{value:"a",label:"A校区"},{value:"b",label:"B校区"}]);
@@ -161,6 +169,7 @@ async function main():Promise<void>{
     assert.equal(apiDetail.json().scoreBreakdown.length,3);
     await app.close();
 
+    await pool.query("UPDATE ranking_rebuild_events SET status='completed',completed_at=now()");
     await pool.query("INSERT INTO ranking_rebuild_events (quiz_attempt_id) VALUES ($1)",[retryId]);
     const processor=new RankingRebuildProcessor(pool,service,()=>endsAt);
     assert.equal(await processor.processAvailable(1),1);
@@ -200,7 +209,7 @@ async function main():Promise<void>{
        FROM user_profile_versions WHERE user_id=$1`,[userIds[0]],
     );
     assert.deepEqual(history.rows[0],{count:"2",closed:"1"});
-    process.stdout.write(`ranking.smoke.passed snapshot=${built.snapshotId} cohort=10 quizzes=${expectedQuizRows} retryCounted=false small=blocked\n`);
+    process.stdout.write(`ranking.smoke.passed snapshot=${built.snapshotId} cohort=10 quizzes=${expectedQuizRows} retryNewAnswers=true small=blocked\n`);
   }finally{
     await pool.end();
     await adminPool.query(`DROP SCHEMA "${schema}" CASCADE`);

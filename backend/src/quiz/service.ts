@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-import type { Pool } from "pg";
+import type { Pool, PoolClient } from "pg";
 import { readLearningScore, type LearningScoreSummary } from "../ranking/learning-score.ts";
 
 export type QuizAttemptInput = {
@@ -60,11 +60,14 @@ export class QuizService {
     this.pool = pool;
   }
 
-  async submit(userId: string, input: QuizAttemptInput): Promise<QuizAttemptResult> {
+  async submit(userId: string, input: QuizAttemptInput, transaction?:PoolClient): Promise<QuizAttemptResult> {
     const hash = requestHash(input);
-    const client = await this.pool.connect();
+    const ownTransaction=!transaction;
+    const client = transaction ?? await this.pool.connect();
+    const commit=async()=>{if(ownTransaction)await client.query("COMMIT")};
     try {
-      await client.query("BEGIN");
+      if(ownTransaction)await client.query("BEGIN");
+      await client.query("SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE",[userId]);
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [
         `quiz-attempt:${userId}:${input.attemptId}`,
       ]);
@@ -75,35 +78,39 @@ export class QuizService {
         mastery: boolean | null;
         rejection_code: "QUIZ_PACKAGE_MISMATCH" | "QUIZ_ATTEMPT_REJECTED" | null;
         verified_at: Date | null;
+        withdrawn_at: Date | null;
       }>(
-        `SELECT request_hash, status, score, mastery, rejection_code, verified_at
+        `SELECT request_hash, status, score, mastery, rejection_code, verified_at, withdrawn_at
          FROM quiz_attempts WHERE user_id = $1 AND attempt_id = $2`,
         [userId, input.attemptId],
       );
       if (existing.rows[0]) {
         const row = existing.rows[0];
-        await client.query("COMMIT");
         if (row.request_hash.trim() !== hash) {
+          await commit();
           return rejected(
             input.attemptId,
             "QUIZ_ATTEMPT_REJECTED",
             "attemptId was already submitted with different answers",
           );
         }
-        if (row.status === "rejected") {
+        if (row.status === "rejected" || row.withdrawn_at) {
+          await commit();
           return rejected(
             input.attemptId,
             row.rejection_code ?? "QUIZ_ATTEMPT_REJECTED",
             "Quiz attempt was rejected",
           );
         }
+        const learningScore=await readLearningScore(client,userId);
+        await commit();
         return {
           attemptId: input.attemptId,
           status: "server_verified",
           score: row.score!,
           mastery: row.mastery!,
           verifiedAt: row.verified_at!.toISOString(),
-          learningScore: await readLearningScore(client,userId),
+          learningScore,
         };
       }
 
@@ -114,11 +121,12 @@ export class QuizService {
            JOIN content_versions cv ON cv.piece_id = p.id
            WHERE p.id = $1 AND w.id = $2 AND cv.content_version = $3
              AND cv.status = 'published' AND p.current_content_version_id = cv.id
+             AND p.status='published' AND w.status='published' AND p.access_type='free' AND w.access_type='free'
          ) AS exists`,
         [input.pieceId, input.workId, input.contentVersion],
       );
       if (!piece.rows[0]?.exists) {
-        await client.query("COMMIT");
+        await commit();
         return rejected(
           input.attemptId,
           "CONTENT_VERSION_UNAVAILABLE",
@@ -131,12 +139,14 @@ export class QuizService {
       }>(
         `SELECT id, mastery_threshold FROM quiz_packages
          WHERE piece_id = $1 AND content_version = $2 AND quiz_version = $3
-           AND status = 'published'`,
+           AND status = 'published'
+           AND quiz_version=(SELECT max(current.quiz_version) FROM quiz_packages current
+             WHERE current.piece_id=$1 AND current.content_version=$2 AND current.status='published')`,
         [input.pieceId, input.contentVersion, input.quizVersion],
       );
       const quizPackage = packageResult.rows[0];
       if (!quizPackage) {
-        await client.query("COMMIT");
+        await commit();
         return rejected(
           input.attemptId,
           "QUIZ_PACKAGE_MISMATCH",
@@ -182,7 +192,7 @@ export class QuizService {
             hash,
           ],
         );
-        await client.query("COMMIT");
+        await commit();
         return rejected(
           input.attemptId,
           rejectionCode,
@@ -201,7 +211,7 @@ export class QuizService {
         `INSERT INTO quiz_attempts (
            user_id, attempt_id, quiz_package_id, started_at, submitted_at,
            status, score, mastery, request_hash, verified_at
-         ) VALUES ($1, $2, $3, $4, $5, 'server_verified', $6, $7, $8, now())
+         ) VALUES ($1, $2, $3, $4, $5, 'server_verified', $6, $7, $8, clock_timestamp())
          RETURNING id, verified_at`,
         [
           userId,
@@ -230,7 +240,7 @@ export class QuizService {
         [attempt.rows[0]!.id],
       );
       const learningScore=await readLearningScore(client,userId);
-      await client.query("COMMIT");
+      await commit();
       return {
         learningScore,
         attemptId: input.attemptId,
@@ -240,10 +250,10 @@ export class QuizService {
         verifiedAt: attempt.rows[0]!.verified_at.toISOString(),
       };
     } catch (error) {
-      await client.query("ROLLBACK");
+      if(ownTransaction)await client.query("ROLLBACK");
       throw error;
     } finally {
-      client.release();
+      if(ownTransaction)client.release();
     }
   }
 }

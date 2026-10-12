@@ -1,0 +1,50 @@
+{
+  "requestId": "req-learning-summary-example-001",
+  "schemaVersion": 1,
+  "source": "server_verified",
+  "asOf": "2026-10-10T01:00:00.000Z",
+  "completedPieces": 1,
+  "completedWords": null,
+  "knownCompletedWords": "0",
+  "unknownWordPieces": 1,
+  "listenedMs": "10000",
+  "verifiedAttemptCount": 1,
+  "compatibleQuizPieces": 1,
+  "averageCorrectPercent": 100,
+  "trend": {
+    "ready": false,
+    "remaining": 5,
+    "early": null,
+    "recent": null,
+    "delta": null,
+    "pieceCount": 1
+  },
+  "learningScore": {
+    "ruleVersion": "learning-points-v2",
+    "totalPoints": "70",
+    "breakdown": [
+      {
+        "key": "listening",
+        "label": "有效听读",
+        "points": "10",
+        "quantity": "10",
+        "unit": "秒"
+      },
+      {
+        "key": "completion",
+        "label": "首次完成篇章",
+        "points": "50",
+        "quantity": "1",
+        "unit": "篇"
+      },
+      {
+        "key": "quizCorrect",
+        "label": "首次答对题目",
+        "points": "10",
+        "quantity": "1",
+        "unit": "题"
+      }
+    ],
+    "asOf": "2026-10-10T01:00:00.000Z"
+  }
+}
