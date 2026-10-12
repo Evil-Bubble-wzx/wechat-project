@@ -3,7 +3,7 @@
 const {spawn}=require('node:child_process');
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
-const path=require('node:path');
+const path=require('node:path');const fs=require('node:fs');const {randomUUID}=require('node:crypto');
 const root=path.resolve(__dirname,'..'),servers=[];
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 let browser,pool,paidOrder,lastPage;
@@ -14,7 +14,10 @@ let browser,pool,paidOrder,lastPage;
   pool=new Pool({connectionString:process.env.DATABASE_URL});
   const {CommerceService}=await import('../backend/src/commerce/service.ts');
   const commerce=new CommerceService(pool);
-  for(const [account,port] of [['primary',4194],['isolation',4195]]){
+  const qaRoot=path.join(root,'build/commerce-local-upgradecheck/miniprogram');
+  fs.mkdirSync(qaRoot,{recursive:true});fs.cpSync(path.join(root,'build/commerce-local-primary/miniprogram'),qaRoot,{recursive:true});
+  const qaApi=path.join(qaRoot,'services/api.js');fs.writeFileSync(qaApi,fs.readFileSync(qaApi,'utf8').replace('test:device-restricted-primary','test:device-upgrade-ui-'+randomUUID()));
+  for(const [account,port] of [['primary',4194],['isolation',4195],['upgradecheck',4196]]){
     servers.push(spawn(process.execPath,['tools/preview-server.js',`--mini-root=build/commerce-local-${account}/miniprogram`],{cwd:root,env:{...process.env,PORT:String(port)},windowsHide:true,stdio:'ignore'}));
     for(let n=0;n<50;n++){try{if((await fetch(`http://127.0.0.1:${port}`)).ok)break;}catch{}await wait(100);}
   }
@@ -24,12 +27,12 @@ let browser,pool,paidOrder,lastPage;
     await page.exposeFunction('__localRequest',async options=>{
       const url=new URL(options.url);const asset=url.origin==='http://127.0.0.1:59000';if(!asset && (url.origin!=='http://127.0.0.1:3100'||!url.pathname.startsWith('/api/v1/')))throw Error('Unexpected request origin');
       const response=await fetch(url,{method:options.method||'GET',headers:options.header,body:options.data===undefined?undefined:JSON.stringify(options.data)});
-      return {statusCode:response.status,data:asset?await response.text():await response.json(),header:Object.fromEntries(response.headers)};
+      return {statusCode:response.status,data:asset&&options.responseType==='arraybuffer'?Buffer.from(await response.arrayBuffer()).toString('base64'):asset?await response.text():await response.json(),binary:asset&&options.responseType==='arraybuffer',header:Object.fromEntries(response.headers)};
     });
     await page.addInitScript(()=>{
       let value;Object.defineProperty(window,'wx',{configurable:true,get:()=>value,set:runtime=>{
         value=runtime;runtime.isBrowserPreview=false;runtime.getAccountInfoSync=()=>({miniProgram:{envVersion:'develop'}});
-        runtime.request=options=>{window.__localRequest({url:options.url,method:options.method,header:options.header,data:options.data}).then(options.success,options.fail);return {abort(){}}};
+        runtime.request=options=>{window.__localRequest({url:options.url,method:options.method,header:options.header,data:options.data,responseType:options.responseType}).then(result=>{if(result.binary)result.data=Uint8Array.from(atob(result.data),c=>c.charCodeAt(0)).buffer;options.success(result)},options.fail);return {abort(){}}};
       }});
     });
     lastPage=page;await page.goto(`http://127.0.0.1:${port}/#login`);console.log('ui.login.start port='+port);
@@ -40,7 +43,17 @@ let browser,pool,paidOrder,lastPage;
     await page.waitForFunction(()=>window.currentPage.data.commerceBundles.length>0&&!window.currentPage.data.commerceBusy);
     console.log('ui.orders.loaded port='+port);return page;
   }
-  const primary=await pageFor(4194),before=await primary.evaluate(()=>window.currentPage.data.commerceOrders.map(o=>o.orderId));
+  const original=await pageFor(4194);
+  const paidOriginal=await original.evaluate(()=>window.currentPage.data.commerceOrders.find(o=>o.status==='paid'));
+  if(paidOriginal){await original.evaluate(id=>window.currentPage.openCommerceReader({currentTarget:{dataset:{id}}}),paidOriginal.orderId);assert.match(await original.evaluate(()=>window.currentPage.data.commerceReaderText),/A small bird finds a blue stone/);}
+  await original.evaluate(()=>window.currentPage.closeSheet());
+  await original.evaluate(()=>wx.navigateTo({url:'/pages/player/index?id=peter-rabbit:peter-rabbit-01'}));
+  await original.waitForFunction(()=>window.currentPage.data.remoteContentStatus==='ready' && window.currentPage.remoteBundle?.contentVersion===2);
+  assert.equal(await original.evaluate(()=>window.currentPage.remoteBundle.quiz.questions.length),10);
+  assert.equal(await original.evaluate(()=>Object.keys(window.currentPage.remoteBundle.vocabulary).length),358);
+  await original.screenshot({path:path.join(root,'.cache/device-local/upgrade-player-v2.png')});
+  console.log('ui.original-account.passed: existing paid order remains readable; complete v2 content loads');
+  const primary=await pageFor(4196);
   await primary.getByRole('button',{name:'创建测试订单 · 不扣款',exact:true}).first().click();
   await primary.waitForFunction(()=>!window.currentPage.data.commerceBusy && window.currentPage.data.commerceOrders.some(o=>o.status==='pending'&&o.bundleId==='commerce-test-bundle'));
   const order=await primary.evaluate(()=>window.currentPage.data.commerceOrders.find(o=>o.status==='pending'&&o.bundleId==='commerce-test-bundle'));
@@ -73,7 +86,32 @@ let browser,pool,paidOrder,lastPage;
   await primary.evaluate(id=>window.currentPage.openCommerceReader({currentTarget:{dataset:{id}}}),order.orderId);
   if(!retained){assert.equal(await primary.evaluate(()=>window.currentPage.data.commerceReaderText),'');assert.match(await primary.evaluate(()=>window.currentPage.data.commerceReaderError),/没有有效访问权限/);}
   await primary.screenshot({path:path.join(root,'.cache/device-local/commerce-local-refunded.png')});
-  console.log('commerce.local.ui.passed: real API login, UI order creation, paid refresh, access check, isolated account, refund refresh; no mocked order data');
+  await primary.evaluate(()=>window.currentPage.closeSheet());
+  await primary.evaluate(()=>wx.navigateTo({url:'/pages/detail/index?id=peter-rabbit'}));
+  await primary.waitForFunction(()=>window.currentPage.data.remoteContentStatus==='ready');
+  await primary.evaluate(()=>window.currentPage.toggleFavorite());
+  await primary.evaluate(()=>window.currentPage.retryLibrarySync());
+  assert.equal(await primary.evaluate(()=>window.currentPage.data.currentFavorite),true);
+  await primary.evaluate(()=>window.currentPage.startPlayer());
+  await primary.waitForFunction(()=>window.currentPage.data.remoteContentStatus==='ready' && window.currentPage.remoteBundle?.contentVersion===2);
+  await primary.evaluate(()=>window.currentPage.togglePlay());
+  await primary.waitForFunction(()=>window.previewAudio?.currentTime>=2,{},{timeout:20000});
+  await primary.evaluate(()=>window.currentPage.togglePlay());
+  assert.equal(await primary.evaluate(()=>window.currentPage.data.playing),false);
+  await primary.evaluate(()=>window.currentPage.retryProgressSync());
+  console.log('ui.audio-progress.passed: real signed audio played, paused and progress synchronized');
+  await primary.evaluate(()=>wx.navigateTo({url:'/pages/quiz/index?id=peter-rabbit:peter-rabbit-01'}));
+  await primary.waitForFunction(()=>window.currentPage.data.remoteContentStatus==='ready' && window.currentPage.quizPackage?.contentVersion===2);
+  await primary.evaluate(()=>{const page=window.currentPage;for(let i=0;i<page.questions.length;i++){page.setData({answer:page.data.question.answer});page.nextQuestion();page.nextQuestion();}});
+  await primary.waitForFunction(()=>window.currentPage.data.quizResultStatus.includes('服务端已验证'));
+  assert.equal(await primary.evaluate(()=>window.currentPage.data.score),100);
+  await primary.evaluate(()=>wx.switchTab({url:'/pages/me/index'}));
+  await primary.waitForFunction(()=>window.currentPage.data.quizSyncLabel.includes('已同步'));
+  assert.equal(await primary.evaluate(()=>window.currentPage.data.stats.correct),100);
+  assert.equal(await primary.evaluate(()=>window.currentPage.data.favoriteBooks.some(b=>b.id==='peter-rabbit')),true);
+  await primary.screenshot({path:path.join(root,'.cache/device-local/upgrade-cloud-report.png')});
+  console.log('ui.cloud-learning.passed: favorite synced, v2 Quiz verified, Me cloud history and score agree');
+  console.log('device.upgrade.ui.passed: real API login, UI order creation, paid refresh, access check, isolated account, refund refresh; no mocked order data');
 })().catch(async e=>{if(lastPage)await lastPage.screenshot({path:path.join(root,'.cache/device-local/commerce-ui-failure.png')});console.error(e.stack);process.exitCode=1}).finally(async()=>{
   if(paidOrder&&pool){const {CommerceService}=await import('../backend/src/commerce/service.ts');await new CommerceService(pool).simulate(paidOrder,'refund','ui-cleanup-'+paidOrder,100);}
   if(browser)await browser.close();if(pool)await pool.end();for(const s of servers)s.kill();
