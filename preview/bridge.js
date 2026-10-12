@@ -1,5 +1,31 @@
 window.previewDepth = 0
 let audioManager
+function browserRequest(options) {
+  const controller = new AbortController(), method = options.method || 'GET'
+  let settled = false, timeout
+  const finish = (success, value) => {
+    if (settled) return
+    settled = true; clearTimeout(timeout)
+    try { if (success) options.success?.(value); else options.fail?.(value) }
+    finally { options.complete?.(value) }
+  }
+  let url = options.url, body
+  const header = { ...(options.header || {}) }
+  if ((method === 'GET' || method === 'HEAD') && options.data && typeof options.data === 'object') {
+    const query = new URLSearchParams(options.data).toString(); if (query) url += (url.includes('?') ? '&' : '?') + query
+  } else if (options.data !== undefined) {
+    body = typeof options.data === 'object' && !(options.data instanceof ArrayBuffer) ? JSON.stringify(options.data) : options.data
+    if (!Object.keys(header).some(key => key.toLowerCase() === 'content-type')) header['Content-Type'] = 'application/json'
+  }
+  if (options.timeout > 0) timeout = setTimeout(() => { controller.abort(); finish(false, { errMsg:'request:fail timeout' }) }, options.timeout)
+  Promise.resolve().then(() => fetch(url, { method, headers:header, body, signal:controller.signal })).then(async response => {
+    let data
+    if (options.responseType === 'arraybuffer') data = await response.arrayBuffer()
+    else { const raw = await response.text(); if (options.dataType === 'text') data = raw; else { try { data = JSON.parse(raw) } catch (_) { data = raw } } }
+    finish(true, { statusCode:response.status, data, header:Object.fromEntries(response.headers) })
+  }).catch(() => finish(false, { errMsg:'request:fail network' }))
+  return { abort() { controller.abort(); finish(false, { errMsg:'request:fail abort' }) } }
+}
 function createAudioManager() {
   const audio = new Audio()
   audio.preload = 'metadata'
@@ -39,6 +65,7 @@ function createAudioManager() {
 }
 window.wx = {
   isBrowserPreview:true,
+  request:browserRequest,
   getStorageSync(key) { try{return JSON.parse(localStorage.getItem(key))}catch{return null} },
   setStorageSync(key,value) {localStorage.setItem(key,JSON.stringify(value))},
   showToast({title}) {const el=document.getElementById('toast');el.textContent=title;el.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2600)},

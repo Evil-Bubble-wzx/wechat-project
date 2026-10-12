@@ -1,0 +1,19 @@
+<view class="content profile-admin" wx:if="{{route === 'student-profile'}}">
+  <view class="profile-heading"><text class="eyebrow">OPERATIONS</text><view class="section-title">Student Profiles</view><text class="muted">只维护已核对的校区、年级与阅读级别；查询码不是登录凭据。</text></view>
+  <view class="info-note" wx:if="{{notice}}">{{notice}}</view>
+  <view wx:if="{{canManage}}">
+    <view class="profile-search"><input class="profile-input" value="{{studentCode}}" maxlength="40" placeholder="Student Code" bindinput="typeCode" disabled="{{busy || locked}}" /><button class="secondary" bindtap="lookup" disabled="{{busy || locked}}">Find</button></view>
+    <view wx:if="{{profile}}">
+      <view class="profile-summary"><text>{{profile.statusLabel}} · revision {{profile.revision}}</text><text>{{profile.campusLabel}} · {{profile.gradeLabel}} · {{profile.levelLabel}}</text><text>核验 {{profile.verifiedLabel}} · 生效 {{profile.effectiveLabel}}</text></view>
+      <view class="profile-field"><text>Campus</text><picker range="{{campuses}}" range-key="label" value="{{campusIndex}}" bindchange="chooseCampus" disabled="{{busy || locked}}"><view class="rank-control">{{campuses[campusIndex].label}}</view></picker></view>
+      <view class="profile-field"><text>Grade</text><picker range="{{grades}}" range-key="label" value="{{gradeIndex}}" bindchange="chooseGrade" disabled="{{busy || locked}}"><view class="rank-control">{{grades[gradeIndex].label}}</view></picker></view>
+      <view class="profile-field"><text>Reading Level</text><picker range="{{levels}}" range-key="label" value="{{levelIndex}}" bindchange="chooseLevel" disabled="{{busy || locked}}"><view class="rank-control">{{levels[levelIndex].label}}</view></picker></view>
+      <input class="profile-input" value="{{reason}}" maxlength="256" placeholder="变更依据（请勿填写联系方式等无关隐私）" bindinput="typeReason" disabled="{{busy || locked}}" />
+      <view class="profile-confirm" bindtap="confirm"><view class="checkbox {{confirmed ? 'checked' : ''}}">{{confirmed ? '✓' : ''}}</view><text>已核对学生身份和档案，确认本次变更。Unassigned 会解除归属，不撤销已有学习积分。</text></view>
+      <view class="info-note">变更不回溯历史。周/月/年榜按期初档案，新归属下期生效；滚动七日榜需窗口起点越过变更时刻。筛选按钮不修改个人档案。</view>
+      <button class="primary full" bindtap="save" disabled="{{busy || locked}}" loading="{{busy}}">Save Verified Profile</button>
+      <button class="secondary full" bindtap="reload" disabled="{{busy}}">Reload Latest Profile</button>
+    </view>
+  </view>
+  <button class="secondary full" wx:if="{{status === 'error' || status === 'conflict'}}" bindtap="retry" disabled="{{busy}}">Retry</button>
+</view>

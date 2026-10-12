@@ -1,6 +1,6 @@
 # API 契约
 
-当前权威版本：`api-contract-v2.4.0`
+当前权威版本：`api-contract-v2.9.0`
 
 - `openapi.json`：OpenAPI 3.1 路由、鉴权、状态码、分页和幂等语义。
 - `schemas/api-v1.schema.json`：JSON Schema 2020-12 请求与响应模型。
@@ -31,7 +31,17 @@
 
 2.2 客户端可读取书目/章节元数据与服务端测量时长。书目未知字段为 null；作品总词数或时长在任一章节缺失时保持未知。搜索游标绑定 query/category；available 指免费数字章节可阅读，不是实体库存。作品的作者、系列和分类投影来自首个当前已发布章节。
 
-客户端必须加载同一个 pieceId/contentVersion 的七种资源；阅读 JSON 校验字节数、摘要、身份和题包版本。当前资源规范化格式见 worker 约束，VTT/SRT 原文件不能直接作为可用阅读资源。已存在的旧版本需重新验证并补齐元数据、真实音频时长和同版本题包后，才可用于这条动态链路。
+客户端必须加载同一个 pieceId/contentVersion 的七种资源；阅读 JSON 校验字节数、摘要、身份和题包版本。2.6 Worker 支持把 UTF-8 VTT/SRT 自动规范化为阅读 JSON，原文件不能直接混入 manifest。已存在的旧版本需重新验证并补齐元数据、真实音频时长和同版本题包后，才可用于这条动态链路。
+
+## 原始字幕导入
+
+字幕声明可使用 application/json（最多 8 MiB）、text/vtt 或 application/x-subrip（最多 100 MiB）；text/plain 和 application/octet-stream 仅在文件名以 .vtt/.srt 结尾时按对应格式处理，不猜测任意文本格式。Worker 先流式核对原始字节大小与 SHA-256，再按 UTF-8 逐行解析；行和 cue 各限 65,536 字符，输出 JSON 最多 8 MiB，超限须按章节拆分。无数据库迁移或新阅读接口。
+
+转换保留文字、毫秒起止时间、VTT 标识符；SRT 数字序号映射为 c 前缀标识。支持 BOM、LF/CRLF/CR、多行和常见呈现标签/字符实体。备注、样式、区域、排版设置和 cue 内时间标记只计入 discardedPresentation，不执行或用于词级同步；converterVersion 为 timed-subtitles-v1。原文件保存在 incoming，ready JSON 的 parent_artifact_id 指向 original，验证信息保存原摘要/大小/MIME 和转换记录。
+
+本功能是单轨旁白阅读转换，不是完整 WebVTT 排版器；结构与时间戳参考 [W3C WebVTT](https://www.w3.org/TR/webvtt1/)。Ruby、未知标记/实体及外部时钟映射需先明确规范化；重叠、乱序、重复标识、无效 UTF-8、缺分隔或正文以及超过音频时长的字幕会失败，不跳过、重排、修复或回溯。原始字幕不会推测翻译、词义或上下文词条，tokens 为 []；需要点词映射时仍须提供审核后的规范化 JSON。
+
+content_assets 和 manifest 使用 ready 文件的实际摘要、大小及 application/json MIME，不能复用原始 VTT/SRT 的声明值；原始声明不被改写。现有 JSON 的内容、摘要和词卡引用保持不变。转换只生成 ready_for_review、publishable:false 候选，不关闭 C-03/C-05 或提供自动发布批准。
 
 ## Quiz 云历史和统计
 
@@ -51,4 +61,34 @@ query 最长 128 字符，去除首尾空白，%、_ 为普通文字。sort 为 
 
 0015 为新快照加入派生字段；旧快照缺少统计返回 RANKING_UNAVAILABLE，不伪造补值。榜单刷新可重建新身份，固定旧快照读取不覆写原数据。回退仅删除派生分析，保留答案与积分；再升级需重建，应用时间完整精度加入来源指纹。
 
+## 学生档案
+
+观察到 2.5 后启用 GET /me/student-profile，返回本人当前档案和 canManage；canManage 只控制界面，服务器对全部管理请求独立鉴权。只有 active operations_admin 可读取选项、按 Student Code 查找和维护；普通学生和 content_admin 无管理权限。查询码不是登录凭据，响应不包含身份 UUID、联系方式或逐题答案。
+
+PUT /admin/student-profiles/{studentCode} 仅接受 mutationId、baseRevision、campusId、grade、readingLevel、reason，幂等头须与 mutationId 相同。reason 为核验依据，不应包含无关隐私。服务器生成 admin 来源和核验时间，不能回溯变更；校区须有效，年级 K～9，级别 1～5，未知允许 null，解除校区同时清空年级和级别。
+
+revision 为精确十进制字符串；冲突返回 CONFLICT 并要求重读后重新确认。成功结果按管理员/请求 ID 加密保存，重复返回原结果，同 ID 改目标或载荷返回 IDEMPOTENCY_KEY_REUSED。无变化不增加版本。权限在取得账号锁后再次检查并持有角色锁，变更和审计在同一事务提交。
+
+用户规则为“维持期初档案分组，下个榜单周期才生效”。cohortPolicy 固定 period_start；周/月/年取期初档案，滚动七日取窗口起点。当前档案立即保存但当期榜单不改变归属；累计积分和算法不变。0016 回退只移除派生字段，再升级产生新查询码，旧码请求不能覆盖重置后的 revision，须重新获取。
+
 运行 `npm run contract:check` 校验 OpenAPI、Schema、错误码同步、示例、请求 ID 和写接口幂等头。
+## 独立运营与上传恢复
+
+2.7 新增 GET /admin/operations-context、GET /admin/ingestion-batches/{batchId}/recovery、GET /admin/upload-sessions/{uploadSessionId} 及 POST /admin/upload-sessions/{uploadSessionId}/renew，完整路径前缀为 /api/v1。必须使用有效管理员会话；renew 的空 JSON 对象与 Idempotency-Key 不变重试，同键不会延长原租期，租期过后显式申请新键。renew 只签缺失或尺寸错误的分片，查询响应不包含上传 URL。
+
+complete 验证编号连续、真实存储大小及 ETag；确认意图不可修改，新会话用唯一对象身份恢复存储已完成、数据库未完成的状态。完整文件 SHA-256 仍由 Worker 再校验，不能把对象声明 metadata 当作内容摘要证明。0017 事实保留，旧会话异常不自动推断成功。
+
+联调网页只在 local/test 注册。正式管理员网页登录、多章节导入、生产取消/死信矩阵和规模仍待完成；不改变 C-03/C-05 门槛或授予权限。
+## 运营控制和恢复
+
+2.8 新增 GET /api/v1/admin/ingestion-batches 与 /admin/ingestion-jobs/{jobId}。列表按创建时间/ID 倒序，签名游标绑定账号和筛选；详情返回累计/剩余次数和重试资格，不返回原始异常、凭证或对象 URL。
+
+POST retry/cancel 保留原 Idempotency-Key，无请求体或空对象均可，未知字段拒绝。同键只恢复原意图，不重置次数。0018 意图与审计先提交，入队或清理失败返回可重试的 DEPENDENCY_UNAVAILABLE；不能换键冒充新意图。
+
+新代次与旧失败队列分开，旧回执不复活取消任务。实际处理锁优先于耗时判断，耗尽不入队，完整上传不删除；0018 有运营事实拒绝回退。
+
+## 整组内容导入
+
+2.9 增加 POST /api/v1/admin/import-groups、GET 同路径（最近 20 组，非分页档案）与 GET /api/v1/admin/import-groups/{groupId}。管理员鉴权在解析清单前完成，取得目录锁后再次检查 active 身份与角色。清单最多 8 MiB、100 部作品、1,000 章、累计声明 100 GiB；每章必须七种资源和明确相对路径。音频每份最多 5 GiB，SRT/VTT 与原文各 100 MiB，封面 50 MiB，metadata/quiz/vocabulary 和规范字幕 JSON 各 8 MiB。
+
+0019 原子创建草稿目录、全部章节批次与审计。相同管理员/键/规范化清单返回原组；换载荷冲突。已有目录属性必须一致；任何已有导入或内容版本历史均要求新版本，取消也不释放旧版本给新导入。单章入口同样锁定章节并检查版本历史和 active 管理员，合法原键重试保持兼容。网页预检 metadata/quiz 的 workId/pieceId/contentVersion，完整内容仍由 Worker 验证；不改变审核发布门槛。格式或大小错误映射到非重试 INVALID_REQUEST，不把错误清单当暂时内部故障。

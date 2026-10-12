@@ -46,6 +46,7 @@ const worker = new Worker<WorkerJob>(
           job.data.processingJobId,
           job.attemptsMade + 1,
           typeof job.opts.attempts === "number" ? job.opts.attempts : 1,
+          job.data.dispatchGeneration??0,
         );
         await job.updateProgress(100);
         return { status: "ok", processingJobId: job.data.processingJobId };

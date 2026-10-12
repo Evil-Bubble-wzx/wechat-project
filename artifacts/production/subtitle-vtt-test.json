@@ -1,0 +1,16 @@
+{
+  "scope": "actual frontend/HTTP/Fastify/PostgreSQL/Worker/MinIO bytes; test identity, preview navigation and CORS bridge",
+  "format": "vtt",
+  "normalizedMime": "application/json",
+  "cueCount": 59,
+  "sourceText": "preserved",
+  "contextualWords": "not-inferred",
+  "navigation": "library-detail-player",
+  "sentenceStep": "PASS",
+  "widths": [
+    320,
+    390,
+    430
+  ],
+  "errors": []
+}

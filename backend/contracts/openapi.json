@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tingyue Backend API",
-    "version": "2.4.0",
-    "description": "Authoritative API contract api-contract-v2.3.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
+    "version": "2.9.0",
+    "description": "Authoritative API contract api-contract-v2.9.0. JSON fields use camelCase and timestamps use UTC RFC 3339. Clients branch on stable error.code values, never human messages. Ranking v2 uses unlimited decimal-string learning points; progress/word mutation protocols stay unchanged."
   },
   "servers": [
     {
@@ -1022,7 +1022,7 @@
         "tags": [
           "Admin ingestion"
         ],
-        "description": "Creates only control-plane metadata. File bytes are uploaded directly to object storage.",
+        "description": "Creates only control-plane metadata. File bytes are uploaded directly to object storage. Subtitle input supports normalized JSON (8 MiB) or UTF-8 VTT/SRT (100 MiB); Worker preserves the original and produces bounded narration-oriented JSON. Published manifests describe the derived bytes, not source hashes. Conversion does not approve publication or infer contextual vocabulary.",
         "parameters": [
           {
             "$ref": "#/components/parameters/IdempotencyKey"
@@ -1065,6 +1065,76 @@
           },
           "409": {
             "$ref": "#/components/responses/Conflict"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listIngestionBatches",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "workId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "pieceId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized ingestion operations response.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -1268,6 +1338,19 @@
           },
           "409": {
             "$ref": "#/components/responses/Conflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionEmptyActionRequest"
+              }
+            }
           }
         }
       }
@@ -1301,6 +1384,19 @@
           },
           "409": {
             "$ref": "#/components/responses/Conflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionEmptyActionRequest"
+              }
+            }
           }
         }
       }
@@ -1670,6 +1766,612 @@
           }
         }
       }
+    },
+    "/api/v1/me/student-profile": {
+      "get": {
+        "operationId": "getMyStudentProfile",
+        "tags": [
+          "Student Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Verified student profile data. Account identifiers and contact details are excluded.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/StudentProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/student-profile-options": {
+      "get": {
+        "operationId": "getStudentProfileOptions",
+        "tags": [
+          "Student Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Verified student profile data. Account identifiers and contact details are excluded.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/StudentProfileOptionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/student-profiles/{studentCode}": {
+      "get": {
+        "operationId": "getStudentProfileForOperations",
+        "tags": [
+          "Student Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "studentCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^student_[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verified student profile data. Account identifiers and contact details are excluded.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/AdminStudentProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "put": {
+        "operationId": "maintainStudentProfile",
+        "tags": [
+          "Student Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "studentCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^student_[a-f0-9]{32}$"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verified student profile data. Account identifiers and contact details are excluded.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              },
+              "X-API-Contract-Version": {
+                "$ref": "#/components/headers/ContractVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/StudentProfileMutationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/StudentProfileMutationRequest"
+              }
+            }
+          }
+        },
+        "description": "Operations admin only. Mutation ID matches Idempotency-Key. Exact base revision prevents lost updates; effective time and verification source are server-assigned. Existing period-start cohort grouping is retained."
+      }
+    },
+    "/api/v1/admin/operations-context": {
+      "get": {
+        "operationId": "getOperationsContext",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Authorized operations response. No persistent upload URLs.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/OperationsContextResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/Gone"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/ingestion-batches/{batchId}/recovery": {
+      "get": {
+        "operationId": "getIngestionBatchRecovery",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/BatchId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized operations response. No persistent upload URLs.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionBatchRecoveryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/Gone"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/upload-sessions/{uploadSessionId}": {
+      "get": {
+        "operationId": "getUploadSessionStatus",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UploadSessionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized operations response. No persistent upload URLs.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/Gone"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/upload-sessions/{uploadSessionId}/renew": {
+      "post": {
+        "operationId": "renewUploadSession",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UploadSessionId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized operations response. No persistent upload URLs.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionRenewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "$ref": "#/components/responses/Gone"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/UploadSessionRenewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/ingestion-jobs/{jobId}": {
+      "get": {
+        "operationId": "getIngestionJob",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JobId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized ingestion operations response.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/IngestionJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/import-groups": {
+      "post": {
+        "operationId": "createBulkImportGroup",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "description": "Explicit immutable plan; at most 100 works, 1000 chapters, 100 GiB of declarations, 8 MiB JSON body. Active administrator is rechecked after catalog locks. Atomic draft catalog, per-chapter batches and audit. Existing attributes must match; any historical chapter/version requires a new version. Actor-bound idempotency. No automatic upload, processing, rights approval or publication.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/api-v1.schema.json#/$defs/BulkImportPlan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Authorized bulk import control-plane response. No approval or publication.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/BulkImportGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listRecentBulkImports",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "description": "Most recent 20 administrator-shared groups only. Not a paginated archive; older groups can be retrieved by ID. Query fields are rejected.",
+        "responses": {
+          "200": {
+            "description": "Authorized bulk import control-plane response. No approval or publication.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/BulkImportGroupListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/import-groups/{groupId}": {
+      "get": {
+        "operationId": "getBulkImportGroup",
+        "tags": [
+          "Admin ingestion"
+        ],
+        "description": "Immutable original plan with current ordered chapter batch status. Current status is not a historical snapshot.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/GroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized bulk import control-plane response. No approval or publication.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./schemas/api-v1.schema.json#/$defs/BulkImportGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1783,6 +2485,15 @@
       },
       "ContentVersionId": {
         "name": "contentVersionId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "GroupId": {
+        "name": "groupId",
         "in": "path",
         "required": true,
         "schema": {

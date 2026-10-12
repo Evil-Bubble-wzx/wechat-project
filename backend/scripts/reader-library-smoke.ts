@@ -85,6 +85,7 @@ async function main(){
     // No new events are needed for later pulls to see another device's change.
     const newest=await post(batch("unfavorite","3"));await second.manager.trigger("foreground",true);assert.deepEqual(second.host.read().favorites,[]);
     assert.equal(newest.operations[0].status,"applied");
+    assert.equal(await rollbackOne(pool,{schema}),"0019_bulk_content_import");assert.equal(await rollbackOne(pool,{schema}),"0018_ingestion_operations");assert.equal(await rollbackOne(pool,{schema}),"0017_upload_recovery");assert.equal(await rollbackOne(pool,{schema}),"0016_student_profile_management");
     assert.equal(await rollbackOne(pool,{schema}),"0015_ranking_quiz_analysis");
     assert.equal(await rollbackOne(pool,{schema}),"0014_quiz_history");
     assert.equal(await rollbackOne(pool,{schema}),"0013_content_catalog_projection");

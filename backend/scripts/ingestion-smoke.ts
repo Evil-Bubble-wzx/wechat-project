@@ -137,6 +137,7 @@ async function main(): Promise<void> {
       queue,
       config.objectStorage.incomingBucket,
       config.objectStorage.publishedBucket,
+    config.auth.identityHashKeyBase64,
     );
     const declaredItems = await declarations();
     const batch = await service.createBatch(

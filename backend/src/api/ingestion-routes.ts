@@ -7,6 +7,9 @@ import type {
 import type { AuditService } from "../observability/audit-service.ts";
 import { ApiError } from "./errors.ts";
 import type { SessionServicePort } from "./session-routes.ts";
+import type {RateLimiterPort} from "../security/rate-limiter.ts";
+import {parseBulkPlan} from "../ingestion/bulk-plan.ts";
+import {parseBatchList} from "../ingestion/operations-service.ts";
 
 type AdminSessionService = SessionServicePort & {
   assertContentAdmin(userId: string): Promise<void>;
@@ -72,7 +75,7 @@ function stringField(body: Record<string, unknown>, field: string, max = 512): s
 
 function pathId(request: FastifyRequest, field: string): string {
   const value = (request.params as Record<string, unknown>)[field];
-  if (typeof value !== "string" || value.length < 1 || value.length > 128) {
+  if (typeof value !== "string" || !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value)) {
     throw new ApiError("INVALID_REQUEST", 400, false, `${field} is invalid`, { field });
   }
   return value;
@@ -146,7 +149,23 @@ export function registerIngestionRoutes(
   ingestion: IngestionService,
   sessions: AdminSessionService,
   audit?: AuditService,
+  rateLimiter?:RateLimiterPort,
 ): void {
+  const bulkActors=new WeakMap<FastifyRequest,string>();
+  app.post("/api/v1/admin/import-groups",{bodyLimit:8*MEBIBYTE,onRequest:async request=>{const actor=await adminUserId(request,sessions);await rateLimiter?.consume("bulk-import-create",actor,10,60);bulkActors.set(request,actor);}},async(request,reply)=>{
+    const response=await ingestion.createImportGroup(parseBulkPlan(bodyObject(request)),bulkActors.get(request)!,idempotencyKey(request),request.id);
+    return reply.code(201).send({requestId:request.id,...response});
+  });
+  app.get("/api/v1/admin/import-groups",async request=>{const actor=await adminUserId(request,sessions);await rateLimiter?.consume("bulk-import-list",actor,60,60);if(Object.keys(request.query as object).length)throw new ApiError("INVALID_REQUEST",400,false,"Recent groups do not accept query fields");return{requestId:request.id,...await ingestion.listImportGroups()};});
+  app.get("/api/v1/admin/import-groups/:groupId",async request=>{await adminUserId(request,sessions);return{requestId:request.id,...await ingestion.getImportGroup(pathId(request,"groupId"))};});
+  app.get("/api/v1/admin/operations-context",async request=>({requestId:request.id,userId:await adminUserId(request,sessions)}));
+  app.get("/api/v1/admin/ingestion-batches",async request=>{
+    const actor=await adminUserId(request,sessions);await rateLimiter?.consume("ingestion-list",actor,60,60);
+    return{requestId:request.id,...await ingestion.listBatches(actor,parseBatchList(request.query as Record<string,unknown>))};
+  });
+  app.get("/api/v1/admin/ingestion-jobs/:jobId",async request=>{
+    await adminUserId(request,sessions);return{requestId:request.id,...await ingestion.getJob(pathId(request,"jobId"))};
+  });
   app.post("/api/v1/admin/ingestion-batches", async (request, reply) => {
     const actorUserId = await adminUserId(request, sessions);
     const response = await ingestion.createBatch(
@@ -175,6 +194,7 @@ export function registerIngestionRoutes(
         clientFileId: stringField(body, "clientFileId", 128),
       },
       idempotencyKey(request),
+      actorUserId,
     );
     await audit?.record({actorType:"admin",actorId:actorUserId,action:"upload_session_created",targetType:"upload_session",targetId:response.uploadSessionId,requestId:request.id,metadata:{batchId:body.batchId,clientFileId:body.clientFileId}});
     return reply.code(201).send({ requestId: request.id, ...response });
@@ -182,8 +202,9 @@ export function registerIngestionRoutes(
 
   app.post("/api/v1/admin/upload-sessions/:uploadSessionId/complete", async (request) => {
     const actorUserId=await adminUserId(request, sessions);
-    idempotencyKey(request);
+    const key=idempotencyKey(request);
     const body = bodyObject(request);
+    if(Object.keys(body).some(field=>field!=="parts"))throw new ApiError("INVALID_REQUEST",400,false,"Unknown completion field");
     if (!Array.isArray(body.parts) || body.parts.length < 1 || body.parts.length > 10_000) {
       throw new ApiError("INVALID_REQUEST", 400, false, "parts list is invalid");
     }
@@ -192,18 +213,37 @@ export function registerIngestionRoutes(
         throw new ApiError("INVALID_REQUEST", 400, false, "part is invalid");
       }
       const part = unknownPart as Record<string, unknown>;
+      if(Object.keys(part).some(field=>!["partNumber","etag"].includes(field)))throw new ApiError("INVALID_REQUEST",400,false,"Unknown part field");
       if (!Number.isInteger(part.partNumber) || Number(part.partNumber) < 1) {
         throw new ApiError("INVALID_REQUEST", 400, false, "partNumber is invalid");
       }
       return { partNumber: Number(part.partNumber), etag: stringField(part, "etag", 256) };
     });
     const uploadSessionId=pathId(request,"uploadSessionId");
-    const response=await ingestion.completeUploadSession(uploadSessionId, parts);
+    const response=await ingestion.completeUploadSession(uploadSessionId, parts,actorUserId,key);
     await audit?.record({actorType:"admin",actorId:actorUserId,action:"upload_session_completed",targetType:"upload_session",targetId:uploadSessionId,requestId:request.id,metadata:{partCount:parts.length}});
     return {
       requestId: request.id,
       ...response,
     };
+  });
+
+  app.get("/api/v1/admin/ingestion-batches/:batchId/recovery",async request=>{
+    await adminUserId(request,sessions);
+    return{requestId:request.id,...await ingestion.getBatchRecovery(pathId(request,"batchId"))};
+  });
+  app.get("/api/v1/admin/upload-sessions/:uploadSessionId",async request=>{
+    const actor=await adminUserId(request,sessions);
+    await rateLimiter?.consume("upload-status",actor,60,60);
+    return{requestId:request.id,...await ingestion.getUploadSession(pathId(request,"uploadSessionId"),actor)};
+  });
+  app.post("/api/v1/admin/upload-sessions/:uploadSessionId/renew",async request=>{
+    const actor=await adminUserId(request,sessions),body=bodyObject(request);
+    await rateLimiter?.consume("upload-renew",actor,30,60);
+    if(Object.keys(body).length)throw new ApiError("INVALID_REQUEST",400,false,"Renew body must be empty");
+    const uploadSessionId=pathId(request,"uploadSessionId"),response=await ingestion.renewUploadSession(uploadSessionId,actor,idempotencyKey(request));
+    await audit?.record({actorType:"admin",actorId:actor,action:"upload_session_renewed",targetType:"upload_session",targetId:uploadSessionId,requestId:request.id,metadata:{missingPartCount:response.parts.length}});
+    return{requestId:request.id,...response};
   });
 
   app.post("/api/v1/admin/ingestion-batches/:batchId/finalize", async (request, reply) => {
@@ -217,9 +257,10 @@ export function registerIngestionRoutes(
 
   app.post("/api/v1/admin/ingestion-batches/:batchId/cancel", async (request) => {
     const actorUserId=await adminUserId(request, sessions);
-    idempotencyKey(request);
+    const key=idempotencyKey(request);
+    const body=request.body===undefined?{}:bodyObject(request);if(Object.keys(body).length)throw new ApiError("INVALID_REQUEST",400,false,"Cancel body must be empty");
     const batchId=pathId(request,"batchId");
-    const response=await ingestion.cancelBatch(batchId);
+    const response=await ingestion.cancelBatch(batchId,actorUserId,key,request.id);
     await audit?.record({actorType:"admin",actorId:actorUserId,action:"ingestion_batch_cancelled",targetType:"ingestion_batch",targetId:batchId,requestId:request.id});
     return {
       requestId: request.id,
@@ -229,9 +270,10 @@ export function registerIngestionRoutes(
 
   app.post("/api/v1/admin/ingestion-jobs/:jobId/retry", async (request, reply) => {
     const actorUserId=await adminUserId(request, sessions);
-    idempotencyKey(request);
+    const key=idempotencyKey(request);await rateLimiter?.consume("ingestion-retry",actorUserId,30,60);
+    const body=request.body===undefined?{}:bodyObject(request);if(Object.keys(body).length)throw new ApiError("INVALID_REQUEST",400,false,"Retry body must be empty");
     const jobId=pathId(request,"jobId");
-    const response = await ingestion.retryJob(jobId, request.id);
+    const response = await ingestion.retryJob(jobId, request.id,actorUserId,key);
     await audit?.record({actorType:"admin",actorId:actorUserId,action:"ingestion_job_retried",targetType:"processing_job",targetId:jobId,requestId:request.id});
     return reply.code(202).send({ requestId: request.id, ...response });
   });

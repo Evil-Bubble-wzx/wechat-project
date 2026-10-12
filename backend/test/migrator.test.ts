@@ -24,6 +24,10 @@ test("migration files are paired, ordered and have stable checksums", async () =
       "0013_content_catalog_projection",
       "0014_quiz_history",
       "0015_ranking_quiz_analysis",
+      "0016_student_profile_management",
+      "0017_upload_recovery",
+      "0018_ingestion_operations",
+      "0019_bulk_content_import",
     ],
   );
   for (const migration of migrations) {

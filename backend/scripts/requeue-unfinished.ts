@@ -16,7 +16,7 @@ const queue = new Queue<IngestionJobPayload>(config.ingestionQueueName, {
 
 try {
   const result = await new RequeueService(infrastructure.postgres, queue).rebuild(`recovery-${randomUUID()}`);
-  process.stdout.write(`recovery.requeue.passed candidates=${result.candidates} enqueued=${result.enqueued} alreadyPresent=${result.alreadyPresent}\n`);
+  process.stdout.write(`recovery.requeue.passed candidates=${result.candidates} enqueued=${result.enqueued} alreadyPresent=${result.alreadyPresent} exhausted=${result.exhausted}\n`);
 } finally {
   await queue.close();
   await infrastructure.close();

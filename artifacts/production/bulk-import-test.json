@@ -1,0 +1,19 @@
+{
+  "scope": "actual local HTTP/PostgreSQL/MinIO/BullMQ/Edge; isolated catalog; no real approvals",
+  "works": 2,
+  "chapters": 20,
+  "declaredResources": 140,
+  "uniqueFiles": 45,
+  "lostCreateResponse": "same-group-recovered",
+  "uploadInterruption": "resumed-without-reupload",
+  "wrongFile": "SHA-256-rejected",
+  "credentials": "memory-only",
+  "processing": "explicit-submit",
+  "publication": "none",
+  "widths": [
+    375,
+    768,
+    1280
+  ],
+  "errors": []
+}

@@ -155,6 +155,7 @@ async function main(){
     assert.equal(oldQuiz.status,"rejected");assert.equal(oldQuiz.error.code,"QUIZ_PACKAGE_MISMATCH");
     await second.manager.trigger("before-epoch",true);
     const old=second.manager._inspect().cursor;
+    assert.equal(await rollbackOne(pool,{schema}),"0019_bulk_content_import");assert.equal(await rollbackOne(pool,{schema}),"0018_ingestion_operations");assert.equal(await rollbackOne(pool,{schema}),"0017_upload_recovery");assert.equal(await rollbackOne(pool,{schema}),"0016_student_profile_management");
     assert.equal(await rollbackOne(pool,{schema}),"0015_ranking_quiz_analysis");
     assert.equal(await rollbackOne(pool,{schema}),"0014_quiz_history");await migrateUp(pool,{schema});
     await assert.rejects(first.api.quizHistory(old,100),(error:any)=>error.serverCode==="INVALID_REQUEST");

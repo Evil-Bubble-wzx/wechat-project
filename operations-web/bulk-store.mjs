@@ -1,0 +1,9 @@
+// IndexedDB avoids localStorage's small quota. No File/Blob, tokens, URLs or ETags.
+import {assetTypes} from './upload-core.mjs';
+export function safeBulkDraft(value){
+ const keys=input=>Object.fromEntries(assetTypes.map(type=>[type,input?.[type]]).filter(([,key])=>typeof key==='string'&&/^[a-f0-9-]{36}$/i.test(key)));
+ return{owner:value.owner,groupId:value.groupId,createKey:value.createKey,plan:value.plan,batches:Object.fromEntries(Object.entries(value.batches??{}).filter(([id])=>/^[a-f0-9-]{36}$/i.test(id)).map(([id,draft])=>[id,{sessionKeys:keys(draft.sessionKeys),completeKeys:keys(draft.completeKeys),finalizeKey:draft.finalizeKey}]))};
+}
+async function database(){return new Promise((resolve,reject)=>{const request=indexedDB.open('tingyue-ops-bulk',1);request.onupgradeneeded=()=>request.result.createObjectStore('drafts',{keyPath:'owner'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(Object.assign(new Error('DRAFT_STORAGE_UNAVAILABLE'),{code:'DRAFT_STORAGE_UNAVAILABLE'}));});}
+export async function writeBulkDraft(value){const db=await database();try{await new Promise((resolve,reject)=>{const tx=db.transaction('drafts','readwrite');tx.objectStore('drafts').put(safeBulkDraft(value));tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(Object.assign(new Error('DRAFT_STORAGE_UNAVAILABLE'),{code:'DRAFT_STORAGE_UNAVAILABLE'}));});}finally{db.close();}}
+export async function readBulkDraft(owner){const db=await database();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('drafts','readonly'),request=tx.objectStore('drafts').get(owner);request.onsuccess=()=>resolve(request.result? safeBulkDraft(request.result):null);request.onerror=()=>reject(Object.assign(new Error('DRAFT_STORAGE_UNAVAILABLE'),{code:'DRAFT_STORAGE_UNAVAILABLE'}));});}finally{db.close();}}

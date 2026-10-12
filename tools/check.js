@@ -17,4 +17,7 @@ const analysisTemplate=fs.readFileSync(path.join(mini,'ui/ranking-detail.wxml'),
 assert.ok(!/<(?:div|span|br|img|html)\b/.test(analysisTemplate),'Analysis must use native tags')
 for(const m of analysisTemplate.matchAll(/(?:bind|catch)(?:tap|input|change|confirm)="(\w+)"/g))assert.equal(typeof analysisPage[m[1]],'function','Missing analysis handler '+m[1])
 const total=files.reduce((n,f)=>n+fs.statSync(f).size,0)
+const studentTemplate=fs.readFileSync(path.join(mini,'ui/student-profile.wxml'),'utf8'),studentPage=createPage('student-profile')
+assert.ok(!/<(?:div|span|br|img|html)\b/.test(studentTemplate),'Profile must use native tags')
+for(const m of studentTemplate.matchAll(/(?:bind|catch)(?:tap|input|change|confirm)="(\w+)"/g))assert.equal(typeof studentPage[m[1]],'function','Missing student profile handler '+m[1])
 console.log('Validated '+app.pages.length+' routes in '+path.relative(root,mini)+', all handlers, native bindings, assets and JS/JSON syntax. Package: '+Math.round(total/1024)+' KiB.')

@@ -62,7 +62,7 @@ async function main():Promise<void> {
   let app:ReturnType<typeof createApp>|undefined;
   try {
     await migrateUp(pool,{schema});
-    for(const version of ["0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library","0011_learning_score_consistency","0010_learning_points"])assert.equal(await rollbackOne(pool,{schema}),version);
+    for(const version of ["0019_bulk_content_import","0018_ingestion_operations","0017_upload_recovery","0016_student_profile_management","0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library","0011_learning_score_consistency","0010_learning_points"])assert.equal(await rollbackOne(pool,{schema}),version);
     await seed();await pool.query("INSERT INTO users (id) VALUES ($1)",[historicalUser]);await profile(historicalUser);
     await pool.query("INSERT INTO user_learning_progress (user_id,piece_id,content_version,duration_ms,checkpoint_ms,listened_ranges_ms,listened_ms,coverage,completed,source_updated_at,source_snapshot_id,server_updated_at) VALUES ($1,$2,1,10000,10000,'[[0,10000]]',10000,1,true,now()-interval '40 days','historical',now()-interval '40 days')",[historicalUser,pieceId]);
     historicalAttempt=randomUUID();
@@ -73,7 +73,7 @@ async function main():Promise<void> {
     await migrateUp(pool,{schema});
     assert.equal((await readLearningScore(pool,historicalUser)).totalPoints,"90","historical progress and correct answers are backfilled");
     assert.equal((await pool.query("SELECT score::text FROM ranking_snapshot_entries WHERE snapshot_id=$1",[legacy.rows[0]!.id])).rows[0].score,"987","v1 snapshot remains intact");
-    for(const version of ["0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library","0011_learning_score_consistency"])assert.equal(await rollbackOne(pool,{schema}),version);
+    for(const version of ["0019_bulk_content_import","0018_ingestion_operations","0017_upload_recovery","0016_student_profile_management","0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library","0011_learning_score_consistency"])assert.equal(await rollbackOne(pool,{schema}),version);
     await assert.rejects(rollbackOne(pool,{schema}),/Learning points exist/);
     await migrateUp(pool,{schema});
 
@@ -168,7 +168,7 @@ async function main():Promise<void> {
       assert.equal((await pool.query("SELECT score::text FROM ranking_snapshot_entries WHERE snapshot_id=$1 AND user_id=$2",[built.snapshotId,precise])).rows[0].score,huge);
     }
     assert.equal((await request("/api/v1/me/learning-score")).totalPoints,"117","other participants never change personal points");
-    for(const version of ["0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library"])assert.equal(await rollbackOne(pool,{schema}),version);
+    for(const version of ["0019_bulk_content_import","0018_ingestion_operations","0017_upload_recovery","0016_student_profile_management","0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library"])assert.equal(await rollbackOne(pool,{schema}),version);
     await assert.rejects(rollbackOne(pool,{schema}),/Score invalidation tasks exist/);
     process.stdout.write("learning-points.smoke.passed historical=v1-preserved fractions=accumulated repeats=deduped concurrent=merged completion=once quiz=improved import=atomic withdrawal=queued read=serialized versions=no-reset precision=exact periods=4\n");
   }finally{

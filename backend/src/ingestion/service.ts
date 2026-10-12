@@ -1,7 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 
 import {
-  CompleteMultipartUploadCommand,
   CopyObjectCommand,
   CreateMultipartUploadCommand,
   HeadObjectCommand,
@@ -13,11 +12,16 @@ import type { Queue } from "bullmq";
 import type { Pool, PoolClient } from "pg";
 
 import { ApiError } from "../api/errors.ts";
+import {BulkImportService} from "./bulk-service.ts";
+import type {BulkPlan} from "./bulk-plan.ts";
+import {UploadRecoveryService} from "./upload-recovery.ts";
+import {IngestionOperationsService,type BatchListOptions} from "./operations-service.ts";
 
 export type IngestionJobPayload = {
   type: "content.ingestion.item";
   processingJobId: string;
   requestId: string;
+  dispatchGeneration?: number;
 };
 
 export type IngestionItemInput = {
@@ -103,6 +107,7 @@ export class IngestionService {
   private readonly queue: Queue<IngestionJobPayload>;
   private readonly incomingBucket: string;
   private readonly publishedBucket: string;
+  private readonly cursorKeyBase64?:string;
 
   constructor(
     pool: Pool,
@@ -110,12 +115,14 @@ export class IngestionService {
     queue: Queue<IngestionJobPayload>,
     incomingBucket: string,
     publishedBucket: string,
+    cursorKeyBase64?:string,
   ) {
     this.pool = pool;
     this.s3 = s3;
     this.queue = queue;
     this.incomingBucket = incomingBucket;
     this.publishedBucket = publishedBucket;
+    this.cursorKeyBase64=cursorKeyBase64;
   }
 
   // Match the catalog's first published chapter metadata; later chapters must not overwrite work fields.
@@ -159,6 +166,10 @@ export class IngestionService {
     };
   }
 
+  async createImportGroup(plan:BulkPlan,actor:string,key:string,requestId:string){return new BulkImportService(this.pool).create(plan,actor,key,requestId);}
+  async getImportGroup(id:string){return new BulkImportService(this.pool).get(id);}
+  async listImportGroups(){return new BulkImportService(this.pool).list();}
+
   async createBatch(input: CreateBatchInput, actorUserId: string, idempotencyKey: string): Promise<BatchResponse> {
     const assetTypes = input.items.map(({ assetType }) => assetType);
     const requiredTypes = ["audio", "subtitles", "text", "vocabulary", "quiz", "cover", "metadata"];
@@ -180,12 +191,14 @@ export class IngestionService {
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [
         `ingestion-batch:${idempotencyKey}`,
       ]);
-      const previous = await client.query<{ id: string; request_hash: string }>(
-        "SELECT id, request_hash FROM ingestion_batches WHERE idempotency_key = $1",
+      const previous = await client.query<{ id: string; request_hash: string; operator_user_id:string }>(
+        "SELECT id, request_hash, operator_user_id FROM ingestion_batches WHERE idempotency_key = $1",
         [idempotencyKey],
       );
       if (previous.rows[0]) {
-        if (previous.rows[0].request_hash.trim() !== requestHash) {
+        const admin=await client.query("SELECT r.role FROM users u JOIN user_roles r ON r.user_id=u.id WHERE u.id=$1 AND u.status=\u0027active\u0027 AND r.role IN (\u0027content_admin\u0027,\u0027operations_admin\u0027) FOR SHARE OF u,r",[actorUserId]);
+        if(!admin.rowCount)throw new ApiError("FORBIDDEN",403,false,"Active content administrator required");
+        if (previous.rows[0].operator_user_id!==actorUserId||previous.rows[0].request_hash.trim() !== requestHash) {
           throw new ApiError(
             "IDEMPOTENCY_KEY_REUSED",
             409,
@@ -198,6 +211,9 @@ export class IngestionService {
         return response;
       }
 
+      await client.query("SELECT pg_advisory_xact_lock(hashtext($1))",["catalog-piece:"+input.pieceId]);
+      const admin=await client.query("SELECT r.role FROM users u JOIN user_roles r ON r.user_id=u.id WHERE u.id=$1 AND u.status=\u0027active\u0027 AND r.role IN (\u0027content_admin\u0027,\u0027operations_admin\u0027) FOR SHARE OF u,r",[actorUserId]);
+      if(!admin.rowCount)throw new ApiError("FORBIDDEN",403,false,"Active content administrator required");
       const piece = await client.query<{ exists: boolean }>(
         `SELECT EXISTS (
            SELECT 1 FROM pieces WHERE id = $1 AND work_id = $2
@@ -208,6 +224,7 @@ export class IngestionService {
         throw new ApiError("RESOURCE_NOT_FOUND", 404, false, "Work or piece does not exist");
       }
 
+      if((await client.query("SELECT id FROM ingestion_batches WHERE piece_id=$1 AND content_version=$2 UNION ALL SELECT id FROM content_versions WHERE piece_id=$1 AND content_version=$2 LIMIT 1",[input.pieceId,input.contentVersion])).rowCount)throw new ApiError("INGESTION_BATCH_CONFLICT",409,false,"Chapter version has import history; use a new content version");
       const batchId = randomUUID();
       await client.query(
         `INSERT INTO ingestion_batches (
@@ -226,7 +243,7 @@ export class IngestionService {
           input.pieceId,
           input.contentVersion,
           input.items.length,
-          JSON.stringify({ contractVersion: "api-contract-v1.2.0" }),
+          JSON.stringify({ contractVersion: "api-contract-v2.9.0" }),
         ],
       );
       for (const item of input.items) {
@@ -304,7 +321,7 @@ export class IngestionService {
     };
   }
 
-  async createUploadSession(input: { batchId: string; clientFileId: string }, idempotencyKey: string) {
+  async createUploadSession(input: { batchId: string; clientFileId: string }, idempotencyKey: string, actorUserId?: string) {
     const requestHash = hashRequest(input);
     const client = await this.pool.connect();
     try {
@@ -312,6 +329,13 @@ export class IngestionService {
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [
         `upload-session:${idempotencyKey}`,
       ]);
+      const batch = (await client.query<{status:string}>("SELECT status FROM ingestion_batches WHERE id=$1 FOR UPDATE", [input.batchId])).rows[0];
+      if (!batch) throw new ApiError("RESOURCE_NOT_FOUND",404,false,"Ingestion batch not found");
+      if (!["draft","uploading"].includes(batch.status)) throw new ApiError("INGESTION_BATCH_CONFLICT",409,false,"Batch no longer accepts uploads");
+      if (actorUserId) {
+        const role=await client.query("SELECT r.role FROM users a JOIN user_roles r ON r.user_id=a.id WHERE a.id=$1 AND a.status='active' AND r.role IN ('content_admin','operations_admin') FOR SHARE OF a,r",[actorUserId]);
+        if (!role.rowCount) throw new ApiError("FORBIDDEN",403,false,"Active content administrator required");
+      }
       const existing = await client.query<UploadRow>(
         `SELECT id, request_hash, bucket, object_key, multipart_upload_id,
                 part_size_bytes, part_count, expires_at, status
@@ -342,13 +366,14 @@ export class IngestionService {
         expected_sha256: string;
         mime_type: string;
         batch_status: string;
+        status: string;
       }>(
         `SELECT i.id, i.batch_id, i.file_name, i.expected_size_bytes,
-                i.expected_sha256, i.mime_type, b.status AS batch_status
+                i.expected_sha256, i.mime_type, i.status, b.status AS batch_status
          FROM ingestion_items i
          JOIN ingestion_batches b ON b.id = i.batch_id
          WHERE i.batch_id = $1 AND i.client_file_id = $2
-         FOR UPDATE OF i, b`,
+         FOR UPDATE OF i`,
         [input.batchId, input.clientFileId],
       );
       const item = itemResult.rows[0];
@@ -356,6 +381,7 @@ export class IngestionService {
       if (!['draft', 'uploading'].includes(item.batch_status)) {
         throw new ApiError("INGESTION_BATCH_CONFLICT", 409, false, "Batch no longer accepts uploads");
       }
+      if(item.status!=="declared")throw new ApiError("INGESTION_BATCH_CONFLICT",409,false,"Item already has an upload; recover its existing session");
 
       const sizeBytes = Number(item.expected_size_bytes);
       const partCount = Math.ceil(sizeBytes / multipartPartSize);
@@ -363,7 +389,7 @@ export class IngestionService {
         throw new ApiError("INVALID_REQUEST", 400, false, "File size cannot be represented as multipart upload");
       }
       const uploadSessionId = randomUUID();
-      const objectKey = `incoming/${input.batchId}/${item.id}/${safeObjectName(item.file_name)}`;
+      const objectKey = `incoming/${input.batchId}/${item.id}/${uploadSessionId}/${safeObjectName(item.file_name)}`;
       const created = await this.s3.send(
         new CreateMultipartUploadCommand({
           Bucket: this.incomingBucket,
@@ -372,6 +398,7 @@ export class IngestionService {
           Metadata: {
             "expected-sha256": item.expected_sha256.trim(),
             "ingestion-item-id": item.id,
+            "upload-session-id": uploadSessionId,
           },
         }),
       );
@@ -381,8 +408,8 @@ export class IngestionService {
         `INSERT INTO upload_sessions (
            id, ingestion_item_id, idempotency_key, request_hash, bucket, object_key,
            multipart_upload_id, part_size_bytes, part_count,
-           expected_size_bytes, expected_sha256, expires_at
-         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+           expected_size_bytes, expected_sha256, expires_at, storage_nonce
+         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $1)`,
         [
           uploadSessionId,
           item.id,
@@ -420,70 +447,20 @@ export class IngestionService {
     }
   }
 
-  async completeUploadSession(uploadSessionId: string, parts: Array<{ partNumber: number; etag: string }>) {
-    const client = await this.pool.connect();
-    try {
-      await client.query("BEGIN");
-      const result = await client.query<
-        UploadRow & { ingestion_item_id: string; expected_size_bytes: string }
-      >(
-        `SELECT id, request_hash, bucket, object_key, multipart_upload_id,
-                part_size_bytes, part_count, expires_at, status,
-                ingestion_item_id, expected_size_bytes
-         FROM upload_sessions WHERE id = $1 FOR UPDATE`,
-        [uploadSessionId],
-      );
-      const upload = result.rows[0];
-      if (!upload) throw new ApiError("RESOURCE_NOT_FOUND", 404, false, "Upload session not found");
-      if (upload.status === "completed") {
-        await client.query("COMMIT");
-        return { status: "completed" as const, resourceId: upload.id };
-      }
-      if (upload.status !== "active" || upload.expires_at <= new Date()) {
-        throw new ApiError("UPLOAD_SESSION_EXPIRED", 410, false, "Upload session has expired");
-      }
-      if (parts.length !== upload.part_count) {
-        throw new ApiError("INVALID_REQUEST", 400, false, "Completed part list is incomplete");
-      }
-      await this.s3.send(
-        new CompleteMultipartUploadCommand({
-          Bucket: upload.bucket,
-          Key: upload.object_key,
-          UploadId: upload.multipart_upload_id,
-          MultipartUpload: {
-            Parts: [...parts]
-              .sort((a, b) => a.partNumber - b.partNumber)
-              .map((part) => ({ PartNumber: part.partNumber, ETag: part.etag })),
-          },
-        }),
-      );
-      const head = await this.s3.send(
-        new HeadObjectCommand({ Bucket: upload.bucket, Key: upload.object_key }),
-      );
-      if (head.ContentLength !== Number(upload.expected_size_bytes)) {
-        throw new ApiError(
-          "ASSET_CHECKSUM_MISMATCH",
-          422,
-          false,
-          "Uploaded object size differs from the declaration",
-        );
-      }
-      await client.query(
-        "UPDATE upload_sessions SET status = 'completed', completed_at = now() WHERE id = $1",
-        [upload.id],
-      );
-      await client.query(
-        "UPDATE ingestion_items SET status = 'uploaded' WHERE id = $1",
-        [upload.ingestion_item_id],
-      );
-      await client.query("COMMIT");
-      return { status: "completed" as const, resourceId: upload.id };
-    } catch (error) {
-      await client.query("ROLLBACK");
-      throw error;
-    } finally {
-      client.release();
-    }
+  async completeUploadSession(uploadSessionId: string, parts: Array<{ partNumber: number; etag: string }>, actorUserId?:string, idempotencyKey?:string) {
+    return new UploadRecoveryService(this.pool,this.s3).complete(uploadSessionId,parts,actorUserId,idempotencyKey);
+  }
+
+  async getUploadSession(id:string,actor:string){return new UploadRecoveryService(this.pool,this.s3).status(id,actor);}
+  async renewUploadSession(id:string,actor:string,key:string){return new UploadRecoveryService(this.pool,this.s3).renew(id,actor,key);}
+
+  async getBatchRecovery(batchId:string){
+    const batch=await this.getBatch(batchId);
+    const items=await this.pool.query(`SELECT i.id AS "itemId",i.client_file_id AS "clientFileId",i.asset_type AS "assetType",i.file_name AS "fileName",i.expected_size_bytes::float8 AS "sizeBytes",trim(i.expected_sha256) AS sha256,i.mime_type AS "mimeType",i.status,i.error_code AS "errorCode",u.id AS "uploadSessionId",j.id AS "jobId",j.status AS "jobStatus" FROM ingestion_items i LEFT JOIN LATERAL (SELECT id FROM upload_sessions WHERE ingestion_item_id=i.id ORDER BY created_at DESC,id DESC LIMIT 1) u ON true LEFT JOIN processing_jobs j ON j.ingestion_item_id=i.id AND j.job_type='package_validate' WHERE i.batch_id=$1 ORDER BY i.created_at,i.id`,[batchId]);
+    const control=(await this.pool.query(`SELECT b.source,b.source_commit_sha AS "sourceCommitSha",EXISTS(SELECT 1 FROM processing_jobs j JOIN ingestion_items i ON i.id=j.ingestion_item_id WHERE i.batch_id=b.id AND j.status='running') AS running,(SELECT count(*)::int FROM upload_sessions u JOIN ingestion_items i ON i.id=u.ingestion_item_id WHERE i.batch_id=b.id AND u.status='aborted' AND u.abort_confirmed_at IS NULL) AS "pendingUploadCleanup",cv.id AS "contentVersionId",cv.status AS "contentStatus",cv.publishable FROM ingestion_batches b LEFT JOIN content_versions cv ON cv.source_batch_id=b.id WHERE b.id=$1`,[batchId])).rows[0]!;
+    const jobs=(await this.pool.query(`SELECT j.id,j.attempt_count,j.max_attempts,j.dispatch_generation FROM processing_jobs j JOIN ingestion_items i ON i.id=j.ingestion_item_id WHERE i.batch_id=$1`,[batchId])).rows;
+    const currentItems=items.rows.map(item=>{const job=jobs.find(row=>row.id===item.jobId);return{...item,attemptCount:job?.attempt_count??null,maxAttempts:job?.max_attempts??null,dispatchGeneration:job?.dispatch_generation??null,canRetry:!!job&&["failed","dead_letter"].includes(item.jobStatus)&&job.attempt_count<job.max_attempts&&["queued","processing","partial_failed"].includes(batch.status)};});
+    return{batchId:batch.batchId,status:batch.status,workId:batch.workId,pieceId:batch.pieceId,contentVersion:batch.contentVersion,items:currentItems,source:control.source,sourceCommitSha:control.sourceCommitSha,canCancel:!control.running&&(["draft","uploading","queued","partial_failed"].includes(batch.status)||batch.status==="cancelled"&&control.pendingUploadCleanup>0),pendingUploadCleanup:control.pendingUploadCleanup,content:control.contentVersionId?{contentVersionId:control.contentVersionId,status:control.contentStatus,publishable:control.publishable}:null};
   }
 
   async finalizeBatch(batchId: string, requestId: string) {
@@ -496,11 +473,12 @@ export class IngestionService {
         [batchId],
       );
       if (!batch.rows[0]) throw new ApiError("RESOURCE_NOT_FOUND", 404, false, "Batch not found");
+      if (!["draft","uploading","queued","processing","partial_failed","ready_for_review","published"].includes(batch.rows[0].status))throw new ApiError("INGESTION_BATCH_CONFLICT",409,false,"Batch cannot be finalized in its current state");
       const incomplete = await client.query<{ count: string }>(
         "SELECT count(*)::text AS count FROM ingestion_items WHERE batch_id = $1 AND status <> 'uploaded'",
         [batchId],
       );
-      if (incomplete.rows[0]?.count !== "0" && batch.rows[0].status === "uploading") {
+      if (incomplete.rows[0]?.count !== "0" && ["draft","uploading"].includes(batch.rows[0].status)) {
         throw new ApiError("INGESTION_BATCH_CONFLICT", 409, false, "Not all declared files are uploaded");
       }
       await client.query(
@@ -550,72 +528,11 @@ export class IngestionService {
     return { status: "accepted" as const, resourceId: batchId };
   }
 
-  async cancelBatch(batchId: string) {
-    const client = await this.pool.connect();
-    try {
-      await client.query("BEGIN");
-      const result = await client.query<{ id: string }>(
-        `UPDATE ingestion_batches
-         SET status = 'cancelled', cancelled_at = now()
-         WHERE id = $1 AND status IN ('draft', 'uploading', 'queued', 'partial_failed')
-         RETURNING id`,
-        [batchId],
-      );
-      if (!result.rows[0]) {
-        throw new ApiError("INGESTION_BATCH_CONFLICT", 409, false, "Batch cannot be cancelled in its current state");
-      }
-      await client.query(
-        "UPDATE ingestion_items SET status = 'cancelled' WHERE batch_id = $1 AND status IN ('declared', 'uploading', 'uploaded', 'queued')",
-        [batchId],
-      );
-      await client.query(
-        `UPDATE processing_jobs SET status = 'cancelled', finished_at = now()
-         WHERE ingestion_item_id IN (SELECT id FROM ingestion_items WHERE batch_id = $1)
-           AND status IN ('queued', 'retry_wait')`,
-        [batchId],
-      );
-      await client.query("COMMIT");
-      return { status: "cancelled" as const, resourceId: batchId };
-    } catch (error) {
-      await client.query("ROLLBACK");
-      throw error;
-    } finally {
-      client.release();
-    }
-  }
-
-  async retryJob(jobId: string, requestId: string) {
-    const result = await this.pool.query<{ id: string }>(
-      `UPDATE processing_jobs
-       SET status = 'queued', error_code = NULL, error_summary = NULL,
-           next_retry_at = NULL, finished_at = NULL
-       WHERE id = $1 AND status IN ('failed', 'dead_letter') AND attempt_count < max_attempts
-       RETURNING id`,
-      [jobId],
-    );
-    if (!result.rows[0]) {
-      throw new ApiError("INGESTION_JOB_FAILED", 409, false, "Job is not retryable");
-    }
-    await this.pool.query(
-      `UPDATE ingestion_items SET status = 'queued', error_code = NULL, error_summary = NULL
-       WHERE id = (SELECT ingestion_item_id FROM processing_jobs WHERE id = $1)`,
-      [jobId],
-    );
-    const existing = await this.queue.getJob(`ingestion-${jobId}`);
-    if (existing) await existing.remove();
-    await this.queue.add(
-      "content.ingestion.item",
-      { type: "content.ingestion.item", processingJobId: jobId, requestId },
-      {
-        jobId: `ingestion-${jobId}`,
-        attempts: 5,
-        backoff: { type: "exponential", delay: 1_000 },
-        removeOnComplete: 1_000,
-        removeOnFail: 5_000,
-      },
-    );
-    return { status: "accepted" as const, resourceId: jobId };
-  }
+  private operations(){return new IngestionOperationsService(this.pool,this.s3,this.queue,this.cursorKeyBase64);}
+  async listBatches(actor:string,options:BatchListOptions){return this.operations().list(actor,options);}
+  async getJob(id:string){return this.operations().job(id);}
+  async cancelBatch(id:string,actor:string,key:string,requestId:string){return this.operations().cancel(id,actor,key,requestId);}
+  async retryJob(id:string,requestId:string,actor:string,key:string){return this.operations().retry(id,actor,key,requestId);}
 
   async publishContentVersion(
     contentVersionId: string,

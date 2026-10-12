@@ -17,7 +17,7 @@ test("learning history authenticates first and rejects account or malformed quer
     assert.equal((await app.inject({url:"/api/v1/me/quiz-history?userId=other"})).statusCode,401);
     const result=await app.inject({url:"/api/v1/me/quiz-history?cursor=abc&limit=2",headers});
     assert.equal(result.statusCode,200);assert.deepEqual(captured,{id:userId,cursor:"abc",limit:2});
-    assert.equal(result.headers["x-api-contract-version"],"api-contract-v2.4.0");
+    assert.equal(result.headers["x-api-contract-version"],"api-contract-v2.9.0");
     for(const query of ["userId=other","limit=0","limit=101","limit=1.2","limit=01","limit=-1","cursor=","cursor="+encodeURIComponent("x".repeat(513))]){
       assert.equal((await app.inject({url:"/api/v1/me/quiz-history?"+query,headers})).statusCode,400,query);
     }

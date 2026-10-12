@@ -1,0 +1,20 @@
+// Only an owned random local integration fixture may launch this deliberately blocked worker.
+import pg from "pg";
+import {S3Client,GetObjectCommand} from "@aws-sdk/client-s3";
+import {loadConfig} from "../src/config.ts";
+import {isAbsolute,basename} from "node:path";
+import {IngestionProcessor} from "../src/ingestion/processor.ts";
+import {Worker,UnrecoverableError} from "bullmq";
+import {parseRedisConnection} from "../src/queue.ts";
+import type {IngestionJobPayload} from "../src/ingestion/service.ts";
+const config=loadConfig(),schema=process.env.OPERATIONS_FIXTURE_SCHEMA??"",job=process.env.OPERATIONS_FIXTURE_JOB??"";
+const temporaryRoot=process.env.OPERATIONS_FIXTURE_TEMP_ROOT??"";
+const queueName=process.env.OPERATIONS_FIXTURE_QUEUE??"";
+if(!/^operations-smoke-[a-f0-9]{16}$/.test(queueName))throw Error("Refuse unowned fixture queue");
+if(!isAbsolute(temporaryRoot)||!/^tingyue-ops-worker-[A-Za-z0-9]{6}$/.test(basename(temporaryRoot)))throw Error("Refuse unowned fixture temporary root");
+if(!["local","test"].includes(config.appEnv)||!/^postgresql:\/\/[^@]+@127\.0\.0\.1:15432\/tingyue_test$/.test(config.databaseUrl)||!/^operations_test_[a-f0-9]{16}$/.test(schema)||!/^[-a-f0-9]{36}$/i.test(job)||config.objectStorage.endpoint!=="127.0.0.1")throw Error("Refuse non-fixture worker");
+const pool=new pg.Pool({connectionString:config.databaseUrl,options:"-c search_path="+schema+",public"}),s3=new S3Client({endpoint:"http://127.0.0.1:"+config.objectStorage.port,region:"us-east-1",forcePathStyle:true,credentials:{accessKeyId:config.objectStorage.accessKey,secretAccessKey:config.objectStorage.secretKey}});
+const original=s3.send.bind(s3);(s3 as any).send=async(command:any,...args:any[])=>{if(command instanceof GetObjectCommand){process.stdout.write("operations.fixture.claimed\n");await new Promise(()=>{});}return(original as any)(command,...args);};
+const processor=new IngestionProcessor(pool,s3,config.ffprobePath,temporaryRoot);
+const worker=new Worker<IngestionJobPayload>(queueName,async claimed=>{if(claimed.data.processingJobId!==job)throw new UnrecoverableError("Unexpected fixture job");await processor.process(job,claimed.attemptsMade+1,Number(claimed.opts.attempts)||1,claimed.data.dispatchGeneration??0);},{connection:parseRedisConnection(config.redisUrl),concurrency:1});
+await new Promise(()=>{});
