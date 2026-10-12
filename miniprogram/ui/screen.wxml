@@ -7,6 +7,7 @@
   </view>
 
   <include src="./ranking-detail.wxml" />
+  <include src="./student-profile.wxml" />
 
   <view class="content home" wx:if="{{route === 'home'}}">
     <view class="greeting"><view><text class="eyebrow">A LITTLE READING, EVERY DAY</text><view class="greeting-title">让每个故事，陪你长大<text class="tiny-spark">✳</text></view></view></view>
@@ -85,6 +86,18 @@
     <view wx:if="{{isProduction && user}}" class="small-empty" bindtap="retryQuizSync">{{quizSyncLabel}} · 待提交 {{quizSyncPending}} 次<text>{{reportSourceLabel}}</text><text>{{listeningSourceLabel}}</text></view><view class="metrics profile-metrics"><view><text>{{stats.pieces}}</text><text>PIECES</text></view><view><text>{{stats.words}}</text><text>WORDS</text></view><view><text>{{stats.listening}}</text><text>{{user && isProduction ? '有效听读' : 'LISTENING'}}</text></view></view>
     <button wx:if="{{showCommerceTest}}" class="secondary full" bindtap="openCommerceTest">模拟内容包与订单 · 不收费</button>
     <view class="info-note" wx:if="{{isProduction}}"><text>Learning Points {{learningPoints}} · {{learningPointsLabel}}</text></view>
+    <view class="student-profile-card" wx:if="{{isProduction && user}}">
+      <view class="section-head"><text class="section-title">Student Profile</text><text class="muted">{{studentProfile ? studentProfile.statusLabel : 'Pending'}}</text></view>
+      <view wx:if="{{studentProfile}}">
+        <text class="student-code">Student Code · {{studentProfile.studentCode}}</text>
+        <view class="profile-summary"><text>{{studentProfile.campusLabel}} · {{studentProfile.gradeLabel}} · {{studentProfile.levelLabel}}</text><text>核验 {{studentProfile.verifiedLabel}}</text></view>
+        <text class="muted">需要录入或纠正时，将此查询码提供给运营管理员。查询码不是登录凭据；筛选不会改变档案，榜单采用期初归属。</text>
+        <text class="muted" wx:if="{{studentProfile.campusActive === false}}">当前校区已停用，请联系运营管理员。</text>
+      </view>
+      <text class="muted" wx:if="{{studentProfileStatus === 'error'}}">档案加载失败，可重试；上次缓存不代表最新状态。</text>
+      <button class="secondary full" bindtap="loadStudentProfile">Refresh Profile</button>
+      <button class="secondary full" wx:if="{{studentProfileCanManage}}" bindtap="openStudentProfiles">Manage Student Profiles</button>
+    </view>
     <view class="section-head"><text class="section-title">My Reading</text><text class="section-en">MY READING</text></view>
     <view class="menu-card"><view class="menu-row" data-page="report" bindtap="nav"><image src="/assets/icon-chart.png" /><text>My Quizzes</text><text class="menu-hint">Your progress</text><text>›</text></view><view class="menu-row" data-page="recent" bindtap="nav"><image src="/assets/icon-clock.png" /><text>Recent</text><text class="menu-hint">{{recent.length}} 本</text><text>›</text></view><view class="menu-row" data-sheet="favorites" bindtap="showSheet"><image src="/assets/icon-heart.png" /><text>Favorite Books</text><text class="menu-hint">{{favorites.length}} 本</text><text>›</text></view><view class="menu-row" data-sheet="words" bindtap="showSheet"><image src="/assets/icon-book.png" /><text>Vocabulary</text><text class="menu-hint">New words</text><text>›</text></view><view class="menu-row" wx:if="{{isProduction}}" bindtap="openLocalImport"><image src="/assets/icon-check.png" /><text>Import Local Learning</text><text class="menu-hint">{{user ? 'Review & import' : 'Login required'}}</text><text>›</text></view></view>
     <view class="menu-card">

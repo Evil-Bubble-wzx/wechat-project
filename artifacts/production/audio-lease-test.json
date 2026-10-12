@@ -15,7 +15,7 @@
     "range": 1
   },
   "result": {
-    "position": 31.275931,
+    "position": 31.277098,
     "checkpoint": 30,
     "rate": 1.25,
     "loop": true,
@@ -23,7 +23,7 @@
     "coverage": [
       [
         0,
-        31.275931
+        31.277098
       ]
     ],
     "status": "paused"

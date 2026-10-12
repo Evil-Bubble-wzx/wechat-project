@@ -1,0 +1,16 @@
+{
+  "scope": "actual frontend/HTTP/Fastify/PostgreSQL; test WeChat identity and preview navigation bridge",
+  "staff": "authorized-save",
+  "student": "own-profile-only",
+  "directManagementRoute": "denied",
+  "periodPolicy": "period_start",
+  "widths": [
+    320,
+    390,
+    430
+  ],
+  "writes": [
+    200
+  ],
+  "errors": []
+}

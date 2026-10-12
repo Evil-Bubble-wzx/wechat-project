@@ -13,7 +13,9 @@ import { registerProgressRoutes, type ProgressSyncServicePort } from "./progress
 import { registerSavedWordSyncRoutes, type SavedWordSyncServicePort } from "./saved-word-sync-routes.ts";
 import { registerReaderLibraryRoutes, type ReaderLibraryServicePort } from "./reader-library-routes.ts";
 import { registerRankingRoutes, type RankingServicePort } from "./ranking-routes.ts";
+import {registerStudentProfileRoutes} from "./student-profile-routes.ts";
 import { registerIngestionRoutes } from "./ingestion-routes.ts";
+import {registerOperationsRoutes} from "./operations-routes.ts";
 import { registerSessionRoutes, type SessionServicePort } from "./session-routes.ts";
 import type { IngestionService } from "../ingestion/service.ts";
 import type { ContentService } from "../content/service.ts";
@@ -42,6 +44,7 @@ export type CreateAppOptions = {
   savedWordSyncService?: SavedWordSyncServicePort;
   readerLibraryService?: ReaderLibraryServicePort;
   rankingService?: RankingServicePort;
+  studentProfileService?: import("./student-profile-routes.ts").StudentProfileServicePort;
   auditService?: AuditService;
   metrics?: MetricsRegistry;
   operationalMetrics?: OperationalMetricsCollector;
@@ -78,7 +81,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
 
   app.addHook("onSend", async (request, reply, payload) => {
     reply.header("X-Request-Id", request.id);
-    reply.header("X-API-Contract-Version", "api-contract-v2.4.0");
+    reply.header("X-API-Contract-Version", "api-contract-v2.9.0");
     return payload;
   });
 
@@ -97,6 +100,11 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
       });
     }
 
+    const parserCode=(error as {code?:string}).code;
+    if(["FST_ERR_CTP_BODY_TOO_LARGE","FST_ERR_CTP_INVALID_JSON_BODY","FST_ERR_CTP_EMPTY_JSON_BODY","FST_ERR_CTP_INVALID_MEDIA_TYPE"].includes(parserCode??"")){
+      const state=requestState.get(request);if(state)state.errorCode="INVALID_REQUEST";
+      return reply.code(400).send({requestId:request.id,error:{code:"INVALID_REQUEST",message:"Request body format or size is invalid.",retryable:false,details:null}});
+    }
     const state = requestState.get(request);
     if (state) state.errorCode = "INTERNAL_ERROR";
     request.log.error(
@@ -211,6 +219,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
     registerSessionRoutes(app, options.sessionService, options.auditService, options.rateLimiter);
   }
   if (options.ingestionService) {
+    if(["local","test"].includes(options.appEnv??"local"))registerOperationsRoutes(app);
     if (!options.sessionService?.assertContentAdmin) {
       throw new Error("Ingestion routes require a session service with admin authorization");
     }
@@ -221,6 +230,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
         assertContentAdmin(userId: string): Promise<void>;
       },
       options.auditService,
+      options.rateLimiter,
     );
   }
   if (options.contentService) {
@@ -260,6 +270,11 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
   if (options.readerLibraryService) {
     if (!options.sessionService) throw new Error("Library routes require a session service");
     registerReaderLibraryRoutes(app, options.readerLibraryService, options.sessionService, options.auditService, options.rateLimiter);
+  }
+
+  if(options.studentProfileService){
+    if(!options.sessionService)throw new Error("Student profile routes require a session service");
+    registerStudentProfileRoutes(app,options.studentProfileService,options.sessionService,options.rateLimiter);
   }
 
   app.setNotFoundHandler(async (request, reply) => {

@@ -231,3 +231,15 @@ text { line-height:1.5; white-space:pre-line; }
 .analysis-search { display:flex;align-items:center;gap:12rpx; }
 .analysis-search .search-input { width:0;min-width:0;box-sizing:border-box;border:1rpx solid #dfe6da;border-radius:16rpx;background:#edf0e9;padding:0 16rpx;height:76rpx;font-size:23rpx; }
 .ranking-analysis .tiny-button { flex-shrink:0;border:1rpx solid #dfe6da;border-radius:14rpx;background:#edf0e9;font-size:22rpx;padding:16rpx 18rpx;line-height:1.3;white-space:nowrap; }
+.student-profile-card { border:1rpx solid #dfe6da;border-radius:22rpx;background:white;padding:24rpx;margin:26rpx 0; }
+.student-profile-card .muted,.student-code { display:block;font-size:22rpx;line-height:1.6;overflow-wrap:anywhere; }
+.profile-heading { margin:22rpx 0; }
+.profile-heading .section-title { margin:14rpx 0; }
+.profile-heading .muted { display:block;line-height:1.6;font-size:22rpx; }
+.profile-summary { display:flex;flex-direction:column;gap:12rpx;margin:22rpx 0;font-size:24rpx;overflow-wrap:anywhere; }
+.profile-search,.profile-field { display:flex;align-items:center;gap:18rpx;margin:22rpx 0; }
+.profile-search .profile-input { flex:1;width:0;min-width:0; }
+.profile-field { justify-content:space-between; }
+.profile-input { box-sizing:border-box;width:100%;height:86rpx;background:#edf0e9;border:1rpx solid #dfe6da;border-radius:14rpx;padding:0 18rpx;font-size:23rpx; }
+.profile-confirm { display:flex;align-items:flex-start;gap:18rpx;font-size:22rpx;line-height:1.6;margin:24rpx 0; }
+.profile-confirm .checkbox { flex-shrink:0; }

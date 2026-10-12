@@ -3627,6 +3627,1481 @@
         }
       }
     },
+    "StudentProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "studentCode",
+        "revision",
+        "status",
+        "campusId",
+        "campusName",
+        "campusActive",
+        "grade",
+        "readingLevel",
+        "source",
+        "verifiedAt",
+        "effectiveFrom"
+      ],
+      "properties": {
+        "studentCode": {
+          "type": "string",
+          "pattern": "^student_[a-f0-9]{32}$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "unverified",
+            "unassigned"
+          ]
+        },
+        "campusId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9-]{0,31}$"
+        },
+        "campusName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "campusActive": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "grade": {
+          "enum": [
+            null,
+            "k",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+          ]
+        },
+        "readingLevel": {
+          "enum": [
+            null,
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        "source": {
+          "enum": [
+            "admin",
+            "school_sync",
+            "unverified",
+            "user"
+          ]
+        },
+        "verifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "effectiveFrom": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "StudentProfileResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "profile",
+        "canManage"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "profile": {
+          "$ref": "#/$defs/StudentProfile"
+        },
+        "canManage": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AdminStudentProfileResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "profile"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "profile": {
+          "$ref": "#/$defs/StudentProfile"
+        }
+      }
+    },
+    "StudentProfileMutationRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mutationId",
+        "baseRevision",
+        "campusId",
+        "grade",
+        "readingLevel",
+        "reason"
+      ],
+      "properties": {
+        "mutationId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9:_-]{8,128}$"
+        },
+        "baseRevision": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "campusId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9-]{0,31}$"
+        },
+        "grade": {
+          "enum": [
+            null,
+            "k",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+          ]
+        },
+        "readingLevel": {
+          "enum": [
+            null,
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "campusId": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "campusId"
+            ]
+          },
+          "then": {
+            "properties": {
+              "grade": {
+                "type": "null"
+              },
+              "readingLevel": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "StudentProfileMutationResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "status",
+        "profile"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "status": {
+          "enum": [
+            "applied",
+            "unchanged"
+          ]
+        },
+        "profile": {
+          "$ref": "#/$defs/StudentProfile"
+        }
+      }
+    },
+    "StudentProfileOptionsResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "campuses",
+        "grades",
+        "readingLevels",
+        "cohortPolicy"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "campuses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "grades": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "readingLevels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "cohortPolicy": {
+          "const": "period_start"
+        }
+      }
+    },
+    "OperationsContextResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "userId"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "userId": {
+          "$ref": "#/$defs/Uuid"
+        }
+      }
+    },
+    "UploadedPart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "partNumber",
+        "etag",
+        "sizeBytes"
+      ],
+      "properties": {
+        "partNumber": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "etag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "UploadSessionStatusResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "uploadSessionId",
+        "partSizeBytes",
+        "expiresAt",
+        "uploadedParts",
+        "status",
+        "partCount"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "uploadSessionId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "partSizeBytes": {
+          "type": "integer",
+          "minimum": 5242880
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "uploadedParts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/UploadedPart"
+          }
+        },
+        "status": {
+          "enum": [
+            "active",
+            "expired",
+            "completing",
+            "completed",
+            "aborted"
+          ]
+        },
+        "partCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        }
+      }
+    },
+    "UploadSessionRenewRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "UploadSessionRenewResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "uploadSessionId",
+        "partSizeBytes",
+        "expiresAt",
+        "uploadedParts",
+        "parts"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "uploadSessionId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "partSizeBytes": {
+          "type": "integer",
+          "minimum": 5242880
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "uploadedParts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/UploadedPart"
+          }
+        },
+        "parts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/UploadPart"
+          }
+        }
+      }
+    },
+    "IngestionRecoveryItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "itemId",
+        "clientFileId",
+        "assetType",
+        "fileName",
+        "sizeBytes",
+        "sha256",
+        "mimeType",
+        "status",
+        "errorCode",
+        "uploadSessionId",
+        "jobId",
+        "jobStatus",
+        "attemptCount",
+        "maxAttempts",
+        "dispatchGeneration",
+        "canRetry"
+      ],
+      "properties": {
+        "itemId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "clientFileId": {
+          "type": "string"
+        },
+        "assetType": {
+          "enum": [
+            "audio",
+            "subtitles",
+            "text",
+            "vocabulary",
+            "quiz",
+            "cover",
+            "metadata"
+          ]
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uploadSessionId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jobId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jobStatus": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attemptCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "maxAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "dispatchGeneration": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "canRetry": {
+          "type": "boolean"
+        }
+      }
+    },
+    "IngestionBatchRecoveryResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "batchId",
+        "status",
+        "workId",
+        "pieceId",
+        "contentVersion",
+        "items",
+        "source",
+        "sourceCommitSha",
+        "canCancel",
+        "pendingUploadCleanup",
+        "content"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "batchId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "status": {
+          "type": "string"
+        },
+        "workId": {
+          "type": "string"
+        },
+        "pieceId": {
+          "type": "string"
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/IngestionRecoveryItem"
+          }
+        },
+        "source": {
+          "type": "string"
+        },
+        "sourceCommitSha": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canCancel": {
+          "type": "boolean"
+        },
+        "pendingUploadCleanup": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contentVersionId",
+                "status",
+                "publishable"
+              ],
+              "properties": {
+                "contentVersionId": {
+                  "$ref": "#/$defs/Uuid"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "publishable": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "IngestionBatchSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batchId",
+        "workId",
+        "pieceId",
+        "contentVersion",
+        "status",
+        "totalCount",
+        "succeededCount",
+        "failedCount",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "batchId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "workId": {
+          "type": "string"
+        },
+        "pieceId": {
+          "type": "string"
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "succeededCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createdAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/Rfc3339"
+        }
+      }
+    },
+    "IngestionBatchListResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "items",
+        "nextCursor"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/IngestionBatchSummary"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2048
+        }
+      }
+    },
+    "IngestionJobResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "jobId",
+        "batchId",
+        "clientFileId",
+        "assetType",
+        "status",
+        "attemptCount",
+        "maxAttempts",
+        "dispatchGeneration",
+        "errorCode",
+        "batchStatus",
+        "nextRetryAt",
+        "startedAt",
+        "finishedAt",
+        "canRetry",
+        "remainingAttempts"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "jobId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "batchId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "clientFileId": {
+          "type": "string"
+        },
+        "assetType": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "dispatchGeneration": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errorCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "batchStatus": {
+          "type": "string"
+        },
+        "nextRetryAt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rfc3339"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "startedAt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rfc3339"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finishedAt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rfc3339"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canRetry": {
+          "type": "boolean"
+        },
+        "remainingAttempts": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "IngestionEmptyActionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "BulkImportItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clientFileId",
+        "assetType",
+        "fileName",
+        "sizeBytes",
+        "mimeType",
+        "sha256",
+        "relativePath"
+      ],
+      "properties": {
+        "clientFileId": {
+          "enum": [
+            "audio",
+            "subtitles",
+            "text",
+            "vocabulary",
+            "quiz",
+            "cover",
+            "metadata"
+          ]
+        },
+        "assetType": {
+          "enum": [
+            "audio",
+            "subtitles",
+            "text",
+            "vocabulary",
+            "quiz",
+            "cover",
+            "metadata"
+          ]
+        },
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mimeType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "sha256": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "relativePath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^(?!\\/)(?!.*[\\\\:\\u0000-\\u001f\\u007f])(?!(?:.*\\/)?\\.{1,2}(?:\\/|$))[^/]{1,255}(?:\\/[^/]{1,255})*$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "audio"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5368709120
+              },
+              "clientFileId": {
+                "const": "audio"
+              },
+              "mimeType": {
+                "enum": [
+                  "audio/mpeg",
+                  "audio/mp4",
+                  "audio/x-m4a",
+                  "audio/wav",
+                  "audio/x-wav",
+                  "audio/flac",
+                  "application/octet-stream"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "subtitles"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 104857600
+              },
+              "clientFileId": {
+                "const": "subtitles"
+              },
+              "mimeType": {
+                "enum": [
+                  "application/json",
+                  "text/vtt",
+                  "application/x-subrip",
+                  "text/plain",
+                  "application/octet-stream"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "text"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 104857600
+              },
+              "clientFileId": {
+                "const": "text"
+              },
+              "mimeType": {
+                "enum": [
+                  "text/plain",
+                  "text/markdown",
+                  "application/json",
+                  "application/octet-stream"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "vocabulary"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8388608
+              },
+              "clientFileId": {
+                "const": "vocabulary"
+              },
+              "mimeType": {
+                "enum": [
+                  "application/json"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "quiz"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8388608
+              },
+              "clientFileId": {
+                "const": "quiz"
+              },
+              "mimeType": {
+                "enum": [
+                  "application/json"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "cover"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 52428800
+              },
+              "clientFileId": {
+                "const": "cover"
+              },
+              "mimeType": {
+                "enum": [
+                  "image/jpeg",
+                  "image/png",
+                  "image/webp",
+                  "image/svg+xml",
+                  "application/octet-stream"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "metadata"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8388608
+              },
+              "clientFileId": {
+                "const": "metadata"
+              },
+              "mimeType": {
+                "enum": [
+                  "application/json"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assetType": {
+                "const": "subtitles"
+              },
+              "mimeType": {
+                "const": "application/json"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sizeBytes": {
+                "maximum": 8388608,
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "BulkImportPiece": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pieceId",
+        "title",
+        "sortOrder",
+        "accessType",
+        "contentVersion",
+        "items"
+      ],
+      "properties": {
+        "pieceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "sortOrder": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "accessType": {
+          "enum": [
+            "free",
+            "restricted"
+          ]
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "items": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "$ref": "#/$defs/BulkImportItem"
+          }
+        }
+      }
+    },
+    "BulkImportWork": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workId",
+        "title",
+        "description",
+        "accessType",
+        "pieces"
+      ],
+      "properties": {
+        "workId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "accessType": {
+          "enum": [
+            "free",
+            "restricted"
+          ]
+        },
+        "pieces": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/BulkImportPiece"
+          }
+        }
+      }
+    },
+    "BulkImportPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "source",
+        "sourceCommitSha",
+        "toolVersion",
+        "works"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sourceCommitSha": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "toolVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "works": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/BulkImportWork"
+          }
+        }
+      }
+    },
+    "BulkImportEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ordinal",
+        "batchId",
+        "workId",
+        "pieceId",
+        "title",
+        "contentVersion",
+        "status",
+        "totalFiles",
+        "uploadedFiles",
+        "readyFiles",
+        "failedFiles",
+        "updatedAt"
+      ],
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "batchId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "workId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "pieceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalFiles": {
+          "const": 7
+        },
+        "uploadedFiles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "readyFiles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "failedFiles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "BulkImportGroupResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "groupId",
+        "plan",
+        "status",
+        "workCount",
+        "pieceCount",
+        "declaredBytes",
+        "createdWorkCount",
+        "createdPieceCount",
+        "createdAt",
+        "entries"
+      ],
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "groupId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "plan": {
+          "$ref": "#/$defs/BulkImportPlan"
+        },
+        "status": {
+          "enum": [
+            "uploading",
+            "processing",
+            "partial_failed",
+            "partially_cancelled",
+            "cancelled",
+            "ready_for_review",
+            "published"
+          ]
+        },
+        "workCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "pieceCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "declaredBytes": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "createdWorkCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "createdPieceCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/BulkImportEntry"
+          }
+        }
+      }
+    },
+    "BulkImportGroupSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "groupId",
+        "workCount",
+        "pieceCount",
+        "createdAt"
+      ],
+      "properties": {
+        "groupId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "workCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "pieceCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "BulkImportGroupListResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "limit",
+        "scope",
+        "items"
+      ],
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "limit": {
+          "const": 20
+        },
+        "scope": {
+          "const": "recent"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/BulkImportGroupSummary"
+          }
+        }
+      }
+    },
     "SimulatedBundleContent": {
       "type": "object",
       "additionalProperties": false,

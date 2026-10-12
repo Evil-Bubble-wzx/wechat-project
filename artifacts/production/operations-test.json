@@ -1,0 +1,16 @@
+{
+  "scope": "actual operations webpage / HTTP / PostgreSQL / MinIO; isolated admin session; no real approvals or publication",
+  "hash": "bounded SHA-256",
+  "expiredUpload": "resumed",
+  "storedPart": "not-reuploaded",
+  "wrongFile": "blocked",
+  "storageCompleteDbFailure": "recovered",
+  "credentials": "memory-only",
+  "processing": "explicit-submit",
+  "widths": [
+    375,
+    768,
+    1280
+  ],
+  "errors": []
+}

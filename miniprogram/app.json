@@ -10,6 +10,7 @@
     "pages/report/index",
     "pages/ranking/index",
     "pages/ranking-detail/index",
+    "pages/student-profile/index",
     "pages/login/index",
     "pages/coupons/index",
     "pages/invite/index",

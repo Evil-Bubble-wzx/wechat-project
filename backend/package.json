@@ -41,7 +41,15 @@
     "check": "npm run typecheck && npm test",
     "test:integration:commerce": "node --experimental-strip-types scripts/commerce-smoke.ts",
     "commerce:simulate": "node --experimental-strip-types scripts/simulated-commerce.ts",
-    "test:integration:ranking-browser": "node --experimental-strip-types scripts/ranking-page-smoke.ts --browser"
+    "test:integration:ranking-browser": "node --experimental-strip-types scripts/ranking-page-smoke.ts --browser",
+    "test:integration:student-profile": "node --experimental-strip-types scripts/student-profile-smoke.ts",
+    "test:integration:student-profile-browser": "node --experimental-strip-types scripts/student-profile-smoke.ts --browser",
+    "test:integration:subtitle-browser": "node --experimental-strip-types scripts/catalog-ingestion-smoke.ts --subtitle-browser",
+    "test:integration:operations-browser": "node --experimental-strip-types scripts/catalog-ingestion-smoke.ts --operations-browser",
+    "test:integration:ingestion-operations": "node --experimental-strip-types scripts/ingestion-operations-smoke.ts",
+    "test:integration:operations-control-browser": "node --experimental-strip-types scripts/ingestion-operations-smoke.ts --browser",
+    "test:integration:bulk-import": "node --experimental-strip-types scripts/bulk-import-smoke.ts",
+    "test:integration:bulk-import-browser": "node --experimental-strip-types scripts/bulk-import-smoke.ts --browser"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1139.0",

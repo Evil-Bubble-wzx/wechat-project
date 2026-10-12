@@ -1,0 +1,15 @@
+{
+  "scope": "actual webpage / HTTP / PostgreSQL / BullMQ / MinIO; isolated local administrator",
+  "pagination": "20+20+16",
+  "filters": "server",
+  "retry": "durable-intent + reload + recovered queue + same-key replay",
+  "attempts": "cumulative, not reset",
+  "cancel": "explicit confirmation + durable intent + cleanup retry",
+  "content": "ready_for_review, not published",
+  "widths": [
+    375,
+    768,
+    1280
+  ],
+  "errors": []
+}

@@ -43,6 +43,10 @@ async function main(): Promise<void> {
       "0014_quiz_history",
       "0015_ranking_quiz_analysis",
       "0016_historical_score_invalidation",
+      "0016_student_profile_management",
+      "0017_upload_recovery",
+      "0018_ingestion_operations",
+      "0019_bulk_content_import",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -123,6 +127,10 @@ async function main(): Promise<void> {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
+    assert.equal(await rollbackOne(pool, { schema }), "0019_bulk_content_import");
+    assert.equal(await rollbackOne(pool, { schema }), "0018_ingestion_operations");
+    assert.equal(await rollbackOne(pool, { schema }), "0017_upload_recovery");
+    assert.equal(await rollbackOne(pool, { schema }), "0016_student_profile_management");
     assert.equal(await rollbackOne(pool, { schema }), "0016_historical_score_invalidation");
     assert.equal(await rollbackOne(pool, { schema }), "0015_ranking_quiz_analysis");
     assert.equal(await rollbackOne(pool, { schema }), "0014_quiz_history");
@@ -130,7 +138,11 @@ async function main(): Promise<void> {
     assert.equal(await rollbackOne(pool, { schema }), "0012_reader_library");
     assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
     assert.equal(await rollbackOne(pool, { schema }), "0011_learning_score_consistency");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0011_learning_score_consistency","0011_simulated_commerce","0012_reader_library","0013_content_catalog_projection","0014_quiz_history","0015_ranking_quiz_analysis","0016_historical_score_invalidation"]);
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0011_learning_score_consistency","0011_simulated_commerce","0012_reader_library","0013_content_catalog_projection","0014_quiz_history","0015_ranking_quiz_analysis","0016_historical_score_invalidation","0016_student_profile_management","0017_upload_recovery","0018_ingestion_operations","0019_bulk_content_import"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0019_bulk_content_import");
+    assert.equal(await rollbackOne(pool, { schema }), "0018_ingestion_operations");
+    assert.equal(await rollbackOne(pool, { schema }), "0017_upload_recovery");
+    assert.equal(await rollbackOne(pool, { schema }), "0016_student_profile_management");
     assert.equal(await rollbackOne(pool, { schema }), "0016_historical_score_invalidation");
     assert.equal(await rollbackOne(pool, { schema }), "0015_ranking_quiz_analysis");
     assert.equal(await rollbackOne(pool, { schema }), "0014_quiz_history");

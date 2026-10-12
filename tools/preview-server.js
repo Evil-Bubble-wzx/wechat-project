@@ -23,6 +23,7 @@ const server = http.createServer((req,res) => {
       .replace('<include src="./player.wxml" />',fs.readFileSync(path.join(ui,'player.wxml'),'utf8'))
       .replace('<include src="./quiz.wxml" />',fs.readFileSync(path.join(ui,'quiz.wxml'),'utf8'))
       .replace('<include src="./ranking-detail.wxml" />',fs.readFileSync(path.join(ui,'ranking-detail.wxml'),'utf8'))
+      .replace('<include src="./student-profile.wxml" />',fs.readFileSync(path.join(ui,'student-profile.wxml'),'utf8'))
     res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'});res.end(screen);return
   }
   else if(url.pathname.startsWith('/assets/')||url.pathname.startsWith('/quiz/assets/'))file=path.join(miniRoot,decodeURIComponent(url.pathname))

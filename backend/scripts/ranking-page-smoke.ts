@@ -179,6 +179,7 @@ async function main():Promise<void> {
     assert.equal(oldMetadata.totalMatches,0);
     await pool.query("UPDATE ranking_snapshots SET analysis_version=0 WHERE id=$1",[first.snapshotId]);await pool.query("UPDATE ranking_snapshot_entries SET quiz_analysis=NULL WHERE snapshot_id=$1",[first.snapshotId]);
     await assert.rejects((miniappApi as any).rankingAnalysis(first.currentUser!.participantId,{...analysisFilters,snapshotId:first.snapshotId}));
+    assert.equal(await rollbackOne(pool,{schema}),"0019_bulk_content_import");assert.equal(await rollbackOne(pool,{schema}),"0018_ingestion_operations");assert.equal(await rollbackOne(pool,{schema}),"0017_upload_recovery");assert.equal(await rollbackOne(pool,{schema}),"0016_student_profile_management");
     assert.equal(await rollbackOne(pool,{schema}),"0016_historical_score_invalidation");
     assert.equal(await rollbackOne(pool,{schema}),"0015_ranking_quiz_analysis");
     await migrateUp(pool,{schema});

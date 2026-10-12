@@ -87,7 +87,7 @@ try{
   await pool.query("UPDATE pieces SET access_type='free' WHERE id=$1",[fixturePiece]);assert.equal((await request('GET',manifest)).statusCode,403);
   await pool.query("UPDATE works SET access_type='free' WHERE id='commerce-test'");assert.equal((await request('GET',manifest)).statusCode,200);
   assert.throws(()=>createApp({appEnv:'prod',commerceService:commerce,sessionService:sessions}));
-  for(const name of ["0016_historical_score_invalidation","0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library"])assert.equal(await rollbackOne(pool,{schema}),name);
+  for(const name of ["0019_bulk_content_import","0018_ingestion_operations","0017_upload_recovery","0016_student_profile_management","0016_historical_score_invalidation","0015_ranking_quiz_analysis","0014_quiz_history","0013_content_catalog_projection","0012_reader_library"])assert.equal(await rollbackOne(pool,{schema}),name);
   await assert.rejects(rollbackOne(pool,{schema}),/orders|Orders|order/);
   console.log('commerce.smoke.passed: concurrent idempotency, server prices, isolation, access, refund, history, snapshots, production guard');
 }finally{if(app)await app.close();s3.destroy();await pool.end();await admin.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);await admin.end();}

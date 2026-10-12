@@ -73,6 +73,7 @@ const findCue = (cues, milliseconds) => {
 }
 function createPage(requestedRoute) {
   if(requestedRoute==='ranking-detail')return require('./ranking-detail').createPage()
+  if(requestedRoute==='student-profile')return require('./student-profile').createPage()
   const policy=productMode.current()
   const isDemo=policy.isDemo
   let showAudioDiagnostic=false
@@ -89,6 +90,7 @@ function createPage(requestedRoute) {
   data.commerceBundles=[];data.commerceOrders=[];data.commerceBusy=false;data.commerceError=''
   data.audioDiagnostic=''
   data.playbackNotice=''
+  Object.assign(data,{studentProfile:null,studentProfileStatus:'idle',studentProfileCanManage:false})
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
   /* @demo-end */
@@ -134,10 +136,11 @@ function createPage(requestedRoute) {
     attachPlayer() {if(route==='player'&&!this.playerUnsubscribe)this.playerUnsubscribe=player.subscribe(session=>this.syncPlayer(session,false))},
     detachPlayer() {if(this.playerUnsubscribe){this.playerUnsubscribe();this.playerUnsubscribe=null}this.wordResume=null},
     onShow() {this.refresh();if(route==='player'){this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(this.remoteLoadedOnce)this.loadRemote();if(!isDemo&&api.isAuthenticated()){void progressSync.activate();savedWordSync.foreground()}},
-    onHide() {if(this.data.sheet==="commerceReader"){this.clearCommerceReader();this.setData({sheet:""})}if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
+    onHide() {if(this.data.sheet==="commerceReader"){this.clearCommerceReader();this.setData({sheet:""})}this.studentProfileEpoch=(this.studentProfileEpoch||0)+1;if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
     refresh() {
       const commerceScope=api.currentUser()?.userId||null
       if(this.commerceScope!==commerceScope){this.commerceScope=commerceScope;this.resetCommerceTest()}
+      if(this.studentProfileOwner&&this.studentProfileOwner!==api.currentUser()?.userId)this.setData({studentProfile:null,studentProfileCanManage:false,studentProfileStatus:'idle'})
       this.state = Object.assign(defaults(),host.read())
       /* @demo-start */
       if(isDemo)addDemoDefaults(this.state)
@@ -366,7 +369,7 @@ function createPage(requestedRoute) {
     nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const cached=catalog.get(current.id);const base=current.remote?(cached?.chapters?.length?cached:current):(visibleBooks.find(b=>b.id===current.id)||firstBook);const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=visibleBooks.findIndex(b=>b.id===current.id);book=playableBook(visibleBooks.length?visibleBooks[(i+step+visibleBooks.length)%visibleBooks.length]:base)}if(book.remote)player.pause('chapter_loading');else player.selectTrack(book);this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false});this.remoteBundle=null;this.updateSubtitles(0,true);if(book.remote)return this.loadRemoteContent()},
     openQuiz() {const book=this.data.book;if(book.remote&&!(book.hasQuiz||(book.chapters||[])[0]?.hasQuiz)){host.toast('这一章暂时没有小测');return}const pieceId=book.chapterId||(book.chapters||[])[0]?.id;/* @demo-start */if(isDemo&&book.workId!=='peter-rabbit'&&!(legacyQuizzes[pieceId]||[]).length){host.toast('这一章暂时没有小测');return}/* @demo-end */this.wordResume=null;player.pause('quiz');host.go('quiz',book.id+(pieceId?':'+pieceId:''))},
     playOption(e) {const option=this.data.quizOptions[Number(e.currentTarget.dataset.index)];if(!option?.audio)return;player.pause('quiz_option');if(!this.optionAudio)this.optionAudio=wx.createInnerAudioContext();this.optionAudio.stop();this.optionAudio.src=option.audio;this.optionAudio.play()},
-    onUnload() {this.clearCommerceReader();this.commerceEpoch=(this.commerceEpoch||0)+1;if(this.catalogSearchTimer)clearTimeout(this.catalogSearchTimer);this.catalogEpoch=(this.catalogEpoch||0)+1;this.contentEpoch=(this.contentEpoch||0)+1;this.rankingEpoch=(this.rankingEpoch||0)+1;this.detachPlayer();if(this.wordSyncUnsubscribe)this.wordSyncUnsubscribe();if(this.librarySyncUnsubscribe)this.librarySyncUnsubscribe();if(this.quizSyncUnsubscribe)this.quizSyncUnsubscribe();if(this.optionAudio)this.optionAudio.destroy()},
+    onUnload() {this.clearCommerceReader();this.commerceEpoch=(this.commerceEpoch||0)+1;this.closed=true;this.studentProfileEpoch=(this.studentProfileEpoch||0)+1;if(this.catalogSearchTimer)clearTimeout(this.catalogSearchTimer);this.catalogEpoch=(this.catalogEpoch||0)+1;this.contentEpoch=(this.contentEpoch||0)+1;this.rankingEpoch=(this.rankingEpoch||0)+1;this.detachPlayer();if(this.wordSyncUnsubscribe)this.wordSyncUnsubscribe();if(this.librarySyncUnsubscribe)this.librarySyncUnsubscribe();if(this.quizSyncUnsubscribe)this.quizSyncUnsubscribe();if(this.optionAudio)this.optionAudio.destroy()},
     answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
     nextQuestion() {if(!this.questions.length||!this.data.question)return;if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];this.selectedOptions[this.data.questionIndex]=this.data.answer;const n=this.data.questionIndex+1;if(n>=this.questions.length){const attempt=quizAttempts.createLocalAttempt({quizPackage:this.quizPackage,book:this.data.book,selectedOptions:this.selectedOptions,startedAt:this.quizStartedAt});this.state.results=[attempt,...this.state.results];this.save();this.setData({result:true,score:attempt.score,scores,quizResultStatus:'本机练习结果 · 未经服务端验证'});this.submitQuizAttempt(attempt)}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
     async submitQuizAttempt(attempt) {
@@ -406,6 +409,7 @@ function createPage(requestedRoute) {
       this.activateLibrarySync()
       if(route==='ranking'){await this.loadLearningScore();await this.loadRankingOptions();return}
       if(!api.available()||!api.isAuthenticated())return
+      if(route==='me')await this.loadStudentProfile()
       this.activateQuizSync()
       if(['me','report'].includes(route))await quizSync.trigger('page',true)
       if(['home','library','recent','me'].includes(route)&&api.dynamicCatalogAvailable())await this.loadRemoteCatalog()
@@ -417,6 +421,16 @@ function createPage(requestedRoute) {
       const userId=api.currentUser()?.userId
       try{const summary=await api.learningScore();if(userId&&api.currentUser()?.userId===userId&&host.accountScope()===userId){host.mutate(state=>learningPoints.applyConfirmed(state,summary));this.refresh()}}catch(_){/* A failed score read must not erase confirmed points. */}
     },
+    async loadStudentProfile(){
+      const owner=api.currentUser()?.userId,epoch=this.studentProfileEpoch=(this.studentProfileEpoch||0)+1
+      const current=()=>!this.closed&&epoch===this.studentProfileEpoch&&api.isAuthenticated()&&api.currentUser()?.userId===owner&&host.accountScope()===owner
+      if(isDemo||!owner||!api.studentProfileAvailable()){this.setData({studentProfile:null,studentProfileCanManage:false,studentProfileStatus:'unavailable'});return}
+      if(this.studentProfileOwner!==owner)this.setData({studentProfile:null,studentProfileCanManage:false})
+      this.studentProfileOwner=owner;this.setData({studentProfileStatus:'loading'})
+      try{const result=await api.studentProfile();if(!current())return;this.setData({studentProfile:require('../modules/profile/student-profile').normalize(result.profile),studentProfileCanManage:result.canManage===true,studentProfileStatus:'ready'})}
+      catch(_){if(current())this.setData({studentProfileStatus:'error',studentProfileCanManage:false})}
+    },
+    openStudentProfiles(){if(this.data.studentProfileCanManage&&this.studentProfileOwner===api.currentUser()?.userId&&host.accountScope()===this.studentProfileOwner)host.go('student-profile')},
     bundleCurrent() {const b=this.data.book;return !!(this.remoteBundle&&this.remoteBundle.workId===(b.workId||b.id)&&this.remoteBundle.pieceId===cueKey(b)&&this.remoteBundle.contentVersion===b.contentVersion)},
     cuesForBook() {return this.data.book.remote?(this.bundleCurrent()?this.remoteBundle.cues:[]):cuesByBook[cueKey(this.data.book)]||[]},
     async loadRemoteCatalog(cursor) {

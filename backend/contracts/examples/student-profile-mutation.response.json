@@ -1,0 +1,17 @@
+{
+  "requestId": "00000000-0000-4000-8000-000000000001",
+  "status": "applied",
+  "profile": {
+    "studentCode": "student_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "revision": "1",
+    "status": "verified",
+    "campusId": "a",
+    "campusName": "A校区",
+    "campusActive": true,
+    "grade": "3",
+    "readingLevel": "2",
+    "source": "admin",
+    "verifiedAt": "2026-10-12T01:00:00.000Z",
+    "effectiveFrom": "2026-10-12T01:00:00.001Z"
+  }
+}

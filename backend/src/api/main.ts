@@ -18,6 +18,7 @@ import { LocalImportService } from "../sync/local-import-service.ts";
 import { ProgressSyncService } from "../sync/progress-sync-service.ts";
 import { SavedWordSyncService } from "../sync/saved-word-sync-service.ts";
 import { ReaderLibraryService } from "../sync/reader-library-service.ts";
+import {StudentProfileService} from "../profile/student-profile-service.ts";
 import { RankingQueryService } from "../ranking/query-service.ts";
 import { AuditService } from "../observability/audit-service.ts";
 import { MetricsRegistry, OperationalMetricsCollector } from "../observability/metrics.ts";
@@ -46,6 +47,7 @@ const ingestionService = new IngestionService(
   ingestionQueue,
   config.objectStorage.incomingBucket,
   config.objectStorage.publishedBucket,
+    config.auth.identityHashKeyBase64,
 );
 const simulation = config.appEnv === "local" || config.appEnv === "test";
 const commerceService = simulation ? new CommerceService(infrastructure.postgres) : undefined;
@@ -82,6 +84,7 @@ const app = createApp({
   savedWordSyncService,
   readerLibraryService,
   rankingService,
+  studentProfileService:new StudentProfileService(infrastructure.postgres,config.auth.dataEncryptionKeyBase64),
   auditService,
   metrics,
   operationalMetrics,
