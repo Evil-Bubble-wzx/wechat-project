@@ -29,7 +29,7 @@ async function withPreview(mode,miniRoot,scripts) {
   const build=spawnSync(process.execPath,['tools/content-check.js','--build'],{cwd:root,stdio:'inherit'})
   if(build.status!==0)throw new Error('Content build failed')
   run('tools/release-audit.js')
-  await withPreview('production','build/production-miniprogram',['tools/product-mode-check.js','tools/visual-check.js','tools/audio-check.js'])
+  await withPreview('production','build/production-miniprogram',['tools/product-mode-check.js','tools/visual-check.js','tools/audio-check.js','tools/audio-lease-browser-check.js'])
   await withPreview('demo','build/demo-miniprogram',['tools/interaction-check.js'])
   console.log('PASS: production and explicit Demo browser suites completed.')
 })().catch(error=>{console.error(error);process.exitCode=1})

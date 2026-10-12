@@ -21,6 +21,8 @@
     "test:integration:session": "node --experimental-strip-types scripts/session-smoke.ts",
     "test:integration:ingestion": "node --experimental-strip-types scripts/ingestion-smoke.ts",
     "test:integration:content": "node --experimental-strip-types scripts/content-smoke.ts",
+    "test:integration:catalog-ingestion": "node --experimental-strip-types scripts/catalog-ingestion-smoke.ts",
+    "test:integration:quiz-history": "node --experimental-strip-types scripts/quiz-history-smoke.ts",
     "test:integration:quiz": "node --experimental-strip-types scripts/quiz-smoke.ts",
     "test:integration:ranking": "node --experimental-strip-types scripts/ranking-smoke.ts",
     "test:integration:learning-points": "node --experimental-strip-types scripts/learning-points-smoke.ts",
@@ -28,6 +30,7 @@
     "test:integration:local-import": "node --experimental-strip-types scripts/local-import-smoke.ts",
     "test:integration:progress-sync": "node --experimental-strip-types scripts/progress-sync-smoke.ts",
     "test:integration:saved-word-sync": "node --experimental-strip-types scripts/saved-word-sync-smoke.ts",
+    "test:integration:reader-library": "node --experimental-strip-types scripts/reader-library-smoke.ts",
     "test:integration:s04-sync": "node --experimental-strip-types scripts/s04-sync-smoke.ts",
     "test:integration:observability": "node --experimental-strip-types scripts/observability-smoke.ts",
     "test:integration:queue": "node --experimental-strip-types scripts/queue-smoke.ts",
@@ -37,7 +40,8 @@
     "test:integration:xb": "node --experimental-strip-types scripts/xb-integration-smoke.ts",
     "check": "npm run typecheck && npm test",
     "test:integration:commerce": "node --experimental-strip-types scripts/commerce-smoke.ts",
-    "commerce:simulate": "node --experimental-strip-types scripts/simulated-commerce.ts"
+    "commerce:simulate": "node --experimental-strip-types scripts/simulated-commerce.ts",
+    "test:integration:ranking-browser": "node --experimental-strip-types scripts/ranking-page-smoke.ts --browser"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1139.0",

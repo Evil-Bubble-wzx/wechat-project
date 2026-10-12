@@ -1,4 +1,5 @@
 import { createHash, createHmac } from "node:crypto";
+import {quizAnalysis} from "./quiz-analysis.ts";
 
 import type { Pool, PoolClient } from "pg";
 
@@ -38,6 +39,8 @@ type RankingFactRow = {
   submitted_at: Date;
   verified_at: Date;
   score: number;
+  mastery: boolean;
+  content_version: number;
   word_count: number | null;
   ranking_level: string | null;
   ranking_category: "fiction" | "nonfiction" | null;
@@ -52,6 +55,7 @@ export type ComputedRankingEntry = RankingScoreResult & {
   profileGrade: string | null;
   profileReadingLevel: string | null;
   stats: Record<string, number | null>;
+  analysis: ReturnType<typeof quizAnalysis>;
   quizzes: Array<{
     quizAttemptId: string;
     workId: string;
@@ -60,6 +64,11 @@ export type ComputedRankingEntry = RankingScoreResult & {
     series: string | null;
     author: string | null;
     takenAt: string;
+    verifiedAt: string;
+    passed: boolean;
+    contentVersion: number;
+    wordCountKnown: boolean;
+    quizPoints: string;
     correctPercent: number;
     level: number | null;
     category: "fiction" | "nonfiction" | null;
@@ -169,13 +178,17 @@ export class RankingAggregationService {
     const result = await client.query<RankingFactRow>(
       `SELECT
          qa.id AS quiz_attempt_id, qa.user_id, p.work_id, p.id AS piece_id,
-         w.title, w.series, w.author, qa.submitted_at, qa.verified_at, qa.score,
-         p.word_count, p.ranking_level, w.ranking_category,
+         p.title, w.series, w.author, qa.submitted_at, qa.verified_at, qa.score, qa.mastery, qp.content_version,
+         CASE WHEN cv.catalog_metadata->'wordCount'->>'value' ~ '^[0-9]+$' THEN (cv.catalog_metadata->'wordCount'->>'value')::integer
+           WHEN cv.id=p.current_content_version_id THEN p.word_count ELSE NULL END AS word_count,
+         CASE WHEN cv.catalog_metadata->>'level' ~ '^[0-9]+([.][0-9]+)?$' THEN cv.catalog_metadata->>'level'
+           WHEN cv.id=p.current_content_version_id THEN p.ranking_level::text ELSE NULL END AS ranking_level, w.ranking_category,
          profile.grade AS profile_grade, profile.reading_level AS profile_level
        FROM quiz_attempts qa
        JOIN quiz_packages qp ON qp.id = qa.quiz_package_id
        JOIN pieces p ON p.id = qp.piece_id
        JOIN works w ON w.id = p.work_id
+       LEFT JOIN content_versions cv ON cv.piece_id=qp.piece_id AND cv.content_version=qp.content_version
        JOIN LATERAL (
          SELECT campus_id, grade, reading_level
          FROM user_profile_versions upv
@@ -189,7 +202,7 @@ export class RankingAggregationService {
        ) profile ON true
        WHERE qa.status = 'server_verified'
          AND qa.withdrawn_at IS NULL
-         AND qa.submitted_at >= $1 AND qa.submitted_at < $2
+         AND qa.verified_at >= $1 AND qa.verified_at < $2
          AND profile.campus_id = $3
          AND ($4::text IS NULL OR profile.grade = $4)
          AND ($5::text IS NULL OR profile.reading_level = $5)
@@ -202,6 +215,8 @@ export class RankingAggregationService {
   async compute(dimensionsInput: RankingDimensions, client: Pool | PoolClient = this.pool): Promise<ComputedRanking> {
     const dimensions = this.validateDimensions(dimensionsInput);
     const rows = await this.readFacts(client, dimensions);
+    const analysisEpoch=(await client.query<{epoch:string}>("SELECT extract(epoch from applied_at)::text AS epoch FROM schema_migrations WHERE version='0015_ranking_quiz_analysis'")).rows[0]?.epoch;
+    if(!analysisEpoch)throw new Error('Ranking analysis migration is required');
     const scoreRows=(await client.query<LearningScoreFact & {user_id:string;earned_at:Date;quiz_attempt_id:string|null;profile_grade:string|null;profile_level:string|null}>(
       `SELECT event.id,event.kind,event.points::text,event.user_id,event.earned_at,event.quiz_attempt_id,
               profile.grade AS profile_grade,profile.reading_level AS profile_level
@@ -246,6 +261,7 @@ export class RankingAggregationService {
         profileGrade:eventsByUser.get(score.participantId)?.[0]?.profile_grade ?? null,
         profileReadingLevel:eventsByUser.get(score.participantId)?.[0]?.profile_level ?? null,
         stats:statsFor(userRows),
+        analysis:quizAnalysis(userRows.map(row=>({attemptId:row.quiz_attempt_id,pieceId:row.piece_id,verifiedAt:row.verified_at.toISOString(),passed:row.mastery,correctPercent:row.score,wordCount:row.word_count,level:row.ranking_level===null?null:Number(row.ranking_level),category:row.ranking_category}))),
         quizzes:userRows.map((row) => ({
           quizAttemptId:row.quiz_attempt_id,
           workId:row.work_id,
@@ -254,6 +270,8 @@ export class RankingAggregationService {
           series:row.series,
           author:row.author,
           takenAt:row.submitted_at.toISOString(),
+          verifiedAt:row.verified_at.toISOString(),passed:row.mastery,contentVersion:row.content_version,wordCountKnown:row.word_count!==null,
+          quizPoints:(eventsByUser.get(score.participantId)||[]).filter(event=>event.quiz_attempt_id===row.quiz_attempt_id&&event.kind==="quizCorrect").reduce((sum,event)=>sum+BigInt(event.points),0n).toString(),
           correctPercent:row.score,
           level:row.ranking_level === null ? null : Number(row.ranking_level),
           category:row.ranking_category,
@@ -263,13 +281,17 @@ export class RankingAggregationService {
       };
     });
     const sourceMax = scoreRows.reduce<Date | null>((latest,row)=>!latest||row.earned_at>latest?row.earned_at:latest,null);
-    const sourceFingerprint = createHash("sha256").update(JSON.stringify({events:scoreRows,quizzes:rows.map((row) => ({
+    const sourceFingerprint = createHash("sha256").update(JSON.stringify({
+      analysisVersion:1,analysisEpoch,
+      window:{startsAt:dimensions.startsAt,endsAt:dimensions.endsAt,minimumCohortSize:dimensions.minimumCohortSize},
+      events:scoreRows,quizzes:rows.map((row) => ({
       quizAttemptId:row.quiz_attempt_id,
       userId:row.user_id,
       workId:row.work_id,
+      pieceId:row.piece_id,title:row.title,author:row.author,series:row.series,
       submittedAt:row.submitted_at.toISOString(),
       verifiedAt:row.verified_at.toISOString(),
-      score:row.score,
+      score:row.score,mastery:row.mastery,contentVersion:row.content_version,
       wordCount:row.word_count,
       rankingLevel:row.ranking_level,
       rankingCategory:row.ranking_category,
@@ -280,13 +302,28 @@ export class RankingAggregationService {
   }
 
   async build(dimensionsInput: RankingDimensions): Promise<RankingBuildResult> {
+    // A REPEATABLE READ transaction waiting on the advisory lock may retain a
+    // snapshot from before another builder committed. Retry with a fresh
+    // transaction on that snapshot's serialization/unique-key conflict.
+    for(let attempt=0;;attempt++){
+      try{return await this.buildOnce(dimensionsInput)}
+      catch(error){
+        const databaseError=error as {code?:string;constraint?:string};
+        const retryable=databaseError.code==="40001"||(databaseError.code==="23505"&&databaseError.constraint==="ranking_snapshots_source_uidx");
+        if(!retryable||attempt>=2)throw error;
+      }
+    }
+  }
+
+  private async buildOnce(dimensionsInput: RankingDimensions): Promise<RankingBuildResult> {
     const buildStartedAt = Date.now();
     const dimensions = this.validateDimensions(dimensionsInput);
     const client = await this.pool.connect();
+    const lockKey = [dimensions.periodType,dimensions.periodKey,dimensions.campusId,dimensions.grade??"all",dimensions.readingLevel??"all",RANKING_RULE_VERSION].join(":");
     try {
+      // Wait before opening the snapshot so each builder sees the previous commit.
+      await client.query("SELECT pg_advisory_lock(hashtext($1))", [`ranking:${lockKey}`]);
       await client.query("BEGIN ISOLATION LEVEL REPEATABLE READ");
-      const lockKey = [dimensions.periodType,dimensions.periodKey,dimensions.campusId,dimensions.grade??"all",dimensions.readingLevel??"all",RANKING_RULE_VERSION].join(":");
-      await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`ranking:${lockKey}`]);
       const computed = await this.compute(dimensions, client);
       const existing = await client.query<{
         id: string;
@@ -325,8 +362,8 @@ export class RankingAggregationService {
       const snapshot = (await client.query<{ id: string }>(
         `INSERT INTO ranking_snapshots (
            period_type, period_key, starts_at, ends_at, campus_id, grade, reading_level,
-           rule_version, status, minimum_cohort_size, algorithm_metadata, source_fingerprint
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'building',$9,$10,$11) RETURNING id`,
+           rule_version, status, minimum_cohort_size, algorithm_metadata, source_fingerprint, analysis_version
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'building',$9,$10,$11,1) RETURNING id`,
         [dimensions.periodType,dimensions.periodKey,dimensions.startsAt,dimensions.endsAt,dimensions.campusId,dimensions.grade,dimensions.readingLevel,RANKING_RULE_VERSION,dimensions.minimumCohortSize,JSON.stringify({rules:LEARNING_POINT_RULES,cap:null,aggregation:"earned_delta",pointEncoding:"decimal-string"}),computed.sourceFingerprint],
       )).rows[0]!;
       const resultStatus = computed.entries.length < dimensions.minimumCohortSize ? "cohort_too_small" : "ready";
@@ -343,17 +380,18 @@ export class RankingAggregationService {
             `INSERT INTO ranking_snapshot_entries (
                snapshot_id, user_id, participant_id, display_name, rank, score,
                completed_books, total_words, adjusted_accuracy, score_breakdown, stats,
-               profile_grade, profile_reading_level
-             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
-            [snapshot.id,entry.userId,entry.participantId,entry.displayName,entry.rank,entry.score,entry.completedBooks,entry.totalWords,entry.adjustedAccuracy,JSON.stringify(entry.breakdown),JSON.stringify(entry.stats),entry.profileGrade,entry.profileReadingLevel],
+               profile_grade, profile_reading_level, quiz_analysis
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+            [snapshot.id,entry.userId,entry.participantId,entry.displayName,entry.rank,entry.score,entry.completedBooks,entry.totalWords,entry.adjustedAccuracy,JSON.stringify(entry.breakdown),JSON.stringify(entry.stats),entry.profileGrade,entry.profileReadingLevel,JSON.stringify(entry.analysis)],
           );
           for (const quiz of entry.quizzes) {
             await client.query(
               `INSERT INTO ranking_snapshot_quizzes (
                  snapshot_id, user_id, quiz_attempt_id, work_id, piece_id, title,
-                 series, author, taken_at, correct_percent, level, category, word_count, counted_in_score
-               ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
-              [snapshot.id,entry.userId,quiz.quizAttemptId,quiz.workId,quiz.pieceId,quiz.title,quiz.series,quiz.author,quiz.takenAt,quiz.correctPercent,quiz.level,quiz.category,quiz.wordCount,quiz.countedInScore],
+                 series, author, taken_at, correct_percent, level, category, word_count, counted_in_score,
+                 passed,verified_at,content_version,word_count_known,quiz_points
+               ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)`,
+              [snapshot.id,entry.userId,quiz.quizAttemptId,quiz.workId,quiz.pieceId,quiz.title,quiz.series,quiz.author,quiz.takenAt,quiz.correctPercent,quiz.level,quiz.category,quiz.wordCount,quiz.countedInScore,quiz.passed,quiz.verifiedAt,quiz.contentVersion,quiz.wordCountKnown,quiz.quizPoints],
             );
           }
         }
@@ -386,7 +424,7 @@ export class RankingAggregationService {
       await client.query("ROLLBACK");
       throw error;
     } finally {
-      client.release();
+      try{await client.query("SELECT pg_advisory_unlock(hashtext($1))",[`ranking:${lockKey}`])}finally{client.release()}
     }
   }
 }

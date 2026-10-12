@@ -12,6 +12,7 @@ import {
   type S3Client,
 } from "@aws-sdk/client-s3";
 import type { Pool, PoolClient } from "pg";
+import { validateCatalogMetadata, validateQuizPackage, validateVocabularyPackage, validateSubtitleReferences, type ValidatedQuiz } from "../content/package-validation.ts";
 
 const execFileAsync = promisify(execFile);
 
@@ -226,11 +227,15 @@ export class IngestionProcessor {
     }
 
     const bytes = await readFile(filePath);
+    if (["metadata","quiz","vocabulary","subtitles"].includes(row.asset_type) && (bytes.length > 8 * 1024 * 1024 || row.mime_type !== "application/json")) {
+      throw new IngestionProcessingError("INGESTION_JOB_FAILED", false, "Reader resources require normalized JSON of at most 8 MiB; convert VTT/SRT before submission");
+    }
     if (row.asset_type === "subtitles") {
       const text = decodeUtf8(bytes);
       if (row.mime_type === "application/json" || row.file_name.toLowerCase().endsWith(".json")) {
         try {
-          return validateSubtitleJson(JSON.parse(text) as unknown);
+          const value: unknown = JSON.parse(text);
+          return { ...validateSubtitleJson(value), ...validateSubtitleReferences(value) };
         } catch (error) {
           if (error instanceof IngestionProcessingError) throw error;
           throw new IngestionProcessingError("SUBTITLE_VALIDATION_FAILED", false, "Subtitle JSON is invalid");
@@ -244,7 +249,10 @@ export class IngestionProcessor {
 
     if (["vocabulary", "quiz", "metadata"].includes(row.asset_type)) {
       try {
-        JSON.parse(decodeUtf8(bytes));
+        const value = JSON.parse(decodeUtf8(bytes)) as unknown;
+        if (row.asset_type === "metadata") return { catalogMetadata: validateCatalogMetadata(value, { workId: row.work_id, pieceId: row.piece_id, contentVersion: row.content_version }) };
+        if (row.asset_type === "quiz") return { quizPackage: validateQuizPackage(value, { workId: row.work_id, pieceId: row.piece_id, contentVersion: row.content_version }) };
+        if (row.asset_type === "vocabulary") return validateVocabularyPackage(value);
       } catch {
         throw new IngestionProcessingError("INGESTION_JOB_FAILED", false, "JSON asset is invalid");
       }
@@ -286,9 +294,10 @@ export class IngestionProcessor {
       artifact_id: string;
       bucket: string;
       object_key: string;
+      validation: Record<string, unknown>;
     }>(
       `SELECT i.id AS item_id, i.asset_type, i.mime_type, i.expected_size_bytes,
-              i.expected_sha256, pa.id AS artifact_id, pa.bucket, pa.object_key
+              i.expected_sha256, pa.id AS artifact_id, pa.bucket, pa.object_key, pa.validation
        FROM ingestion_items i
        JOIN processing_jobs j ON j.ingestion_item_id = i.id AND j.job_type = 'package_validate'
        JOIN processing_artifacts pa ON pa.processing_job_id = j.id AND pa.artifact_kind = 'ready'
@@ -341,12 +350,36 @@ export class IngestionProcessor {
       contentVersionId = existing.rows[0]?.id;
     }
     if (!contentVersionId) throw new Error("Content version could not be assembled");
+    const metadata = assets.rows.find(asset => asset.asset_type === "metadata")?.validation.catalogMetadata;
+    const audioDuration = assets.rows.find(asset => asset.asset_type === "audio")?.validation.durationMs;
+    const quizAsset = assets.rows.find(asset => asset.asset_type === "quiz");
+    const quiz = quizAsset?.validation.quizPackage as ValidatedQuiz | undefined;
+    if (!metadata || !Number.isSafeInteger(audioDuration) || Number(audioDuration) <= 0 || !quiz || !quizAsset) throw new IngestionProcessingError("INGESTION_JOB_FAILED", false, "Complete validated metadata, audio duration and Quiz are required");
+    const subtitles = assets.rows.find(asset => asset.asset_type === "subtitles")?.validation;
+    const vocabulary = assets.rows.find(asset => asset.asset_type === "vocabulary")?.validation;
+    const vocabularyKeys = vocabulary?.vocabularyKeys;
+    if (!subtitles || !Number.isSafeInteger(subtitles.lastEndMs) || Number(subtitles.lastEndMs) > Number(audioDuration) + 250 || !Array.isArray(subtitles.vocabularyReferences) || !Array.isArray(vocabularyKeys) || subtitles.vocabularyReferences.some(key => !vocabularyKeys.includes(key))) {
+      throw new IngestionProcessingError("SUBTITLE_VALIDATION_FAILED", false, "Subtitle duration or contextual vocabulary does not match this resource version");
+    }
+    await client.query("UPDATE content_versions SET catalog_metadata=$2 WHERE id=$1", [contentVersionId, JSON.stringify(metadata)]);
+    const inserted = await client.query<{ id: string }>(
+      `INSERT INTO quiz_packages(piece_id,content_version,quiz_version,package_sha256,status,mastery_threshold)
+       VALUES($1,$2,$3,$4,'draft',$5) ON CONFLICT(piece_id,content_version,quiz_version) DO NOTHING RETURNING id`,
+      [row.piece_id,row.content_version,quiz.quizVersion,quizAsset.expected_sha256.trim(),quiz.masteryThreshold],
+    );
+    const quizPackageId = inserted.rows[0]?.id ?? (await client.query<{ id: string }>("SELECT id FROM quiz_packages WHERE piece_id=$1 AND content_version=$2 AND quiz_version=$3 AND package_sha256=$4", [row.piece_id,row.content_version,quiz.quizVersion,quizAsset.expected_sha256.trim()])).rows[0]?.id;
+    if (!quizPackageId) throw new IngestionProcessingError("INGESTION_BATCH_CONFLICT", false, "Quiz version belongs to another package");
+    for (const [index,question] of quiz.questions.entries()) {
+      await client.query(`INSERT INTO quiz_questions(quiz_package_id,question_id,prompt,options,correct_option,sort_order)
+        VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(quiz_package_id,question_id) DO NOTHING`,
+        [quizPackageId,question.id,question.prompt,JSON.stringify(question.options),question.answer,index]);
+    }
     for (const asset of assets.rows) {
       await client.query(
         `INSERT INTO content_assets (
            piece_id, content_version, asset_type, source_artifact_id,
-           bucket, object_key, sha256, size_bytes, mime_type, status
-         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'ready')
+           bucket, object_key, sha256, size_bytes, mime_type, duration_ms, status
+         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'ready')
          ON CONFLICT (piece_id, content_version, asset_type) DO NOTHING`,
         [
           row.piece_id,
@@ -358,6 +391,7 @@ export class IngestionProcessor {
           asset.expected_sha256.trim(),
           Number(asset.expected_size_bytes),
           asset.mime_type,
+          asset.asset_type === "audio" ? audioDuration : null,
         ],
       );
     }
@@ -412,6 +446,10 @@ export class IngestionProcessor {
       }
       const row = await this.readJob(client, processingJobId);
       if (row.job_status === "succeeded" || row.job_status === "cancelled") return;
+      // Reject oversized reader JSON before download/readFile, not after allocating the whole buffer.
+      if (["metadata","quiz","vocabulary","subtitles"].includes(row.asset_type) && (Number(row.expected_size_bytes) > 8 * 1024 * 1024 || row.mime_type !== "application/json")) {
+        throw new IngestionProcessingError("INGESTION_JOB_FAILED", false, "Reader resources require normalized JSON of at most 8 MiB; convert VTT/SRT before submission");
+      }
       await client.query(
         `UPDATE processing_jobs SET status = 'running', attempt_count = attempt_count + 1,
              started_at = COALESCE(started_at, now()), worker_id = $2
@@ -436,12 +474,14 @@ export class IngestionProcessor {
       );
 
       await client.query("BEGIN");
+      // Serialize completion before counting: parallel final items must see committed siblings.
+      await client.query("SELECT id FROM ingestion_batches WHERE id=$1 FOR UPDATE",[row.batch_id]);
       await client.query(
         `INSERT INTO processing_artifacts (
-           processing_job_id, artifact_kind, bucket, object_key, sha256, size_bytes, mime_type
-         ) VALUES ($1, 'ready', $2, $3, $4, $5, $6)
+           processing_job_id, artifact_kind, bucket, object_key, sha256, size_bytes, mime_type, validation
+         ) VALUES ($1, 'ready', $2, $3, $4, $5, $6, $7)
          ON CONFLICT (bucket, object_key) DO NOTHING`,
-        [processingJobId, row.bucket, readyKey, streamed.sha256, streamed.sizeBytes, row.mime_type],
+        [processingJobId, row.bucket, readyKey, streamed.sha256, streamed.sizeBytes, row.mime_type, JSON.stringify(validation)],
       );
       await client.query(
         "UPDATE processing_jobs SET status = 'succeeded', finished_at = now(), error_code = NULL, error_summary = NULL WHERE id = $1",
@@ -459,7 +499,7 @@ export class IngestionProcessor {
           `${process.pid}`,
           row.item_id,
           processingJobId,
-          JSON.stringify({ validation, sha256: streamed.sha256, sizeBytes: streamed.sizeBytes }),
+          JSON.stringify({ validation: { ...validation, quizPackage: validation.quizPackage ? { questionCount: (validation.quizPackage as ValidatedQuiz).questions.length } : undefined }, sha256: streamed.sha256, sizeBytes: streamed.sizeBytes }),
         ],
       );
       await this.finalizeBatchIfComplete(client, row);

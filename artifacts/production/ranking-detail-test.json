@@ -1,0 +1,54 @@
+{
+  "scope": "actual frontend and HTTP/Fastify/PostgreSQL; local browser navigation bridge and test WeChat identity",
+  "snapshot": "pinned",
+  "route": "standalone",
+  "pagination": "50+8",
+  "passedAll": "visible",
+  "search": "literal",
+  "sort": "server",
+  "back": "PASS",
+  "widths": [
+    320,
+    390,
+    430
+  ],
+  "responses": [
+    {
+      "status": 200,
+      "query": "",
+      "sort": "date",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    },
+    {
+      "status": 200,
+      "query": "",
+      "sort": "date",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    },
+    {
+      "status": 200,
+      "query": "%",
+      "sort": "date",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    },
+    {
+      "status": 200,
+      "query": "",
+      "sort": "date",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    },
+    {
+      "status": 200,
+      "query": "",
+      "sort": "words",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    },
+    {
+      "status": 200,
+      "query": "",
+      "sort": "words",
+      "snapshotId": "85ee3707-1754-41b0-9540-568c95ff8ad5"
+    }
+  ],
+  "errors": []
+}

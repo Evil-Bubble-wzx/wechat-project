@@ -47,5 +47,8 @@ jobs:
       - run: npm run test:integration:progress-sync
       - run: npm run test:integration:saved-word-sync
       - run: npm run test:integration:s04-sync
+      - run: npm run test:integration:reader-library
+      - run: npm run test:integration:quiz-history
+      - run: npm run test:integration:commerce
       - run: npm run security:secrets
       - run: npm audit --audit-level=moderate

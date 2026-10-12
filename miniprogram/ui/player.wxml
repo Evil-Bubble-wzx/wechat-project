@@ -1,4 +1,7 @@
 <view class="player-content reader-content" wx:if="{{route === 'player'}}">
+  <view class="info-note" wx:if="{{book.remote && remoteContentStatus === 'loading'}}">Loading verified resources…</view>
+  <view class="info-note" wx:if="{{playbackNotice}}">{{playbackNotice}}</view>
+  <view class="info-note" wx:if="{{book.remote && remoteContentStatus === 'unavailable'}}">资源加载或校验失败，请重新打开本章。<button bindtap="retryContent">Retry</button></view>
   <view class="reader-book-title">{{book.title}}</view>
   <view class="reader-cover-wrap"><image class="reader-cover" src="{{book.cover}}" mode="aspectFit" /><text class="reader-chapter">{{book.chapterTitle || book.author}}</text></view>
   <view class="reader-subtitles" wx:if="{{subtitle}}">

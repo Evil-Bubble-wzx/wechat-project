@@ -124,3 +124,19 @@ test('Quiz, local import, progress and ranking calls use the frozen backend cont
   assert.match(rankingCall.url,/periodType=week/)
   assert.match(rankingCall.url,/periodKey=2026-W39/)
 })
+
+test('v2.1 library sync is gated by observed contract and uses immutable idempotency',async()=>{
+  let version='api-contract-v2.0.0'
+  const {api,calls}=fixture(request=>{
+    if(request.url.endsWith('/session/wechat'))return {statusCode:201,data:session()}
+    if(request.url.endsWith('/me'))return {statusCode:200,header:{'X-API-Contract-Version':version},data:{userId:'user-1',status:'active',profile:{}}}
+    return {statusCode:200,data:{schemaVersion:1}}
+  })
+  await api.loginWechat();assert.equal(api.librarySyncAvailable(),false)
+  version='api-contract-v2.1.0';await api.getMe();assert.equal(api.librarySyncAvailable(),true)
+  const request={schemaVersion:1,batchId:'library-test-001',cursor:null,operations:[],limit:100}
+  await api.librarySync(request);const call=calls.at(-1)
+  assert.ok(call.url.endsWith('/me/library/sync'));assert.equal(call.method,'POST');assert.deepEqual(call.body,request);assert.equal(call.headers['Idempotency-Key'],request.batchId)
+  await api.rankingDetail('reader-001',{campusId:'a',periodType:'rolling7',snapshotId:'00000000-0000-4000-8000-000000000002'})
+  assert.match(calls.at(-1).url,/snapshotId=00000000-0000-4000-8000-000000000002/)
+})

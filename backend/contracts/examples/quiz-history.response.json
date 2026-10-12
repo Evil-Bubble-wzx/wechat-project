@@ -1,0 +1,30 @@
+{
+  "requestId": "req-quiz-history-example-001",
+  "schemaVersion": 1,
+  "serverTime": "2026-10-10T01:00:00.000Z",
+  "changes": [
+    {
+      "schemaVersion": 1,
+      "attemptId": "quiz-history-example-001",
+      "workId": "peter-rabbit",
+      "pieceId": "peter-rabbit-01",
+      "title": "Peter Rabbit",
+      "contentVersion": 1,
+      "quizVersion": 1,
+      "startedAt": "2026-10-10T01:00:00.000Z",
+      "submittedAt": "2026-10-10T01:00:00.000Z",
+      "verifiedAt": "2026-10-10T01:00:00.000Z",
+      "status": "withdrawn",
+      "score": null,
+      "mastery": null,
+      "questionCount": 2,
+      "correctCount": 2,
+      "currentCompatible": true,
+      "rejectionCode": null,
+      "revision": "2",
+      "serverUpdatedAt": "2026-10-10T01:00:00.000Z"
+    }
+  ],
+  "nextCursor": "opaque-signed-account-and-epoch-cursor",
+  "hasMore": false
+}

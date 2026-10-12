@@ -2,13 +2,14 @@ import type { FastifyInstance, FastifyRequest } from "fastify";
 
 import type { RankingPeriodType } from "../ranking/aggregation-service.ts";
 import type { RankingQueryService } from "../ranking/query-service.ts";
+import {normalizeAnalysis} from "../ranking/analysis-query.ts";
 import type { AuditService } from "../observability/audit-service.ts";
 import type { MetricsRegistry } from "../observability/metrics.ts";
 import type { RateLimiterPort } from "../security/rate-limiter.ts";
 import { ApiError } from "./errors.ts";
 import type { SessionServicePort } from "./session-routes.ts";
 
-export type RankingServicePort = Pick<RankingQueryService,"options"|"rankings"|"detail"> & Partial<Pick<RankingQueryService,"learningScore">>;
+export type RankingServicePort = Pick<RankingQueryService,"options"|"rankings"|"detail"> & Partial<Pick<RankingQueryService,"learningScore"|"analysis">>;
 
 function bearer(request:FastifyRequest):string{
   const value=request.headers.authorization;
@@ -63,6 +64,21 @@ export function registerRankingRoutes(app:FastifyInstance,ranking:RankingService
     return {requestId:request.id,...response};
   });
 
+  app.get("/api/v1/rankings/:participantId/quiz-analysis",async request=>{
+    const session=await sessions.authenticateAccessToken(bearer(request));
+    await rateLimiter?.consume("ranking-read",session.userId,120,60);
+    const {participantId}=request.params as {participantId:string};
+    if(participantId.length<8||participantId.length>128)throw new ApiError("INVALID_REQUEST",400,false,"participantId is invalid");
+    const query=request.query as Record<string,unknown>,pagination=page(query),normalized=filters(query);
+    if(typeof query.snapshotId!=="string")throw new ApiError("INVALID_REQUEST",400,false,"snapshotId is required");
+    for(const key of ["query","sort","direction"])if(query[key]!==undefined&&typeof query[key]!=="string")throw new ApiError("INVALID_REQUEST",400,false,key+" is invalid");
+    if(!ranking.analysis)throw new ApiError("DEPENDENCY_UNAVAILABLE",503,true,"Ranking analysis is unavailable");
+    const response=await ranking.analysis(normalized,participantId,pagination.cursor,pagination.limit,query.snapshotId,normalizeAnalysis({query:query.query as string|undefined,sort:query.sort as string|undefined,direction:query.direction as string|undefined}));
+    metrics?.incrementDomain("tingyue_ranking_queries_total","analysis_ready");
+    await audit?.record({actorType:"user",actorId:session.userId,action:"ranking_analysis_read",targetType:"ranking_snapshot",targetId:response.snapshotId,requestId:request.id,metadata:{resultCount:response.quizzes.length,sort:response.search.sort,direction:response.search.direction}});
+    return {requestId:request.id,...response};
+  });
+
   app.get("/api/v1/rankings/:participantId/quizzes",async(request)=>{
     const session=await sessions.authenticateAccessToken(bearer(request));
     await rateLimiter?.consume("ranking-read",session.userId,120,60);
@@ -71,7 +87,8 @@ export function registerRankingRoutes(app:FastifyInstance,ranking:RankingService
     const query=request.query as Record<string,unknown>;
     const pagination=page(query);
     const normalized=filters(query);
-    const response=await ranking.detail(normalized,participantId,pagination.cursor,pagination.limit);
+    if(query.snapshotId!==undefined&&(typeof query.snapshotId!=="string"||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(query.snapshotId)))throw new ApiError("INVALID_REQUEST",400,false,"snapshotId is invalid");
+    const response=await ranking.detail(normalized,participantId,pagination.cursor,pagination.limit,query.snapshotId as string|undefined);
     metrics?.incrementDomain("tingyue_ranking_queries_total","detail_ready");
     await audit?.record({
       actorType:"user",actorId:session.userId,action:"ranking_detail_read",

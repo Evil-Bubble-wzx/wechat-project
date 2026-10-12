@@ -3,6 +3,217 @@
   "$id": "https://contracts.tingyue.invalid/api-v1.schema.json",
   "title": "Tingyue API v1 schemas",
   "$defs": {
+    "LibraryOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operationId",
+        "workId",
+        "action",
+        "baseRevision",
+        "occurredAt"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "pattern": "^library-op-v1:[a-f0-9]{64}$"
+        },
+        "workId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "action": {
+          "enum": [
+            "favorite",
+            "unfavorite",
+            "open"
+          ]
+        },
+        "baseRevision": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time",
+          "minLength": 24,
+          "maxLength": 24
+        }
+      }
+    },
+    "LibrarySyncRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "batchId",
+        "cursor",
+        "operations",
+        "limit"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "batchId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "cursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "operations": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/LibraryOperation"
+          }
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    },
+    "LibraryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workId",
+        "favorite",
+        "favoriteRevision",
+        "lastOpenedAt",
+        "serverUpdatedAt"
+      ],
+      "properties": {
+        "workId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "favorite": {
+          "type": "boolean"
+        },
+        "favoriteRevision": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20
+        },
+        "lastOpenedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "serverUpdatedAt": {
+          "$ref": "#/$defs/Rfc3339"
+        }
+      }
+    },
+    "LibraryOperationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operationId",
+        "status",
+        "reason",
+        "clockStatus",
+        "entry"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "pattern": "^library-op-v1:[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "applied",
+            "unchanged",
+            "rejected"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clockStatus": {
+          "enum": [
+            "ok",
+            "future_skew"
+          ]
+        },
+        "entry": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/LibraryEntry"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "LibrarySyncResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "schemaVersion",
+        "batchId",
+        "serverTime",
+        "operations",
+        "changes",
+        "nextCursor",
+        "hasMore"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "batchId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "serverTime": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LibraryOperationResult"
+          }
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LibraryEntry"
+          }
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hasMore": {
+          "type": "boolean"
+        }
+      }
+    },
     "RequestId": {
       "type": "string",
       "minLength": 8,
@@ -352,6 +563,9 @@
             "free",
             "restricted"
           ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/CatalogMetadata"
         }
       }
     },
@@ -417,6 +631,16 @@
             "free",
             "restricted"
           ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/CatalogMetadata"
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
         }
       }
     },
@@ -534,6 +758,16 @@
           "items": {
             "$ref": "#/$defs/ManifestAsset"
           }
+        },
+        "metadata": {
+          "$ref": "#/$defs/CatalogMetadata"
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
         }
       }
     },
@@ -1243,6 +1477,12 @@
         "limit"
       ],
       "properties": {
+        "pullNonce": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128,
+          "description": "v2.1 optional identity for a fresh pull. Retain it unchanged on retries; legacy requests may omit it."
+        },
         "schemaVersion": {
           "const": 1
         },
@@ -1724,6 +1964,13 @@
         "nextCursor"
       ],
       "properties": {
+        "snapshotId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uuid"
+        },
         "requestId": {
           "$ref": "#/$defs/RequestId"
         },
@@ -2055,6 +2302,10 @@
         "nextCursor"
       ],
       "properties": {
+        "snapshotId": {
+          "type": "string",
+          "format": "uuid"
+        },
         "requestId": {
           "$ref": "#/$defs/RequestId"
         },
@@ -2594,6 +2845,785 @@
               "type": "string"
             }
           }
+        }
+      }
+    },
+    "CatalogMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Verified current-version metadata. Unknown values remain null; fields may be absent in pre-projection historical versions.",
+      "properties": {
+        "titleZh": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "author": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "series": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "editionLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "internalContentNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "level": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "narrator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "audioSource": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "audioSourceUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "category": {
+          "enum": [
+            "fiction",
+            "nonfiction",
+            null
+          ]
+        },
+        "pageCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "wordCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "QuizHistoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "attemptId",
+        "workId",
+        "pieceId",
+        "title",
+        "contentVersion",
+        "quizVersion",
+        "startedAt",
+        "submittedAt",
+        "verifiedAt",
+        "status",
+        "score",
+        "mastery",
+        "questionCount",
+        "correctCount",
+        "currentCompatible",
+        "rejectionCode",
+        "revision",
+        "serverUpdatedAt"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "attemptId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "workId": {
+          "type": "string"
+        },
+        "pieceId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quizVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "startedAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "submittedAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "verifiedAt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rfc3339"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "server_verified",
+            "rejected",
+            "withdrawn"
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mastery": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "questionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "correctCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "currentCompatible": {
+          "type": "boolean"
+        },
+        "rejectionCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "serverUpdatedAt": {
+          "$ref": "#/$defs/Rfc3339"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "server_verified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "type": "integer"
+              },
+              "mastery": {
+                "type": "boolean"
+              },
+              "verifiedAt": {
+                "$ref": "#/$defs/Rfc3339"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "score": {
+                "type": "null"
+              },
+              "mastery": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "QuizTrend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ready",
+        "remaining",
+        "early",
+        "recent",
+        "delta",
+        "pieceCount"
+      ],
+      "properties": {
+        "ready": {
+          "type": "boolean"
+        },
+        "remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "early": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recent": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delta": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -100,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pieceCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "QuizHistoryResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "schemaVersion",
+        "serverTime",
+        "changes",
+        "nextCursor",
+        "hasMore"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "serverTime": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "changes": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/QuizHistoryEntry"
+          }
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "hasMore": {
+          "type": "boolean"
+        }
+      }
+    },
+    "LearningSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "schemaVersion",
+        "source",
+        "asOf",
+        "completedPieces",
+        "completedWords",
+        "knownCompletedWords",
+        "unknownWordPieces",
+        "listenedMs",
+        "verifiedAttemptCount",
+        "compatibleQuizPieces",
+        "averageCorrectPercent",
+        "trend",
+        "learningScore"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "source": {
+          "const": "server_verified"
+        },
+        "asOf": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "completedPieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completedWords": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PointTotal"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "knownCompletedWords": {
+          "$ref": "#/$defs/PointTotal"
+        },
+        "unknownWordPieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "listenedMs": {
+          "$ref": "#/$defs/PointTotal"
+        },
+        "verifiedAttemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compatibleQuizPieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "averageCorrectPercent": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trend": {
+          "$ref": "#/$defs/QuizTrend"
+        },
+        "learningScore": {
+          "$ref": "#/$defs/LearningScoreSummary"
+        }
+      }
+    },
+    "QuizAnalysisGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pieces",
+        "words",
+        "averageCorrect",
+        "averageLevel",
+        "fictionPercent",
+        "categorizedPieces",
+        "leveledPieces",
+        "trendReady",
+        "earlyCorrect",
+        "recentCorrect",
+        "earlyLevel",
+        "recentLevel"
+      ],
+      "properties": {
+        "pieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "words": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PointTotal"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "averageCorrect": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "averageLevel": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "fictionPercent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "categorizedPieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leveledPieces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "trendReady": {
+          "type": "boolean"
+        },
+        "earlyCorrect": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "recentCorrect": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "earlyLevel": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "recentLevel": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "QuizAnalysisStats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "unit",
+        "selection",
+        "attempts",
+        "passedAttempts",
+        "passed",
+        "all"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "unit": {
+          "const": "pieces"
+        },
+        "selection": {
+          "const": "latest_verified_per_piece"
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passedAttempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "$ref": "#/$defs/QuizAnalysisGroup"
+        },
+        "all": {
+          "$ref": "#/$defs/QuizAnalysisGroup"
+        }
+      }
+    },
+    "QuizAnalysisSearch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query",
+        "sort",
+        "direction"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sort": {
+          "enum": [
+            "date",
+            "title",
+            "accuracy",
+            "level",
+            "words",
+            "quizPoints"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      }
+    },
+    "QuizAnalysisRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attemptId",
+        "workId",
+        "pieceId",
+        "title",
+        "series",
+        "author",
+        "takenAt",
+        "correctPercent",
+        "level",
+        "category",
+        "wordCount",
+        "passed",
+        "contentVersion",
+        "quizPoints"
+      ],
+      "properties": {
+        "attemptId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "workId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "pieceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "series": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "author": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "takenAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "correctPercent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "level": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "category": {
+          "enum": [
+            "fiction",
+            "nonfiction",
+            null
+          ]
+        },
+        "wordCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "contentVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quizPoints": {
+          "$ref": "#/$defs/PointTotal"
+        }
+      }
+    },
+    "QuizAnalysisResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "ruleVersion",
+        "participant",
+        "periodType",
+        "periodKey",
+        "startsAt",
+        "endsAt",
+        "rankingScore",
+        "scoreBreakdown",
+        "stats",
+        "quizzes",
+        "nextCursor",
+        "snapshotId",
+        "search",
+        "totalMatches"
+      ],
+      "properties": {
+        "snapshotId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "requestId": {
+          "$ref": "#/$defs/RequestId"
+        },
+        "ruleVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "participant": {
+          "$ref": "#/$defs/RankingParticipant"
+        },
+        "periodType": {
+          "enum": [
+            "rolling7",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "periodKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startsAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "endsAt": {
+          "$ref": "#/$defs/Rfc3339"
+        },
+        "rankingScore": {
+          "$ref": "#/$defs/PointTotal"
+        },
+        "scoreBreakdown": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/RankingScoreComponent"
+          }
+        },
+        "stats": {
+          "$ref": "#/$defs/QuizAnalysisStats"
+        },
+        "quizzes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuizAnalysisRecord"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "search": {
+          "$ref": "#/$defs/QuizAnalysisSearch"
+        },
+        "totalMatches": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },

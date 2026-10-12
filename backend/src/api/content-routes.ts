@@ -1,6 +1,7 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
 
 import type { ContentService } from "../content/service.ts";
+import type { CatalogFilters } from "../content/service.ts";
 import type { AuditService } from "../observability/audit-service.ts";
 import { ApiError } from "./errors.ts";
 import type { SessionServicePort } from "./session-routes.ts";
@@ -24,16 +25,20 @@ export function registerContentRoutes(
     const query = request.query as Record<string, unknown>;
     const cursor = query.cursor;
     const rawLimit = query.limit;
+    const search = query.query;
+    const category = query.category;
     const limit = rawLimit === undefined ? 20 : Number(rawLimit);
     if (
       (cursor !== undefined && typeof cursor !== "string") ||
+      (search !== undefined && (typeof search !== "string" || search.length > 120)) ||
+      (category !== undefined && !["all","fiction","nonfiction","available"].includes(String(category))) ||
       !Number.isInteger(limit) ||
       limit < 1 ||
       limit > 100
     ) {
       throw new ApiError("INVALID_REQUEST", 400, false, "Cursor or limit is invalid");
     }
-    const response = await content.listWorks(cursor as string | undefined, limit);
+    const response = await content.listWorks(cursor as string | undefined, limit, { query: search as string | undefined, category: category as CatalogFilters["category"] });
     await audit?.record({
       actorType: "user", actorId: session.userId, action: "content_list_read",
       targetType: "work_collection", targetId: "published", requestId: request.id,

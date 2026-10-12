@@ -1,5 +1,5 @@
 // Browser-only WXML preview bridge. Native pages use the exact same template and controller.
-const names={home:'首页',library:'书库',loans:'实体借阅',me:'我的',detail:'图书详情',player:'听读播放器',recent:'最近听读',report:'阅读报告',ranking:'阅读榜单',login:'登录 / 注册',coupons:'我的优惠券',invite:'邀请奖励',quiz:'阅读测验',notices:'内容来源与许可'}
+const names={home:'首页',library:'书库',loans:'实体借阅',me:'我的',detail:'图书详情',player:'听读播放器',recent:'最近听读',report:'阅读报告',ranking:'阅读榜单','ranking-detail':'读者小测详情',login:'登录 / 注册',coupons:'我的优惠券',invite:'邀请奖励',quiz:'阅读测验',notices:'内容来源与许可'}
 const app=document.getElementById('app'),device=document.getElementById('device')
 let source,current,pageName
 const policy=window.Tingyue.getProductPolicy()
@@ -11,7 +11,7 @@ function renderNode(node,scope,inLoop=false){
   if(node.nodeType!==1)return null
   if(node.hasAttribute('wx:for')&&!inLoop){const frag=document.createDocumentFragment(),items=value(node.getAttribute('wx:for'),scope)||[],itemName=node.getAttribute('wx:for-item')||'item',indexName=node.getAttribute('wx:for-index')||'index';items.forEach((item,index)=>{const el=renderNode(node,{...scope,[itemName]:item,[indexName]:index},true);if(el)frag.appendChild(el)});return frag}
   if(node.hasAttribute('wx:if')&&!value(node.getAttribute('wx:if'),scope))return null
-  const tag=node.tagName.toLowerCase(),isSlider=tag==='slider',el=document.createElement(({view:'div',text:'span',image:'img',slider:'input'})[tag]||tag)
+  const tag=node.tagName.toLowerCase(),isSlider=tag==='slider',el=document.createElement(({view:'div',text:'span',image:'img',slider:'input',picker:'select'})[tag]||tag)
   let handler
   for(const a of node.attributes){
     if(a.name.startsWith('wx:'))continue
@@ -27,7 +27,8 @@ function renderNode(node,scope,inLoop=false){
   if(tag==='input'&&el.type==='number'){el.type='text';el.inputMode='numeric'}
   if(isSlider){el.type='range';el.setAttribute('aria-label','听读进度')}
   if(tag==='input'&&node.hasAttribute('placeholder'))el.setAttribute('aria-label',node.getAttribute('placeholder'))
-  for(const child of node.childNodes){const rendered=renderNode(child,scope);if(rendered)el.appendChild(rendered)}
+  if(tag==='picker'){const items=value(node.getAttribute('range')||'{{[]}}',scope)||[],key=node.getAttribute('range-key');items.forEach((item,index)=>{const option=document.createElement('option');option.value=String(index);option.textContent=key?item[key]:String(item);el.appendChild(option)});el.value=String(value(node.getAttribute('value')||'0',scope));el.classList.add('rank-control')}
+  else for(const child of node.childNodes){const rendered=renderNode(child,scope);if(rendered)el.appendChild(rendered)}
   return el
 }
 function render(){

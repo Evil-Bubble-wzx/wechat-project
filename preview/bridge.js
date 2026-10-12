@@ -3,10 +3,10 @@ let audioManager
 function createAudioManager() {
   const audio = new Audio()
   audio.preload = 'metadata'
-  let source = '', startTime = 0
+  let source = '', startTime = 0, sourceGeneration = 0
   const listeners = { time:new Set(), end:new Set(), error:new Set(), play:new Set(), pause:new Set(), stop:new Set(), seeking:new Set(), seeked:new Set(), canplay:new Set(), waiting:new Set() }
   const emit = type => listeners[type].forEach(fn=>fn())
-  const play = () => { audio.play().catch(()=>emit('error')) }
+  const play = () => { const generation=sourceGeneration;audio.play().catch(error=>{if(generation===sourceGeneration&&error.name!=='AbortError')emit('error')}) }
   audio.addEventListener('timeupdate',()=>emit('time'))
   audio.addEventListener('loadedmetadata',()=>{if(startTime>0){audio.currentTime=startTime;startTime=0}emit('time')})
   audio.addEventListener('ended',()=>emit('end'))
@@ -20,7 +20,7 @@ function createAudioManager() {
   // Exposed only in the development preview for reproducible playback tests.
   window.previewAudio = audio
   return {
-    get src(){ return source }, set src(value){source=value; audio.src=value; play()},
+    get src(){ return source }, set src(value){sourceGeneration++;source=value; audio.src=value; play()},
     get currentTime(){return audio.currentTime},get duration(){return audio.duration},
     get playbackRate(){return audio.playbackRate},set playbackRate(value){audio.playbackRate=value},
     get startTime(){return startTime},set startTime(value){startTime=Math.max(0,Number(value)||0)},

@@ -3,6 +3,7 @@ const { createApiClient } = require('./network/client')
 const { createMemoryTokenStore } = require('./network/token-store')
 const { createWxTransport } = require('./network/wx-transport')
 const host = require('./host')
+const catalog = require('../modules/catalog/remote-catalog')
 
 function createBackendApi(options = {}) {
   const runtime = options.runtime || (typeof wx === 'undefined' ? null : wx)
@@ -58,6 +59,7 @@ function createBackendApi(options = {}) {
     tokenStore.setAccessToken(session.accessToken)
     user = await getMe()
     host.setAccountScope(user.userId)
+    catalog.setScope(user.userId)
     return user
   }
 
@@ -76,6 +78,7 @@ function createBackendApi(options = {}) {
       user = null
       serverContractVersion = null
       host.setAccountScope(null)
+      catalog.reset()
       client.logout()
       publicClient.logout()
     }
@@ -93,10 +96,15 @@ function createBackendApi(options = {}) {
     currentSession:() => session ? Object.assign({}, session, { accessToken:undefined, refreshToken:undefined }) : null,
     progressSyncAvailable:() => (supportsContract(serverContractVersion, 1, 2)||supportsContract(serverContractVersion, 2, 0)),
     savedWordSyncAvailable:() => (supportsContract(serverContractVersion, 1, 3)||supportsContract(serverContractVersion, 2, 0)),
+    librarySyncAvailable:() => supportsContract(serverContractVersion, 2, 1),
+    savedWordPullNonceAvailable:() => supportsContract(serverContractVersion, 2, 1),
+    dynamicCatalogAvailable:() => supportsContract(serverContractVersion, 2, 2),
+    quizHistoryAvailable:() => supportsContract(serverContractVersion, 2, 3),
+    rankingAnalysisAvailable:() => supportsContract(serverContractVersion, 2, 4),
     loginWechat,
     getMe,
     logout,
-    listWorks:(cursor, limit = 50) => get('/works', { cursor, limit }),
+    listWorks:(cursor, limit = 50, filters = {}) => get('/works', { cursor, limit, query:filters.query, category:filters.category }),
     getWork:workId => get('/works/' + encodeURIComponent(workId)),
     getManifest:(pieceId, contentVersion) => get('/pieces/' + encodeURIComponent(pieceId) + '/manifest', { contentVersion }),
     submitQuiz:attempt => post('/me/quiz-attempts', quizPayload(attempt), attempt.attemptId),
@@ -105,12 +113,16 @@ function createBackendApi(options = {}) {
     getProgress:pieceId => get('/me/progress/' + encodeURIComponent(pieceId)),
     listProgress:(cursor, limit = 50) => get('/me/progress', { cursor, limit }),
     savedWordSync:request => post('/me/words/sync', request, request.batchId),
+    librarySync:request => post('/me/library/sync', request, request.batchId),
     learningScore:() => get('/me/learning-score'),
     listBundles:() => get('/bundles'),
     listOrders:() => get('/me/orders'),
     createOrder:(bundle, key) => post('/me/orders', {bundleId:bundle.bundleId,bundleVersion:bundle.version}, key),
+    quizHistory:(cursor,limit=100) => get('/me/quiz-history',{cursor,limit}),
+    learningSummary:() => get('/me/learning-summary'),
     rankingOptions:() => get('/ranking-options'),
     rankings:filters => get('/rankings', rankingQuery(filters)),
+    rankingAnalysis:(participantId, filters) => get('/rankings/' + encodeURIComponent(participantId) + '/quiz-analysis', Object.assign(rankingQuery(filters),{query:filters.query,sort:filters.sort,direction:filters.direction})),
     rankingDetail:(participantId, filters) => get('/rankings/' + encodeURIComponent(participantId) + '/quizzes', rankingQuery(filters)),
     _tokenStore:tokenStore
   }
@@ -127,7 +139,7 @@ function queryString(values = {}) {
   return entries.length ? '?' + entries.map(([key, value]) => encodeURIComponent(key) + '=' + encodeURIComponent(String(value))).join('&') : ''
 }
 function rankingQuery(filters = {}) {
-  return { campusId:filters.campusId, periodType:filters.periodType, periodKey:filters.periodKey, grade:filters.grade, level:filters.level, cursor:filters.cursor, limit:filters.limit || 50 }
+  return { campusId:filters.campusId, periodType:filters.periodType, periodKey:filters.periodKey, grade:filters.grade, level:filters.level, cursor:filters.cursor, snapshotId:filters.snapshotId, limit:filters.limit || 50 }
 }
 function quizPayload(attempt) {
   return {
@@ -178,10 +190,15 @@ module.exports = {
   currentSession:() => active().currentSession(),
   progressSyncAvailable:() => active().progressSyncAvailable(),
   savedWordSyncAvailable:() => active().savedWordSyncAvailable(),
+  librarySyncAvailable:() => active().librarySyncAvailable(),
+  savedWordPullNonceAvailable:() => active().savedWordPullNonceAvailable(),
+  dynamicCatalogAvailable:() => active().dynamicCatalogAvailable(),
+  quizHistoryAvailable:() => active().quizHistoryAvailable(),
+  rankingAnalysisAvailable:() => active().rankingAnalysisAvailable(),
   loginWechat:() => active().loginWechat(),
   getMe:() => active().getMe(),
   logout:() => active().logout(),
-  listWorks:(cursor, limit) => active().listWorks(cursor, limit),
+  listWorks:(cursor, limit, filters) => active().listWorks(cursor, limit, filters),
   getWork:workId => active().getWork(workId),
   getManifest:(pieceId, version) => active().getManifest(pieceId, version),
   submitQuiz:attempt => active().submitQuiz(attempt),
@@ -190,11 +207,15 @@ module.exports = {
   getProgress:pieceId => active().getProgress(pieceId),
   listProgress:(cursor, limit) => active().listProgress(cursor, limit),
   savedWordSync:request => active().savedWordSync(request),
+  librarySync:request => active().librarySync(request),
   learningScore:() => active().learningScore(),
   listBundles:() => active().listBundles(),
   listOrders:() => active().listOrders(),
   createOrder:(bundle, key) => active().createOrder(bundle, key),
+  quizHistory:(cursor,limit) => active().quizHistory(cursor,limit),
+  learningSummary:() => active().learningSummary(),
   rankingOptions:() => active().rankingOptions(),
   rankings:filters => active().rankings(filters),
+  rankingAnalysis:(participantId, filters) => active().rankingAnalysis(participantId, filters),
   rankingDetail:(participantId, filters) => active().rankingDetail(participantId, filters)
 }

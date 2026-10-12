@@ -209,3 +209,25 @@ text { line-height:1.5; white-space:pre-line; }
 .learning-points-note { font-size:20rpx; color:#64805d; margin-top:10rpx; overflow-wrap:anywhere; }
 .rank-score { max-width:45%; overflow-wrap:anywhere; }
 .rank-detail-line text:last-child { overflow-wrap:anywhere; text-align:right; max-width:60%; }
+.analysis-period { font-size:22rpx;color:#78877e;margin:24rpx 0; }
+.analysis-points,.analysis-profile,.analysis-tools,.analysis-quiz-heading { display:flex;align-items:center;justify-content:space-between;gap:16rpx; }
+.analysis-points { padding:22rpx 0;font-size:30rpx;font-weight:650; }
+.analysis-points text:last-child { max-width:65%;overflow-wrap:anywhere;color:#176b52;font-size:44rpx; }
+.analysis-profile { padding:24rpx 0;border-bottom:1rpx solid #e4e9e2; }
+.analysis-stat { display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 16rpx minmax(0,1fr);gap:10rpx;padding:10rpx 0;font-size:25rpx; }
+.analysis-stat text { overflow-wrap:anywhere; }
+.analysis-search { margin-top:32rpx; }
+.analysis-search input { min-width:0;flex:1; }
+.analysis-tools { flex-wrap:wrap;padding:22rpx 0; }
+.analysis-quiz { padding:26rpx 0;border-bottom:1rpx solid #e4e9e2; }
+.analysis-quiz-heading .section-title { flex:1;min-width:0;overflow-wrap:anywhere; }
+.analysis-quiz-points { color:#176b52;max-width:36%;overflow-wrap:anywhere; }
+.analysis-quiz .muted { font-size:22rpx;line-height:1.6;overflow-wrap:anywhere; }
+.analysis-quiz-meta { display:flex;flex-wrap:wrap;gap:12rpx 24rpx;padding:14rpx 0;font-size:24rpx; }
+.analysis-passed { color:#176b52;font-weight:600; }
+.analysis-heading { margin:18rpx 0 28rpx; }
+.analysis-heading .headline { font-size:36rpx;font-weight:650;margin:12rpx 0;overflow-wrap:anywhere; }
+.analysis-heading .muted { display:block;font-size:22rpx; }
+.analysis-search { display:flex;align-items:center;gap:12rpx; }
+.analysis-search .search-input { width:0;min-width:0;box-sizing:border-box;border:1rpx solid #dfe6da;border-radius:16rpx;background:#edf0e9;padding:0 16rpx;height:76rpx;font-size:23rpx; }
+.ranking-analysis .tiny-button { flex-shrink:0;border:1rpx solid #dfe6da;border-radius:14rpx;background:#edf0e9;font-size:22rpx;padding:16rpx 18rpx;line-height:1.3;white-space:nowrap; }

@@ -1,0 +1,52 @@
+{
+  "requestId": "123e4567-e89b-42d3-a456-426614174000",
+  "work": {
+    "workId": "example-work",
+    "title": "Published Example",
+    "coverUrl": null,
+    "pieceCount": 1,
+    "access": "free",
+    "metadata": {
+      "titleZh": null,
+      "author": "Catalog Author",
+      "series": null,
+      "editionLabel": null,
+      "internalContentNumber": "TEST-01",
+      "description": null,
+      "category": "fiction",
+      "level": null,
+      "pageCount": null,
+      "wordCount": 952,
+      "durationMs": 322026,
+      "narrator": null,
+      "audioSource": null,
+      "audioSourceUrl": null
+    }
+  },
+  "pieces": [
+    {
+      "pieceId": "example-piece",
+      "title": "Example Chapter",
+      "currentContentVersion": 1,
+      "quizVersion": 1,
+      "access": "free",
+      "durationMs": 322026,
+      "metadata": {
+        "titleZh": null,
+        "author": "Catalog Author",
+        "series": null,
+        "editionLabel": null,
+        "internalContentNumber": "TEST-01",
+        "description": null,
+        "category": "fiction",
+        "level": null,
+        "pageCount": null,
+        "wordCount": 952,
+        "durationMs": 322026,
+        "narrator": null,
+        "audioSource": null,
+        "audioSourceUrl": null
+      }
+    }
+  ]
+}

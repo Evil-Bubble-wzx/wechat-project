@@ -25,6 +25,7 @@ export type SavedWordSyncOperation = {
 
 export type SavedWordSyncInput = {
   schemaVersion: 1;
+  pullNonce?: string;
   batchId: string;
   cursor: string | null;
   operations: SavedWordSyncOperation[];
@@ -163,6 +164,7 @@ export class SavedWordSyncService {
     try {
       await client.query("BEGIN");
       transactionOpen = true;
+      await client.query("SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE",[userId]);
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`word-sync:${userId}:${input.batchId}`]);
       const existing = await client.query<{
         request_hash: string;
@@ -196,7 +198,7 @@ export class SavedWordSyncService {
       }
       const pulled = await client.query<SavedWordRow>(
         `SELECT ${selectColumns} FROM user_saved_words
-         WHERE user_id=$1 AND change_seq>$2 ORDER BY change_seq ASC LIMIT $3`,
+         WHERE user_id=$1 AND change_seq>$2 ORDER BY user_saved_words.change_seq ASC LIMIT $3`,
         [userId, cursorSequence.toString(), input.limit + 1],
       );
       const hasMore = pulled.rows.length > input.limit;

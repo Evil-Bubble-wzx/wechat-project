@@ -1,0 +1,32 @@
+{
+  "requestId": "req-library-example-001",
+  "schemaVersion": 1,
+  "batchId": "library-example-001",
+  "serverTime": "2026-10-10T05:00:01.000Z",
+  "operations": [
+    {
+      "operationId": "library-op-v1:e6502d798725a877299d5c0cf11de9209bc2d260a40729c8d85c916356611a2a",
+      "status": "applied",
+      "reason": null,
+      "clockStatus": "ok",
+      "entry": {
+        "workId": "peter-rabbit",
+        "favorite": true,
+        "favoriteRevision": "1",
+        "lastOpenedAt": null,
+        "serverUpdatedAt": "2026-10-10T05:00:01.000Z"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "workId": "peter-rabbit",
+      "favorite": true,
+      "favoriteRevision": "1",
+      "lastOpenedAt": null,
+      "serverUpdatedAt": "2026-10-10T05:00:01.000Z"
+    }
+  ],
+  "nextCursor": "opaque-account-bound-library-cursor",
+  "hasMore": false
+}

@@ -36,7 +36,13 @@ async function main(): Promise<void> {
       "0008_daily_progress_sync",
       "0009_saved_word_sync",
       "0010_learning_points",
+      "0011_learning_score_consistency",
       "0011_simulated_commerce",
+      "0012_reader_library",
+      "0013_content_catalog_projection",
+      "0014_quiz_history",
+      "0015_ranking_quiz_analysis",
+      "0016_historical_score_invalidation",
     ]);
     assert.deepEqual(await migrateUp(pool, { schema }), []);
 
@@ -70,6 +76,9 @@ async function main(): Promise<void> {
       "user_saved_word_history",
       "word_sync_batches",
       "word_sync_operations",
+      "reader_library_entries",
+      "reader_library_batches",
+      "reader_library_operations",
     ]) {
       assert.ok(tableNames.includes(requiredTable), `missing table ${requiredTable}`);
     }
@@ -114,14 +123,21 @@ async function main(): Promise<void> {
       assert.ok(indexNames.has(requiredIndex), `missing uniqueness index ${requiredIndex}`);
     }
 
+    assert.equal(await rollbackOne(pool, { schema }), "0016_historical_score_invalidation");
+    assert.equal(await rollbackOne(pool, { schema }), "0015_ranking_quiz_analysis");
+    assert.equal(await rollbackOne(pool, { schema }), "0014_quiz_history");
+    assert.equal(await rollbackOne(pool, { schema }), "0013_content_catalog_projection");
+    assert.equal(await rollbackOne(pool, { schema }), "0012_reader_library");
     assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
-    assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0010_learning_points", "0011_simulated_commerce"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0011_learning_score_consistency");
+    assert.deepEqual(await migrateUp(pool, { schema }), ["0011_learning_score_consistency","0011_simulated_commerce","0012_reader_library","0013_content_catalog_projection","0014_quiz_history","0015_ranking_quiz_analysis","0016_historical_score_invalidation"]);
+    assert.equal(await rollbackOne(pool, { schema }), "0016_historical_score_invalidation");
+    assert.equal(await rollbackOne(pool, { schema }), "0015_ranking_quiz_analysis");
+    assert.equal(await rollbackOne(pool, { schema }), "0014_quiz_history");
+    assert.equal(await rollbackOne(pool, { schema }), "0013_content_catalog_projection");
+    assert.equal(await rollbackOne(pool, { schema }), "0012_reader_library");
     assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
-    assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
-    assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
-    assert.deepEqual(await migrateUp(pool, { schema }), ["0009_saved_word_sync", "0010_learning_points", "0011_simulated_commerce"]);
-    assert.equal(await rollbackOne(pool, { schema }), "0011_simulated_commerce");
+    assert.equal(await rollbackOne(pool, { schema }), "0011_learning_score_consistency");
     assert.equal(await rollbackOne(pool, { schema }), "0010_learning_points");
     assert.equal(await rollbackOne(pool, { schema }), "0009_saved_word_sync");
     assert.equal(await rollbackOne(pool, { schema }), "0008_daily_progress_sync");

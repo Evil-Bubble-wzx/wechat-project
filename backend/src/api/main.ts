@@ -13,9 +13,11 @@ import { createInfrastructure } from "../infrastructure.ts";
 import { IngestionService, type IngestionJobPayload } from "../ingestion/service.ts";
 import { parseRedisConnection } from "../queue.ts";
 import { QuizService } from "../quiz/service.ts";
+import { LearningHistoryService } from "../quiz/history-service.ts";
 import { LocalImportService } from "../sync/local-import-service.ts";
 import { ProgressSyncService } from "../sync/progress-sync-service.ts";
 import { SavedWordSyncService } from "../sync/saved-word-sync-service.ts";
+import { ReaderLibraryService } from "../sync/reader-library-service.ts";
 import { RankingQueryService } from "../ranking/query-service.ts";
 import { AuditService } from "../observability/audit-service.ts";
 import { MetricsRegistry, OperationalMetricsCollector } from "../observability/metrics.ts";
@@ -57,6 +59,7 @@ const quizService = new QuizService(infrastructure.postgres, simulation);
 const localImportService = new LocalImportService(infrastructure.postgres, quizService);
 const progressSyncService = new ProgressSyncService(infrastructure.postgres, simulation);
 const savedWordSyncService = new SavedWordSyncService(infrastructure.postgres, config.auth.identityHashKeyBase64, simulation);
+const readerLibraryService = new ReaderLibraryService(infrastructure.postgres, config.auth.identityHashKeyBase64);
 const rankingService = new RankingQueryService(
   infrastructure.postgres,
   config.auth.identityHashKeyBase64,
@@ -73,9 +76,11 @@ const app = createApp({
   contentService,
   commerceService,
   quizService,
+  learningHistoryService:new LearningHistoryService(infrastructure.postgres,config.auth.identityHashKeyBase64),
   localImportService,
   progressSyncService,
   savedWordSyncService,
+  readerLibraryService,
   rankingService,
   auditService,
   metrics,

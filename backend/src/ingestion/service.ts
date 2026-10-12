@@ -118,6 +118,17 @@ export class IngestionService {
     this.publishedBucket = publishedBucket;
   }
 
+  // Match the catalog's first published chapter metadata; later chapters must not overwrite work fields.
+  private async projectCatalog(client: PoolClient, pieceId: string, workId: string, metadata: Record<string, unknown>): Promise<void> {
+    const level = typeof metadata.level === "string" && /^\d+(\.\d{1,2})?$/.test(metadata.level) && Number(metadata.level) <= 99.99 ? metadata.level : null;
+    await client.query("UPDATE pieces SET word_count=$2,ranking_level=$3 WHERE id=$1", [pieceId, metadata.wordCount ?? null, level]);
+    await client.query(`UPDATE works w SET status='published',author=m.value->>'author',series=m.value->>'series',ranking_category=m.value->>'category'
+      FROM (SELECT cv.catalog_metadata AS value FROM pieces p
+        JOIN content_versions cv ON cv.id=p.current_content_version_id AND cv.status='published'
+        WHERE p.work_id=$1 AND p.status='published' ORDER BY p.sort_order,p.id LIMIT 1) m
+      WHERE w.id=$1`, [workId]);
+  }
+
   private async getBatchWithClient(client: PoolClient, batchId: string): Promise<BatchResponse> {
     const batchResult = await client.query<BatchRow>(
       `SELECT id, work_id, piece_id, content_version, status, created_at, updated_at, request_hash
@@ -215,7 +226,7 @@ export class IngestionService {
           input.pieceId,
           input.contentVersion,
           input.items.length,
-          JSON.stringify({ contractVersion: "api-contract-v2.1.0" }),
+          JSON.stringify({ contractVersion: "api-contract-v1.2.0" }),
         ],
       );
       for (const item of input.items) {
@@ -621,9 +632,11 @@ export class IngestionService {
         content_version: number;
         status: string;
         publishable: boolean;
+        work_id: string;
+        catalog_metadata: Record<string, unknown>;
         current_content_version: number | null;
       }>(
-        `SELECT cv.id, cv.piece_id, cv.content_version, cv.status, cv.publishable,
+        `SELECT cv.id, cv.piece_id, p.work_id, cv.content_version, cv.status, cv.publishable, cv.catalog_metadata,
                 current_cv.content_version AS current_content_version
          FROM content_versions cv
          JOIN pieces p ON p.id = cv.piece_id
@@ -671,17 +684,20 @@ export class IngestionService {
         );
       }
 
+      const workStatus = (await client.query<{status:string}>("SELECT status FROM works WHERE id=$1 FOR UPDATE", [version.work_id])).rows[0]?.status;
+      if (workStatus === "archived" || !workStatus || Object.keys(version.catalog_metadata).length === 0) throw new ApiError("PUBLISH_GATE_NOT_SATISFIED",409,false,"An active work and validated catalog metadata are required");
       const assets = await client.query<{
         id: string;
         asset_type: string;
         bucket: string;
         object_key: string;
+        status: string;
       }>(
-        "SELECT id, asset_type, bucket, object_key FROM content_assets WHERE piece_id = $1 AND content_version = $2 FOR UPDATE",
+        "SELECT id, asset_type, bucket, object_key, status FROM content_assets WHERE piece_id = $1 AND content_version = $2 FOR UPDATE",
         [version.piece_id, version.content_version],
       );
-      if (assets.rows.length === 0) {
-        throw new ApiError("CONFLICT", 409, false, "Content version has no validated assets");
+      if (assets.rows.length !== 7 || assets.rows.some(asset=>asset.status !== "ready") || new Set(assets.rows.map(asset=>asset.asset_type)).size !== 7) {
+        throw new ApiError("CONFLICT", 409, false, "Content version requires all seven validated ready assets");
       }
       const publishedObjects: Array<{ id: string; objectKey: string }> = [];
       for (const asset of assets.rows) {
@@ -718,6 +734,8 @@ export class IngestionService {
         contentVersionId,
         version.piece_id,
       ]);
+      await this.projectCatalog(client,version.piece_id,version.work_id,version.catalog_metadata);
+      await client.query("UPDATE quiz_packages SET status='published',published_at=now() WHERE piece_id=$1 AND content_version=$2 AND status='draft'", [version.piece_id,version.content_version]);
       await client.query(
         `INSERT INTO audit_events (
            actor_type, actor_id, action, target_type, target_id, request_id, after_state
@@ -748,8 +766,8 @@ export class IngestionService {
     const client = await this.pool.connect();
     try {
       await client.query("BEGIN");
-      const source = await client.query<{ piece_id: string }>(
-        `SELECT cv.piece_id FROM content_versions cv
+      const source = await client.query<{ piece_id: string; work_id: string }>(
+        `SELECT cv.piece_id, p.work_id FROM content_versions cv
          JOIN pieces p ON p.current_content_version_id = cv.id
          WHERE cv.id = $1 FOR UPDATE OF cv, p`,
         [contentVersionId],
@@ -757,14 +775,19 @@ export class IngestionService {
       if (!source.rows[0]) {
         throw new ApiError("CONFLICT", 409, false, "Source content version is not currently published");
       }
-      const target = await client.query<{ id: string; publishable: boolean; status: string }>(
-        `SELECT id, publishable, status FROM content_versions
+      const target = await client.query<{ id: string; publishable: boolean; status: string; catalog_metadata: Record<string,unknown> }>(
+        `SELECT id, publishable, status, catalog_metadata FROM content_versions
          WHERE piece_id = $1 AND content_version = $2 FOR UPDATE`,
         [source.rows[0].piece_id, input.targetContentVersion],
       );
       if (!target.rows[0] || !target.rows[0].publishable || !['published', 'superseded'].includes(target.rows[0].status)) {
         throw new ApiError("PUBLISH_GATE_NOT_SATISFIED", 409, false, "Rollback target is not an approved published version");
       }
+      const workStatus = (await client.query<{status:string}>("SELECT status FROM works WHERE id=$1 FOR UPDATE",[source.rows[0].work_id])).rows[0]?.status;
+      const resources = (await client.query<{assets:string; quizzes:string}>(`SELECT
+        (SELECT count(*)::text FROM content_assets WHERE piece_id=$1 AND content_version=$2 AND status='published') AS assets,
+        (SELECT count(*)::text FROM quiz_packages WHERE piece_id=$1 AND content_version=$2 AND status='published') AS quizzes`,[source.rows[0].piece_id,input.targetContentVersion])).rows[0]!;
+      if(target.rows[0].id===contentVersionId||workStatus==='archived'||resources.assets!=='7'||resources.quizzes==='0'||Object.keys(target.rows[0].catalog_metadata).length===0)throw new ApiError("PUBLISH_GATE_NOT_SATISFIED",409,false,"Rollback requires a different complete approved version and active work");
       await client.query("UPDATE content_versions SET status = 'superseded' WHERE id = $1", [contentVersionId]);
       await client.query("UPDATE content_versions SET status = 'published', published_at = now(), rollback_from_id = $1 WHERE id = $2", [
         contentVersionId,
@@ -774,6 +797,7 @@ export class IngestionService {
         target.rows[0].id,
         source.rows[0].piece_id,
       ]);
+      await this.projectCatalog(client,source.rows[0].piece_id,source.rows[0].work_id,target.rows[0].catalog_metadata);
       await client.query(
         `INSERT INTO audit_events (
            actor_type, actor_id, action, target_type, target_id, request_id, before_state, after_state, metadata

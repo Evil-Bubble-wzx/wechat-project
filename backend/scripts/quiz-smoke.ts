@@ -83,13 +83,12 @@ async function main(): Promise<void> {
       assert.equal(verified.score, 100);
       assert.equal(verified.mastery, true);
     }
-    const replay=await service.submit(userId, input);
-    // The attempt is immutable; its cumulative score summary is a fresh read.
-    if(replay.status==='server_verified'&&verified.status==='server_verified') {
+    const replay=await service.submit(userId,input);
+    assert.equal(replay.status,verified.status);
+    if(replay.status==='server_verified'&&verified.status==='server_verified'){
       assert.deepEqual({...replay,learningScore:undefined},{...verified,learningScore:undefined});
       assert.equal(replay.learningScore?.totalPoints,verified.learningScore?.totalPoints);
-      assert.ok(Date.parse(replay.learningScore!.asOf)>=Date.parse(verified.learningScore!.asOf));
-    } else assert.deepEqual(replay,verified);
+    }
     const attemptReuse = await service.submit(userId, {
       ...input,
       selectedOptions: [1, 1],

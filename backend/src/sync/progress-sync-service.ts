@@ -49,6 +49,7 @@ export class ProgressSyncService{
     const requestHash=hash({pieceId,input}),client=await this.pool.connect();
     try{
       await client.query("BEGIN");
+      await client.query("SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE",[userId]);
       await client.query("SELECT pg_advisory_xact_lock(hashtext($1))",[`progress-sync:${userId}:${pieceId}:${input.contentVersion}`]);
       await client.query("DELETE FROM progress_sync_mutations WHERE user_id=$1 AND mutation_id=$2 AND expires_at<=now()",[userId,input.mutationId]);
       const replay=await client.query<{request_hash:string;response:ProgressMutationResponse}>("SELECT request_hash,response FROM progress_sync_mutations WHERE user_id=$1 AND mutation_id=$2 AND expires_at>now()",[userId,input.mutationId]);

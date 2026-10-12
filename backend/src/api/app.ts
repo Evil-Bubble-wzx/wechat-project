@@ -7,9 +7,11 @@ import { registerCommerceRoutes } from './commerce-routes.ts';
 import type { CommerceService } from '../commerce/service.ts';
 import { registerContentRoutes } from "./content-routes.ts";
 import { registerQuizRoutes } from "./quiz-routes.ts";
+import { registerLearningHistoryRoutes, type LearningHistoryServicePort } from "./learning-history-routes.ts";
 import { registerLocalImportRoutes } from "./local-import-routes.ts";
 import { registerProgressRoutes, type ProgressSyncServicePort } from "./progress-routes.ts";
 import { registerSavedWordSyncRoutes, type SavedWordSyncServicePort } from "./saved-word-sync-routes.ts";
+import { registerReaderLibraryRoutes, type ReaderLibraryServicePort } from "./reader-library-routes.ts";
 import { registerRankingRoutes, type RankingServicePort } from "./ranking-routes.ts";
 import { registerIngestionRoutes } from "./ingestion-routes.ts";
 import { registerSessionRoutes, type SessionServicePort } from "./session-routes.ts";
@@ -34,9 +36,11 @@ export type CreateAppOptions = {
   contentService?: ContentService;
   commerceService?: CommerceService;
   quizService?: QuizService;
+  learningHistoryService?: LearningHistoryServicePort;
   localImportService?: LocalImportServicePort;
   progressSyncService?: ProgressSyncServicePort;
   savedWordSyncService?: SavedWordSyncServicePort;
+  readerLibraryService?: ReaderLibraryServicePort;
   rankingService?: RankingServicePort;
   auditService?: AuditService;
   metrics?: MetricsRegistry;
@@ -74,7 +78,7 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
 
   app.addHook("onSend", async (request, reply, payload) => {
     reply.header("X-Request-Id", request.id);
-    reply.header("X-API-Contract-Version", "api-contract-v2.1.0");
+    reply.header("X-API-Contract-Version", "api-contract-v2.4.0");
     return payload;
   });
 
@@ -236,6 +240,10 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
     if (!options.sessionService) throw new Error("Local import routes require a session service");
     registerLocalImportRoutes(app, options.localImportService, options.sessionService, options.auditService, options.rateLimiter);
   }
+  if (options.learningHistoryService) {
+    if (!options.sessionService) throw new Error("Learning history routes require a session service");
+    registerLearningHistoryRoutes(app, options.learningHistoryService, options.sessionService, options.rateLimiter);
+  }
   if (options.progressSyncService) {
     if (!options.sessionService) throw new Error("Progress sync routes require a session service");
     registerProgressRoutes(app, options.progressSyncService, options.sessionService, options.auditService, options.metrics, options.rateLimiter);
@@ -247,6 +255,11 @@ export function createApp(options: CreateAppOptions = {}): FastifyInstance {
   if (options.rankingService) {
     if (!options.sessionService) throw new Error("Ranking routes require a session service");
     registerRankingRoutes(app, options.rankingService, options.sessionService, options.auditService, options.metrics, options.rateLimiter);
+  }
+
+  if (options.readerLibraryService) {
+    if (!options.sessionService) throw new Error("Library routes require a session service");
+    registerReaderLibraryRoutes(app, options.readerLibraryService, options.sessionService, options.auditService, options.rateLimiter);
   }
 
   app.setNotFoundHandler(async (request, reply) => {

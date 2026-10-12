@@ -29,11 +29,13 @@ let browser
  const beforeLeave=await page.evaluate(()=>{window.detachedPlayerPage=window.currentPage;return {audio:previewAudio.currentTime,page:currentPage.data.position}})
  await page.evaluate(()=>{location.hash='home'})
  await page.waitForFunction(()=>location.hash==='#home'&&window.currentPage.data.route==='home')
- const detachedPosition=await page.evaluate(()=>detachedPlayerPage.data.position)
+ // Hash navigation is asynchronous. Capture the baseline after onHide has run,
+ // not before navigation, when another legitimate audio update may still occur.
+ const detachedAfterLeave=await page.evaluate(()=>detachedPlayerPage.data.position)
  await page.waitForTimeout(600)
  const away=await page.evaluate(()=>({audio:previewAudio.currentTime,detached:detachedPlayerPage.data.position}))
  assert.ok(away.audio>beforeLeave.audio+.3)
- assert.equal(away.detached,detachedPosition)
+ assert.equal(away.detached,detachedAfterLeave)
  await page.evaluate(()=>{location.hash='player?id=peter-rabbit'})
  await page.waitForFunction(()=>location.hash.includes('player')&&window.currentPage.data.route==='player'&&currentPage.data.playing)
  const rejoined=await page.evaluate(()=>({pieceId:currentPage.data.book.pieceId,position:currentPage.data.position,rate:currentPage.data.rate,audio:previewAudio.currentTime}))
