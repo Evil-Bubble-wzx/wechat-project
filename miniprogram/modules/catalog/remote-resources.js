@@ -1,6 +1,9 @@
 const {sha256,sha256Bytes}=require('../sync/local-import')
 const fail=message=>Object.assign(new Error(message),{kind:'content',retryable:false})
 const jsonTypes=['subtitles','vocabulary','quiz','metadata']
+const verifiedCache=new Map()
+let cacheScope=null
+function clearCache(){verifiedCache.clear();cacheScope=null}
 function decode(bytes){
   // decodeURIComponent validates UTF-8 without requiring TextDecoder in WeChat.
   try{return decodeURIComponent(Array.from(bytes,value=>'%'+value.toString(16).padStart(2,'0')).join('')).replace(/^\uFEFF/,'')}catch(_){throw fail('Resource is not valid UTF-8')}
@@ -27,10 +30,17 @@ function validateManifest(manifest,expected){
 }
 async function loadBundle(manifest,expected,options={}){
   const assets=validateManifest(manifest,expected)
+  const scope=options.accountScope||null
+  if(scope!==cacheScope){clearCache();cacheScope=scope}
+  const key=scope?JSON.stringify([scope,expected.workId,expected.pieceId,expected.contentVersion,manifest.quizVersion,manifest.manifestSha256]):null
+  const cached=key&&verifiedCache.get(key)
+  if(cached&&cached.until<=Date.now())verifiedCache.delete(key)
+  const reusable=cached&&cached.until>Date.now()?cached:null
   const read=options.fetchBytes||requestBytes
   const values=await Promise.all(jsonTypes.map(async type=>{
     const asset=assets.get(type)
     if(!asset.mimeType.startsWith('application/json')||asset.sizeBytes>8*1024*1024)throw fail('Unsupported or oversized JSON resource')
+    if(reusable)return JSON.parse(reusable.values[type])
     const raw=await read(asset)
     const bytes=raw instanceof ArrayBuffer?new Uint8Array(raw):ArrayBuffer.isView(raw)?new Uint8Array(raw.buffer,raw.byteOffset,raw.byteLength):null
     if(!bytes||bytes.length!==asset.sizeBytes||sha256Bytes(bytes)!==asset.sha256)throw fail('Resource checksum mismatch')
@@ -50,6 +60,10 @@ async function loadBundle(manifest,expected,options={}){
   const ids=new Set()
   for(const q of quiz.questions){if(!q||typeof q.id!=='string'||ids.has(q.id)||typeof q.q!=='string'||!Array.isArray(q.options)||q.options.length<2||!Number.isInteger(q.answer)||q.answer<0||q.answer>=q.options.length)throw fail('Quiz question is invalid');ids.add(q.id)}
   for(const entry of Object.values(vocabulary)){if(!entry||!/^ve-[a-f0-9]{12,64}$/.test(entry.entryId)||typeof entry.lemma!=='string')throw fail('Stable vocabulary entry is invalid')}
+  if(key&&cacheScope===scope&&!reusable){
+    if(verifiedCache.size>=4)verifiedCache.delete(verifiedCache.keys().next().value)
+    verifiedCache.set(key,{until:Date.now()+5*60*1000,values:Object.fromEntries(jsonTypes.map((type,index)=>[type,JSON.stringify(values[index])]))})
+  }
   return {workId:expected.workId,pieceId:expected.pieceId,contentVersion:expected.contentVersion,quizVersion:manifest.quizVersion,cues,vocabulary,quiz,metadata,duration:durationMs/1000,audioUrl:assets.get('audio').url,coverUrl:assets.get('cover').url}
 }
-module.exports={loadBundle,requestBytes,validateManifest}
+module.exports={loadBundle,requestBytes,validateManifest,clearCache}

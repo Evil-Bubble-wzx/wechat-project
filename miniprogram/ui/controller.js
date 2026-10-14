@@ -31,6 +31,10 @@ const learningPoints = require('../modules/ranking/learning-points')
 const rankingState = require('../modules/ranking/state')
 const catalog = require('../modules/catalog/remote-catalog')
 const remoteResources = require('../modules/catalog/remote-resources')
+const audioCache = require('../modules/listen-read/audio-cache')
+const cacheMessage=error=>({CACHE_LIMIT_REACHED:'缓存空间不足，请先清理自动缓存或调整上限',PINNED_CACHE_TOO_LARGE:'手动下载或正在播放的内容超过新上限，请先手动清理',AUDIO_IN_USE:'当前章节正在播放，请切换后再删除',DOWNLOAD_CANCELLED:'下载已取消',OFFLINE_NOT_DOWNLOADED:'本章尚未下载，请联网后下载',AUDIO_CHECKSUM_MISMATCH:'音频校验失败，请重新下载',AUDIO_SIZE_MISMATCH:'音频下载不完整，请重试',CACHE_VERSION_CHANGED:'内容版本摘要变化，请删除旧缓存后重新下载',OFFLINE_CONTENT_NOT_ALLOWED:'该内容暂不支持离线下载'})[error?.code]||'下载或保存失败，请检查网络和手机可用空间后重试'
+const cacheSize=bytes=>bytes>=1024*1024*1024?(bytes/1024/1024/1024).toFixed(2)+' GB':(bytes/1024/1024).toFixed(1)+' MB'
+const networkAvailable=()=>new Promise(resolve=>typeof wx!=='undefined'&&wx.getNetworkType?wx.getNetworkType({success:r=>resolve(r.networkType!=='none'),fail:()=>resolve(true)}):resolve(true))
 const defaults = () => ({ favorites:[], recent:[], progress:{}, results:[], words:[], savedWordEntries:{}, user:null, listeningSec:0, listenDaily:{} })
 /* @demo-start */
 const addDemoDefaults = state => {if(!Array.isArray(state.loans))state.loans=[];if(!Array.isArray(state.demoCoupons))state.demoCoupons=[];if(typeof state.demoInvitationCompleted!=='boolean')state.demoInvitationCompleted=false;if(!Array.isArray(state.demoPurchases))state.demoPurchases=[];return state}
@@ -63,9 +67,10 @@ const developmentAudioErrorCode = error => {
 function playableBook(book, chapterId) {
   const chapter = (book.chapters || []).find(item => item.id === chapterId) || (!book.remote || !chapterId ? (book.chapters || [])[0] : null)
   if(book.remote&&chapterId&&!chapter)return Object.assign({},book,{chapterId,pieceId:chapterId,duration:0,localAudio:'',hasQuiz:false})
-  return chapter ? Object.assign({}, book, { chapterId: chapter.id, pieceId:chapter.id, chapterTitle: chapter.title, duration: chapter.duration, localAudio: chapter.localAudio, hasQuiz: chapter.hasQuiz, contentVersion:chapter.contentVersion??book.contentVersion, quizVersion:chapter.quizVersion??book.quizVersion }) : book
+  return chapter ? Object.assign({}, book, { chapterId: chapter.id, pieceId:chapter.id, chapterTitle: chapter.title, duration: chapter.duration, localAudio: chapter.localAudio, hasQuiz: chapter.hasQuiz, access:chapter.access??book.access,contentVersion:chapter.contentVersion??book.contentVersion, quizVersion:chapter.quizVersion??book.quizVersion }) : book
 }
 function cueKey(book) { return book.chapterId || book.pieceId || book.id }
+function routeBookId(value){const text=String(value||'');try{return decodeURIComponent(text)}catch(_){return text}}
 const findCue = (cues, milliseconds) => {
   let low=0,high=cues.length-1
   while(low<=high){const middle=Math.floor((low+high)/2),cue=cues[middle];if(milliseconds<cue.startMs)high=middle-1;else if(milliseconds>=cue.endMs)low=middle+1;else return cue}
@@ -90,13 +95,14 @@ function createPage(requestedRoute) {
   data.commerceBundles=[];data.commerceOrders=[];data.commerceBusy=false;data.commerceError=''
   data.audioDiagnostic=''
   data.playbackNotice=''
+  Object.assign(data,{cacheAvailable:audioCache.enabled(),downloadBusy:false,downloadPercent:0,downloadLabel:'',downloadError:'',offlineContent:false,cacheUsedLabel:'0 MB',cacheLimitLabel:'1 GB',cacheItems:[],bookDownloadBusy:false,bookDownloadLabel:''})
   Object.assign(data,{studentProfile:null,studentProfileStatus:'idle',studentProfileCanManage:false})
   /* @demo-start */
   Object.assign(data,{loanFilter:'all',loanTabs:[{id:'all',label:'All'},{id:'reserved',label:'Pending'},{id:'borrowed',label:'On Loan'},{id:'cancelled',label:'Cancelled'}],loanList:[],totalLoans:0,agreed:false,loginMethod:'wechat',phone:'',code:'',codeSent:false,coupons:[],couponCount:0,invitationClaimed:false,promoBooks:[],purchaseEligible:false,purchaseCompleted:false,purchasePrice:'¥15',purchaseDiscount:'¥0',purchaseTotal:'¥15',purchaseResult:null})
   /* @demo-end */
   return {
     data,
-    onLoad(options) {if(!routeAllowed){host.go('home');return}const [bookId,chapterId]=((options&&options.id)||firstBook.id).split(':');const base=visibleBooks.find(b=>b.id===bookId)||(!isDemo&&api.isAuthenticated()&&api.dynamicCatalogAvailable()?{id:bookId,workId:bookId,title:'Loading…',duration:0,remote:true,chapters:[],words:null,pages:null}:firstBook);const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration),contentNotices});if(route==='player'){const current=player.snapshot();if(current.pieceId!==cueKey(book)&&!book.remote)player.selectTrack(book);this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(route==='quiz')this.setupQuiz();this.refresh();if(!isDemo)this.wordSyncUnsubscribe=savedWordSync.subscribe(()=>this.refresh());this.loadRemote()},
+    onLoad(options) {if(!routeAllowed){host.go('home');return}const [bookId,chapterId]=routeBookId((options&&options.id)||firstBook.id).split(':');const base=visibleBooks.find(b=>b.id===bookId)||(!isDemo&&api.isAuthenticated()&&api.dynamicCatalogAvailable()?{id:bookId,workId:bookId,title:'Loading…',duration:0,remote:true,chapters:[],words:null,pages:null}:firstBook);const book=route==='player'||route==='quiz'?playableBook(base,chapterId):base;this.setData({inset:host.inset(),book,duration:time(book.duration),contentNotices});if(route==='player'){const current=player.snapshot();if(current.pieceId!==cueKey(book)&&!book.remote)player.selectTrack(book);this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(route==='quiz')this.setupQuiz();this.refresh();if(!isDemo)this.wordSyncUnsubscribe=savedWordSync.subscribe(()=>this.refresh());this.loadRemote()},
     setupQuiz() {
       const book=this.data.book
       let selectedPackage=book.remote?(this.bundleCurrent()?this.remoteBundle.quiz:{schemaVersion:1,workId:book.workId,pieceId:cueKey(book),contentVersion:book.contentVersion,questions:[]}):quizPackage
@@ -128,7 +134,7 @@ function createPage(requestedRoute) {
       update.playbackNotice=session.sourceRenewing?(session.status==='paused'?'正在更新音频链接 · 保持暂停':'正在验证权限并更新音频链接…'):session.status==='error'?(session.pauseReason==='content_unavailable'?'本章版本或权限已变化，请重新打开本章':'音频恢复未完成，点击播放可重试'):''
       if(session.status==='error'&&session.pauseReason==='content_unavailable'&&this.data.book.remote){this.remoteBundle=null;update.remoteContentStatus='unavailable'}
       if(session.book)update.book=Object.assign({},this.data.book,session.book,{duration})
-      Object.assign(update,learningPoints.view(host.read(),api.isAuthenticated()))
+      Object.assign(update,learningPoints.view(host.read(),api.isAuthenticated()||api.offlineMode?.()))
       this.setData(update)
       this.updateSubtitles(session.position||0,!!force)
       if(session.status==='error'&&this.lastPlayerError!==session.error){this.lastPlayerError=session.error;host.toast('音频加载失败，请稍后重试')}
@@ -138,6 +144,8 @@ function createPage(requestedRoute) {
     onShow() {this.refresh();if(route==='player'){this.attachPlayer();this.syncPlayer(player.snapshot(),true)}if(this.remoteLoadedOnce)this.loadRemote();if(!isDemo&&api.isAuthenticated()){void progressSync.activate();savedWordSync.foreground()}},
     onHide() {if(this.data.sheet==="commerceReader"){this.clearCommerceReader();this.setData({sheet:""})}this.studentProfileEpoch=(this.studentProfileEpoch||0)+1;if(route==='player')player.saveNow();this.detachPlayer();if(!isDemo)progressSync.kick()},
     refresh() {
+      const cacheOwner=api.currentUser()?.userId||host.accountScope(),cached=audioCache.summary(cacheOwner)
+      this.setData({cacheUsedLabel:cacheSize(cached.used),cacheLimitLabel:cacheSize(cached.limit),cacheItems:cached.items.map(item=>({...item,sizeLabel:cacheSize(item.bytes),kindLabel:!item.complete?'安装中断 · 可删除':item.revoked?'已撤回 · 可删除':item.pinned?'手动保留':'自动缓存'}))})
       const commerceScope=api.currentUser()?.userId||null
       if(this.commerceScope!==commerceScope){this.commerceScope=commerceScope;this.resetCommerceTest()}
       if(this.studentProfileOwner&&this.studentProfileOwner!==api.currentUser()?.userId)this.setData({studentProfile:null,studentProfileCanManage:false,studentProfileStatus:'idle'})
@@ -164,8 +172,8 @@ function createPage(requestedRoute) {
       const stableEntries=Object.values(s.savedWordEntries||{})
       const savedWordItems=[...stableEntries.map(entry=>Object.assign({key:entry.entryId,stable:true},entry)),...(s.words||[]).filter(surface=>!stableEntries.some(entry=>entry.surface===surface)).map(surface=>({key:'legacy:'+surface,surface,stable:false}))]
       const wordSyncStatusLabel=wordSync.status==='synced'?'生词本已同步':wordSync.status==='syncing'?'生词本同步中':wordSync.status==='error'?'生词本同步失败':wordSync.status==='pending'?'生词本待同步':'生词本未同步'
-      const update={books:visibleBooks,featured:visibleBooks.slice(0,3),recommendations:visibleBooks.slice(0,2),...learningPoints.view(s,!isDemo&&api.isAuthenticated()),user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordItems,wordSyncStatus:wordSync.status,wordSyncPending:wordSync.pendingCount,wordSyncStatusLabel,recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),syncStatus:sync.status,syncStatusLabel:sync.label,syncPending:sync.pending,syncFailed:sync.failed,stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
-      const quizStatus=quizSync.status()
+      const update={books:visibleBooks,featured:visibleBooks.slice(0,3),recommendations:visibleBooks.slice(0,2),...learningPoints.view(s,!isDemo&&(api.isAuthenticated()||api.offlineMode?.())),user:isDemo?null:api.currentUser(),favorites:s.favorites,favoriteBooks,readingList,savedWordItems,wordSyncStatus:wordSync.status,wordSyncPending:wordSync.pendingCount,wordSyncStatusLabel,recent,results:report.history,reportTrend:report.trend,currentFavorite:s.favorites.includes(this.data.book.id),syncStatus:sync.status,syncStatusLabel:sync.label,syncPending:sync.pending,syncFailed:sync.failed,stats:{pieces,words:visibleBooks.filter(b=>s.progress[cueKey(b)]?.completed).reduce((a,b)=>a+b.words,0),correct:report.average,correctLabel:report.latest.length?report.average+'%':'—',listening:fmtListening(s.listeningSec)}}
+      if(api.offlineMode?.()||this.data.offlineContent)update.learningPointsLabel='离线显示上次确认积分 · 新记录等待同步'; const quizStatus=quizSync.status()
       update.quizSyncPending=quizStatus.pendingCount
       update.quizSyncLabel=quizStatus.status==='synced'?'Quiz 与云历史已同步':quizStatus.status==='syncing'?'Quiz 与云历史同步中':quizStatus.status==='error'?'Quiz 同步未完成，显示上次缓存':quizStatus.status==='local'?'云历史服务待升级':'Quiz 与云历史待同步'
       update.reportSourceLabel='本机练习记录 · 不计入正式排名'
@@ -362,10 +370,10 @@ function createPage(requestedRoute) {
     loop() {const loop=!this.data.loop;player.setLoop(loop);host.toast(loop?'单篇循环':'顺序播放')},
     toggleSubtitle() {this.setData({subtitle:!this.data.subtitle})},
     word(e) {const surface=e.currentTarget.dataset.word;const key=e.currentTarget.dataset.vocabKey||surface.toLowerCase();let entry=this.data.book.remote?(this.bundleCurrent()?this.remoteBundle.vocabulary[key]:null):peterVocab[key],garden=false;/* @demo-start */const formal=this.data.book.workId==='peter-rabbit';if(isDemo&&!formal){entry=legacyVocab[key];garden=surface.toLowerCase()==='garden'}/* @demo-end */const cues=this.cuesForBook();const cue=cues[Number(e.currentTarget.dataset.cueIndex)]||this.data.activeCue;const current=player.snapshot();this.wordResume=current.status==='playing'&&current.pieceId===cueKey(this.data.book)?{sessionId:current.sessionId,pieceId:current.pieceId}:null;if(this.wordResume)player.pause('word');const selectedWord={entryId:entry?.entryId||null,pieceId:cueKey(this.data.book),contentVersion:this.data.book.contentVersion||1,vocabKey:key,surface,lemma:entry?.lemma||surface.toLowerCase(),phonetic:entry?.phonetic||entry?.ph|| (garden?'/ˈɡɑːdn/':'—'),partOfSpeech:entry?.partOfSpeech||entry?.pos|| (garden?'noun':'待审核'),definitionZh:entry?.definitionZh||entry?.zh|| (garden?'花园；园子':'释义待审核'),definitionEn:entry?.definitionEn||entry?.en|| (garden?'A place where flowers, fruit, or vegetables grow.':'This word is waiting for editorial review.'),example:cue?cue.text:'',translation:cue?.translation||''};const selectedWordSaved=selectedWord.entryId?!!(this.state.savedWordEntries||{})[selectedWord.entryId]:(this.state.words||[]).includes(surface);this.setData({sheet:'word',selectedWord,selectedWordSaved})},
-    saveWord() {if(!this.requireUser())return;const entry=this.data.selectedWord,word=entry.surface;this.state.words=[...new Set([...(this.state.words||[]),word])];if(entry.entryId)this.state.savedWordEntries=Object.assign({},this.state.savedWordEntries||{},{[entry.entryId]:{entryId:entry.entryId,pieceId:entry.pieceId,contentVersion:entry.contentVersion,vocabKey:entry.vocabKey,surface:entry.surface,lemma:entry.lemma}});this.save();if(!isDemo&&entry.entryId&&api.isAuthenticated())savedWordSync.saveWord(entry);this.setData({selectedWordSaved:true});host.toast(word+' 已加入生词本');this.closeSheet()},
+    saveWord() {if(!this.requireUser())return;const entry=this.data.selectedWord,word=entry.surface;this.state.words=[...new Set([...(this.state.words||[]),word])];if(entry.entryId)this.state.savedWordEntries=Object.assign({},this.state.savedWordEntries||{},{[entry.entryId]:{entryId:entry.entryId,pieceId:entry.pieceId,contentVersion:entry.contentVersion,vocabKey:entry.vocabKey,surface:entry.surface,lemma:entry.lemma}});this.save();if(!isDemo&&entry.entryId&&(api.isAuthenticated()||api.offlineMode?.()))savedWordSync.saveWord(entry);this.setData({selectedWordSaved:true});host.toast(word+' 已加入生词本');this.closeSheet()},
     removeSelectedWord() {this.removeWordEntry(this.data.selectedWord)},
     removeSavedWord(e) {const key=e.currentTarget.dataset.key,item=(this.data.savedWordItems||[]).find(value=>value.key===key);if(item)this.removeWordEntry(item)},
-    removeWordEntry(entry) {if(!entry||!entry.surface)return;const stable=Object.assign({},this.state.savedWordEntries||{});if(entry.entryId)delete stable[entry.entryId];this.state.savedWordEntries=stable;if(!Object.values(stable).some(item=>item.surface===entry.surface))this.state.words=(this.state.words||[]).filter(surface=>surface!==entry.surface);this.save();if(!isDemo&&entry.entryId&&api.isAuthenticated())savedWordSync.deleteWord(entry);this.setData({selectedWordSaved:false});host.toast(entry.surface+' 已移出生词本');if(this.data.sheet==='word')this.closeSheet()},
+    removeWordEntry(entry) {if(!entry||!entry.surface)return;const stable=Object.assign({},this.state.savedWordEntries||{});if(entry.entryId)delete stable[entry.entryId];this.state.savedWordEntries=stable;if(!Object.values(stable).some(item=>item.surface===entry.surface))this.state.words=(this.state.words||[]).filter(surface=>surface!==entry.surface);this.save();if(!isDemo&&entry.entryId&&(api.isAuthenticated()||api.offlineMode?.()))savedWordSync.deleteWord(entry);this.setData({selectedWordSaved:false});host.toast(entry.surface+' 已移出生词本');if(this.data.sheet==='word')this.closeSheet()},
     nextTrack(e) {const step=Number(e.currentTarget.dataset.step);const current=this.data.book;const cached=catalog.get(current.id);const base=current.remote?(cached?.chapters?.length?cached:current):(visibleBooks.find(b=>b.id===current.id)||firstBook);const chapters=base.chapters||[];const index=chapters.findIndex(ch=>ch.id===current.chapterId);let book;if(chapters.length&&index+step>=0&&index+step<chapters.length)book=playableBook(base,chapters[index+step].id);else{const i=visibleBooks.findIndex(b=>b.id===current.id);book=playableBook(visibleBooks.length?visibleBooks[(i+step+visibleBooks.length)%visibleBooks.length]:base)}if(book.remote)player.pause('chapter_loading');else player.selectTrack(book);this.setData({book,duration:time(book.duration),position:0,formatted:'00:00',playing:false});this.remoteBundle=null;this.updateSubtitles(0,true);if(book.remote)return this.loadRemoteContent()},
     openQuiz() {const book=this.data.book;if(book.remote&&!(book.hasQuiz||(book.chapters||[])[0]?.hasQuiz)){host.toast('这一章暂时没有小测');return}const pieceId=book.chapterId||(book.chapters||[])[0]?.id;/* @demo-start */if(isDemo&&book.workId!=='peter-rabbit'&&!(legacyQuizzes[pieceId]||[]).length){host.toast('这一章暂时没有小测');return}/* @demo-end */this.wordResume=null;player.pause('quiz');host.go('quiz',book.id+(pieceId?':'+pieceId:''))},
     playOption(e) {const option=this.data.quizOptions[Number(e.currentTarget.dataset.index)];if(!option?.audio)return;player.pause('quiz_option');if(!this.optionAudio)this.optionAudio=wx.createInnerAudioContext();this.optionAudio.stop();this.optionAudio.src=option.audio;this.optionAudio.play()},
@@ -373,6 +381,7 @@ function createPage(requestedRoute) {
     answer(e) {if(!this.data.checked)this.setData({answer:Number(e.currentTarget.dataset.index)})},
     nextQuestion() {if(!this.questions.length||!this.data.question)return;if(this.data.answer<0){host.toast('先选择一个答案吧');return}if(!this.data.checked){this.setData({checked:true});return}const scores=[...this.data.scores,this.data.answer===this.data.question.answer?1:0];this.selectedOptions[this.data.questionIndex]=this.data.answer;const n=this.data.questionIndex+1;if(n>=this.questions.length){const attempt=quizAttempts.createLocalAttempt({quizPackage:this.quizPackage,book:this.data.book,selectedOptions:this.selectedOptions,startedAt:this.quizStartedAt});this.state.results=[attempt,...this.state.results];this.save();this.setData({result:true,score:attempt.score,scores,quizResultStatus:'本机练习结果 · 未经服务端验证'});this.submitQuizAttempt(attempt)}else{const question=this.questions[n];this.setData({questionIndex:n,question,quizOptions:this.quizOptions(question),quizProgress:(n+1)/this.questions.length*100,answer:-1,checked:false,scores})}},
     async submitQuizAttempt(attempt) {
+      if(api.offlineMode?.()||this.data.offlineContent){this.currentQuizAttemptId=attempt.attemptId;if(api.isAuthenticated()&&quizSync.activate(api.currentUser()?.userId,{sync:false}))quizSync.enqueue(attempt,false);this.setData({quizResultStatus:'离线作答已保存 · 联网后确认成绩与积分'});return}
       if(!api.available()||!api.isAuthenticated())return
       const user=api.currentUser(),userId=user?.userId
       const stillCurrent=()=>!!userId&&api.isAuthenticated()&&api.currentUser()===user&&host.accountScope()===userId
@@ -406,10 +415,18 @@ function createPage(requestedRoute) {
     async loadRemote() {
       this.remoteLoadedOnce=true
       if(isDemo)return
+      if(audioCache.enabled()){
+        const online=await networkAvailable()
+        if(!online){await this.loadOfflineContent();return}
+        if(['player','quiz'].includes(route)&&await this.loadOfflineContent()){
+          this.setData({offlineContent:!!api.offlineMode?.(),downloadLabel:'已下载 · 本地播放'})
+          this.activateQuizSync();this.activateLibrarySync();void this.validateCachedChapter();return
+        }
+      }
       this.activateLibrarySync()
       if(route==='ranking'){await this.loadLearningScore();await this.loadRankingOptions();return}
-      if(!api.available()||!api.isAuthenticated())return
-      if(route==='me')await this.loadStudentProfile()
+      if(!api.available()||!api.isAuthenticated()){await this.loadOfflineContent();return}
+      // Personal-reader Me page does not load institutional student profiles.
       this.activateQuizSync()
       if(['me','report'].includes(route))await quizSync.trigger('page',true)
       if(['home','library','recent','me'].includes(route)&&api.dynamicCatalogAvailable())await this.loadRemoteCatalog()
@@ -458,8 +475,74 @@ function createPage(requestedRoute) {
     moreCatalog(){if(this.data.catalogNextCursor&&!this.data.catalogBusy)return this.loadRemoteCatalog(this.data.catalogNextCursor)},
     retryCatalog(){return this.loadRemoteCatalog()},
     retryContent(){return this.loadRemoteContent()},
+    async validateCachedChapter(){
+      if(!api.isAuthenticated())return
+      const owner=api.currentUser()?.userId,piece=this.data.book.pieceId,version=this.data.book.contentVersion
+      try{await api.getManifest(piece,version);if(host.accountScope()===owner)void this.loadLearningScore()}
+      catch(error){if(!this.closed&&host.accountScope()===owner&&cueKey(this.data.book)===piece&&this.data.book.contentVersion===version&&['RESOURCE_NOT_FOUND','CONTENT_ACCESS_DENIED','CONTENT_VERSION_UNAVAILABLE'].includes(error?.serverCode)){audioCache.revoke(owner,piece);this.remoteBundle=null;player.pause('content_unavailable');this.setData({remoteContentStatus:'unavailable',downloadError:'本章版本或权限已变化，请联网重新获取'})}}
+    },
+    async loadOfflineContent(){
+      const owner=api.currentUser()?.userId||host.accountScope()
+      if(!owner||owner!==host.accountScope()||!audioCache.enabled())return false; savedWordSync.activate(owner,{sync:false})
+      const currentBook=this.data.book,workId=currentBook.workId||currentBook.id,pieceId=currentBook.chapterId||currentBook.pieceId
+      const available=audioCache.summary(owner).items.filter(item=>!item.revoked&&item.complete),groups=new Map()
+      for(const item of available){if(!groups.has(item.workId))groups.set(item.workId,[]);const group=groups.get(item.workId),old=group.findIndex(x=>x.pieceId===item.pieceId);if(old<0)group.push(item);else if(group[old].contentVersion<item.contentVersion)group[old]=item}
+      const summaries=[...groups].map(([id,items])=>({workId:id,title:items[0].title,pieceCount:items.length,access:'free',metadata:{}}))
+      if(['home','library','recent','me'].includes(route)||api.offlineMode?.()){
+        catalog.setScope(owner);catalog.replace({items:summaries,nextCursor:null},owner)
+        for(const [id,items]of groups)catalog.putWork({work:summaries.find(x=>x.workId===id),pieces:items.map(item=>({pieceId:item.pieceId,title:item.chapterTitle,currentContentVersion:item.contentVersion,quizVersion:item.quizVersion||1,durationMs:item.durationMs||0,access:'free',metadata:{}}))},owner)
+        visibleBooks=catalog.list();this.setData({books:visibleBooks,shown:visibleBooks,featured:visibleBooks.slice(0,3),recommendations:visibleBooks.slice(0,2),offlineContent:true,catalogStatus:'ready'});this.refresh()
+      }
+      if(!['detail','player','quiz'].includes(route))return available.length>0
+      const selected=pieceId||groups.get(workId)?.[0]?.pieceId
+      if(!selected){this.setData({downloadError:'本书尚未下载，请联网后下载'});return false}
+      const saved=await audioCache.get(owner,selected,currentBook.contentVersion)
+      if(!saved||this.closed||host.accountScope()!==owner||(this.data.book.workId||this.data.book.id)!==workId)return false
+      this.remoteBundle=saved.bundle;this.subtitleKey=null
+      const ready={...currentBook,...saved.book,pieceId:selected,chapterId:selected,localAudio:saved.path,remoteManifest:null,audioAccountScope:owner,offlineAudio:true,hasQuiz:saved.bundle.quiz.questions.length>0,chapters:catalog.get(workId)?.chapters||currentBook.chapters||[]}
+      this.setData({book:ready,duration:time(ready.duration),remoteContentStatus:'ready',offlineContent:true,downloadBusy:false,downloadLabel:'已下载 · 离线本地播放',downloadError:''})
+      if(route==='quiz')this.setupQuiz()
+      if(route==='player'){player.selectTrack(ready);this.syncPlayer(player.snapshot(),true)}
+      return true
+    },
+    async downloadBook(){
+      const owner=api.currentUser()?.userId,workId=this.data.book.workId||this.data.book.id
+      if(!owner||!api.isAuthenticated()){host.toast('请先联网登录后下载整本书');return}
+      if(this.data.bookDownloadBusy||!audioCache.enabled())return
+      const epoch=this.downloadBookEpoch=(this.downloadBookEpoch||0)+1
+      const current=()=>!this.closed&&epoch===this.downloadBookEpoch&&host.accountScope()===owner&&api.currentUser()?.userId===owner
+      this.setData({bookDownloadBusy:true,bookDownloadLabel:'正在获取章节及文件大小',downloadError:''})
+      try{
+        const work=await api.getWork(workId);if(!current())return
+        if(work.work.access!=='free'||work.pieces.some(piece=>piece.access!=='free'))throw {code:'OFFLINE_CONTENT_NOT_ALLOWED'}
+        const base=catalog.putWork(work,owner),plans=[]
+        for(const piece of work.pieces){if(!current())return;const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion);const audio=manifest.assets.find(a=>a.type==='audio');plans.push({piece,manifest,bytes:audio.sizeBytes})}
+        const total=plans.reduce((n,p)=>n+p.bytes,0),capacity=audioCache.summary(owner)
+        if(total>capacity.limit)throw {code:'CACHE_LIMIT_REACHED'}
+        const confirmed=await new Promise(resolve=>wx.showModal({title:'下载整本书',content:plans.length+' 章，音频约 '+cacheSize(total)+'。这些章节将手动保留，不自动清理。',success:r=>resolve(r.confirm),fail:()=>resolve(false)}))
+        if(!confirmed||!current())return
+        await audioCache.permission(total)
+        for(let i=0;i<plans.length;i++){
+          if(!current())return
+          const plan=plans[i],piece=plan.piece
+          // Renew each fixed version at download time; an earlier plan lease may expire.
+          const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion)
+          const bundle=await remoteResources.loadBundle(manifest,{workId,pieceId:piece.pieceId,contentVersion:piece.currentContentVersion},{accountScope:owner})
+          const book={...playableBook(base,piece.pieceId),pieceId:piece.pieceId,contentVersion:bundle.contentVersion,quizVersion:bundle.quizVersion,duration:bundle.duration,access:'free'}
+          await audioCache.ensure(owner,book,bundle,manifest,{pinned:true,confirmed:true,current,onProgress:p=>{if(current())this.setData({bookDownloadLabel:'第 '+(i+1)+' / '+plans.length+' 章 · '+(p.stage==='verify'?'校验中':p.percent+'%')})}})
+          if(current())this.refresh()
+        }
+        if(current()){this.setData({bookDownloadLabel:'整本书已下载，可离线听读'});host.toast('整本书已下载')}
+      }catch(error){if(current())this.setData({downloadError:cacheMessage(error),bookDownloadLabel:'未完成的章节可点击重试，已完成章节保留'})}
+      finally{if(current())this.setData({bookDownloadBusy:false})}
+    },
+    cancelBookDownload(){this.downloadBookEpoch=(this.downloadBookEpoch||0)+1;this.setData({bookDownloadBusy:false,bookDownloadLabel:'已取消后续章节，已完成的下载保留'})},
+    openAudioCache(){this.refresh();this.setData({sheet:'audioCache'})},
+    async removeAudioCache(e){const key=e.currentTarget.dataset.key,owner=api.currentUser()?.userId||host.accountScope(),item=audioCache.summary(owner).items.find(x=>x.key===key);if(!item)return;const confirmed=await new Promise(resolve=>wx.showModal({title:'删除本地音频',content:item.chapterTitle+' · '+cacheSize(item.bytes)+'。仅删除下载文件，学习记录保留。',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));if(!confirmed||host.accountScope()!==owner)return;try{if(!player.releaseCachedTrack(owner,item.pieceId,item.contentVersion))throw Object.assign(new Error('AUDIO_IN_USE'),{code:'AUDIO_IN_USE'});await audioCache.remove(owner,key);this.refresh()}catch(error){host.toast(cacheMessage(error))}},
+    async changeAudioCacheLimit(){const choices=[256*1024*1024,512*1024*1024,1024*1024*1024,2*1024*1024*1024];wx.showActionSheet({itemList:choices.map(cacheSize),success:async r=>{try{await audioCache.setLimit(choices[r.tapIndex]);this.refresh();host.toast('缓存上限已更新')}catch(error){host.toast(cacheMessage(error))}}})},
     onReachBottom(){if(route==='home'||route==='library')return this.moreCatalog()},
     async loadRemoteContent() {
+      if(audioCache.enabled()&&!await networkAvailable()){await this.loadOfflineContent();return}
       const userId=api.currentUser()?.userId,wanted=cueKey(this.data.book),workId=this.data.book.workId||this.data.book.id
       const epoch=this.contentEpoch=(this.contentEpoch||0)+1
       let selectedPiece=wanted
@@ -477,15 +560,36 @@ function createPage(requestedRoute) {
         const book=playableBook(base,piece.pieceId)
         if(route==='player'&&book.remote&&player.snapshot().pieceId===piece.pieceId&&player.snapshot().book?.contentVersion!==piece.currentContentVersion)player.pause('content_version_changed')
         this.setData({book,duration:time(book.duration)})
-        if(route==='detail'){this.setData({remoteContentStatus:'ready'});this.refresh();return}
+        if(route==='detail'){
+          this.setData({remoteContentStatus:'ready'});this.refresh()
+          if(book.access==='free'&&api.dynamicCatalogAvailable())void (async()=>{
+            const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion)
+            if(!current())return
+            const bundle=await remoteResources.loadBundle(manifest,{workId,pieceId:piece.pieceId,contentVersion:piece.currentContentVersion},{accountScope:userId})
+            if(audioCache.enabled()&&current()){
+              const stillSelected=()=>!this.closed&&host.accountScope()===userId&&(this.data.book.workId||this.data.book.id)===workId&&cueKey(this.data.book)===piece.pieceId
+              this.setData({downloadBusy:true,downloadLabel:'准备下载当前章',downloadError:''})
+              try{await audioCache.ensure(userId,{...book,pieceId:bundle.pieceId,contentVersion:bundle.contentVersion,quizVersion:bundle.quizVersion,duration:bundle.duration},bundle,manifest,{current:stillSelected,onProgress:p=>{if(current())this.setData({downloadPercent:p.percent,downloadLabel:p.stage==='verify'?'正在校验音频':p.stage==='ready'?'已下载 · 本地播放':'下载音频 '+p.percent+'%'})}});if(current())this.setData({downloadLabel:'已下载 · 本地播放'})}
+              catch(error){if(current())this.setData({downloadError:cacheMessage(error)})}
+              finally{if(current())this.setData({downloadBusy:false})}
+            }
+          })().catch(()=>{/* Prefetch failure must not hide readable chapter metadata. */})
+          return
+        }
         const manifest=await api.getManifest(piece.pieceId,piece.currentContentVersion)
         if(!current())return
         if(api.dynamicCatalogAvailable()){
-          const bundle=await remoteResources.loadBundle(manifest,{workId,pieceId:piece.pieceId,contentVersion:piece.currentContentVersion})
+          const bundle=await remoteResources.loadBundle(manifest,{workId,pieceId:piece.pieceId,contentVersion:piece.currentContentVersion},{accountScope:userId})
           if(!current())return
           const sameQuiz=this.quizPackage?.workId===bundle.workId&&this.quizPackage?.pieceId===bundle.pieceId&&this.quizPackage?.contentVersion===bundle.contentVersion&&this.quizPackage?.quizVersion===bundle.quizVersion&&this.questions?.length
           this.remoteBundle=bundle;this.subtitleKey=null
-          const ready=Object.assign({},book,{pieceId:bundle.pieceId,contentVersion:bundle.contentVersion,quizVersion:bundle.quizVersion,localAudio:bundle.audioUrl,cover:bundle.coverUrl,duration:bundle.duration,remoteManifest:manifest,audioAccountScope:userId,remote:true,hasQuiz:true})
+          let ready=Object.assign({},book,{pieceId:bundle.pieceId,contentVersion:bundle.contentVersion,quizVersion:bundle.quizVersion,localAudio:bundle.audioUrl,cover:bundle.coverUrl,duration:bundle.duration,remoteManifest:manifest,audioAccountScope:userId,remote:true,hasQuiz:true})
+          if(audioCache.enabled()&&book.access==='free'){
+            this.setData({downloadBusy:true,downloadError:'',downloadLabel:'准备下载当前章',offlineContent:false})
+            try{const downloaded=await audioCache.ensure(userId,ready,bundle,manifest,{current:()=>!this.closed&&host.accountScope()===userId&&(this.data.book.workId||this.data.book.id)===workId&&cueKey(this.data.book)===piece.pieceId,onProgress:progress=>{if(current())this.setData({downloadPercent:progress.percent,downloadLabel:progress.stage==='verify'?'正在校验音频':progress.stage==='ready'?'已下载 · 本地播放':'下载音频 '+progress.percent+'%'})}});if(!current())return;ready={...ready,localAudio:downloaded.path,remoteManifest:null,offlineAudio:true};this.setData({downloadLabel:'已下载 · 本地播放'})}
+            catch(error){if(current())this.setData({downloadError:cacheMessage(error),remoteContentStatus:'unavailable'});return}
+            finally{if(current())this.setData({downloadBusy:false})}
+          }
           this.setData({book:ready,duration:time(ready.duration),remoteContentStatus:'ready'})
           if(route==='quiz'&&!sameQuiz)this.setupQuiz()
           if(route==='player'){
@@ -504,7 +608,7 @@ function createPage(requestedRoute) {
           }
         }
         if(route!=='player')await progressSync.pullPiece(piece.pieceId)
-      }catch(error){if(current()){const denied=['RESOURCE_NOT_FOUND','CONTENT_ACCESS_DENIED','CONTENT_VERSION_UNAVAILABLE'].includes(error?.serverCode);if(denied||!this.bundleCurrent())this.remoteBundle=null;if(denied&&route==='player')player.pause('content_unavailable');this.setData({remoteContentStatus:'unavailable'});if(this.data.book.remote&&route==='quiz'&&!this.bundleCurrent())this.setupQuiz()}}
+      }catch(error){if(current()){const denied=['RESOURCE_NOT_FOUND','CONTENT_ACCESS_DENIED','CONTENT_VERSION_UNAVAILABLE'].includes(error?.serverCode);if(denied){audioCache.revoke(userId,selectedPiece);if(route==='player')player.pause('content_unavailable')}else if(await this.loadOfflineContent())return;if(denied||!this.bundleCurrent())this.remoteBundle=null;this.setData({remoteContentStatus:'unavailable'});if(this.data.book.remote&&route==='quiz'&&!this.bundleCurrent())this.setupQuiz()}}
     },
     chooseRecentMode(e) {const recentMode=e.currentTarget.dataset.id;this.setData({recentMode,readingList:recentMode==='favorites'?this.data.favoriteBooks:this.data.recent})},
     setRankingStatus(status) {const value=rankingState.view(status);this.setData({rankingStatus:value.status,rankingStatusTitle:value.title,rankingStatusDescription:value.description})},

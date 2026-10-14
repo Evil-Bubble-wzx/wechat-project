@@ -32,6 +32,26 @@ test('remote bundle rejects corruption, wrong versions and incomplete manifests'
   await assert.rejects(loadBundle({...f.manifest,assets:f.manifest.assets.slice(1)},identity,{fetchBytes:f.read}),/Complete/)
   await assert.rejects(loadBundle({...f.manifest,pieceId:'other-piece'},identity,{fetchBytes:f.read}),/identity/)
 })
+test('verified resources reuse only the same account and immutable version, with fresh signed URLs',async()=>{
+  const resources=require('../miniprogram/modules/catalog/remote-resources');resources.clearCache()
+  const f=fixture();let reads=0;const fetchBytes=asset=>{reads++;return f.values[asset.type]}
+  try{
+    const first=await loadBundle(f.manifest,identity,{accountScope:'a',fetchBytes});assert.equal(reads,4)
+    first.quiz.questions[0].q='Mutated by caller'
+    const renewed=JSON.parse(JSON.stringify(f.manifest));renewed.assets.forEach(a=>a.url+='?new-lease')
+    const second=await loadBundle(renewed,identity,{accountScope:'a',fetchBytes});assert.equal(reads,4);assert.equal(second.quiz.questions[0].q,'Which word?');assert.ok(second.audioUrl.endsWith('?new-lease'))
+    await loadBundle(f.manifest,identity,{accountScope:'b',fetchBytes});assert.equal(reads,8)
+    const changed=fixture({title:'Changed immutable content'});await loadBundle(changed.manifest,identity,{accountScope:'b',fetchBytes:asset=>{reads++;return changed.values[asset.type]}});assert.equal(reads,12)
+    resources.clearCache();await loadBundle(f.manifest,identity,{accountScope:'a',fetchBytes});assert.equal(reads,16)
+  }finally{resources.clearCache()}
+})
+test('encoded chapter navigation resolves the work and keeps its Quiz available',async()=>{
+  await stubs({available:()=>false,isAuthenticated:()=>true,currentUser:()=>({userId:'a'}),dynamicCatalogAvailable:()=>true},async()=>{
+    host.setAccountScope('a');catalog.setScope('a');catalog.replace({items:[summary('cloud-book')],nextCursor:null},'a');catalog.putWork(work(),'a')
+    const p=page('quiz');p.onLoad({id:encodeURIComponent('cloud-book:cloud-book-02')})
+    try{assert.equal(p.data.book.id,'cloud-book');assert.equal(p.data.book.chapterId,'cloud-book-02');assert.equal(p.data.book.hasQuiz,true)}finally{p.onUnload()}
+  })
+})
 test('catalog uses published metadata without borrowing local fields and isolates accounts',()=>{
   const c=catalog.createCatalog();c.setScope('a');c.replace({items:[summary('new-work')],nextCursor:null},'a')
   const b=c.get('new-work');assert.equal(b.author,null);assert.equal(b.words,null);assert.deepEqual(b.chapters,[])

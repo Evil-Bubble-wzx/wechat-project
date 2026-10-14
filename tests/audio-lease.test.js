@@ -6,6 +6,32 @@ const makeManifest=(suffix='old',expiresAt='2026-10-10T01:05:00.000Z')=>{
   const assets=['audio','cover','metadata','quiz','subtitles','text','vocabulary'].map(type=>({type,assetId:'asset-'+type,url:'https://content.test/'+type+'?signature='+suffix,expiresAt,sha256:crypto.createHash('sha256').update(type).digest('hex'),sizeBytes:100,mimeType:type==='audio'?'audio/mpeg':type==='cover'?'image/png':['text'].includes(type)?'text/plain':'application/json'}))
   return {workId:'cloud-book',pieceId:'cloud-piece',contentVersion:1,quizVersion:1,durationMs:60000,assets,manifestSha256:crypto.createHash('sha256').update(JSON.stringify(assets.map(({type,sha256,sizeBytes})=>({type,sha256,sizeBytes})))).digest('hex')}
 }
+test('buffering without native error renews once at the saved cursor, then ends with a retryable user action',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']})
+  const h=harness()
+  try{
+    h.player.playTrack(h.book);for(let i=1;i<=8;i++)h.tick(i)
+    h.waiting();h.waiting();assert.equal(h.player.snapshot().status,'loading')
+    t.mock.timers.tick(15000);await wait()
+    assert.equal(h.calls(),1);assert.equal(h.player.snapshot().position,8);assert.equal(h.manager.currentTime,8)
+    const seconds=h.host.read().listeningSec
+    h.waiting();t.mock.timers.tick(15000);await wait()
+    assert.equal(h.calls(),1);assert.equal(h.player.snapshot().status,'error');assert.equal(h.player.snapshot().position,8)
+    assert.equal(h.host.read().listeningSec,seconds)
+  }finally{h.restore()}
+})
+test('user pause during buffering cancels automatic renewal and never resumes playback',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']})
+  const h=harness()
+  try{h.player.playTrack(h.book);h.tick(5);h.waiting();h.player.pause('user');const plays=h.plays();t.mock.timers.tick(15000);await wait();assert.equal(h.calls(),0);assert.equal(h.plays(),plays);assert.equal(h.player.snapshot().status,'paused')}
+  finally{h.restore()}
+})
+test('repeated waiting events keep the playing intent when canplay eventually arrives',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']})
+  const h=harness()
+  try{h.player.playTrack(h.book);h.tick(5);h.waiting();h.waiting();h.canplay();assert.equal(h.player.snapshot().status,'playing');t.mock.timers.tick(15000);await wait();assert.equal(h.calls(),0)}
+  finally{h.restore()}
+})
 function harness(){
   const previousWx=global.wx,host=require('../miniprogram/services/host'),originalScope=host.accountScope(),storage=new Map()
   let clock=Date.parse('2026-10-10T01:00:00.000Z'),listeners={},calls=0,plays=0,userId='account-a'

@@ -14,6 +14,10 @@ function createBackendApi(options = {}) {
   let session = null
   let user = null
   let serverContractVersion = null
+  let reconnecting=null
+  const audioCache=require('../modules/listen-read/audio-cache').createAudioCache(runtime)
+  const offlineOwner=audioCache.rememberedOwner()
+  if(offlineOwner&&!host.policy().isDemo){user={userId:offlineOwner,offline:true};host.setAccountScope(offlineOwner);catalog.setScope(offlineOwner)}
 
   const publicClient = createApiClient({
     enabled:configuration.enabled,
@@ -60,6 +64,7 @@ function createBackendApi(options = {}) {
     user = await getMe()
     host.setAccountScope(user.userId)
     catalog.setScope(user.userId)
+    audioCache.rememberOwner(user.userId)
     return user
   }
 
@@ -68,6 +73,18 @@ function createBackendApi(options = {}) {
     serverContractVersion = result.contractVersion
     user = result.data
     return user
+  }
+  async function reconnectOffline(){
+    if(!user||tokenStore.getAccessToken())return false
+    if(reconnecting)return reconnecting
+    reconnecting=(async()=>{
+      const network=await new Promise(resolve=>runtime?.getNetworkType?runtime.getNetworkType({success:r=>resolve(r.networkType),fail:()=>resolve('none')}):resolve('none'))
+      if(network==='none')return false
+      const previous=user
+      try{if(session?.refreshToken)await getMe();else await loginWechat();host.setAccountScope(user.userId);catalog.setScope(user.userId);audioCache.rememberOwner(user.userId);return true}
+      catch(_){if(session?.userId&&session.userId!==previous.userId)session=null;tokenStore.clear();user={...previous,offline:true};host.setAccountScope(previous.userId);catalog.setScope(previous.userId);return false}
+    })().finally(()=>{reconnecting=null})
+    return reconnecting
   }
 
   async function logout() {
@@ -79,6 +96,8 @@ function createBackendApi(options = {}) {
       serverContractVersion = null
       host.setAccountScope(null)
       catalog.reset()
+      require('../modules/catalog/remote-resources').clearCache()
+      audioCache.rememberOwner(null)
       client.logout()
       publicClient.logout()
     }
@@ -92,6 +111,7 @@ function createBackendApi(options = {}) {
     contractVersion:configuration.contractVersion,
     available:() => configuration.enabled === true,
     isAuthenticated:() => !!(session && tokenStore.getAccessToken()),
+    offlineMode:() => !!user&&!tokenStore.getAccessToken(),
     currentUser:() => user,
     currentSession:() => session ? Object.assign({}, session, { accessToken:undefined, refreshToken:undefined }) : null,
     progressSyncAvailable:() => (supportsContract(serverContractVersion, 1, 2)||supportsContract(serverContractVersion, 2, 0)),
@@ -105,6 +125,7 @@ function createBackendApi(options = {}) {
     loginWechat,
     getMe,
     logout,
+    reconnectOffline,
     listWorks:(cursor, limit = 50, filters = {}) => get('/works', { cursor, limit, query:filters.query, category:filters.category }),
     getWork:workId => get('/works/' + encodeURIComponent(workId)),
     getManifest:(pieceId, contentVersion) => get('/pieces/' + encodeURIComponent(pieceId) + '/manifest', { contentVersion }),
@@ -191,6 +212,7 @@ module.exports = {
   createBackendApi,
   available:() => active().available(),
   isAuthenticated:() => active().isAuthenticated(),
+  offlineMode:() => active().offlineMode(),
   currentUser:() => active().currentUser(),
   currentSession:() => active().currentSession(),
   progressSyncAvailable:() => active().progressSyncAvailable(),
@@ -204,6 +226,7 @@ module.exports = {
   loginWechat:() => active().loginWechat(),
   getMe:() => active().getMe(),
   logout:() => active().logout(),
+  reconnectOffline:() => active().reconnectOffline(),
   listWorks:(cursor, limit, filters) => active().listWorks(cursor, limit, filters),
   getWork:workId => active().getWork(workId),
   getManifest:(pieceId, version) => active().getManifest(pieceId, version),

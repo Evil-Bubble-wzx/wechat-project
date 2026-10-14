@@ -1,0 +1,14 @@
+const fs=require('node:fs'),path=require('node:path');
+const {build,manifest,repoRoot}=require('./build-miniapp.js');
+const cfg=JSON.parse(fs.readFileSync(path.join(repoRoot,'.cache/device-local/iphone-gateway.json')));
+if(!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(cfg.publicOrigin)||!/^[a-f0-9]{64}$/.test(cfg.key))throw Error('Private HTTPS gateway required');
+const project=path.join(repoRoot,'build/iphone-https-test'),target=path.join(project,'miniprogram');build('production',target);
+fs.writeFileSync(path.join(target,'config/iphone-test.js'),'module.exports = '+JSON.stringify({apiRoot:cfg.publicOrigin+'/api/v1',key:cfg.key})+'\n');
+const file=path.join(target,'services/api.js');let s=fs.readFileSync(file,'utf8');
+const marker='const configuration = options.configuration || apiConfig.current(runtime)',transport="const transport = options.transport || (runtime && typeof runtime.request === 'function' ? createWxTransport(runtime) : null)";
+if(!s.includes(marker)||!s.includes(transport))throw Error('Review client adapter changes');
+s=s.replace(marker,"const privateTest=require('../config/iphone-test'); const base=options.configuration || apiConfig.current(runtime); const configuration=Object.assign({},base,{enabled:base.envVersion==='develop',apiRoot:privateTest.apiRoot,stubLoginCode:null})");
+s=s.replace(transport,"const originalTransport=options.transport || (runtime && typeof runtime.request==='function' ? createWxTransport(runtime) : null); const transport=originalTransport && (request=>originalTransport(Object.assign({},request,{headers:Object.assign({},request.headers,{'X-Device-Test-Key':privateTest.key})})))");fs.writeFileSync(file,s);
+const controller=path.join(target,'ui/controller.js');let ui=fs.readFileSync(controller,'utf8');const failure="catch(_){host.toast('微信登录失败，请稍后重试')}";if(!ui.includes(failure))throw Error('Review login diagnostic marker');
+ui=ui.replace(failure,"catch(error){const message=String(error?.cause?.errMsg||error?.errMsg||error?.message||'');const label=/domain|域名/i.test(message)?'域名限制':/ssl|tls|certificate/i.test(message)?'TLS连接':/wx.login|login:fail/i.test(message)?'微信登录码':({network:'请求未连通',timeout:'连接超时',unauthorized:'身份被拒绝',contract:'接口格式',disabled:'测试配置未启用'})[error?.kind]||'接口失败';host.toast('iPhone测试：'+label)}");fs.writeFileSync(controller,ui);
+const config=JSON.parse(fs.readFileSync(path.join(repoRoot,'project.config.json')));Object.assign(config,{appid:'wxef246c6a495e4030',libVersion:'3.17.3',miniprogramRoot:'miniprogram/',projectname:'听阅-iPhone临时HTTPS',description:'Private real-login test; not for release'});config.setting={...config.setting,urlCheck:false};fs.writeFileSync(path.join(project,'project.config.json'),JSON.stringify(config,null,2));fs.writeFileSync(path.join(target,'build-manifest.json'),JSON.stringify(manifest(target,'production'),null,2));console.log('Private iPhone package ready; real wx.login; commerce disabled');

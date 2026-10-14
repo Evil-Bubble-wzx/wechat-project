@@ -75,7 +75,8 @@ function createSavedWordSyncManager(options={}) {
   function deactivate(){if(timer){cancel(timer);timer=null}generation++;activeUserId=null;account=null;pendingPull=false;busy=false;updateStatus('idle')}
 
   function record(action,value,immediate=true){
-    if(!activeUserId||!account||!isAuthenticated()||!supported()||!accountScopeMatches(activeUserId)||(action!=='save'&&action!=='delete'))return false
+    const offlineOwner=api.offlineMode?.()&&currentUser()?.userId===activeUserId
+    if(!activeUserId||!account||(!offlineOwner&&(!isAuthenticated()||!supported()))||!accountScopeMatches(activeUserId)||(action!=='save'&&action!=='delete'))return false
     const entry=normalizeEntry(value);if(!entry)return false
     const blocked=account.blocked[entry.entryId]
     if(blocked&&blocked.contentVersion===entry.contentVersion)return false

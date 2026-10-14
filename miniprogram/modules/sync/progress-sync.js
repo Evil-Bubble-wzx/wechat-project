@@ -26,7 +26,8 @@ function sameEvidence(a,b) {
   return JSON.stringify(left)===JSON.stringify(right)
 }
 function capture(state,pieceId,entry,options={}) {
-  if(!runnable()||!pieceId||!Number.isInteger(Number(entry&&entry.contentVersion)))return state
+  const owner=api.currentUser()?.userId,offlineOwner=api.offlineMode?.()&&owner&&host.accountScope()===owner&&!host.policy().isDemo
+  if((!runnable()&&!offlineOwner)||!pieceId||!Number.isInteger(Number(entry&&entry.contentVersion)))return state
   state.progressSyncOutbox=Object.assign({},state.progressSyncOutbox||{})
   state.progressSyncBaselines=Object.assign({},state.progressSyncBaselines||{})
   const key=keyFor(pieceId,Number(entry.contentVersion)),base=state.progressSyncBaselines[key],request=payloadFor(base&&base.revision,entry),existing=state.progressSyncOutbox[key]

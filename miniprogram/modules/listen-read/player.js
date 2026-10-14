@@ -27,6 +27,22 @@ let pendingListenSeconds = 0
 let lastPersistAt = 0
 let requestedPauseReason = null
 let waitingWasPlaying = false
+let bufferingTimer = null
+const BUFFERING_TIMEOUT_MS = 15000
+function clearBufferingTimer(){if(bufferingTimer!==null)clearTimeout(bufferingTimer);bufferingTimer=null}
+function watchBuffering(){
+  if(bufferingTimer!==null||!playIntent||renewal||!scopeCurrent())return
+  const sessionId=state.sessionId,accountScope=state.accountScope
+  bufferingTimer=setTimeout(()=>{
+    bufferingTimer=null
+    if(!scopeCurrent()||state.sessionId!==sessionId||state.accountScope!==accountScope||!playIntent||renewal||state.status!=='loading')return
+    if(audioLease.lease(state.book)&&!automaticRecoveryUsed){renewSource();return}
+    playIntent=false;waitingWasPlaying=false;clearAnchor()
+    update({status:'error',pauseReason:'buffer_timeout',error:'音频加载超时，请点击播放重试'})
+    if(context){suppressNextPause=true;context.pause()}
+  },BUFFERING_TIMEOUT_MS)
+  bufferingTimer?.unref?.()
+}
 let suppressNextPause = false
 let now = () => Date.now()
 const subscribers = new Set()
@@ -139,11 +155,12 @@ function onPlay(){
   if(!state.pieceId)return
   if(scopeCurrent()&&!renewal&&!leaseFailed&&state.status==='paused'&&['system','system_stop'].includes(state.pauseReason))playIntent=true
   if(!scopeCurrent()||!playIntent||renewal){suppressNextPause=true;context?.pause();return}
-  requestedPauseReason=null;state=Object.assign({},state,{status:'playing',pauseReason:null,error:null});if(pendingSeek===null)beginAnchor(context&&context.currentTime);notify()
+  clearBufferingTimer();requestedPauseReason=null;state=Object.assign({},state,{status:'playing',pauseReason:null,error:null});if(pendingSeek===null)beginAnchor(context&&context.currentTime);notify()
 }
-function onPause(){if(suppressNextPause){suppressNextPause=false;requestedPauseReason=null;clearAnchor();return}if(!scopeCurrent())return;playIntent=false;if(state.pieceId&&state.status!=='ended'&&state.status!=='error'){sampleContext(true);const pauseReason=requestedPauseReason||(renewal?state.pauseReason:null)||'system';requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason})}}
-function onStop(){if(!scopeCurrent())return;playIntent=false;if(state.pieceId){sampleContext(true);requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason:'system_stop'})}}
+function onPause(){clearBufferingTimer();if(suppressNextPause){suppressNextPause=false;requestedPauseReason=null;clearAnchor();return}if(!scopeCurrent())return;playIntent=false;if(state.pieceId&&state.status!=='ended'&&state.status!=='error'){sampleContext(true);const pauseReason=requestedPauseReason||(renewal?state.pauseReason:null)||'system';requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason})}}
+function onStop(){clearBufferingTimer();if(!scopeCurrent())return;playIntent=false;if(state.pieceId){sampleContext(true);requestedPauseReason=null;clearAnchor();update({status:'paused',pauseReason:'system_stop'})}}
 function onEnded(){
+  clearBufferingTimer()
   if(!state.pieceId||!scopeCurrent()||renewal||!playIntent)return
   const duration=Number.isFinite(context&&context.duration)&&context.duration>0?context.duration:state.duration
   sample(duration,false)
@@ -162,6 +179,7 @@ function audioErrorMessage(error){
   try{const serialized=JSON.stringify(error);return serialized&&serialized!=='{}'?serialized:'audio_error'}catch(_){return 'audio_error'}
 }
 function onError(error){
+  clearBufferingTimer()
   if(!state.pieceId||!scopeCurrent()||renewal)return
   sampleContext(true);clearAnchor()
   if(playIntent&&audioLease.lease(state.book)&&!automaticRecoveryUsed){renewSource();return}
@@ -169,8 +187,8 @@ function onError(error){
 }
 function onSeeking(){if(context&&state.pieceId)sampleContext(true);clearAnchor()}
 function onSeeked(){if(!context||!state.pieceId||!scopeCurrent()||renewal)return;const position=Number(context.currentTime)||0;pendingSeek=null;state=Object.assign({},state,{position});persist(true);if(state.status==='playing')beginAnchor(position);notify()}
-function onWaiting(){if(!scopeCurrent()||renewal)return;waitingWasPlaying=state.status==='playing';if(context&&state.pieceId)sampleContext(true);clearAnchor();if(waitingWasPlaying)update({status:'loading'})}
-function onCanplay(){if(!state.pieceId||!scopeCurrent()||renewal)return;if(pendingSeek!==null)applyPendingSeek();if(waitingWasPlaying){waitingWasPlaying=false;state=Object.assign({},state,{status:'playing'});beginAnchor(context&&context.currentTime)}notify()}
+function onWaiting(){if(!scopeCurrent()||renewal)return;waitingWasPlaying=waitingWasPlaying||state.status==='playing'||playIntent;if(context&&state.pieceId)sampleContext(true);clearAnchor();if(waitingWasPlaying){update({status:'loading'});watchBuffering()}}
+function onCanplay(){clearBufferingTimer();if(!state.pieceId||!scopeCurrent()||renewal)return;if(pendingSeek!==null)applyPendingSeek();if(waitingWasPlaying){waitingWasPlaying=false;state=Object.assign({},state,{status:'playing'});beginAnchor(context&&context.currentTime)}notify()}
 
 function bindBackground(ctx){
   if(backgroundBound)return
@@ -187,6 +205,8 @@ function bindBackground(ctx){
 function ensureContext(){if(!context){context=wx.getBackgroundAudioManager();bindBackground(context)}return context}
 function metadata(book,ctx){ctx.title=book.chapterTitle||book.title;ctx.singer=book.narrator||book.author;if(book.coverUrl||book.cover)ctx.coverImgUrl=book.coverUrl||book.cover}
 function newSession(book,status){
+  clearBufferingTimer()
+  require('./audio-cache').setActivePath(book.offlineAudio&&book.audioAccountScope!==host.accountScope()?null:sourceFor(book))
   const restored=progressFor(book),source=sourceFor(book)
   sessionSequence++;renewal=null;playIntent=false;automaticRecoveryUsed=false;leaseFailed=false;waitingWasPlaying=false;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=now()
   state={accountScope:host.accountScope(),sessionId:sessionSequence,workId:book.workId||book.id,pieceId:pieceId(book),source,book:Object.assign({},book),contentVersion:book.contentVersion||null,position:restored.position,checkpointPosition:restored.checkpointPosition,duration:Number(book.duration)||0,rate:state.rate||1,status:status||'paused',pauseReason:status==='paused'?'selection':null,loop:false,completed:restored.completed,listenedRanges:restored.listenedRanges,coverage:coverageFor(restored.listenedRanges,Number(book.duration)||0),error:null}
@@ -210,6 +230,7 @@ function selectTrack(book){
 }
 function startPlayback(book,reload=false){
   const ctx=ensureContext(),source=sourceFor(book)
+  require('./audio-cache').setActivePath(source)
   state=Object.assign({},state,{source,book:Object.assign({},book),error:null})
   metadata(book,ctx);ctx.playbackRate=state.rate
   if(state.status==='ended'){state=Object.assign({},state,{position:state.completed?0:state.checkpointPosition})}
@@ -217,10 +238,12 @@ function startPlayback(book,reload=false){
   if('startTime' in ctx)ctx.startTime=state.position
   if(!reload&&ctx.src===source){applyPendingSeek();ctx.play();update({status:'playing',pauseReason:null})}
   else{update({status:'loading',pauseReason:null});ctx.src=source;ctx.play()}
+  if(state.status==='loading')watchBuffering()
   return true
 }
 function renewSource(){
   if(renewal)return true
+  clearBufferingTimer()
   const token={sessionId:state.sessionId,accountScope:state.accountScope,key:audioKeyFor(state.book)}
   const requestedBook=Object.assign({},state.book)
   renewal=token;automaticRecoveryUsed=true;waitingWasPlaying=false;clearAnchor();persist(true)
@@ -243,6 +266,7 @@ function renewSource(){
 }
 function playTrack(book){
   const source=sourceFor(book);if(!source)return false
+  if(book.offlineAudio&&book.audioAccountScope!==host.accountScope()){playIntent=false;clearAnchor();context?.pause();update({status:'error',pauseReason:'account_changed',error:'audio_account_changed'});return false}
   if(audioLease.lease(book)&&(!book.audioAccountScope||book.audioAccountScope!==host.accountScope())){
     playIntent=false;clearAnchor();if(context){suppressNextPause=true;context.pause()}
     update({status:'error',pauseReason:'account_changed',error:'audio_account_changed'});return false
@@ -256,7 +280,16 @@ function playTrack(book){
   if(audioLease.expired(book,now())||(audioLease.lease(book)&&(state.status==='error'||leaseFailed)))return renewSource()
   return startPlayback(book)
 }
-function pause(reason='user'){playIntent=false;waitingWasPlaying=false;if(!state.pieceId)return;sampleContext(true);requestedPauseReason=reason;clearAnchor();state=Object.assign({},state,{status:'paused',pauseReason:reason});if(context)context.pause();notify()}
+function pause(reason='user'){clearBufferingTimer();playIntent=false;waitingWasPlaying=false;if(!state.pieceId)return;sampleContext(true);requestedPauseReason=reason;clearAnchor();state=Object.assign({},state,{status:'paused',pauseReason:reason});if(context)context.pause();notify()}
+// Explicit deletion releases paused selections; automatic eviction still protects them.
+function releaseCachedTrack(owner,piece,version){
+  if(state.accountScope!==owner||state.pieceId!==piece||state.contentVersion!==version||!state.book?.offlineAudio)return true
+  if(playIntent||['playing','loading','renewing'].includes(state.status))return false
+  saveNow();clearBufferingTimer();clearAnchor();waitingWasPlaying=false;pendingSeek=null
+  if(context){suppressNextPause=true;if(typeof context.stop==='function')context.stop();else context.pause()}
+  require('./audio-cache').setActivePath(null)
+  state=initialState();notify();return true
+}
 function resume(){if(!state.pieceId||!state.source)return false;return playTrack(state.book)}
 function seek(seconds){
   if(!state.pieceId)return
@@ -271,7 +304,7 @@ function setLoop(loop){update({loop:!!loop})}
 function saveNow(){if(!state.pieceId)return;if(context)sampleContext(true);else persist(true)}
 function reloadScope(){playIntent=false;renewal=null;if(!state.book)return snapshot();if(context&&state.pieceId){suppressNextPause=true;context.pause()}return newSession(state.book,'paused')}
 function subscribe(subscriber){subscribers.add(subscriber);subscriber(snapshot());return()=>subscribers.delete(subscriber)}
-function resetForTests(){renewal=null;sourceResolver=null;playIntent=false;automaticRecoveryUsed=false;leaseFailed=false;context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;suppressNextPause=false;now=()=>Date.now();subscribers.clear();state=initialState()}
+function resetForTests(){clearBufferingTimer();renewal=null;sourceResolver=null;playIntent=false;automaticRecoveryUsed=false;leaseFailed=false;context=null;backgroundBound=false;sessionSequence=0;anchor=null;pendingSeek=null;pendingListenSeconds=0;lastPersistAt=0;requestedPauseReason=null;waitingWasPlaying=false;suppressNextPause=false;now=()=>Date.now();subscribers.clear();state=initialState()}
 function setNowForTests(fn){now=fn}
 
-module.exports={snapshot,subscribe,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,saveNow,reloadScope,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_setSourceResolverForTests:fn=>{sourceResolver=fn},_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}
+module.exports={releaseCachedTrack,snapshot,subscribe,selectTrack,playTrack,play:playTrack,pause,resume,seek,setRate,rate:setRate,setLoop,saveNow,reloadScope,_resetForTests:resetForTests,_setNowForTests:setNowForTests,_setSourceResolverForTests:fn=>{sourceResolver=fn},_constants:{PROGRESS_SCHEMA_VERSION,COMPLETION_COVERAGE,COMPLETION_TAIL_SECONDS,CHECKPOINT_TRUST_SECONDS}}
